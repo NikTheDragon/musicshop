@@ -14,10 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @WebServlet(urlPatterns = {"/common"})
 public class CommonServlet extends HttpServlet {
@@ -43,11 +40,6 @@ public class CommonServlet extends HttpServlet {
 
         LOGGER.debug("Request content done.");
 
-        Map<String, String[]> rm = new HashMap<>();
-
-        rm = request.getParameterMap();
-
-        System.out.println("prm= "+ rm.get("command")[0]);
         requestContent.setRequest(request);
         requestContent.setRequestParameters("command", request.getParameter("command").toUpperCase());
 
