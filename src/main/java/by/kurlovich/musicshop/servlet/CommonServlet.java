@@ -30,28 +30,14 @@ public class CommonServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String url = (String) request.getSession(true).getAttribute("url");
-
-        System.out.println("url= "+url);
-
         LOGGER.debug("Command = {}", request.getParameter("command"));
 
         RequestContent requestContent = new RequestContent();
-
-        LOGGER.debug("Request content done.");
-
         requestContent.setRequest(request);
         requestContent.setRequestParameters("command", request.getParameter("command").toUpperCase());
 
-        LOGGER.debug("Request content set parameter done.");
-
         Command command = commandFactory.getCommand(requestContent);
-
-        LOGGER.debug("Command done.");
-
         CommandResult commandResult = command.execute(requestContent);
-
-        LOGGER.debug("Response type Command = {}", commandResult.getResponseType());
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(commandResult.getPage());
         request.setAttribute("content", requestContent.getRequestMap());

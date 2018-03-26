@@ -10,7 +10,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <mysql.connector.version>6.0.6</mysql.connector.version>
+        <mysql.connector.version>5.1.39</mysql.connector.version>
         <jstl.version>1.2</jstl.version>
         <javax.servlet.api.version>4.0.0</javax.servlet.api.version>
         <javax.servlet.version>2.5</javax.servlet.version>
@@ -20,6 +20,18 @@
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.mchange</groupId>
+            <artifactId>c3p0</artifactId>
+            <version>0.9.5.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mchange</groupId>
+            <artifactId>mchange-commons-java</artifactId>
+            <version>0.2.11</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>

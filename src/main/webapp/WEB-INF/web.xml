@@ -12,11 +12,7 @@
 
   <error-page>
     <error-code>500</error-code>
-    <location>/errors/error.jsp</location>
+    <location>/jsp/error/error.jsp</location>
   </error-page>
 
-  <context-param>
-    <param-name>isLog4jAutoInitializationDisabled</param-name>
-    <param-value>true</param-value>
-  </context-param>
 </web-app>

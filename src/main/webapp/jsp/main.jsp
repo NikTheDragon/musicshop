@@ -13,7 +13,7 @@
 
 </head>
 
-<body>
+<body style="font-family: Arial, Helvetica, sans-serif">
 
 <%@include file="/WEB-INF/jspf/header.jsp"%>
 <%@include file="/WEB-INF/jspf/menu.jsp"%>
@@ -28,6 +28,7 @@
         <td width="10%">
             <form>
                 <input type="text" name="login" placeholder="Login">
+                <br>
                 <input type="password" name="password" placeholder="Password">
                 <input type="button" value=${loginButton}>
             </form>

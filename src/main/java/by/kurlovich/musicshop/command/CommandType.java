@@ -1,13 +1,13 @@
 package by.kurlovich.musicshop.command;
 
-import by.kurlovich.musicshop.command.impl.ChangeLanguage;
-import by.kurlovich.musicshop.command.impl.CommandNotFound;
-import by.kurlovich.musicshop.command.impl.ShowMainPage;
+import by.kurlovich.musicshop.command.impl.*;
 
 public enum CommandType {
     SHOW_MAIN_PAGE(ShowMainPage.getInstance()::execute),
     COMMAND_NOT_FOUND(CommandNotFound.getInstance()::execute),
-    CHANGE_LANGUAGE(ChangeLanguage.getInstance()::execute);
+    CHANGE_LANGUAGE(ChangeLanguage.getInstance()::execute),
+    SHOW_REG_PAGE(ShowRegPage.getInstance()::execute),
+    REG_NEW_USER(RegNewUser.getInstance()::execute);
 
     private Command command;
 
