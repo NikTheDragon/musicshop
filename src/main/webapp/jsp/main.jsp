@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -22,15 +22,18 @@
     <tr><td width="20%">
 
     </td>
-        <td width="50%">
+        <td width="45%">
 
         </td>
-        <td width="10%">
-            <form>
-                <input type="text" name="login" placeholder="Login">
+        <td width="15%">
+            <form action="/common" method="post">
                 <br>
-                <input type="password" name="password" placeholder="Password">
-                <input type="button" value=${loginButton}>
+                <input type="text" name="login" placeholder="${login}">
+                <br><br>
+                <input type="password" name="password" placeholder="${password}">
+                <br><br>
+                <input type="hidden" name="command" value="login_user">
+                <input type="submit" value=${loginButton}>
             </form>
             <form action="/common" method="get">
                 <input type="hidden" name="command" value="show_reg_page">

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -24,10 +24,10 @@
             <form action="/common" method="post">
                 <p>Please, fill all fields.</p>
                 <br>
-                <input type="text" name="name" placeholder="name" style="width: 200Px"><br>
-                <input type="text" name="surname" placeholder="surname" style="width: 200Px"><br>
-                <input type="text" name="login" placeholder="login" style="width: 200Px"><br>
-                <input type="text" name="password" placeholder="password" style="width: 200Px"><br>
+                <input type="text" name="name" placeholder="${name}" style="width: 200Px"><br>
+                <input type="text" name="surname" placeholder="${surname}" style="width: 200Px"><br>
+                <input type="text" name="login" placeholder="${login}" style="width: 200Px"><br>
+                <input type="text" name="password" placeholder="${password}" style="width: 200Px"><br>
                 <input type="text" name="e-mail" placeholder="e-mail" style="width: 200Px"><br>
                 <br>
                 <input type="hidden" name="command" value="reg_new_user"/>

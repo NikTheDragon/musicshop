@@ -10,3 +10,7 @@
 <fmt:message key="language" var="language" />
 <fmt:message key="loginButton" var="loginButton" />
 <fmt:message key="registerButton" var="registerButton" />
+<fmt:message key="name" var="name" />
+<fmt:message key="surname" var="surname" />
+<fmt:message key="login" var="login" />
+<fmt:message key="password" var="password" />

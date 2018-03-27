@@ -7,7 +7,8 @@ public enum CommandType {
     COMMAND_NOT_FOUND(CommandNotFound.getInstance()::execute),
     CHANGE_LANGUAGE(ChangeLanguage.getInstance()::execute),
     SHOW_REG_PAGE(ShowRegPage.getInstance()::execute),
-    REG_NEW_USER(RegNewUser.getInstance()::execute);
+    REG_NEW_USER(RegNewUser.getInstance()::execute),
+    LOGIN_USER(LoginUser.getInstance()::execute);
 
     private Command command;
 
