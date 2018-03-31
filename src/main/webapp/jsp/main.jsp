@@ -28,9 +28,17 @@
         <td width="15%">
             <form action="/common" method="post">
                 <br>
-                <input type="text" name="login" placeholder="${login}">
+                <input type="text"
+                       name="login"
+                       placeholder="${login}"
+                       pattern="[a-z]{3,15}"
+                       title="Username should only contain lowercase letters. e.g. john">
                 <br><br>
-                <input type="password" name="password" placeholder="${password}">
+                <input type="password"
+                       name="password"
+                       placeholder="${password}"
+                       pattern="[a-z]{3,15}"
+                       title="Username should only contain lowercase letters. e.g. john">
                 <br><br>
                 <input type="hidden" name="command" value="login_user">
                 <input type="submit" value=${loginButton}>
