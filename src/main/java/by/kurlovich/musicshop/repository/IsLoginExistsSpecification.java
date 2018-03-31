@@ -40,7 +40,6 @@ public class IsLoginExistsSpecification implements IsExistsSpecification {
             }
 
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
             throw new RepositoryException("Exception in addNewClient", e);
         }
     }
