@@ -1,4 +1,4 @@
-package by.kurlovich.musicshop.repository.exception;
+package by.kurlovich.musicshop.repository;
 
 public class RepositoryException extends Exception {
     private static final long serialVersionUID = 1L;

@@ -1,4 +1,4 @@
-package by.kurlovich.musicshop.receiver.exception;
+package by.kurlovich.musicshop.receiver;
 
 public class ReceiverException extends Exception {
     private static final long serialVersionUID = 1L;

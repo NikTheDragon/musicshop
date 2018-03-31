@@ -6,12 +6,15 @@ import by.kurlovich.musicshop.content.RequestContent;
 import by.kurlovich.musicshop.entity.User;
 import by.kurlovich.musicshop.pagefactory.PageStore;
 import by.kurlovich.musicshop.receiver.UserReceiver;
-import by.kurlovich.musicshop.receiver.exception.ReceiverException;
+import by.kurlovich.musicshop.receiver.ReceiverException;
+import by.kurlovich.musicshop.receiver.impl.UserReceiverImpl;
 
 public class RegNewUser implements Command {
-    private String page = PageStore.REG_PAGE.getPageName();
-    private UserReceiver receiver = UserReceiver.getInstance();
+    private static final String REG_PAGE = PageStore.REG_PAGE.getPageName();
+    private static final String MESSAGE_PAGE = PageStore.MESSAGE_PAGE.getPageName();
+
     public static final RegNewUser instance = new RegNewUser();
+    private UserReceiver receiver = UserReceiverImpl.getInstance();
 
     public static RegNewUser getInstance() {
         return instance;
@@ -19,6 +22,7 @@ public class RegNewUser implements Command {
 
     @Override
     public CommandResult execute(RequestContent requestContent) {
+
         User user = new User();
         user.setName(requestContent.getRequest().getParameter("name"));
         user.setSurname(requestContent.getRequest().getParameter("surname"));
@@ -29,13 +33,12 @@ public class RegNewUser implements Command {
         try {
             if (receiver.addNewUser(user)) {
                 requestContent.setRequestParameters("message", "registration complete.");
-                page = PageStore.MESSAGE_PAGE.getPageName();
-                requestContent.getRequest().getSession(true).setAttribute("url", page);
+                requestContent.getRequest().getSession(true).setAttribute("url", MESSAGE_PAGE);
             }
         } catch (ReceiverException e) {
             //stub
         }
 
-        return new CommandResult(CommandResult.ResponseType.FORWARD, page);
+        return new CommandResult(CommandResult.ResponseType.FORWARD, REG_PAGE);
     }
 }

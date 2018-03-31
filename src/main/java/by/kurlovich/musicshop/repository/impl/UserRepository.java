@@ -1,11 +1,11 @@
 package by.kurlovich.musicshop.repository.impl;
 
 import by.kurlovich.musicshop.entity.User;
+import by.kurlovich.musicshop.repository.IsExistsSpecification;
 import by.kurlovich.musicshop.repository.Repository;
 
-import by.kurlovich.musicshop.repository.exception.RepositoryException;
+import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.util.DbConnection;
-import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +15,6 @@ import java.sql.PreparedStatement;
 
 public class UserRepository implements Repository<User> {
     final String ADD_CLIENT = "INSERT INTO users (name,surname,login,password,email) VALUES (?,?,?,?,?)";
-
     private static final Logger LOGGER = LoggerFactory.getLogger(UserRepository.class);
     private Connection dbConnection;
 
@@ -32,8 +31,7 @@ public class UserRepository implements Repository<User> {
         final int PASSWORD = 4;
         final int EMAIL = 5;
 
-        try {
-            PreparedStatement ps = dbConnection.prepareStatement(ADD_CLIENT);
+        try (PreparedStatement ps = dbConnection.prepareStatement(ADD_CLIENT)) {
             ps.setString(NAME, user.getName());
             ps.setString(SURNAME, user.getSurname());
             ps.setString(LOGIN, user.getLogin());
@@ -45,8 +43,14 @@ public class UserRepository implements Repository<User> {
             return true;
 
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
             throw new RepositoryException("Exception in addNewClient", e);
         }
+    }
+
+    @Override
+    public boolean isExists(IsExistsSpecification specification) throws RepositoryException {
+        boolean result = specification.exists();
+        LOGGER.debug("Login result= {}", result);
+        return result;
     }
 }
