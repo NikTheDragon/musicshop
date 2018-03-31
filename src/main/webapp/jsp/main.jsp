@@ -31,14 +31,16 @@
                 <input type="text"
                        name="login"
                        placeholder="${login}"
+                       required="required"
                        pattern="[a-z]{3,15}"
-                       title="Username should only contain lowercase letters. e.g. john">
+                       title="Must be 3-15 chars">
                 <br><br>
                 <input type="password"
                        name="password"
                        placeholder="${password}"
+                       required="required"
                        pattern="[a-z]{3,15}"
-                       title="Username should only contain lowercase letters. e.g. john">
+                       title="Must be 3-15 chars">
                 <br><br>
                 <input type="hidden" name="command" value="login_user">
                 <input type="submit" value=${loginButton}>

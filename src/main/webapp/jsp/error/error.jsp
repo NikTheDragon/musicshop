@@ -23,7 +23,7 @@
         </td>
         <td>
             <p>Error</p>
-            <p>Command ${content['command']} not found</p>
+            <p>Command ${nocommand} not found</p>
         </td>
         <td width="20%">
         </td>

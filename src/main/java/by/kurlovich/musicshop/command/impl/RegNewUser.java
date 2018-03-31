@@ -2,12 +2,13 @@ package by.kurlovich.musicshop.command.impl;
 
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.content.CommandResult;
-import by.kurlovich.musicshop.content.RequestContent;
 import by.kurlovich.musicshop.entity.User;
 import by.kurlovich.musicshop.pagefactory.PageStore;
 import by.kurlovich.musicshop.receiver.UserReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.receiver.impl.UserReceiverImpl;
+
+import javax.servlet.http.HttpServletRequest;
 
 public class RegNewUser implements Command {
     private static final String REG_PAGE = PageStore.REG_PAGE.getPageName();
@@ -21,19 +22,19 @@ public class RegNewUser implements Command {
     }
 
     @Override
-    public CommandResult execute(RequestContent requestContent) {
+    public CommandResult execute(HttpServletRequest request) {
 
         User user = new User();
-        user.setName(requestContent.getRequest().getParameter("name"));
-        user.setSurname(requestContent.getRequest().getParameter("surname"));
-        user.setLogin(requestContent.getRequest().getParameter("login"));
-        user.setPassword(requestContent.getRequest().getParameter("password"));
-        user.setEmail(requestContent.getRequest().getParameter("e-mail"));
+        user.setName(request.getParameter("name"));
+        user.setSurname(request.getParameter("surname"));
+        user.setLogin(request.getParameter("login"));
+        user.setPassword(request.getParameter("password"));
+        user.setEmail(request.getParameter("e-mail"));
 
         try {
             if (receiver.addNewUser(user)) {
-                requestContent.setRequestParameters("message", "registration complete.");
-                requestContent.getRequest().getSession(true).setAttribute("url", MESSAGE_PAGE);
+                request.setAttribute("message", "registration complete.");
+                request.getSession(true).setAttribute("url", MESSAGE_PAGE);
             }
         } catch (ReceiverException e) {
             //stub

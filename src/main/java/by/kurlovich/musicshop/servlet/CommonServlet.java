@@ -36,11 +36,11 @@ public class CommonServlet extends HttpServlet {
         requestContent.setRequest(request);
         requestContent.setRequestParameters("command", request.getParameter("command").toUpperCase());
 
-        Command command = commandFactory.getCommand(requestContent);
-        CommandResult commandResult = command.execute(requestContent);
+        Command command = commandFactory.getCommand(request);
+        CommandResult commandResult = command.execute(request);
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(commandResult.getPage());
-        request.setAttribute("content", requestContent.getRequestMap());
+        //request.setAttribute("content", requestContent.getRequestMap());
         dispatcher.forward(request, response);
     }
 }

@@ -1,6 +1,6 @@
 package by.kurlovich.musicshop.command;
 
-import by.kurlovich.musicshop.content.RequestContent;
+import javax.servlet.http.HttpServletRequest;
 
 public class CommandFactory {
     private final static CommandFactory instance = new CommandFactory();
@@ -9,12 +9,14 @@ public class CommandFactory {
         return instance;
     }
 
-    public Command getCommand(RequestContent content) {
+    public Command getCommand(HttpServletRequest request) {
+        String name = request.getParameter("command").toUpperCase();
+
         try {
-            String name = content.getRequestParameter("command");
             CommandType type = CommandType.valueOf(name);
             return type.getCommand();
         } catch (IllegalArgumentException ex) {
+            request.setAttribute("nocommand", name);
             CommandType type = CommandType.valueOf("COMMAND_NOT_FOUND");
             return type.getCommand();
         }

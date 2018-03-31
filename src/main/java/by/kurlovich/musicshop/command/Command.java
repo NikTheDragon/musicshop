@@ -1,9 +1,10 @@
 package by.kurlovich.musicshop.command;
 
 import by.kurlovich.musicshop.content.CommandResult;
-import by.kurlovich.musicshop.content.RequestContent;
+
+import javax.servlet.http.HttpServletRequest;
 
 @FunctionalInterface
 public interface Command {
-    CommandResult execute(RequestContent requestContent);
+    CommandResult execute(HttpServletRequest request);
 }

@@ -2,8 +2,9 @@ package by.kurlovich.musicshop.command.impl;
 
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.content.CommandResult;
-import by.kurlovich.musicshop.content.RequestContent;
 import by.kurlovich.musicshop.pagefactory.PageStore;
+
+import javax.servlet.http.HttpServletRequest;
 
 public class CommandNotFound implements Command{
     private String page = PageStore.ERROR_PAGE.getPageName();
@@ -14,9 +15,9 @@ public class CommandNotFound implements Command{
     }
 
     @Override
-    public CommandResult execute(RequestContent requestContent) {
+    public CommandResult execute(HttpServletRequest request) {
 
-        requestContent.getRequest().getSession(true).setAttribute("url", page);
+        request.getSession(true).setAttribute("url", page);
         return new CommandResult(CommandResult.ResponseType.FORWARD, page);
     }
 }
