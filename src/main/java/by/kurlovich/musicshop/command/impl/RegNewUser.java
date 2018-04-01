@@ -1,6 +1,7 @@
 package by.kurlovich.musicshop.command.impl;
 
 import by.kurlovich.musicshop.command.Command;
+import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
 import by.kurlovich.musicshop.entity.User;
 import by.kurlovich.musicshop.pagefactory.PageStore;
@@ -21,7 +22,7 @@ public class RegNewUser implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request) {
+    public CommandResult execute(HttpServletRequest request) throws CommandException {
         UserReceiver receiver = UserReceiverImpl.getInstance();
 
         User user = new User();
@@ -43,8 +44,7 @@ public class RegNewUser implements Command {
                 return new CommandResult(CommandResult.ResponseType.FORWARD, REG_PAGE);
             }
         } catch (ReceiverException e) {
-            request.setAttribute("nocommand", e.getCause());
-            return new CommandResult(CommandResult.ResponseType.FORWARD, PageStore.ERROR_PAGE.getPageName());
+            throw new CommandException("Exception in RegNewUser", e);
         }
     }
 }
