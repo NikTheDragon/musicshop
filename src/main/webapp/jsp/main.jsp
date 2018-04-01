@@ -26,7 +26,7 @@
 
         </td>
         <td width="15%">
-            <form action="/common" method="post">
+            <form name="common_text" action="/common" onsubmit="return validateForm()" method="post">
                 <br>
                 <input type="text"
                        name="login"
@@ -56,5 +56,8 @@
     </tr>
 
 </table>
+
+<script src="/js/validator.js"></script>
+
 </body>
 </html>

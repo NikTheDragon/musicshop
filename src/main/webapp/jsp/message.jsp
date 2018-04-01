@@ -22,7 +22,7 @@
         </td>
         <td bgcolor="#dcf7ff">
             <br><br>
-            <p align="center">${content['message']}</p>
+            <p align="center">${message}</p>
             <br><br>
         </td>
         <td width="20%">

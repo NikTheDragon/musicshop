@@ -1,7 +1,9 @@
 package by.kurlovich.musicshop.repository;
 
-public interface Repository<T> {
-    boolean add(T item) throws RepositoryException;
+import java.util.List;
 
-    boolean isExists(IsExistsSpecification specification) throws RepositoryException;
+public interface Repository<T> {
+    void add(T item) throws RepositoryException;
+
+    List<T> query(Specification specification) throws RepositoryException;
 }

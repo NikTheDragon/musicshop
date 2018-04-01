@@ -15,7 +15,6 @@ public class RegNewUser implements Command {
     private static final String MESSAGE_PAGE = PageStore.MESSAGE_PAGE.getPageName();
 
     public static final RegNewUser instance = new RegNewUser();
-    private UserReceiver receiver = UserReceiverImpl.getInstance();
 
     public static RegNewUser getInstance() {
         return instance;
@@ -23,6 +22,7 @@ public class RegNewUser implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request) {
+        UserReceiver receiver = UserReceiverImpl.getInstance();
 
         User user = new User();
         user.setName(request.getParameter("name"));
@@ -31,15 +31,20 @@ public class RegNewUser implements Command {
         user.setPassword(request.getParameter("password"));
         user.setEmail(request.getParameter("e-mail"));
 
+        request.setAttribute("user", user);
+
         try {
             if (receiver.addNewUser(user)) {
                 request.setAttribute("message", "registration complete.");
                 request.getSession(true).setAttribute("url", MESSAGE_PAGE);
+                return new CommandResult(CommandResult.ResponseType.FORWARD, MESSAGE_PAGE);
+            } else {
+                request.setAttribute("loginMessage", "login in use.");
+                return new CommandResult(CommandResult.ResponseType.FORWARD, REG_PAGE);
             }
         } catch (ReceiverException e) {
-            //stub
+            request.setAttribute("nocommand", e.getCause());
+            return new CommandResult(CommandResult.ResponseType.FORWARD, PageStore.ERROR_PAGE.getPageName());
         }
-
-        return new CommandResult(CommandResult.ResponseType.FORWARD, REG_PAGE);
     }
 }
