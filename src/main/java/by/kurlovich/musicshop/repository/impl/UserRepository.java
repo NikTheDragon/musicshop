@@ -24,9 +24,9 @@ public class UserRepository implements Repository<User> {
         dbConnection = DbConnection.getConnection();
     }
 
-    final int NAME = 1;
-    final int SURNAME = 2;
-    final int LOGIN = 3;
+   static final int NAME = 1;
+   static final int SURNAME = 2;
+   static  final int LOGIN = 3;
     final int PASSWORD = 4;
     final int EMAIL = 5;
 

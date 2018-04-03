@@ -24,11 +24,11 @@
             <form action="/common" method="post">
                 <p>Please, fill all fields.</p>
                 <br>
-                <input type="text" name="name" placeholder="${name}" value="${user.name}" style="width: 200Px">${nameMessage}<br>
-                <input type="text" name="surname" placeholder="${surname}" value="${user.surname}" style="width: 200Px">${surnameMessage}<br>
-                <input type="text" name="login" placeholder="${login}" value="${user.login}" style="width: 200Px">${loginMessage}<br>
-                <input type="text" name="password" placeholder="${password}" value="${user.password}" style="width: 200Px">${passwordMessage}<br>
-                <input type="text" name="e-mail" placeholder="e-mail" value="${user.email}" style="width: 200Px">${emailMessage}<br>
+                <input type="text" name="name" placeholder="${name}" value="${user.name}" style="width: 200Px">${message["nameMessage"]}<br>
+                <input type="text" name="surname" placeholder="${surname}" value="${user.surname}" style="width: 200Px">${message["surnameMessage"]}<br>
+                <input type="text" name="login" placeholder="${login}" value="${user.login}" style="width: 200Px">${message["loginMessage"]}<br>
+                <input type="text" name="password" placeholder="${password}" value="${user.password}" style="width: 200Px">${message["passwordMessage"]}<br>
+                <input type="text" name="e-mail" placeholder="e-mail" value="${user.email}" style="width: 200Px">${message["emailMessage"]}<br>
                 <br>
                 <input type="hidden" name="command" value="reg_new_user"/>
                 <input type="submit" value="${registerButton}" style="width: 200Px">

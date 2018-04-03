@@ -27,7 +27,7 @@ public class UserReceiverImpl implements UserReceiver {
 
         try {
             List<User> usersList = repository.query(specification);
-            if (usersList.size() == 0) {
+            if (usersList.isEmpty()) {
                 repository.add(user);
                 return true;
             } else {
