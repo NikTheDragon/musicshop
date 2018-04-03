@@ -10,10 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 
 public class LoginUser implements Command {
     private final static Logger LOGGER = LoggerFactory.getLogger(LoginUser.class);
-    private static final LoginUser instance = new LoginUser();
 
-    public static LoginUser getInstance() {
-        return instance;
+    public LoginUser() {
     }
 
     @Override

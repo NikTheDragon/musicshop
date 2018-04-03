@@ -15,10 +15,9 @@ import java.util.List;
 
 public class UserReceiverImpl implements UserReceiver {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserReceiverImpl.class);
-    private static final UserReceiverImpl instance = new UserReceiverImpl();
 
-    public static UserReceiverImpl getInstance() {
-        return instance;
+    public UserReceiverImpl() {
+
     }
 
     public boolean addNewUser(User user) throws ReceiverException {

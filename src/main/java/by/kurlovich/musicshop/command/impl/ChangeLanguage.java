@@ -5,11 +5,8 @@ import by.kurlovich.musicshop.content.CommandResult;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class ChangeLanguage implements Command{
-    private final static ChangeLanguage instance = new ChangeLanguage();
-
-    public static ChangeLanguage getInstance() {
-        return instance;
+public class ChangeLanguage implements Command {
+    public ChangeLanguage() {
     }
 
     @Override

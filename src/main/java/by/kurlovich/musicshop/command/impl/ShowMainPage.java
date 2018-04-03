@@ -6,12 +6,10 @@ import by.kurlovich.musicshop.pagefactory.PageStore;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class ShowMainPage implements Command{
+public class ShowMainPage implements Command {
     private String page = PageStore.MAIN_PAGE.getPageName();
-    public static final ShowMainPage instance = new ShowMainPage();
 
-    public static ShowMainPage getInstance() {
-        return instance;
+    public ShowMainPage() {
     }
 
     @Override

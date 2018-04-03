@@ -6,12 +6,10 @@ import by.kurlovich.musicshop.pagefactory.PageStore;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class CommandNotFound implements Command{
+public class CommandNotFound implements Command {
     private String page = PageStore.ERROR_PAGE.getPageName();
-    private static final CommandNotFound instance = new CommandNotFound();
 
-    public static CommandNotFound getInstance() {
-        return instance;
+    public CommandNotFound() {
     }
 
     @Override

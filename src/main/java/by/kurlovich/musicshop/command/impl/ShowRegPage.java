@@ -8,10 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 
 public class ShowRegPage implements Command {
     private String page = PageStore.REG_PAGE.getPageName();
-    public static final ShowRegPage instance = new ShowRegPage();
 
-    public static ShowRegPage getInstance() {
-        return instance;
+    public ShowRegPage() {
     }
 
     @Override

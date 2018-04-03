@@ -7,32 +7,60 @@ import by.kurlovich.musicshop.entity.User;
 import by.kurlovich.musicshop.pagefactory.PageStore;
 import by.kurlovich.musicshop.receiver.UserReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
-import by.kurlovich.musicshop.receiver.impl.UserReceiverImpl;
+import by.kurlovich.musicshop.validator.FieldValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class RegNewUser implements Command {
+    private final static Logger LOGGER = LoggerFactory.getLogger(RegNewUser.class);
     private static final String REG_PAGE = PageStore.REG_PAGE.getPageName();
     private static final String MESSAGE_PAGE = PageStore.MESSAGE_PAGE.getPageName();
+    private UserReceiver receiver;
+    private FieldValidator validator = new FieldValidator();
 
-    public static final RegNewUser instance = new RegNewUser();
-
-    public static RegNewUser getInstance() {
-        return instance;
+    public RegNewUser(UserReceiver receiver) {
+        this.receiver = receiver;
     }
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
-        UserReceiver receiver = UserReceiverImpl.getInstance();
+        boolean isOk = true;
+        String message;
 
         User user = new User();
+
         user.setName(request.getParameter("name"));
+        message = validator.validate(request.getParameter("name"));
+        isOk = Boolean.parseBoolean(message);
+        request.setAttribute("nameMessage", message);
+
         user.setSurname(request.getParameter("surname"));
+        message = validator.validate(request.getParameter("surname"));
+        isOk = Boolean.parseBoolean(message);
+        request.setAttribute("surnameMessage", message);
+
         user.setLogin(request.getParameter("login"));
+        message = validator.validate(request.getParameter("login"));
+        isOk = Boolean.parseBoolean(message);
+        request.setAttribute("loginMessage", message);
+
         user.setPassword(request.getParameter("password"));
+        message = validator.validate(request.getParameter("password"));
+        isOk = Boolean.parseBoolean(message);
+        request.setAttribute("passwordMessage", message);
+
         user.setEmail(request.getParameter("e-mail"));
+        message = validator.validate(request.getParameter("e-mail"));
+        isOk = Boolean.parseBoolean(message);
+        request.setAttribute("emailMessage", message);
 
         request.setAttribute("user", user);
+
+        if (!isOk) {
+            return new CommandResult(CommandResult.ResponseType.FORWARD, REG_PAGE);
+        }
 
         try {
             if (receiver.addNewUser(user)) {
