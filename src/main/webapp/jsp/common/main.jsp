@@ -26,7 +26,7 @@
 
         </td>
         <td width="15%">
-            <form name="common_text" action="/common" onsubmit="return validateForm()" method="post">
+            <form name="common_text" action="/mainServlet" onsubmit="return validateForm()" method="post">
                 <br>
                 <input type="text"
                        name="login"
@@ -45,7 +45,7 @@
                 <input type="hidden" name="command" value="login_user">
                 <input type="submit" value=${loginButton}>
             </form>
-            <form action="/common" method="get">
+            <form action="/mainServlet" method="get">
                 <input type="hidden" name="command" value="show_reg_page">
                 <input type="submit" value=${registerButton}>
             </form>

@@ -21,8 +21,8 @@
         <td width="20%">
         </td>
         <td bgcolor="#dcf7ff">
-            <form action="/common" method="post">
-                <p>Please, fill all fields.</p>
+            <form action="/mainServlet" method="post">
+                <p>${fillAllFields}</p>
                 <br>
                 <input type="text" name="name" placeholder="${name}" value="${user.name}" style="width: 200Px">${message["nameMessage"]}<br>
                 <input type="text" name="surname" placeholder="${surname}" value="${user.surname}" style="width: 200Px">${message["surnameMessage"]}<br>

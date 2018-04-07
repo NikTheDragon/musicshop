@@ -6,8 +6,10 @@ public class User {
     private String login;
     private String password;
     private String email;
+    private String role;
+    private String status;
 
-    public User () {
+    public User() {
 
     }
 
@@ -51,6 +53,22 @@ public class User {
         this.email = email;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -59,6 +77,8 @@ public class User {
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
+                ", role='" + role + '\'' +
+                ", status='" + status + '\'' +
                 '}';
     }
 }

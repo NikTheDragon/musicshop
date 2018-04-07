@@ -6,7 +6,7 @@
 <html>
 <body>
 
-<c:redirect url="common?command=show_main_page"/>
+<c:redirect url="/mainServlet?command=show_main_page"/>
 
 </body>
 </html>

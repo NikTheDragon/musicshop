@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {"/common"})
+@WebServlet(urlPatterns = {"/mainServlet"})
 public class CommonServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = LoggerFactory.getLogger(CommonServlet.class);
@@ -44,11 +44,21 @@ public class CommonServlet extends HttpServlet {
 
             commandResult = command.execute(request);
 
-            RequestDispatcher dispatcher = request.getRequestDispatcher(commandResult.getPage());
-            dispatcher.forward(request, response);
+            String responseType = commandResult.getResponseType().toString();
+
+            switch (responseType) {
+                case "FORWARD":
+                    RequestDispatcher dispatcher = request.getRequestDispatcher(commandResult.getPage());
+                    dispatcher.forward(request, response);
+                    break;
+
+                case "REDIRECT":
+                    response.sendRedirect(commandResult.getPage());
+                    break;
+            }
 
         } catch (CommandException e) {
-            request.setAttribute("nocommand", e.getCause());
+            request.setAttribute("nocommand", "exception: " + e.getCause());
             RequestDispatcher dispatcher = request.getRequestDispatcher(PageStore.ERROR_PAGE.getPageName());
             dispatcher.forward(request, response);
         }

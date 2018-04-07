@@ -4,7 +4,7 @@
         </td>
         <td>
             <ul>
-                <li><a href="common?command=show_main_page">${mainPage}</a></li>
+                <li><a href="/mainServlet?command=show_main_page">${mainPage}</a></li>
                 <li class="dropdown">
                     <a href="javascript:void(0)" class="dropbtn">${catalogue}</a>
                     <div class="dropdown-content">
@@ -17,7 +17,7 @@
                 <li class="dropdown">
                     <a href="javascript:void(0)" class="dropbtn">${search}</a>
                     <div class="dropdown-content">
-                        <form target="/common" method="get">
+                        <form target="/mainServlet" method="get">
                             <input type="hidden" name="command" value="search">
                             <input type="text" name="text" value="" placeholder="Search..">
                         </form>
@@ -26,13 +26,13 @@
                 <li class="dropdown" style="float: right">
                     <a href="javascript:void(0)" class="dropbtn">${language}</a>
                     <div class="dropdown-content">
-                        <form target="/common" method="post">
-                            <a href="<c:url value="/common">
+                        <form target="/mainServlet" method="post">
+                            <a href="<c:url value="/mainServlet">
                                 <c:param name="command" value="change_language"/>
                                 <c:param name="locale" value="en"/>
                                 </c:url>
                             ">English</a>
-                            <a href="<c:url value="/common">
+                            <a href="<c:url value="/mainServlet">
                                 <c:param name="command" value="change_language"/>
                                 <c:param name="locale" value="ru"/>
                                 </c:url>
