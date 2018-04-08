@@ -7,6 +7,7 @@ import by.kurlovich.musicshop.repository.Repository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.impl.UserRepository;
+import by.kurlovich.musicshop.specification.GetUserByLoginPasswordSpecification;
 import by.kurlovich.musicshop.specification.GetUserByLoginSpecification;
 import by.kurlovich.musicshop.validator.ObjectValidator;
 import org.slf4j.Logger;
@@ -44,12 +45,29 @@ public class UserReceiverImpl implements UserReceiver {
 
             List<User> usersList = repository.query(specification);
             if (usersList.isEmpty()) {
-                user.setRole("user");
-                user.setStatus("active");
                 repository.add(user);
                 return true;
             } else {
                 return false;
+            }
+
+        } catch (RepositoryException e) {
+            throw new ReceiverException("Exception in addNewUser", e);
+        }
+    }
+
+    public User loginUser(String login, String password) throws ReceiverException {
+        try {
+            Repository<User> repository = new UserRepository();
+            Specification specification = new GetUserByLoginPasswordSpecification(login, password);
+            LOGGER.debug("trying to log user.");
+
+            List<User> usersList = repository.query(specification);
+
+            if (!usersList.isEmpty()) {
+                return usersList.get(0);
+            } else {
+                return null;
             }
 
         } catch (RepositoryException e) {

@@ -13,6 +13,11 @@
 
 </head>
 
+<c:set var = "user_role" scope = "session" value = "${user.role}"/>
+<c:if test="${user_role == 'user'}">
+    <c:redirect url="/mainServlet?command=show_user_page"/>
+</c:if>
+
 <body style="font-family: Arial, Helvetica, sans-serif">
 
 <%@include file="/WEB-INF/jspf/header.jsp"%>

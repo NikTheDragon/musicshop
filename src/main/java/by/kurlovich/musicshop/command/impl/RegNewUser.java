@@ -34,6 +34,8 @@ public class RegNewUser implements Command {
         user.setLogin(request.getParameter("login"));
         user.setPassword(request.getParameter("password"));
         user.setEmail(request.getParameter("e-mail"));
+        user.setRole("user");
+        user.setStatus("active");
 
         request.setAttribute("user", user);
 
@@ -47,6 +49,7 @@ public class RegNewUser implements Command {
 
             if (receiver.addNewUser(user)) {
                 request.getSession(true).setAttribute("url", REGISTRATION_COMPLETE);
+                request.getSession(true).setAttribute("user", user);
                 return new CommandResult(CommandResult.ResponseType.REDIRECT, REGISTRATION_COMPLETE);
             } else {
                 messageMap.put("loginMessage", "login in use");

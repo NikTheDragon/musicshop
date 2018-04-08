@@ -5,7 +5,9 @@ public enum PageStore {
     ERROR_PAGE("/jsp/error/error.jsp"),
     REG_PAGE("/jsp/common/registration.jsp"),
     MESSAGE_PAGE("/jsp/common/message.jsp"),
-    REGISTRATION_COMPLETE("/jsp/common/reg_complete.jsp");
+    REGISTRATION_COMPLETE("/jsp/common/reg_complete.jsp"),
+    USER_PAGE("/jsp/user/user_main.jsp"),
+    ADMIN_PAGE("/jsp/admin/admin_main.jsp");
 
     private String pageName;
 

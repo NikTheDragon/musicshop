@@ -7,41 +7,33 @@
 <head>
     <link href="<c:url value="/css/main.css" />" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>error page</title>
+    <title>user main page</title>
 
     <%@include file="/WEB-INF/jspf/locale.jsp"%>
 
 </head>
+
+<c:set var = "user_role" scope = "session" value = "${user.role}"/>
+<c:if test="${user_role != 'user'}">
+    <c:redirect url="/mainServlet?command=show_main_page"/>
+</c:if>
+
 <body style="font-family: Arial, Helvetica, sans-serif">
 
 <%@include file="/WEB-INF/jspf/header.jsp"%>
-
-<c:set var = "user_role" scope = "session" value = "${user.role}"/>
-<c:choose>
-    <c:when test="${user_role == 'user'}">
-        <%@include file="/WEB-INF/jspf/user_menu.jsp"%>
-    </c:when>
-    <c:when test="${user_role == 'admin'}">
-        <%@include file="/WEB-INF/jspf/admin_menu.jsp"%>
-    </c:when>
-    <c:otherwise>
-        <%@include file="/WEB-INF/jspf/menu.jsp"%>
-    </c:otherwise>
-</c:choose>
+<%@include file="/WEB-INF/jspf/user_menu.jsp"%>
 
 <table width="100%">
-    <tr align="center">
+    <tr>
         <td width="20%">
         </td>
         <td>
-            <p>Error</p>
-            <p>Command: ${nocommand} not found</p>
+        <p>USER PAGE</p>
         </td>
         <td width="20%">
         </td>
     </tr>
 </table>
-
 
 </body>
 </html>

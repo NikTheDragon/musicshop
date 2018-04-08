@@ -11,6 +11,6 @@ public class GetUserByLoginSpecification implements SqlSpecification {
 
     @Override
     public String toSqlQuery() {
-        return "SELECT * FROM users WHERE login='"+login+"'";
+        return String.format("SELECT * FROM users WHERE login='%1$s'", login);
     }
 }

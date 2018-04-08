@@ -9,7 +9,9 @@ public enum CommandType {
     CHANGE_LANGUAGE(new ChangeLanguage()::execute),
     SHOW_REG_PAGE(new ShowRegPage()::execute),
     REG_NEW_USER(new RegNewUser(new UserReceiverImpl())::execute),
-    LOGIN_USER(new LoginUser()::execute);
+    LOGIN_USER(new LoginUser(new UserReceiverImpl())::execute),
+    SHOW_USER_PAGE(new ShowUserPage()::execute),
+    LOGOUT(new Logout()::execute);
 
     private Command command;
 

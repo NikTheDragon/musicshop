@@ -8,4 +8,5 @@ public interface UserReceiver {
 
      Map<String, String> validateUser(User user) throws ReceiverException;
      boolean addNewUser(User user) throws ReceiverException;
+     User loginUser(String login, String password) throws ReceiverException;
 }

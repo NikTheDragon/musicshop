@@ -6,16 +6,13 @@ import by.kurlovich.musicshop.pagefactory.PageStore;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class CommandNotFound implements Command {
-    private String errorPage = PageStore.ERROR_PAGE.getPageName();
-
-    public CommandNotFound() {
-    }
+public class Logout implements Command {
+    private final static String MAIN_PAGE = PageStore.MAIN_PAGE.getPageName();
 
     @Override
     public CommandResult execute(HttpServletRequest request) {
-
-        request.getSession(true).setAttribute("url", errorPage);
-        return new CommandResult(CommandResult.ResponseType.FORWARD, errorPage);
+        request.getSession(true).setAttribute("user", null);
+        request.getSession(true).setAttribute("url", MAIN_PAGE);
+        return new CommandResult(CommandResult.ResponseType.REDIRECT, MAIN_PAGE);
     }
 }

@@ -1,6 +1,7 @@
 package by.kurlovich.musicshop.entity;
 
 public class User {
+    private String id;
     private String name;
     private String surname;
     private String login;
@@ -11,6 +12,14 @@ public class User {
 
     public User() {
 
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
