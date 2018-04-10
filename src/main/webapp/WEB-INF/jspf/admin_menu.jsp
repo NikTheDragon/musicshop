@@ -28,17 +28,22 @@
                     <div class="dropdown-content">
                         <form target="/mainServlet" method="get">
                             <a href="<c:url value="/mainServlet">
-                                <c:param name="command" value="show_browse_tracks_page"/>
+                                <c:param name="command" value="show_edit_tracks_page"/>
                                  </c:url>
-                            ">Browse tracks</a>
+                            ">Edit tracks</a>
                         </form>
-                        <a href="#">Browse genres</a>
+                        <form target="/mainServlet" method="get">
+                            <a href="<c:url value="/mainServlet">
+                                <c:param name="command" value="show_edit_genres_page"/>
+                                 </c:url>
+                            ">Edit genres</a>
+                        </form>
                     </div>
                 </li>
                 <li class="dropdown">
                     <a href="javascript:void(0)" class="dropbtn">Admin users</a>
                     <div class="dropdown-content">
-                        <a href="#">Browse users</a>
+                        <a href="#">Edit users</a>
                         <a href="#">Add new user</a>
                     </div>
                 </li>

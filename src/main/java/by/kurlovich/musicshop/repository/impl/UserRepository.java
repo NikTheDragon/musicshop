@@ -5,7 +5,6 @@ import by.kurlovich.musicshop.Connection.ConnectionPool;
 import by.kurlovich.musicshop.entity.User;
 import by.kurlovich.musicshop.repository.*;
 
-import by.kurlovich.musicshop.util.DbConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,16 +16,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserRepository implements Repository<User> {
-    final String ADD_CLIENT = "INSERT INTO users (name,surname,login,password,email,role,status) VALUES (?,?,?,?,?,?,?)";
+    private static final String ADD_CLIENT = "INSERT INTO users (name,surname,login,password,email,role,status) VALUES (?,?,?,?,?,?,?)";
     private static final Logger LOGGER = LoggerFactory.getLogger(UserRepository.class);
     private ConnectionPool connectionPool;
     private Connection dbConnection;
 
     public UserRepository() throws RepositoryException {
         try {
+            LOGGER.debug("Creating User Repository class.");
             connectionPool = ConnectionPool.getInstance();
         } catch (ConnectionException e) {
-            throw new RepositoryException("Can't create connection pool", e);
+            throw new RepositoryException("Can't create Connection pool", e);
         }
     }
 
@@ -62,6 +62,7 @@ public class UserRepository implements Repository<User> {
 
     @Override
     public List<User> query(Specification specification) throws RepositoryException {
+        LOGGER.debug("Inside User Repositiry query method.");
         final SqlSpecification sqlSpecification = (SqlSpecification) specification;
         final List<User> userList = new ArrayList<>();
         try {

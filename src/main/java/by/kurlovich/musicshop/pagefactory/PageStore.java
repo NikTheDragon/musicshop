@@ -8,7 +8,8 @@ public enum PageStore {
     REGISTRATION_COMPLETE("/jsp/common/reg_complete.jsp"),
     USER_PAGE("/jsp/user/user_main.jsp"),
     ADMIN_PAGE("/jsp/admin/admin_main.jsp"),
-    BROWSE_TRACKS_PAGE("/jsp/admin/browse_tracks.jsp");
+    EDIT_TRACKS_PAGE("/jsp/admin/edit_tracks.jsp"),
+    EDIT_GENRES_PAGE("/jsp/admin/edit_genres.jsp");
 
     private String pageName;
 

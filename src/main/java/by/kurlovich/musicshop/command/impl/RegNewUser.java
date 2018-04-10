@@ -50,6 +50,7 @@ public class RegNewUser implements Command {
             if (receiver.addNewUser(user)) {
                 request.getSession(true).setAttribute("url", REGISTRATION_COMPLETE);
                 request.getSession(true).setAttribute("user", user);
+                request.getSession(true).setAttribute("role", user.getRole());
                 return new CommandResult(CommandResult.ResponseType.REDIRECT, REGISTRATION_COMPLETE);
             } else {
                 messageMap.put("loginMessage", "login in use");

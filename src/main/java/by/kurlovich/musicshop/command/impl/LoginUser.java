@@ -35,7 +35,7 @@ public class LoginUser implements Command {
 
             if (user != null) {
                 String page;
-                request.getSession(true).setAttribute("user", user);
+
                 switch (user.getRole()) {
                     case "user":
                         page = MAIN_PAGE;
@@ -46,6 +46,9 @@ public class LoginUser implements Command {
                     default:
                         page = MAIN_PAGE;
                 }
+
+                request.getSession(true).setAttribute("user", user);
+                request.getSession(true).setAttribute("role", user.getRole());
                 request.getSession(true).setAttribute("url", page);
                 return new CommandResult(CommandResult.ResponseType.REDIRECT, page);
             }

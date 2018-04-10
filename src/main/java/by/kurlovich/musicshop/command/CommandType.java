@@ -12,7 +12,8 @@ public enum CommandType {
     SHOW_MAIN_PAGE(new ShowMainPage()::execute),
     SHOW_USER_PAGE(new ShowUserPage()::execute),
     SHOW_REG_PAGE(new ShowRegPage()::execute),
-    SHOW_BROWSE_TRACKS_PAGE(new ShowBrowseTracksPage()::execute);
+    SHOW_EDIT_TRACKS_PAGE(new ShowEditTracksPage()::execute),
+    SHOW_EDIT_GENRES_PAGE(new ShowEditGenresPage()::execute);
 
     private Command command;
 

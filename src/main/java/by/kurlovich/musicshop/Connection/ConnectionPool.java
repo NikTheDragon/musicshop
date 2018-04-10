@@ -53,7 +53,7 @@ public class ConnectionPool {
 
             currentConnections.decrementAndGet();
 
-            LOGGER.debug("Get connection. Connections left: {}.", currentConnections);
+            LOGGER.debug("Get Connection. Connections left: {}.", currentConnections);
 
             return connection;
         } catch (Exception e) {
@@ -67,9 +67,9 @@ public class ConnectionPool {
                 connectionsQueue.put(connection);
                 currentConnections.incrementAndGet();
 
-                LOGGER.debug("Release connection. Connections left: {}.", currentConnections);
+                LOGGER.debug("Release Connection. Connections left: {}.", currentConnections);
             } catch (InterruptedException e) {
-                throw new ConnectionException("Problems in connection queue.", e);
+                throw new ConnectionException("Problems in Connection queue.", e);
             }
         }
     }
@@ -94,7 +94,7 @@ public class ConnectionPool {
             }
             LOGGER.debug("db pool parameters initialized.");
         } catch (IOException e) {
-            throw new ConnectionException("Can't load parameters in connection pool", e);
+            throw new ConnectionException("Can't load parameters in Connection pool", e);
         }
     }
 
@@ -104,7 +104,7 @@ public class ConnectionPool {
 
             LOGGER.debug("db driver initialized.");
         } catch (Exception e) {
-            throw new ConnectionException("Can't load db driver in connection pool", e);
+            throw new ConnectionException("Can't load db driver in Connection pool", e);
         }
     }
 
@@ -117,7 +117,7 @@ public class ConnectionPool {
 
                 LOGGER.debug("db pool {} connections initialized.", maxConnections);
             } catch (InterruptedException e) {
-                throw new ConnectionException("Problems in connection queue.", e);
+                throw new ConnectionException("Problems in Connection queue.", e);
             }
         }
     }
