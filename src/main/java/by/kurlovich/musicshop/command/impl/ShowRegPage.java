@@ -7,14 +7,14 @@ import by.kurlovich.musicshop.pagefactory.PageStore;
 import javax.servlet.http.HttpServletRequest;
 
 public class ShowRegPage implements Command {
-    private String page = PageStore.REG_PAGE.getPageName();
+    private final static String REG_PAGE = PageStore.REG_PAGE.getPageName();
 
     public ShowRegPage() {
     }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {
-        request.getSession(true).setAttribute("url", page);
-        return new CommandResult(CommandResult.ResponseType.FORWARD, page);
+        request.getSession(true).setAttribute("url", REG_PAGE);
+        return new CommandResult(CommandResult.ResponseType.FORWARD, REG_PAGE);
     }
 }

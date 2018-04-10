@@ -14,9 +14,15 @@
 </head>
 
 <c:set var = "user_role" scope = "session" value = "${user.role}"/>
-<c:if test="${user_role == 'user'}">
-    <c:redirect url="/mainServlet?command=show_user_page"/>
-</c:if>
+
+<c:choose>
+    <c:when test="${user_role == 'user'}">
+        <c:redirect url="/jsp/user/user_main.jsp"/>
+    </c:when>
+    <c:when test="${user_role == 'admin'}">
+        <c:redirect url="/jsp/admin/admin_main.jsp"/>
+    </c:when>
+</c:choose>
 
 <body style="font-family: Arial, Helvetica, sans-serif">
 

@@ -24,10 +24,22 @@
                     </div>
                 </li>
                 <li class="dropdown">
-                    <a href="javascript:void(0)" class="dropbtn">Tracks</a>
+                    <a href="javascript:void(0)" class="dropbtn">Admin music</a>
                     <div class="dropdown-content">
-                        <a href="#">Find track</a>
-                        <a href="#">Add track</a>
+                        <form target="/mainServlet" method="get">
+                            <a href="<c:url value="/mainServlet">
+                                <c:param name="command" value="show_browse_tracks_page"/>
+                                 </c:url>
+                            ">Browse tracks</a>
+                        </form>
+                        <a href="#">Browse genres</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="javascript:void(0)" class="dropbtn">Admin users</a>
+                    <div class="dropdown-content">
+                        <a href="#">Browse users</a>
+                        <a href="#">Add new user</a>
                     </div>
                 </li>
                 <li class="dropdown">
