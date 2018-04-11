@@ -48,6 +48,7 @@ public class ConnectionPool {
                     connection = getConnection();
                 }
             } else {
+                //to do exception
                 return null;
             }
 
@@ -56,7 +57,7 @@ public class ConnectionPool {
             LOGGER.debug("Get Connection. Connections left: {}.", currentConnections);
 
             return connection;
-        } catch (Exception e) {
+        } catch (InterruptedException | SQLException e) {
             throw new ConnectionException("Problems with getting connections from pool", e);
         }
     }
@@ -103,7 +104,7 @@ public class ConnectionPool {
             Class.forName(dbDriver).newInstance();
 
             LOGGER.debug("db driver initialized.");
-        } catch (Exception e) {
+        } catch (IllegalAccessException | InstantiationException | ClassNotFoundException e) {
             throw new ConnectionException("Can't load db driver in Connection pool", e);
         }
     }

@@ -20,7 +20,14 @@ public class UserRepository implements Repository<User> {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserRepository.class);
     private ConnectionPool connectionPool;
     private Connection dbConnection;
-
+    static final int ID = 1;
+    static final int NAME = 2;
+    static final int SURNAME = 3;
+    static final int LOGIN = 4;
+    static final int PASSWORD = 5;
+    static final int EMAIL = 6;
+    static final int ROLE = 7;
+    static final int STATUS = 8;
     public UserRepository() throws RepositoryException {
         try {
             LOGGER.debug("Creating User Repository class.");
@@ -30,14 +37,7 @@ public class UserRepository implements Repository<User> {
         }
     }
 
-    static final int ID = 1;
-    static final int NAME = 2;
-    static final int SURNAME = 3;
-    static final int LOGIN = 4;
-    static final int PASSWORD = 5;
-    static final int EMAIL = 6;
-    static final int ROLE = 7;
-    static final int STATUS = 8;
+
 
     @Override
     public void add(User user) throws RepositoryException {
