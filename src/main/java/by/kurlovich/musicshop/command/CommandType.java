@@ -15,7 +15,8 @@ public enum CommandType {
     SHOW_REG_PAGE(new ShowRegPage()::execute),
     SHOW_EDIT_TRACKS_PAGE(new ShowEditTracksPage()::execute),
     SHOW_EDIT_GENRES_PAGE(new ShowEditGenresPage(new GenreReceiverImpl())::execute),
-    CREATE_GENRE(new CreateGenre(new GenreReceiverImpl())::execute);
+    CREATE_GENRE(new CreateGenre(new GenreReceiverImpl())::execute),
+    DELETE_GENRE(new DeleteGenre(new GenreReceiverImpl())::execute);
 
     private Command command;
 

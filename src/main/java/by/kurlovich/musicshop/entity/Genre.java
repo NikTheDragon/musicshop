@@ -5,6 +5,16 @@ public class Genre {
     private String id;
     private String name;
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    private String status;
+
     public String getId() {
         return id;
     }

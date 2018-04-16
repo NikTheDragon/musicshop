@@ -36,9 +36,11 @@
                 </tr>
 
                 <c:forEach var="genre" items="${genres}">
-                    <tr id="${genre.id}" onclick="show_name(this.id)">
-                        <td id="${genre.id}name">${genre.name}</td>
-                    </tr>
+                    <c:if test="${genre.status == 'active'}">
+                        <tr id="${genre.id}" onclick="show_name(this.id)">
+                            <td id="${genre.id}name">${genre.name}</td>
+                        </tr>
+                    </c:if>
                 </c:forEach>
 
             </table>
@@ -50,18 +52,21 @@
                     </td>
                     <form id="formCreate" action="/mainServlet" method="get">
                         <input type="hidden" name="command" value="create_genre">
+                        <input id="idCreate" type="hidden" name="id" value="">
                         <input id="nameCreate" type="hidden" name="name" value="">
                         <td><input type="button" name="button" onclick="createName()" value="Create"></td>
                     </form>
                     <form id="formUpdate" action="/mainServlet" method="get">
                         <input type="hidden" name="command" value="update_genre">
+                        <input id="idUpdate" type="hidden" name="id" value="">
                         <input id="nameUpdate" type="hidden" name="name" value="">
                         <td><input type="button" name="button" onclick="updName()" value="Update"></td>
                     </form>
                     <form id="formDelete" action="/mainServlet" method="get">
                         <input type="hidden" name="command" value="delete_genre">
+                        <input id="idDelete" type="hidden" name="id" value="">
                         <input id="nameDelete" type="hidden" name="name" value="">
-                        <td><input type="button" name="button" onclick="delName()" value="Delete" ></td>
+                        <td><input type="button" name="button" onclick="delName()" value="Delete"></td>
                     </form>
                 </tr>
 
@@ -77,6 +82,9 @@
     function show_name(clicked_row) {
         var name = document.getElementById("name");
         name.value = document.getElementById(clicked_row + "name").textContent;
+        document.getElementById("idCreate").setAttribute("value", clicked_row);
+        document.getElementById("idUpdate").setAttribute("value", clicked_row);
+        document.getElementById("idDelete").setAttribute("value", clicked_row);
     }
 
     function createName() {

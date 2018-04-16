@@ -60,6 +60,16 @@ public class UserRepository implements Repository<User> {
     }
 
     @Override
+    public void delete(User item) throws RepositoryException {
+
+    }
+
+    @Override
+    public void update(User item) throws RepositoryException {
+
+    }
+
+    @Override
     public List<User> query(Specification specification) throws RepositoryException {
         LOGGER.debug("Inside User Repositiry query method.");
         final SqlSpecification sqlSpecification = (SqlSpecification) specification;

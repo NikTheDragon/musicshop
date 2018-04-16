@@ -18,13 +18,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GenreRepository implements Repository<Genre> {
-    private static final String ADD_GENRE = "INSERT INTO genres (name) VALUES (?)";
+    private static final String ADD_GENRE = "INSERT INTO genres (name, status) VALUES (?,?)";
+    private static final String DELETE_GENRE = "UPDATE genres SET status='deleted' WHERE name=?";
+    private static final String UPDATE_GENRE = "UPDATE genres SET name=?, status='active' WHERE id=?";
     private static final Logger LOGGER = LoggerFactory.getLogger(GenreRepository.class);
     private ConnectionPool connectionPool;
 
     private static final int ID = 1;
+    private static final int UPDATE_ID = 2;
     private static final int NAME = 2;
     private static final int SET_NAME = 1;
+    private static final int SET_STATUS = 2;
+    private static final int STATUS = 3;
 
     public GenreRepository() throws RepositoryException {
         try {
@@ -38,17 +43,48 @@ public class GenreRepository implements Repository<Genre> {
     @Override
     public void add(Genre genre) throws RepositoryException {
         try {
-
             LOGGER.debug("Adding new genre {}", genre.getName());
             Connection dbConnection = connectionPool.getConnection();
             try (PreparedStatement ps = dbConnection.prepareStatement(ADD_GENRE)) {
+                ps.setString(SET_NAME, genre.getName());
+                ps.setString(SET_STATUS, genre.getStatus());
+                ps.executeUpdate();
+            }
+            connectionPool.releaseConnection(dbConnection);
+        } catch (SQLException | ConnectionException e) {
+            throw new RepositoryException("Exception in add genre.", e);
+        }
+    }
+
+    @Override
+    public void delete(Genre genre) throws RepositoryException {
+        try {
+            LOGGER.debug("Deleting genre {}", genre.getName());
+            Connection dbConnection = connectionPool.getConnection();
+            try (PreparedStatement ps = dbConnection.prepareStatement(DELETE_GENRE)) {
                 ps.setString(SET_NAME, genre.getName());
 
                 ps.executeUpdate();
             }
             connectionPool.releaseConnection(dbConnection);
         } catch (SQLException | ConnectionException e) {
-            System.out.println(e);
+            throw new RepositoryException("Exception in add genre.", e);
+        }
+    }
+
+    @Override
+    public void update(Genre genre) throws RepositoryException {
+        try {
+            LOGGER.debug("Updating genre {}", genre.getName());
+            Connection dbConnection = connectionPool.getConnection();
+            try (PreparedStatement ps = dbConnection.prepareStatement(UPDATE_GENRE)) {
+                ps.setString(SET_NAME, genre.getName());
+                ps.setString(UPDATE_ID, genre.getId());
+
+                ps.executeUpdate();
+            }
+            connectionPool.releaseConnection(dbConnection);
+        } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception in add genre.", e);
         }
     }
@@ -67,6 +103,7 @@ public class GenreRepository implements Repository<Genre> {
 
                         genre.setId(rs.getString(ID));
                         genre.setName(rs.getString(NAME));
+                        genre.setStatus(rs.getString(STATUS));
 
                         genreList.add(genre);
                     }

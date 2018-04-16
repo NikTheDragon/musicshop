@@ -26,12 +26,17 @@ public class GenreReceiverImpl implements GenreReceiver {
             LOGGER.debug("trying to add genre: {}", genre.getName());
 
             List<Genre> genresList = repository.query(specification);
+
             if (genresList.isEmpty()) {
                 repository.add(genre);
                 return true;
             } else {
-                return false;
+                if (checkIfDeleted(genresList, genre)) {
+                    repository.update(genre);
+                    return true;
+                }
             }
+            return false;
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in addNewGenre.", e);
@@ -39,8 +44,21 @@ public class GenreReceiverImpl implements GenreReceiver {
     }
 
     @Override
+    public boolean deleteGenre(Genre genre) throws ReceiverException {
+        try {
+            Repository<Genre> repository = new GenreRepository();
+            LOGGER.debug("trying to delete genre: {}", genre.getName());
+            repository.delete(genre);
+            return true;
+
+        } catch (RepositoryException e) {
+            throw new ReceiverException("Exception in deleteGenre.", e);
+        }
+    }
+
+    @Override
     public List<Genre> getAllGenres() throws ReceiverException {
-        try{
+        try {
             Repository<Genre> repository = new GenreRepository();
             Specification specification = new GetAllGenresSpecification();
             LOGGER.debug("trying to get all genres.");
@@ -50,5 +68,15 @@ public class GenreReceiverImpl implements GenreReceiver {
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in Get All Genres.", e);
         }
+    }
+
+    private boolean checkIfDeleted(List<Genre> genresList, Genre genre) {
+        for (Genre entity : genresList) {
+            if (entity.getName().equals(genre.getName()) && entity.getStatus().equals("deleted")) {
+                genre.setId(entity.getId());
+                return true;
+            }
+        }
+        return false;
     }
 }

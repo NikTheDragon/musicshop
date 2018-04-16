@@ -13,6 +13,6 @@ public class GetGenresByNameSpecification implements SqlSpecification {
     @Override
     public String toSqlQuery() {
 
-        return String.format("SELECT * FROM genres WHERE name='%1$s'", name);
+        return String.format("SELECT * FROM genres WHERE name='%1$s' AND status='active'", name);
     }
 }
