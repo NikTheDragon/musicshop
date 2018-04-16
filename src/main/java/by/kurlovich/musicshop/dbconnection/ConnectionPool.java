@@ -1,4 +1,4 @@
-package by.kurlovich.musicshop.Connection;
+package by.kurlovich.musicshop.dbconnection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +54,7 @@ public class ConnectionPool {
 
             currentConnections.decrementAndGet();
 
-            LOGGER.debug("Get Connection. Connections left: {}.", currentConnections);
+            LOGGER.debug("Get dbconnection. Connections left: {}.", currentConnections);
 
             return connection;
         } catch (InterruptedException | SQLException e) {
@@ -68,9 +68,9 @@ public class ConnectionPool {
                 connectionsQueue.put(connection);
                 currentConnections.incrementAndGet();
 
-                LOGGER.debug("Release Connection. Connections left: {}.", currentConnections);
+                LOGGER.debug("Release dbconnection. Connections left: {}.", currentConnections);
             } catch (InterruptedException e) {
-                throw new ConnectionException("Problems in Connection queue.", e);
+                throw new ConnectionException("Problems in dbconnection queue.", e);
             }
         }
     }
@@ -95,7 +95,7 @@ public class ConnectionPool {
             }
             LOGGER.debug("db pool parameters initialized.");
         } catch (IOException e) {
-            throw new ConnectionException("Can't load parameters in Connection pool", e);
+            throw new ConnectionException("Can't load parameters in dbconnection pool", e);
         }
     }
 
@@ -105,7 +105,7 @@ public class ConnectionPool {
 
             LOGGER.debug("db driver initialized.");
         } catch (IllegalAccessException | InstantiationException | ClassNotFoundException e) {
-            throw new ConnectionException("Can't load db driver in Connection pool", e);
+            throw new ConnectionException("Can't load db driver in dbconnection pool", e);
         }
     }
 
@@ -118,7 +118,7 @@ public class ConnectionPool {
 
                 LOGGER.debug("db pool {} connections initialized.", maxConnections);
             } catch (InterruptedException e) {
-                throw new ConnectionException("Problems in Connection queue.", e);
+                throw new ConnectionException("Problems in dbconnection queue.", e);
             }
         }
     }

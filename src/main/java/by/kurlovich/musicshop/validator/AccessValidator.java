@@ -1,13 +1,11 @@
 package by.kurlovich.musicshop.validator;
 
+import java.util.List;
+import java.util.function.BiPredicate;
+
 public class AccessValidator {
-    public boolean validate(String[] accessRoles, String userRole) {
-        boolean result = false;
-        for (String role : accessRoles) {
-            if (role.equals(userRole)) {
-                result = true;
-            }
-        }
-        return result;
+
+    public boolean validate(List<String> accessRoles, String userRole) {
+        return accessRoles.stream().allMatch(s -> s.equals(userRole));
     }
 }

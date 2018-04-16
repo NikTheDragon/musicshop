@@ -33,6 +33,7 @@ public class CommonServlet extends HttpServlet {
 
         try {
             LOGGER.debug("Command = {}", request.getParameter("command"));
+            LOGGER.debug("name = {}", request.getParameter("name"));
 
             Command command = commandFactory.getCommand(request);
             CommandResult commandResult = command.execute(request);

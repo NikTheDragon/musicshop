@@ -1,4 +1,4 @@
-package by.kurlovich.musicshop.Connection;
+package by.kurlovich.musicshop.dbconnection;
 
 public class ConnectionException extends Exception {
     private static final long serialVersionUID = 1L;

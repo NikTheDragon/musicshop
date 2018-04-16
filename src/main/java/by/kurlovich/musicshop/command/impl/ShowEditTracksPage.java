@@ -6,12 +6,14 @@ import by.kurlovich.musicshop.pagefactory.PageStore;
 import by.kurlovich.musicshop.validator.AccessValidator;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.List;
 
 public class ShowEditTracksPage implements Command {
     private final static String EDIT_TRACKS_PAGE = PageStore.EDIT_TRACKS_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private AccessValidator accessValidator = new AccessValidator();
-    private String[] accessRoles = {"admin"};
+    private List<String> accessRoles = Arrays.asList("admin");
 
     public ShowEditTracksPage() {
     }
