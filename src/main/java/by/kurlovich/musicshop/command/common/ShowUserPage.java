@@ -1,21 +1,22 @@
-package by.kurlovich.musicshop.command.impl;
+package by.kurlovich.musicshop.command.common;
 
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.content.CommandResult;
 import by.kurlovich.musicshop.pagefactory.PageStore;
-import by.kurlovich.musicshop.validator.AccessValidator;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
+import by.kurlovich.musicshop.validator.AccessValidator;
 
-public class ShowEditTracksPage implements Command {
-    private final static String EDIT_TRACKS_PAGE = PageStore.EDIT_TRACKS_PAGE.getPageName();
+public class ShowUserPage implements Command {
+    private String page = PageStore.USER_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
+    private List<String> accessRoles = Arrays.asList("admin", "user");
     private AccessValidator accessValidator = new AccessValidator();
-    private List<String> accessRoles = Arrays.asList("admin");
 
-    public ShowEditTracksPage() {
+    public ShowUserPage() {
+
     }
 
     @Override
@@ -23,8 +24,8 @@ public class ShowEditTracksPage implements Command {
         String userRole = (String) request.getSession(true).getAttribute("role");
 
         if (accessValidator.validate(accessRoles, userRole)) {
-            request.getSession(true).setAttribute("url", EDIT_TRACKS_PAGE);
-            return new CommandResult(CommandResult.ResponseType.FORWARD, EDIT_TRACKS_PAGE);
+            request.getSession(true).setAttribute("url", page);
+            return new CommandResult(CommandResult.ResponseType.REDIRECT, page);
         }
 
         request.getSession(true).setAttribute("url", ERROR_PAGE);

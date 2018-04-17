@@ -57,6 +57,22 @@ public class GenreReceiverImpl implements GenreReceiver {
     }
 
     @Override
+    public boolean updateGenre(Genre genre) throws ReceiverException {
+        try {
+            if (!genre.getId().isEmpty()) {
+                Repository<Genre> repository = new GenreRepository();
+                LOGGER.debug("trying to update genre: {}", genre.getName());
+                repository.update(genre);
+                return true;
+            }
+            return false;
+
+        } catch (RepositoryException e) {
+            throw new ReceiverException("Exception in updateGenre.", e);
+        }
+    }
+
+    @Override
     public List<Genre> getAllGenres() throws ReceiverException {
         try {
             Repository<Genre> repository = new GenreRepository();

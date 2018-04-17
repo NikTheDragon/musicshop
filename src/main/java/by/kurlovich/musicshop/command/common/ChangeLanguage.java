@@ -1,4 +1,4 @@
-package by.kurlovich.musicshop.command.impl;
+package by.kurlovich.musicshop.command.common;
 
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.content.CommandResult;
