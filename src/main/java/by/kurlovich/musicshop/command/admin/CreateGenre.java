@@ -36,8 +36,7 @@ public class CreateGenre implements Command {
 
             if (accessValidator.validate(accessRoles, userRole)) {
                 Genre genre = new Genre();
-                genre.setId(request.getParameter("id"));
-                genre.setName(request.getParameter("name"));
+                genre.setName(request.getParameter("submit_name"));
                 genre.setStatus("active");
 
                 if (receiver.addNewGenre(genre)) {

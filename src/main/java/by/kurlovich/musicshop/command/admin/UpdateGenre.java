@@ -36,8 +36,8 @@ public class UpdateGenre implements Command {
 
             if (accessValidator.validate(accessRoles, userRole)) {
                 Genre genre = new Genre();
-                genre.setId(request.getParameter("id"));
-                genre.setName(request.getParameter("name"));
+                genre.setId(request.getParameter("submit_id"));
+                genre.setName(request.getParameter("submit_name"));
 
                 if (receiver.updateGenre(genre)) {
                     List<Genre> genres = receiver.getAllGenres();

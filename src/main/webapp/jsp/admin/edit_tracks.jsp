@@ -38,14 +38,14 @@
                     <th width="10%">Year</th>
                     <th width="10%">Length</th>
                 </tr>
-                <tr id="001" onclick="show_name(this.id)">
+                <tr id="001" onclick="get_track_info(this.id)">
                     <td id="${'001'}name">Beat it</td>
                     <td id="${'001'}author">Michael Jackson</td>
                     <td id="${'001'}genre">pop</td>
                     <td id="${'001'}year">1980</td>
                     <td id="${'001'}length">5.31</td>
                 </tr>
-                <tr id="002" onclick="show_name(this.id)">
+                <tr id="002" onclick="get_track_info(this.id)">
                     <td id="${'002'}name">It's my life</td>
                     <td id="${'002'}author">Bon Jowi</td>
                     <td id="${'002'}genre">rock</td>
@@ -77,19 +77,37 @@
                 <tr>
                     <td><input id="name" name="name" type="text" value=""></td>
                     <td><input id="author" name="author" type="text" value=""></td>
-                    <td><input id="genre" name="genre" type="text" value=""></td>
+                    <td>
+                        <select id="genre" name="genre" size="1">
+                            <option value="unknown">unknown</option>
+                            <c:forEach var="line" items="${genres}">
+                                <c:if test="${line.status=='active'}">
+                                    <option value="${line.name}">${line.name}</option>
+                                </c:if>
+                            </c:forEach>
+                        </select>
+                    </td>
                     <td><input id="year" name="year" type="text" value=""></td>
                     <td><input id="length" name="length" type="text" value=""></td>
                 </tr>
                 <tr>
                     <td></td>
                     <td></td>
-                    <form action="/mainServlet" method="get">
-                        <input type="hidden" name="command" value="delete_track">
-                        <td><input type="submit" name="delete" value="Delete"></td>
+                    <form id="formCreate" action="/mainServlet" method="get">
+                        <input type="hidden" name="command" value="create_track">
+                        <input type="hidden" name="submit_name" value="">
+                        <td><input type="button" name="button" onclick="deleteTrack('formCreate')" value="Create"></td>
                     </form>
-                    <td><input type="button" name="update" value="Update"></td>
-                    <td><input type="button" name="create" value="Create"></td>
+                    <form id="formUpdate" action="/mainServlet" method="get">
+                        <input type="hidden" name="command" value="update_track">
+                        <input type="hidden" name="submit_name" value="">
+                        <td><input type="button" name="button" onclick="deleteTrack('formUpdate')" value="Update"></td>
+                    </form>
+                    <form id="formDelete" action="/mainServlet" method="get">
+                        <input type="hidden" name="command" value="delete_track">
+                        <input type="hidden" name="submit_name" value="">
+                        <td><input type="button" name="button" onclick="deleteTrack('formDelete')" value="Delete"></td>
+                    </form>
                 </tr>
             </table>
         </td>
@@ -99,7 +117,7 @@
 </table>
 
 <script>
-    function show_name(clicked_row) {
+    function get_track_info(clicked_row) {
         var name = document.getElementById("name");
         var author = document.getElementById("author");
         var genre = document.getElementById("genre");
@@ -110,6 +128,16 @@
         genre.value = document.getElementById(clicked_row + "genre").textContent;
         year.value = document.getElementById(clicked_row + "year").textContent;
         length.value = document.getElementById(clicked_row + "length").textContent;
+    }
+
+    function deleteTrack(formName) {
+        var trackName = document.getElementById("name");
+        var count = document.getElementsByName("submit_name");
+
+        for (var i = 0; i < count.length; i++) {
+            count[i].setAttribute("value", trackName.value);
+        }
+        document.getElementById(formName).submit();
     }
 
 </script>

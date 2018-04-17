@@ -25,16 +25,22 @@ public class GenreReceiverImpl implements GenreReceiver {
             Specification specification = new GetGenresByNameSpecification(genre.getName());
             LOGGER.debug("trying to add genre: {}", genre.getName());
 
+            if (genre.getName().isEmpty()) {
+                return false;
+            }
+
             List<Genre> genresList = repository.query(specification);
 
             if (genresList.isEmpty()) {
                 repository.add(genre);
                 return true;
-            } else {
-                if (checkIfDeleted(genresList, genre)) {
-                    repository.update(genre);
-                    return true;
-                }
+            }
+
+            if (checkIfDeleted(genresList, genre)) {
+                LOGGER.debug("found deleted genre: {}", genre.getName());
+                repository.update(genre);
+                return true;
+
             }
             return false;
 
@@ -48,6 +54,11 @@ public class GenreReceiverImpl implements GenreReceiver {
         try {
             Repository<Genre> repository = new GenreRepository();
             LOGGER.debug("trying to delete genre: {}", genre.getName());
+
+            if (genre.getName().isEmpty()) {
+                return false;
+            }
+
             repository.delete(genre);
             return true;
 
@@ -59,6 +70,10 @@ public class GenreReceiverImpl implements GenreReceiver {
     @Override
     public boolean updateGenre(Genre genre) throws ReceiverException {
         try {
+            if (genre.getName().isEmpty()) {
+                return false;
+            }
+
             if (!genre.getId().isEmpty()) {
                 Repository<Genre> repository = new GenreRepository();
                 LOGGER.debug("trying to update genre: {}", genre.getName());

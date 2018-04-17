@@ -50,12 +50,24 @@ li.dropdown {
     display: block;
 }
 
+select {
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 12px;
+    background-color: white;
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    padding: 4px 20px 4px 4px;
+}
+
 input[type=text] {
     width: 100%;
     box-sizing: border-box;
     border: 2px solid #ccc;
     border-radius: 4px;
-    font-size: 16px;
+    font-size: 12px;
     background-color: white;
     background-position: 10px 10px;
     background-repeat: no-repeat;

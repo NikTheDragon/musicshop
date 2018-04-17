@@ -32,8 +32,7 @@ public class ShowEditGenresPage implements Command {
             String userRole = (String) request.getSession(true).getAttribute("role");
 
             if (accessValidator.validate(accessRoles, userRole)) {
-                List<Genre> genres = new ArrayList<>();
-                genres = receiver.getAllGenres();
+                List<Genre> genres = receiver.getAllGenres();
 
                 request.getSession(true).setAttribute("genres", genres);
                 request.getSession(true).setAttribute("url", EDIT_GENRES_PAGE);

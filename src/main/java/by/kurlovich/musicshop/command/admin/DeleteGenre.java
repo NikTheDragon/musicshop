@@ -36,8 +36,7 @@ public class DeleteGenre implements Command {
 
             if (accessValidator.validate(accessRoles, userRole)) {
                 Genre genre = new Genre();
-                genre.setId(request.getParameter("id"));
-                genre.setName(request.getParameter("name"));
+                genre.setName(request.getParameter("submit_name"));
 
                 if (receiver.deleteGenre(genre)) {
                     List<Genre> genres = receiver.getAllGenres();

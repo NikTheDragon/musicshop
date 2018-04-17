@@ -52,21 +52,21 @@
                     </td>
                     <form id="formCreate" action="/mainServlet" method="get">
                         <input type="hidden" name="command" value="create_genre">
-                        <input id="idCreate" type="hidden" name="id" value="">
-                        <input id="nameCreate" type="hidden" name="name" value="">
-                        <td><input type="button" name="button" onclick="createName()" value="Create"></td>
+                        <input type="hidden" name="submit_id" value="">
+                        <input type="hidden" name="submit_name" value="">
+                        <td><input type="button" name="button" onclick="submitForm('formCreate')" value="Create"></td>
                     </form>
                     <form id="formUpdate" action="/mainServlet" method="get">
                         <input type="hidden" name="command" value="update_genre">
-                        <input id="idUpdate" type="hidden" name="id" value="">
-                        <input id="nameUpdate" type="hidden" name="name" value="">
-                        <td><input type="button" name="button" onclick="updName()" value="Update"></td>
+                        <input type="hidden" name="submit_id" value="">
+                        <input type="hidden" name="submit_name" value="">
+                        <td><input type="button" name="button" onclick="submitForm('formUpdate')" value="Update"></td>
                     </form>
                     <form id="formDelete" action="/mainServlet" method="get">
                         <input type="hidden" name="command" value="delete_genre">
-                        <input id="idDelete" type="hidden" name="id" value="">
-                        <input id="nameDelete" type="hidden" name="name" value="">
-                        <td><input type="button" name="button" onclick="delName()" value="Delete"></td>
+                        <input type="hidden" name="submit_id" value="">
+                        <input type="hidden" name="submit_name" value="">
+                        <td><input type="button" name="button" onclick="submitForm('formDelete')" value="Delete"></td>
                     </form>
                 </tr>
 
@@ -80,30 +80,26 @@
 
 <script>
     function show_name(clicked_row) {
-        var name = document.getElementById("name");
-        name.value = document.getElementById(clicked_row + "name").textContent;
-        document.getElementById("idCreate").setAttribute("value", clicked_row);
-        document.getElementById("idUpdate").setAttribute("value", clicked_row);
-        document.getElementById("idDelete").setAttribute("value", clicked_row);
+        var genreName = document.getElementById("name");
+        genreName.value = document.getElementById(clicked_row + "name").textContent;
+
+        var idCount = document.getElementsByName("submit_id");
+        for (var i = 0; i < idCount.length; i++) {
+            idCount[i].setAttribute("value", clicked_row);
+        }
     }
 
-    function createName() {
+    function submitForm(formName) {
         var genreName = document.getElementById("name");
-        document.getElementById("nameCreate").setAttribute("value", genreName.value);
-        document.getElementById("formCreate").submit();
+
+        var nameCount = document.getElementsByName("submit_name");
+        for (var i = 0; i < nameCount.length; i++) {
+            nameCount[i].setAttribute("value", genreName.value);
+        }
+
+        document.getElementById(formName).submit();
     }
 
-    function updName() {
-        var genreName = document.getElementById("name");
-        document.getElementById("nameUpdate").setAttribute("value", genreName.value);
-        document.getElementById("formUpdate").submit();
-    }
-
-    function delName() {
-        var genreName = document.getElementById("name");
-        document.getElementById("nameDelete").setAttribute("value", genreName.value);
-        document.getElementById("formDelete").submit();
-    }
 </script>
 
 </body>
