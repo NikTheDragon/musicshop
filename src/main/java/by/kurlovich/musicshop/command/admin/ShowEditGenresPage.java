@@ -12,6 +12,7 @@ import by.kurlovich.musicshop.validator.AccessValidator;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class ShowEditGenresPage implements Command {
@@ -33,6 +34,8 @@ public class ShowEditGenresPage implements Command {
 
             if (accessValidator.validate(accessRoles, userRole)) {
                 List<Genre> genres = receiver.getAllGenres();
+
+                genres.sort(Comparator.comparing(Genre::getName));
 
                 request.getSession(true).setAttribute("genres", genres);
                 request.getSession(true).setAttribute("url", EDIT_GENRES_PAGE);

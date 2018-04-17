@@ -3,6 +3,7 @@ package by.kurlovich.musicshop.repository.impl;
 import by.kurlovich.musicshop.dbconnection.ConnectionException;
 import by.kurlovich.musicshop.dbconnection.ConnectionPool;
 import by.kurlovich.musicshop.entity.Genre;
+import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.repository.Repository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
@@ -20,7 +21,9 @@ import java.util.List;
 public class GenreRepository implements Repository<Genre> {
     private static final String ADD_GENRE = "INSERT INTO genres (name, status) VALUES (?,?)";
     private static final String DELETE_GENRE = "UPDATE genres SET status='deleted' WHERE name=?";
-    private static final String UPDATE_GENRE = "UPDATE genres SET name=?, status='active' WHERE id=?";
+    private static final String UPDATE_GENRE = "UPDATE genres SET name=? WHERE id=?";
+    private static final String GET_STATUS = "SELECT status FROM genres WHERE name=?";
+    private static final String SET_STATUS = "UPDATE genres SET status='active' WHERE name=?";
     private static final Logger LOGGER = LoggerFactory.getLogger(GenreRepository.class);
     private ConnectionPool connectionPool;
 
@@ -28,7 +31,7 @@ public class GenreRepository implements Repository<Genre> {
     private static final int UPDATE_ID = 2;
     private static final int NAME = 2;
     private static final int SET_NAME = 1;
-    private static final int SET_STATUS = 2;
+    private static final int S_STATUS = 2;
     private static final int STATUS = 3;
 
     public GenreRepository() throws RepositoryException {
@@ -47,7 +50,7 @@ public class GenreRepository implements Repository<Genre> {
             Connection dbConnection = connectionPool.getConnection();
             try (PreparedStatement ps = dbConnection.prepareStatement(ADD_GENRE)) {
                 ps.setString(SET_NAME, genre.getName());
-                ps.setString(SET_STATUS, genre.getStatus());
+                ps.setString(S_STATUS, genre.getStatus());
                 ps.executeUpdate();
             }
             connectionPool.releaseConnection(dbConnection);
@@ -116,6 +119,57 @@ public class GenreRepository implements Repository<Genre> {
 
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception in genre query", e);
+        }
+    }
+
+    @Override
+    public Status checkStatus(Genre genre) throws RepositoryException {
+        try {
+            String status = "";
+            LOGGER.debug("Checking genre {} status.", genre.getName());
+            Connection dbConnection = connectionPool.getConnection();
+            try (PreparedStatement ps = dbConnection.prepareStatement(GET_STATUS)) {
+                ps.setString(SET_NAME, genre.getName());
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        status = (rs.getString(1));
+                    }
+                }
+            }
+
+            connectionPool.releaseConnection(dbConnection);
+
+            switch (status) {
+                case "active":
+                    return Status.ACTIVE;
+                case "deleted":
+                    return Status.DELETE;
+                default:
+                    return Status.NA;
+            }
+
+        } catch (SQLException | ConnectionException e) {
+            throw new RepositoryException("Exception in add genre.", e);
+        }
+    }
+
+    @Override
+    public void setStatus(Genre genre) throws RepositoryException {
+        try {
+            LOGGER.debug("Set genre {} status to active.", genre.getName());
+
+            Connection dbConnection = connectionPool.getConnection();
+            try (PreparedStatement ps = dbConnection.prepareStatement(SET_STATUS)) {
+                ps.setString(SET_NAME, genre.getName());
+
+                ps.executeUpdate();
+            }
+
+            connectionPool.releaseConnection(dbConnection);
+
+        } catch (SQLException | ConnectionException e) {
+            throw new RepositoryException("Exception in add genre.", e);
         }
     }
 }

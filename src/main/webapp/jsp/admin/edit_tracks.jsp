@@ -27,7 +27,7 @@
 
 <table width="100%">
     <tr>
-        <td width="20%">
+        <td width="5%">
         </td>
         <td>
             <table id="customers" width="100%">
@@ -54,7 +54,7 @@
                 </tr>
             </table>
         </td>
-        <td width="20%">
+        <td width="5%">
         </td>
     </tr>
 </table>
@@ -63,7 +63,7 @@
 
 <table width="100%">
     <tr>
-        <td width="20%">
+        <td width="5%">
         </td>
         <td>
             <table width="100%">
@@ -79,7 +79,7 @@
                     <td><input id="author" name="author" type="text" value=""></td>
                     <td>
                         <select id="genre" name="genre" size="1">
-                            <option value="unknown">unknown</option>
+                            <option value=""></option>
                             <c:forEach var="line" items="${genres}">
                                 <c:if test="${line.status=='active'}">
                                     <option value="${line.name}">${line.name}</option>
@@ -95,23 +95,38 @@
                     <td></td>
                     <form id="formCreate" action="/mainServlet" method="get">
                         <input type="hidden" name="command" value="create_track">
+                        <input type="hidden" name="submit_id" value="">
                         <input type="hidden" name="submit_name" value="">
+                        <input type="hidden" name="submit_author" value="">
+                        <input type="hidden" name="submit_genre" value="">
+                        <input type="hidden" name="submit_year" value="">
+                        <input type="hidden" name="submit_length" value="">
                         <td><input type="button" name="button" onclick="deleteTrack('formCreate')" value="Create"></td>
                     </form>
                     <form id="formUpdate" action="/mainServlet" method="get">
                         <input type="hidden" name="command" value="update_track">
+                        <input type="hidden" name="submit_id" value="">
                         <input type="hidden" name="submit_name" value="">
+                        <input type="hidden" name="submit_author" value="">
+                        <input type="hidden" name="submit_genre" value="">
+                        <input type="hidden" name="submit_year" value="">
+                        <input type="hidden" name="submit_length" value="">
                         <td><input type="button" name="button" onclick="deleteTrack('formUpdate')" value="Update"></td>
                     </form>
                     <form id="formDelete" action="/mainServlet" method="get">
                         <input type="hidden" name="command" value="delete_track">
+                        <input type="hidden" name="submit_id" value="">
                         <input type="hidden" name="submit_name" value="">
+                        <input type="hidden" name="submit_author" value="">
+                        <input type="hidden" name="submit_genre" value="">
+                        <input type="hidden" name="submit_year" value="">
+                        <input type="hidden" name="submit_length" value="">
                         <td><input type="button" name="button" onclick="deleteTrack('formDelete')" value="Delete"></td>
                     </form>
                 </tr>
             </table>
         </td>
-        <td width="20%">
+        <td width="5%">
         </td>
     </tr>
 </table>
@@ -128,15 +143,51 @@
         genre.value = document.getElementById(clicked_row + "genre").textContent;
         year.value = document.getElementById(clicked_row + "year").textContent;
         length.value = document.getElementById(clicked_row + "length").textContent;
+
+        var countId = document.getElementsByName("submit_id");
+
+        for (var i = 0; i < countId.length; i++) {
+            countId[i].setAttribute("value", clicked_row);
+        }
     }
 
     function deleteTrack(formName) {
         var trackName = document.getElementById("name");
-        var count = document.getElementsByName("submit_name");
+        var trackAuthor = document.getElementById("author");
+        var trackGenre = document.getElementById("genre");
+        var trackYear = document.getElementById("year");
+        var trackLength = document.getElementById("length");
 
-        for (var i = 0; i < count.length; i++) {
-            count[i].setAttribute("value", trackName.value);
+        var countName = document.getElementsByName("submit_name");
+
+        for (var i = 0; i < countName.length; i++) {
+            countName[i].setAttribute("value", trackName.value);
         }
+
+        var countAuthor = document.getElementsByName("submit_author");
+
+        for (var i = 0; i < countAuthor.length; i++) {
+            countAuthor[i].setAttribute("value", trackAuthor.value);
+        }
+
+        var countGenre = document.getElementsByName("submit_genre");
+
+        for (var i = 0; i < countGenre.length; i++) {
+            countGenre[i].setAttribute("value", trackGenre.value);
+        }
+
+        var countYear = document.getElementsByName("submit_year");
+
+        for (var i = 0; i < countYear.length; i++) {
+            countYear[i].setAttribute("value", trackYear.value);
+        }
+
+        var countLength = document.getElementsByName("submit_length");
+
+        for (var i = 0; i < countLength.length; i++) {
+            countLength[i].setAttribute("value", trackLength.value);
+        }
+
         document.getElementById(formName).submit();
     }
 

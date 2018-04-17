@@ -104,4 +104,14 @@ public class UserRepository implements Repository<User> {
             throw new RepositoryException("Exception in user query", e);
         }
     }
+
+    @Override
+    public Status checkStatus(User item) throws RepositoryException {
+        return null;
+    }
+
+    @Override
+    public void setStatus(User item) throws RepositoryException {
+
+    }
 }

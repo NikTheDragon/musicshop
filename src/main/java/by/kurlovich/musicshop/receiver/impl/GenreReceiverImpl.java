@@ -8,7 +8,6 @@ import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.impl.GenreRepository;
 import by.kurlovich.musicshop.specification.GetAllGenresSpecification;
-import by.kurlovich.musicshop.specification.GetGenresByNameSpecification;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,27 +21,26 @@ public class GenreReceiverImpl implements GenreReceiver {
     public boolean addNewGenre(Genre genre) throws ReceiverException {
         try {
             Repository<Genre> repository = new GenreRepository();
-            Specification specification = new GetGenresByNameSpecification(genre.getName());
             LOGGER.debug("trying to add genre: {}", genre.getName());
 
             if (genre.getName().isEmpty()) {
                 return false;
             }
 
-            List<Genre> genresList = repository.query(specification);
-
-            if (genresList.isEmpty()) {
-                repository.add(genre);
-                return true;
+            switch (repository.checkStatus(genre)) {
+                case ACTIVE:
+                    LOGGER.debug("found active genre: {}", genre.getName());
+                    return false;
+                case DELETE:
+                    LOGGER.debug("found deleted genre: {}", genre.getName());
+                    repository.setStatus(genre);
+                    return true;
+                case NA:
+                    repository.add(genre);
+                    return true;
+                default:
+                    return false;
             }
-
-            if (checkIfDeleted(genresList, genre)) {
-                LOGGER.debug("found deleted genre: {}", genre.getName());
-                repository.update(genre);
-                return true;
-
-            }
-            return false;
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in addNewGenre.", e);
@@ -99,15 +97,5 @@ public class GenreReceiverImpl implements GenreReceiver {
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in Get All Genres.", e);
         }
-    }
-
-    private boolean checkIfDeleted(List<Genre> genresList, Genre genre) {
-        for (Genre entity : genresList) {
-            if (entity.getName().equals(genre.getName()) && entity.getStatus().equals("deleted")) {
-                genre.setId(entity.getId());
-                return true;
-            }
-        }
-        return false;
     }
 }

@@ -27,7 +27,7 @@
 
 <table width="100%">
     <tr>
-        <td width="20%">
+        <td width="5%">
         </td>
         <td>
             <table id="customers" align="center">
@@ -72,7 +72,7 @@
 
             </table>
         </td>
-        <td width="20%">
+        <td width="5%">
         </td>
     </tr>
 
