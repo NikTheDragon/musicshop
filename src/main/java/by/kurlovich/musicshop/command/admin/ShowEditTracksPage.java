@@ -4,9 +4,11 @@ import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
 import by.kurlovich.musicshop.entity.Genre;
+import by.kurlovich.musicshop.entity.Track;
 import by.kurlovich.musicshop.pagefactory.PageStore;
 import by.kurlovich.musicshop.receiver.GenreReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
+import by.kurlovich.musicshop.receiver.TrackReceiver;
 import by.kurlovich.musicshop.receiver.impl.GenreReceiverImpl;
 import by.kurlovich.musicshop.validator.AccessValidator;
 
@@ -19,8 +21,10 @@ public class ShowEditTracksPage implements Command {
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private AccessValidator accessValidator = new AccessValidator();
     private List<String> accessRoles = Arrays.asList("admin");
+    private TrackReceiver receiver;
 
-    public ShowEditTracksPage() {
+    public ShowEditTracksPage(TrackReceiver receiver) {
+        this.receiver = receiver;
     }
 
     @Override
@@ -32,18 +36,20 @@ public class ShowEditTracksPage implements Command {
                 GenreReceiver genreReceiver = new GenreReceiverImpl();
 
                 List<Genre> genres = genreReceiver.getAllGenres();
+                List<Track> trackList = receiver.getAllTracks();
 
                 request.getSession(true).setAttribute("genres", genres);
+                request.getSession(true).setAttribute("trackList", trackList);
                 request.getSession(true).setAttribute("url", EDIT_TRACKS_PAGE);
                 return new CommandResult(CommandResult.ResponseType.FORWARD, EDIT_TRACKS_PAGE);
             }
 
             request.getSession(true).setAttribute("url", ERROR_PAGE);
-            request.setAttribute("nocommand", "Access denied!");
+            request.setAttribute("message", "denied");
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in Show Edit Tracks Page.", e);
+            throw new CommandException("Exception in Show Edit Tracks Page.\n"+e, e);
         }
 
     }

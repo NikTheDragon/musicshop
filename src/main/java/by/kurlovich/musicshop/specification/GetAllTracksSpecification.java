@@ -6,6 +6,7 @@ public class GetAllTracksSpecification implements SqlSpecification {
 
     @Override
     public String toSqlQuery() {
-        return null;
+
+        return String.format("SELECT * FROM tracks");
     }
 }

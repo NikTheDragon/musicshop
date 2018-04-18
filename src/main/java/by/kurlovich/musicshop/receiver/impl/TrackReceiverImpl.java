@@ -48,12 +48,38 @@ public class TrackReceiverImpl implements TrackReceiver {
 
     @Override
     public boolean deleteTrack(Track track) throws ReceiverException {
-        return false;
+        try {
+            Repository<Track> repository = new TrackRepository();
+            LOGGER.debug("trying to delete track: {}", track.getName());
+
+            if (track.getName().isEmpty()) {
+                return false;
+            }
+
+            repository.delete(track);
+            return true;
+
+        } catch (RepositoryException e) {
+            throw new ReceiverException("Exception in deleteTrack.\n"+e, e);
+        }
     }
 
     @Override
     public boolean updateTrack(Track track) throws ReceiverException {
-        return false;
+        try {
+            Repository<Track> repository = new TrackRepository();
+            LOGGER.debug("trying to update track: {}", track.getName());
+
+            if (track.getName().isEmpty()) {
+                return false;
+            }
+
+            repository.update(track);
+            return true;
+
+        } catch (RepositoryException e) {
+            throw new ReceiverException("Exception in updateTrack.\n"+e, e);
+        }
     }
 
     @Override
@@ -66,7 +92,7 @@ public class TrackReceiverImpl implements TrackReceiver {
             return repository.query(specification);
 
         } catch (RepositoryException e) {
-            throw new ReceiverException("Exception in Get All Tracks.", e);
+            throw new ReceiverException("Exception in Get All Tracks.\n"+e, e);
         }
     }
 }

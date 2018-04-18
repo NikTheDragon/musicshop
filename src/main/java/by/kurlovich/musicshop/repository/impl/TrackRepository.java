@@ -15,10 +15,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TrackRepository implements Repository<Track> {
     private static final String ADD_TRACK = "INSERT INTO tracks (name, author, genre, year, length, status) VALUES (?,?,?,?,?,?)";
+    private static final String DELETE_TRACK = "UPDATE tracks SET status='deleted' WHERE name=? AND author=?";
+    private static final String UPDATE_TRACK = "UPDATE tracks SET name=?, author=?, genre=?, year=?, length=? WHERE id=?";
     private static final String GET_STATUS = "SELECT status FROM tracks WHERE name=?";
     private static final String SET_STATUS = "UPDATE tracks SET status='active' WHERE name=? AND author=? AND genre=? AND year=? AND length=?";
     private static final Logger LOGGER = LoggerFactory.getLogger(GenreRepository.class);
@@ -29,7 +32,7 @@ public class TrackRepository implements Repository<Track> {
             LOGGER.debug("Creating track Repository class.");
             connectionPool = ConnectionPool.getInstance();
         } catch (ConnectionException e) {
-            throw new RepositoryException("Can't create dbconnection pool", e);
+            throw new RepositoryException("Can't create dbconnection pool.\n" + e, e);
         }
     }
 
@@ -50,23 +53,80 @@ public class TrackRepository implements Repository<Track> {
             }
             connectionPool.releaseConnection(dbConnection);
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in add track.", e);
+            throw new RepositoryException("Exception in add track.\n" + e, e);
         }
     }
 
     @Override
-    public void delete(Track item) throws RepositoryException {
+    public void delete(Track track) throws RepositoryException {
+        try {
+            LOGGER.debug("Deleting track {}", track.getName());
+            Connection dbConnection = connectionPool.getConnection();
+            try (PreparedStatement ps = dbConnection.prepareStatement(DELETE_TRACK)) {
+                ps.setString(1, track.getName());
+                ps.setString(2, track.getAuthor());
 
+                ps.executeUpdate();
+            }
+            connectionPool.releaseConnection(dbConnection);
+        } catch (SQLException | ConnectionException e) {
+            throw new RepositoryException("Exception in delete track.\n" + e, e);
+        }
     }
 
     @Override
-    public void update(Track item) throws RepositoryException {
+    public void update(Track track) throws RepositoryException {
+        try {
+            LOGGER.debug("Updating track {}", track.getName());
+            Connection dbConnection = connectionPool.getConnection();
+            try (PreparedStatement ps = dbConnection.prepareStatement(UPDATE_TRACK)) {
+                ps.setString(1, track.getName());
+                ps.setString(2, track.getAuthor());
+                ps.setString(3, track.getGenre());
+                ps.setString(4, track.getYear());
+                ps.setString(5, track.getLength());
+                ps.setString(6, track.getId());
 
+                ps.executeUpdate();
+            }
+            connectionPool.releaseConnection(dbConnection);
+        } catch (SQLException | ConnectionException e) {
+            throw new RepositoryException("Exception in update track.\n" + e, e);
+        }
     }
 
     @Override
     public List<Track> query(Specification specification) throws RepositoryException {
-        return null;
+        SqlSpecification sqlSpecification = (SqlSpecification) specification;
+        List<Track> trackList = new ArrayList<>();
+
+        try {
+            Connection dbConnection = connectionPool.getConnection();
+            try (PreparedStatement ps = dbConnection.prepareStatement(sqlSpecification.toSqlQuery())) {
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        Track track = new Track();
+
+                        track.setId(rs.getString(1));
+                        track.setName(rs.getString(2));
+                        track.setAuthor(rs.getString(3));
+                        track.setGenre(rs.getString(4));
+                        track.setYear(rs.getString(5));
+                        track.setLength(rs.getString(6));
+                        track.setStatus(rs.getString(7));
+
+                        trackList.add(track);
+                    }
+                }
+
+                connectionPool.releaseConnection(dbConnection);
+
+                return trackList;
+            }
+
+        } catch (SQLException | ConnectionException e) {
+            throw new RepositoryException("Exception in track query.\n" + e, e);
+        }
     }
 
     @Override
@@ -99,7 +159,7 @@ public class TrackRepository implements Repository<Track> {
             }
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in check track status method.", e);
+            throw new RepositoryException("Exception in check track status method.\n" + e, e);
         }
     }
 
@@ -122,7 +182,7 @@ public class TrackRepository implements Repository<Track> {
             connectionPool.releaseConnection(dbConnection);
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in set track status method.", e);
+            throw new RepositoryException("Exception in set track status method.\n" + e, e);
         }
     }
 }

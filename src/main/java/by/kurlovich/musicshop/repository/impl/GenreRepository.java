@@ -88,7 +88,7 @@ public class GenreRepository implements Repository<Genre> {
             }
             connectionPool.releaseConnection(dbConnection);
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in add genre.", e);
+            throw new RepositoryException("Exception in add genre.\n"+e, e);
         }
     }
 

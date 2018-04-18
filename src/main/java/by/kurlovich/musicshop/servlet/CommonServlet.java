@@ -57,7 +57,7 @@ public class CommonServlet extends HttpServlet {
             }
 
         } catch (CommandException e) {
-            request.setAttribute("nocommand", "exception: " + e.getCause());
+            request.setAttribute("message", "exception: " + e.getCause());
             RequestDispatcher dispatcher = request.getRequestDispatcher(PageStore.ERROR_PAGE.getPageName());
             dispatcher.forward(request, response);
         }

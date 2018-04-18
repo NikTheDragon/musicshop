@@ -38,20 +38,19 @@
                     <th width="10%">Year</th>
                     <th width="10%">Length</th>
                 </tr>
-                <tr id="001" onclick="get_track_info(this.id)">
-                    <td id="${'001'}name">Beat it</td>
-                    <td id="${'001'}author">Michael Jackson</td>
-                    <td id="${'001'}genre">pop</td>
-                    <td id="${'001'}year">1980</td>
-                    <td id="${'001'}length">5.31</td>
-                </tr>
-                <tr id="002" onclick="get_track_info(this.id)">
-                    <td id="${'002'}name">It's my life</td>
-                    <td id="${'002'}author">Bon Jowi</td>
-                    <td id="${'002'}genre">rock</td>
-                    <td id="${'002'}year">1985</td>
-                    <td id="${'002'}length">4.23</td>
-                </tr>
+
+                <c:forEach var="track" items="${trackList}">
+                    <c:if test="${track.status == 'active'}">
+                        <tr id="${track.id}" onclick="get_track_info(this.id)">
+                            <td id="${track.id}name">${track.name}</td>
+                            <td id="${track.id}author">${track.author}</td>
+                            <td id="${track.id}genre">${track.genre}</td>
+                            <td id="${track.id}year">${track.year}</td>
+                            <td id="${track.id}length">${track.length}</td>
+                        </tr>
+                    </c:if>
+                </c:forEach>
+
             </table>
         </td>
         <td width="5%">

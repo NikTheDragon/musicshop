@@ -34,8 +34,8 @@
         <td width="20%">
         </td>
         <td>
-            <p>Error</p>
-            <p>Command: ${nocommand} not found</p>
+            <p>Error!</p>
+            <%@include file="/WEB-INF/jspf/error_handler.jsp"%>
         </td>
         <td width="20%">
         </td>

@@ -3,10 +3,13 @@ package by.kurlovich.musicshop.command.admin;
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
+import by.kurlovich.musicshop.entity.Genre;
 import by.kurlovich.musicshop.entity.Track;
 import by.kurlovich.musicshop.pagefactory.PageStore;
+import by.kurlovich.musicshop.receiver.GenreReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.receiver.TrackReceiver;
+import by.kurlovich.musicshop.receiver.impl.GenreReceiverImpl;
 import by.kurlovich.musicshop.validator.AccessValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +36,8 @@ public class CreateTrack implements Command {
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
             String userRole = (String) request.getSession(true).getAttribute("role");
-            request.setAttribute("nocommand", "Access denied!");
+            request.setAttribute("message", "denied");
+            GenreReceiver genreReceiver = new GenreReceiverImpl();
 
             if (accessValidator.validate(accessRoles, userRole)) {
                 Track track = new Track();
@@ -47,13 +51,13 @@ public class CreateTrack implements Command {
                 LOGGER.debug("Creating track: {}", track);
 
                 if (receiver.addNewTrack(track)) {
-                    List<Track> genres = receiver.getAllTracks();
+                    List<Genre> genres = genreReceiver.getAllGenres();
                     request.getSession(true).setAttribute("genres", genres);
                     request.getSession(true).setAttribute("url", EDIT_TRACKS_PAGE);
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_TRACKS_PAGE);
                 }
 
-                request.setAttribute("nocommand", "Can't add new genre.");
+                request.setAttribute("message", "track exists");
             }
 
             request.getSession(true).setAttribute("url", ERROR_PAGE);
