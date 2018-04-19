@@ -21,6 +21,7 @@ public enum CommandType {
     SHOW_EDIT_AUTHORS_PAGE(new ShowEditAuthorsPage(new AuthorReceiverImpl())::execute),
     CREATE_GENRE(new CreateGenre(new GenreReceiverImpl())::execute),
     CREATE_TRACK(new CreateTrack(new TrackReceiverImpl())::execute),
+    CREATE_AUTHOR(new CreateAuthor(new AuthorReceiverImpl())::execute),
     DELETE_GENRE(new DeleteGenre(new GenreReceiverImpl())::execute),
     DELETE_TRACK(new DeleteTrack(new TrackReceiverImpl())::execute),
     UPDATE_GENRE(new UpdateGenre(new GenreReceiverImpl())::execute),

@@ -24,4 +24,6 @@
 <fmt:message key="editGenres" var="editGenres" />
 <fmt:message key="editTracks" var="editTracks" />
 <fmt:message key="editAuthors" var="editAuthors" />
+<fmt:message key="bandSelector" var="bandSelector" />
+<fmt:message key="singleSelector" var="singleSelector" />
 <fmt:message key="fillAllFields" var="fillAllFields" />

@@ -3,28 +3,70 @@ package by.kurlovich.musicshop.receiver.impl;
 import by.kurlovich.musicshop.entity.Author;
 import by.kurlovich.musicshop.receiver.AuthorReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
+import by.kurlovich.musicshop.repository.Repository;
+import by.kurlovich.musicshop.repository.RepositoryException;
+import by.kurlovich.musicshop.repository.Specification;
+import by.kurlovich.musicshop.repository.impl.AuthorRepository;
+import by.kurlovich.musicshop.specification.GetAllAuthorsSpecification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class AuthorReceiverImpl implements AuthorReceiver {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthorReceiverImpl.class);
 
     @Override
-    public boolean addNewTrack(Author author) throws ReceiverException {
+    public boolean addNewAuthor(Author author) throws ReceiverException {
+        try {
+            Repository<Author> repository = new AuthorRepository();
+            LOGGER.debug("trying to add track: {}", author.getName());
+
+            if (author.getName().isEmpty()) {
+                return false;
+            }
+
+            switch (repository.checkStatus(author)) {
+                case ACTIVE:
+                    LOGGER.debug("found active author: {}", author.getName());
+                    return false;
+                case DELETE:
+                    LOGGER.debug("found deleted author: {}", author.getName());
+                    repository.setStatus(author);
+                    return true;
+                case NA:
+                    repository.add(author);
+                    return true;
+                default:
+                    return false;
+            }
+
+        } catch (RepositoryException e) {
+            throw new ReceiverException("Exception in addNewAuthor.\n" + e, e);
+        }
+    }
+
+    @Override
+    public boolean deleteAuthor(Author author) throws ReceiverException {
         return false;
     }
 
     @Override
-    public boolean deleteTrack(Author author) throws ReceiverException {
-        return false;
-    }
-
-    @Override
-    public boolean updateTrack(Author author) throws ReceiverException {
+    public boolean updateAuthor(Author author) throws ReceiverException {
         return false;
     }
 
     @Override
     public List<Author> getAllAuthors() throws ReceiverException {
-        return null;
+        try {
+            Repository<Author> repository = new AuthorRepository();
+            Specification specification = new GetAllAuthorsSpecification();
+            LOGGER.debug("Trying to get all authors.");
+
+            return repository.query(specification);
+
+        } catch (RepositoryException e) {
+            throw new ReceiverException("Exception in Get All Authors.\n" + e, e);
+        }
     }
 }
