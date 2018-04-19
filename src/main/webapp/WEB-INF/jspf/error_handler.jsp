@@ -9,6 +9,9 @@
     <c:when test = "${message == 'undelete'}">
         <p>Can't delete entity.</p>
     </c:when>
+    <c:when test = "${message == 'nocmd'}">
+        <p>Can't find command: ${cmd}</p>
+    </c:when>
     <c:otherwise>
         <p>${message}</p>
     </c:otherwise>

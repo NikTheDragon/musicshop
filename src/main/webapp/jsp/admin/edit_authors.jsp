@@ -7,7 +7,7 @@
 <head>
     <link href="<c:url value="/css/main.css" />" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>edit tracks page</title>
+    <title>edit authors page</title>
 
     <%@include file="/WEB-INF/jspf/locale.jsp" %>
 

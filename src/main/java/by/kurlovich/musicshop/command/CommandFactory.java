@@ -16,7 +16,8 @@ public class CommandFactory {
             CommandType type = CommandType.valueOf(name);
             return type.getCommand();
         } catch (IllegalArgumentException ex) {
-            request.setAttribute("nocommand", "cmd: " + name);
+            request.setAttribute("message", "nocmd");
+            request.setAttribute("cmd", name);
             CommandType type = CommandType.valueOf("COMMAND_NOT_FOUND");
             return type.getCommand();
         }

@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class DeleteGenre implements Command {
@@ -40,6 +41,8 @@ public class DeleteGenre implements Command {
 
                 if (receiver.deleteGenre(genre)) {
                     List<Genre> genres = receiver.getAllGenres();
+                    genres.sort(Comparator.comparing(Genre::getName));
+
                     request.getSession(true).setAttribute("genres", genres);
                     request.getSession(true).setAttribute("url", EDIT_GENRES_PAGE);
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_GENRES_PAGE);

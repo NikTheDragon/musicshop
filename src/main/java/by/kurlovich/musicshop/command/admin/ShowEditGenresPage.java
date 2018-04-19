@@ -34,7 +34,6 @@ public class ShowEditGenresPage implements Command {
 
             if (accessValidator.validate(accessRoles, userRole)) {
                 List<Genre> genres = receiver.getAllGenres();
-
                 genres.sort(Comparator.comparing(Genre::getName));
 
                 request.getSession(true).setAttribute("genres", genres);

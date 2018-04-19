@@ -2,6 +2,7 @@ package by.kurlovich.musicshop.command;
 
 import by.kurlovich.musicshop.command.admin.*;
 import by.kurlovich.musicshop.command.common.*;
+import by.kurlovich.musicshop.receiver.impl.AuthorReceiverImpl;
 import by.kurlovich.musicshop.receiver.impl.GenreReceiverImpl;
 import by.kurlovich.musicshop.receiver.impl.TrackReceiverImpl;
 import by.kurlovich.musicshop.receiver.impl.UserReceiverImpl;
@@ -17,6 +18,7 @@ public enum CommandType {
     SHOW_REG_PAGE(new ShowRegPage()::execute),
     SHOW_EDIT_TRACKS_PAGE(new ShowEditTracksPage(new TrackReceiverImpl())::execute),
     SHOW_EDIT_GENRES_PAGE(new ShowEditGenresPage(new GenreReceiverImpl())::execute),
+    SHOW_EDIT_AUTHORS_PAGE(new ShowEditAuthorsPage(new AuthorReceiverImpl())::execute),
     CREATE_GENRE(new CreateGenre(new GenreReceiverImpl())::execute),
     CREATE_TRACK(new CreateTrack(new TrackReceiverImpl())::execute),
     DELETE_GENRE(new DeleteGenre(new GenreReceiverImpl())::execute),

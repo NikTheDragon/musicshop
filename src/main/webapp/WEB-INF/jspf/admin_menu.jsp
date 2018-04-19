@@ -24,19 +24,25 @@
                     </div>
                 </li>
                 <li class="dropdown">
-                    <a href="javascript:void(0)" class="dropbtn">Admin music</a>
+                    <a href="javascript:void(0)" class="dropbtn">${adminMusic}</a>
                     <div class="dropdown-content">
                         <form target="/mainServlet" method="get">
                             <a href="<c:url value="/mainServlet">
                                 <c:param name="command" value="show_edit_tracks_page"/>
                                  </c:url>
-                            ">Edit tracks</a>
+                            ">${editTracks}</a>
                         </form>
                         <form target="/mainServlet" method="get">
                             <a href="<c:url value="/mainServlet">
                                 <c:param name="command" value="show_edit_genres_page"/>
                                  </c:url>
-                            ">Edit genres</a>
+                            ">${editGenres}</a>
+                        </form>
+                        <form target="/mainServlet" method="get">
+                            <a href="<c:url value="/mainServlet">
+                                <c:param name="command" value="show_edit_authors_page"/>
+                                 </c:url>
+                            ">${editAuthors}</a>
                         </form>
                     </div>
                 </li>

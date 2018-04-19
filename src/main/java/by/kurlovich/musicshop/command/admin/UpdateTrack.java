@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class UpdateTrack implements Command {
@@ -49,6 +50,8 @@ public class UpdateTrack implements Command {
 
                 if (receiver.updateTrack(track)) {
                     List<Genre> genres = genreReceiver.getAllGenres();
+                    genres.sort(Comparator.comparing(Genre::getName));
+
                     List<Track> trackList = receiver.getAllTracks();
 
                     request.getSession(true).setAttribute("genres", genres);
