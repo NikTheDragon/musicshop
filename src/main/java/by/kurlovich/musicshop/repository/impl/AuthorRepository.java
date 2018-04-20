@@ -20,10 +20,10 @@ import java.util.List;
 public class AuthorRepository implements Repository<Author> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorRepository.class);
     private static final String GET_STATUS = "SELECT status FROM authors WHERE name=?";
-    private static final String SET_STATUS = "UPDATE authors SET status='active' WHERE name=? AND genre=? AND type=?";
-    private static final String ADD_AUTHOR = "INSERT INTO authors (name, genre, type, status) VALUES (?,?,?,?)";
+    private static final String SET_STATUS = "UPDATE authors SET status='active' WHERE name=? AND genre=(SELECT id FROM genres WHERE name=?) AND type=?";
+    private static final String ADD_AUTHOR = "INSERT INTO authors (name, genre, type, status) VALUES (?,(SELECT id FROM genres WHERE name=?),?,?)";
     private static final String DELETE_AUTHOR = "UPDATE authors SET status='deleted' WHERE name=?";
-    private static final String UPDATE_AUTHOR = "UPDATE authors SET name=?, genre=?, status=? WHERE id=?";
+    private static final String UPDATE_AUTHOR = "UPDATE authors SET name=?, genre=(SELECT id FROM genres WHERE name=?), type=? WHERE id=?";
     private ConnectionPool connectionPool;
 
     public AuthorRepository() throws RepositoryException {
@@ -79,7 +79,7 @@ public class AuthorRepository implements Repository<Author> {
                 ps.setString(1, item.getName());
                 ps.setString(2, item.getGenre());
                 ps.setString(3, item.getType());
-                ps.setString(4, item.getStatus());
+                ps.setString(4, item.getId());
 
                 ps.executeUpdate();
             }

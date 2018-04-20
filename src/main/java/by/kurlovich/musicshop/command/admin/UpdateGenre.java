@@ -33,7 +33,7 @@ public class UpdateGenre implements Command {
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
             String userRole = (String) request.getSession(true).getAttribute("role");
-            request.setAttribute("nocommand", "Access denied!");
+            request.setAttribute("message", "denied");
 
             if (accessValidator.validate(accessRoles, userRole)) {
                 Genre genre = new Genre();
@@ -49,13 +49,13 @@ public class UpdateGenre implements Command {
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_GENRES_PAGE);
                 }
 
-                request.setAttribute("nocommand", "Can't update genre.");
+                request.setAttribute("message", "Can't update genre.");
             }
             request.getSession(true).setAttribute("url", ERROR_PAGE);
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in Delete Genre.", e);
+            throw new CommandException("Exception in updateGenre.\n" + e, e);
         }
     }
 }

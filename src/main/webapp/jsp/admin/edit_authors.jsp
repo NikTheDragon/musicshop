@@ -41,7 +41,7 @@
                     <c:if test="${author.status == 'active'}">
                         <tr id="${author.id}" onclick="get_author_info(this.id)">
                             <td id="${author.id}name">${author.name}</td>
-                            <td id="${author.id}sgenre">${author.genre}</td>
+                            <td id="${author.id}genre">${author.genre}</td>
                             <td id="${author.id}type">${author.type}</td>
                         </tr>
                     </c:if>
@@ -70,11 +70,11 @@
                 <tr>
                     <td><input id="name" name="name" type="text" value=""></td>
                     <td>
-                        <select id="s_genre" name="genre" size="1">
+                        <select id="genre" name="genre" size="1">
                             <option value=""></option>
                             <c:forEach var="line" items="${genres}">
                                 <c:if test="${line.status=='active'}">
-                                    <option value="${line.id}">${line.name}</option>
+                                    <option value="${line.name}">${line.name}</option>
                                 </c:if>
                             </c:forEach>
                         </select>
@@ -98,7 +98,7 @@
                         <input type="hidden" name="submit_name" value="">
                         <input type="hidden" name="submit_genre" value="">
                         <input type="hidden" name="submit_type" value="">
-                        <td><input type="button" name="button" onclick="modifyAuthor('formCreate')" value="Create"
+                        <td><input type="button" name="button" onclick="modifyAuthor('formCreate')" value="${createButton}"
                                    style="width: 200px"></td>
                     </form>
                     <form id="formUpdate" action="/mainServlet" method="get">
@@ -107,7 +107,7 @@
                         <input type="hidden" name="submit_name" value="">
                         <input type="hidden" name="submit_genre" value="">
                         <input type="hidden" name="submit_type" value="">
-                        <td><input type="button" name="button" onclick="modifyAuthor('formUpdate')" value="Update"
+                        <td><input type="button" name="button" onclick="modifyAuthor('formUpdate')" value="${updateButton}"
                                    style="width: 200px"></td>
                     </form>
                     <form id="formDelete" action="/mainServlet" method="get">
@@ -116,7 +116,7 @@
                         <input type="hidden" name="submit_name" value="">
                         <input type="hidden" name="submit_genre" value="">
                         <input type="hidden" name="submit_type" value="">
-                        <td><input type="button" name="button" onclick="modifyAuthor('formDelete')" value="Delete"
+                        <td><input type="button" name="button" onclick="modifyAuthor('formDelete')" value="${deleteButton}"
                                    style="width: 200px"></td>
                     </form>
                 </tr>
@@ -129,12 +129,9 @@
 
 <script>
     function get_author_info(clicked_row) {
-        var name = document.getElementById("name");
-        var genre = document.getElementById("s_genre");
-        var type = document.getElementById("type");
-        name.value = document.getElementById(clicked_row + "name").textContent;
-        genre.value = document.getElementById(clicked_row + "sgenre").textContent;
-        type.value = document.getElementById(clicked_row + "type").textContent;
+        document.getElementById("name").value = document.getElementById(clicked_row + "name").textContent;
+        document.getElementById("genre").value = document.getElementById(clicked_row + "genre").textContent;
+        document.getElementById("type").value = document.getElementById(clicked_row + "type").textContent;
 
         var countId = document.getElementsByName("submit_id");
 
@@ -145,7 +142,7 @@
 
     function modifyAuthor(formName) {
         var authorName = document.getElementById("name");
-        var authorGenre = document.getElementById("s_genre");
+        var authorGenre = document.getElementById("genre");
         var authorType = document.getElementById("type");
 
         var countName = document.getElementsByName("submit_name");

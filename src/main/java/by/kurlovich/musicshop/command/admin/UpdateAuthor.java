@@ -3,12 +3,12 @@ package by.kurlovich.musicshop.command.admin;
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
+import by.kurlovich.musicshop.entity.Author;
 import by.kurlovich.musicshop.entity.Genre;
-import by.kurlovich.musicshop.entity.Track;
 import by.kurlovich.musicshop.pagefactory.PageStore;
+import by.kurlovich.musicshop.receiver.AuthorReceiver;
 import by.kurlovich.musicshop.receiver.GenreReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
-import by.kurlovich.musicshop.receiver.TrackReceiver;
 import by.kurlovich.musicshop.receiver.impl.GenreReceiverImpl;
 import by.kurlovich.musicshop.validator.AccessValidator;
 import org.slf4j.Logger;
@@ -19,15 +19,15 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class DeleteTrack implements Command {
-    private final static String EDIT_TRACKS_PAGE = PageStore.EDIT_TRACKS_PAGE.getPageName();
+public class UpdateAuthor implements Command {
+    private final static String EDIT_AUTHORS_PAGE = PageStore.EDIT_AUTHORS_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
-    private final static Logger LOGGER = LoggerFactory.getLogger(DeleteTrack.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(UpdateAuthor.class);
     private AccessValidator accessValidator = new AccessValidator();
     private List<String> accessRoles = Arrays.asList("admin");
-    private TrackReceiver receiver;
+    private AuthorReceiver receiver;
 
-    public DeleteTrack(TrackReceiver receiver) {
+    public UpdateAuthor(AuthorReceiver receiver) {
 
         this.receiver = receiver;
     }
@@ -40,33 +40,32 @@ public class DeleteTrack implements Command {
             GenreReceiver genreReceiver = new GenreReceiverImpl();
 
             if (accessValidator.validate(accessRoles, userRole)) {
-                Track track = new Track();
-                track.setName(request.getParameter("submit_name"));
-                track.setAuthor(request.getParameter("submit_author"));
-                track.setGenre(request.getParameter("submit_genre"));
-                track.setYear(request.getParameter("submit_year"));
-                track.setLength(request.getParameter("submit_length"));
+                Author author = new Author();
+                author.setId(request.getParameter("submit_id"));
+                author.setName(request.getParameter("submit_name"));
+                author.setGenre(request.getParameter("submit_genre"));
+                author.setType(request.getParameter("submit_type"));
 
-                if (receiver.deleteTrack(track)) {
+                if (receiver.updateAuthor(author)) {
                     List<Genre> genres = genreReceiver.getAllGenres();
                     genres.sort(Comparator.comparing(Genre::getName));
 
-                    List<Track> trackList = receiver.getAllTracks();
-                    trackList.sort(Comparator.comparing(Track::getName));
+                    List<Author> authorList = receiver.getAllAuthors();
+                    authorList.sort(Comparator.comparing(Author::getName));
 
-                    request.getSession(true).setAttribute("trackList", trackList);
+                    request.getSession(true).setAttribute("authorList", authorList);
                     request.getSession(true).setAttribute("genres", genres);
-                    request.getSession(true).setAttribute("url", EDIT_TRACKS_PAGE);
-                    return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_TRACKS_PAGE);
+                    request.getSession(true).setAttribute("url", EDIT_AUTHORS_PAGE);
+                    return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_AUTHORS_PAGE);
                 }
 
-                request.setAttribute("message", "undelete");
+                request.setAttribute("message", "Can't update author.");
             }
             request.getSession(true).setAttribute("url", ERROR_PAGE);
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in DeleteTrack.\n" + e, e);
+            throw new CommandException("Exception in updateAuthor.\n" + e, e);
         }
     }
 }

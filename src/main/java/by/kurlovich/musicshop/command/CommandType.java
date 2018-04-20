@@ -24,8 +24,10 @@ public enum CommandType {
     CREATE_AUTHOR(new CreateAuthor(new AuthorReceiverImpl())::execute),
     DELETE_GENRE(new DeleteGenre(new GenreReceiverImpl())::execute),
     DELETE_TRACK(new DeleteTrack(new TrackReceiverImpl())::execute),
+    DELETE_AUTHOR(new DeleteAuthor(new AuthorReceiverImpl())::execute),
     UPDATE_GENRE(new UpdateGenre(new GenreReceiverImpl())::execute),
-    UPDATE_TRACK(new UpdateTrack(new TrackReceiverImpl())::execute);
+    UPDATE_TRACK(new UpdateTrack(new TrackReceiverImpl())::execute),
+    UPDATE_AUTHOR(new UpdateAuthor(new AuthorReceiverImpl())::execute);
 
     private Command command;
 

@@ -44,6 +44,18 @@
                                  </c:url>
                             ">${editAuthors}</a>
                         </form>
+                        <form target="/mainServlet" method="get">
+                            <a href="<c:url value="/mainServlet">
+                                <c:param name="command" value="show_edit_albums_page"/>
+                                 </c:url>
+                            ">${editAlbums}</a>
+                        </form>
+                        <form target="/mainServlet" method="get">
+                            <a href="<c:url value="/mainServlet">
+                                <c:param name="command" value="show_edit_mixes_page"/>
+                                 </c:url>
+                            ">${editMixes}</a>
+                        </form>
                     </div>
                 </li>
                 <li class="dropdown">

@@ -54,19 +54,19 @@
                         <input type="hidden" name="command" value="create_genre">
                         <input type="hidden" name="submit_id" value="">
                         <input type="hidden" name="submit_name" value="">
-                        <td><input type="button" name="button" onclick="submitForm('formCreate')" value="Create"></td>
+                        <td><input type="button" name="button" onclick="submitForm('formCreate')" value="${createButton}"></td>
                     </form>
                     <form id="formUpdate" action="/mainServlet" method="get">
                         <input type="hidden" name="command" value="update_genre">
                         <input type="hidden" name="submit_id" value="">
                         <input type="hidden" name="submit_name" value="">
-                        <td><input type="button" name="button" onclick="submitForm('formUpdate')" value="Update"></td>
+                        <td><input type="button" name="button" onclick="submitForm('formUpdate')" value="${updateButton}"></td>
                     </form>
                     <form id="formDelete" action="/mainServlet" method="get">
                         <input type="hidden" name="command" value="delete_genre">
                         <input type="hidden" name="submit_id" value="">
                         <input type="hidden" name="submit_name" value="">
-                        <td><input type="button" name="button" onclick="submitForm('formDelete')" value="Delete"></td>
+                        <td><input type="button" name="button" onclick="submitForm('formDelete')" value="${deleteButton}"></td>
                     </form>
                 </tr>
 

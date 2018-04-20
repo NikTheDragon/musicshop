@@ -75,13 +75,22 @@
                 </tr>
                 <tr>
                     <td><input id="name" name="name" type="text" value=""></td>
-                    <td><input id="author" name="author" type="text" value=""></td>
+                    <td>
+                        <select id="author" name="author" size="1">
+                        <option value=""></option>
+                        <c:forEach var="line" items="${authors}">
+                            <c:if test="${line.status=='active'}">
+                                <option value="${line.name}">${line.name}</option>
+                            </c:if>
+                        </c:forEach>
+                    </select>
+                    </td>
                     <td>
                         <select id="genre" name="genre" size="1">
                             <option value=""></option>
                             <c:forEach var="line" items="${genres}">
                                 <c:if test="${line.status=='active'}">
-                                    <option value="${line.id}">${line.name}</option>
+                                    <option value="${line.name}">${line.name}</option>
                                 </c:if>
                             </c:forEach>
                         </select>
@@ -100,7 +109,7 @@
                         <input type="hidden" name="submit_genre" value="">
                         <input type="hidden" name="submit_year" value="">
                         <input type="hidden" name="submit_length" value="">
-                        <td><input type="button" name="button" onclick="deleteTrack('formCreate')" value="Create"></td>
+                        <td><input type="button" name="button" onclick="deleteTrack('formCreate')" value="${createButton}"></td>
                     </form>
                     <form id="formUpdate" action="/mainServlet" method="get">
                         <input type="hidden" name="command" value="update_track">
@@ -110,7 +119,7 @@
                         <input type="hidden" name="submit_genre" value="">
                         <input type="hidden" name="submit_year" value="">
                         <input type="hidden" name="submit_length" value="">
-                        <td><input type="button" name="button" onclick="deleteTrack('formUpdate')" value="Update"></td>
+                        <td><input type="button" name="button" onclick="deleteTrack('formUpdate')" value="${updateButton}"></td>
                     </form>
                     <form id="formDelete" action="/mainServlet" method="get">
                         <input type="hidden" name="command" value="delete_track">
@@ -120,7 +129,7 @@
                         <input type="hidden" name="submit_genre" value="">
                         <input type="hidden" name="submit_year" value="">
                         <input type="hidden" name="submit_length" value="">
-                        <td><input type="button" name="button" onclick="deleteTrack('formDelete')" value="Delete"></td>
+                        <td><input type="button" name="button" onclick="deleteTrack('formDelete')" value="${deleteButton}"></td>
                     </form>
                 </tr>
             </table>

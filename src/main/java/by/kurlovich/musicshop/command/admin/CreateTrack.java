@@ -3,6 +3,7 @@ package by.kurlovich.musicshop.command.admin;
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
+import by.kurlovich.musicshop.entity.Author;
 import by.kurlovich.musicshop.entity.Genre;
 import by.kurlovich.musicshop.entity.Track;
 import by.kurlovich.musicshop.pagefactory.PageStore;
@@ -55,6 +56,10 @@ public class CreateTrack implements Command {
                     List<Genre> genres = genreReceiver.getAllGenres();
                     genres.sort(Comparator.comparing(Genre::getName));
 
+                    List<Track> trackList = receiver.getAllTracks();
+                    trackList.sort(Comparator.comparing(Track::getName));
+
+                    request.getSession(true).setAttribute("trackList", trackList);
                     request.getSession(true).setAttribute("genres", genres);
                     request.getSession(true).setAttribute("url", EDIT_TRACKS_PAGE);
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_TRACKS_PAGE);

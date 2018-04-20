@@ -19,11 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TrackRepository implements Repository<Track> {
-    private static final String ADD_TRACK = "INSERT INTO tracks (name, author, genre, year, length, status) VALUES (?,?,?,?,?,?)";
-    private static final String DELETE_TRACK = "UPDATE tracks SET status='deleted' WHERE name=? AND author=?";
-    private static final String UPDATE_TRACK = "UPDATE tracks SET name=?, author=?, genre=?, year=?, length=? WHERE id=?";
+    private static final String ADD_TRACK = "INSERT INTO tracks (name, author, genre, year, length, status) VALUES (?,(SELECT id FROM authors WHERE name=?),(SELECT id FROM genres WHERE name=?),?,?,?)";
+    private static final String DELETE_TRACK = "UPDATE tracks SET status='deleted' WHERE name=? AND author=(SELECT id FROM authors WHERE name=?)";
+    private static final String UPDATE_TRACK = "UPDATE tracks SET name=?, author=(SELECT id FROM authors WHERE name=?), genre=(SELECT id FROM genres WHERE name=?), year=?, length=? WHERE id=?";
     private static final String GET_STATUS = "SELECT status FROM tracks WHERE name=?";
-    private static final String SET_STATUS = "UPDATE tracks SET status='active' WHERE name=? AND author=? AND genre=? AND year=? AND length=?";
+    private static final String SET_STATUS = "UPDATE tracks SET status='active' WHERE name=? AND author=(SELECT id FROM authors WHERE name=?) AND genre=(SELECT id FROM genres WHERE name=?) AND year=? AND length=?";
     private static final Logger LOGGER = LoggerFactory.getLogger(GenreRepository.class);
     private ConnectionPool connectionPool;
 

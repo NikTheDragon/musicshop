@@ -3,12 +3,15 @@ package by.kurlovich.musicshop.command.admin;
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
+import by.kurlovich.musicshop.entity.Author;
 import by.kurlovich.musicshop.entity.Genre;
 import by.kurlovich.musicshop.entity.Track;
 import by.kurlovich.musicshop.pagefactory.PageStore;
+import by.kurlovich.musicshop.receiver.AuthorReceiver;
 import by.kurlovich.musicshop.receiver.GenreReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.receiver.TrackReceiver;
+import by.kurlovich.musicshop.receiver.impl.AuthorReceiverImpl;
 import by.kurlovich.musicshop.receiver.impl.GenreReceiverImpl;
 import by.kurlovich.musicshop.validator.AccessValidator;
 
@@ -35,12 +38,16 @@ public class ShowEditTracksPage implements Command {
 
             if (accessValidator.validate(accessRoles, userRole)) {
                 GenreReceiver genreReceiver = new GenreReceiverImpl();
+                AuthorReceiver authorReceiver = new AuthorReceiverImpl();
 
                 List<Genre> genres = genreReceiver.getAllGenres();
                 genres.sort(Comparator.comparing(Genre::getName));
 
                 List<Track> trackList = receiver.getAllTracks();
+                List<Author> authorList = authorReceiver.getAllAuthors();
+                authorList.sort(Comparator.comparing(Author::getName));
 
+                request.getSession(true).setAttribute("authors", authorList);
                 request.getSession(true).setAttribute("genres", genres);
                 request.getSession(true).setAttribute("trackList", trackList);
                 request.getSession(true).setAttribute("url", EDIT_TRACKS_PAGE);

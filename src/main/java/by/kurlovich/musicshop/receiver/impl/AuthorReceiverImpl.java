@@ -48,12 +48,38 @@ public class AuthorReceiverImpl implements AuthorReceiver {
 
     @Override
     public boolean deleteAuthor(Author author) throws ReceiverException {
-        return false;
+        try {
+            Repository<Author> repository = new AuthorRepository();
+            LOGGER.debug("trying to delete track: {}", author.getName());
+
+            if (author.getName().isEmpty()) {
+                return false;
+            }
+
+            repository.delete(author);
+            return true;
+
+        } catch (RepositoryException e) {
+            throw new ReceiverException("Exception in deleteAuthor.\n"+e, e);
+        }
     }
 
     @Override
     public boolean updateAuthor(Author author) throws ReceiverException {
-        return false;
+        try {
+            Repository<Author> repository = new AuthorRepository();
+            LOGGER.debug("trying to update author: {}", author.getName());
+
+            if (author.getName().isEmpty()) {
+                return false;
+            }
+
+            repository.update(author);
+            return true;
+
+        } catch (RepositoryException e) {
+            throw new ReceiverException("Exception in updateTrack.\n"+e, e);
+        }
     }
 
     @Override
