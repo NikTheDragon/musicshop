@@ -123,7 +123,7 @@ public class GenreRepository implements Repository<Genre> {
     }
 
     @Override
-    public Status checkStatus(Genre genre) throws RepositoryException {
+    public Status getStatus(Genre genre) throws RepositoryException {
         try {
             String status = "";
             LOGGER.debug("Checking genre {} status.", genre.getName());
@@ -140,7 +140,7 @@ public class GenreRepository implements Repository<Genre> {
 
             connectionPool.releaseConnection(dbConnection);
 
-            return getStatus(status);
+            return Status.getStatus(status);
 
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception in add genre.", e);
@@ -148,7 +148,7 @@ public class GenreRepository implements Repository<Genre> {
     }
 
     @Override
-    public void setStatus(Genre genre) throws RepositoryException {
+    public void undelete(Genre genre) throws RepositoryException {
         try {
             LOGGER.debug("Set genre {} status to active.", genre.getName());
 

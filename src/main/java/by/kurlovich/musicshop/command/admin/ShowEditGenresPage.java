@@ -4,13 +4,12 @@ import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
 import by.kurlovich.musicshop.entity.Genre;
-import by.kurlovich.musicshop.pagefactory.PageStore;
-import by.kurlovich.musicshop.receiver.GenreReceiver;
+import by.kurlovich.musicshop.pages.PageStore;
+import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.validator.AccessValidator;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -20,9 +19,9 @@ public class ShowEditGenresPage implements Command {
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private AccessValidator accessValidator = new AccessValidator();
     private List<String> accessRoles = Arrays.asList("admin");
-    private GenreReceiver receiver;
+    private EntityReceiver receiver;
 
-    public ShowEditGenresPage(GenreReceiver receiver) {
+    public ShowEditGenresPage(EntityReceiver receiver) {
 
         this.receiver = receiver;
     }
@@ -33,20 +32,20 @@ public class ShowEditGenresPage implements Command {
             String userRole = (String) request.getSession(true).getAttribute("role");
 
             if (accessValidator.validate(accessRoles, userRole)) {
-                List<Genre> genres = receiver.getAllGenres();
-                genres.sort(Comparator.comparing(Genre::getName));
+                List<Genre> genreList = receiver.getAllEntities();
+                genreList.sort(Comparator.comparing(Genre::getName));
 
-                request.getSession(true).setAttribute("genres", genres);
+                request.getSession(true).setAttribute("genreList", genreList);
                 request.getSession(true).setAttribute("url", EDIT_GENRES_PAGE);
                 return new CommandResult(CommandResult.ResponseType.FORWARD, EDIT_GENRES_PAGE);
             }
 
             request.getSession(true).setAttribute("url", ERROR_PAGE);
-            request.setAttribute("nocommand", "Access denied!");
+            request.setAttribute("message", "denied");
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in Show Edit Genres Page.", e);
+            throw new CommandException("Exception in ShowEditGenresPage.\n" + e, e);
         }
     }
 }

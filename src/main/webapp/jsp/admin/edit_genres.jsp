@@ -35,7 +35,7 @@
                     <th width="35%">Genre's name</th>
                 </tr>
 
-                <c:forEach var="genre" items="${genres}">
+                <c:forEach var="genre" items="${genreList}">
                     <c:if test="${genre.status == 'active'}">
                         <tr id="${genre.id}" onclick="show_name(this.id)">
                             <td id="${genre.id}name">${genre.name}</td>

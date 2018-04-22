@@ -4,8 +4,8 @@ import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
 import by.kurlovich.musicshop.entity.Genre;
-import by.kurlovich.musicshop.pagefactory.PageStore;
-import by.kurlovich.musicshop.receiver.GenreReceiver;
+import by.kurlovich.musicshop.pages.PageStore;
+import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.validator.AccessValidator;
 import org.slf4j.Logger;
@@ -21,9 +21,9 @@ public class CreateGenre implements Command {
     private final static Logger LOGGER = LoggerFactory.getLogger(CreateGenre.class);
     private AccessValidator accessValidator = new AccessValidator();
     private List<String> accessRoles = Arrays.asList("admin");
-    private GenreReceiver receiver;
+    private EntityReceiver receiver;
 
-    public CreateGenre(GenreReceiver receiver) {
+    public CreateGenre(EntityReceiver receiver) {
 
         this.receiver = receiver;
     }
@@ -39,8 +39,8 @@ public class CreateGenre implements Command {
                 genre.setName(request.getParameter("submit_name"));
                 genre.setStatus("active");
 
-                if (receiver.addNewGenre(genre)) {
-                    List<Genre> genres = receiver.getAllGenres();
+                if (receiver.addNewEntity(genre)) {
+                    List<Genre> genres = receiver.getAllEntities();
                     request.getSession(true).setAttribute("genres", genres);
                     request.getSession(true).setAttribute("url", EDIT_GENRES_PAGE);
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_GENRES_PAGE);

@@ -30,6 +30,7 @@
         <td width="5%">
         </td>
         <td>
+            <div style="width:100%; height:400px; overflow:auto;">
             <table id="customers" width="100%">
                 <tr>
                     <th width="35%">Name</th>
@@ -78,7 +79,7 @@
                     <td>
                         <select id="author" name="author" size="1">
                         <option value=""></option>
-                        <c:forEach var="line" items="${authors}">
+                        <c:forEach var="line" items="${authorList}">
                             <c:if test="${line.status=='active'}">
                                 <option value="${line.name}">${line.name}</option>
                             </c:if>
@@ -88,7 +89,7 @@
                     <td>
                         <select id="genre" name="genre" size="1">
                             <option value=""></option>
-                            <c:forEach var="line" items="${genres}">
+                            <c:forEach var="line" items="${genreList}">
                                 <c:if test="${line.status=='active'}">
                                     <option value="${line.name}">${line.name}</option>
                                 </c:if>

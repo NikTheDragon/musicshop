@@ -1,7 +1,7 @@
 package by.kurlovich.musicshop.receiver.impl;
 
 import by.kurlovich.musicshop.entity.Genre;
-import by.kurlovich.musicshop.receiver.GenreReceiver;
+import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.repository.Repository;
 import by.kurlovich.musicshop.repository.RepositoryException;
@@ -14,11 +14,11 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public class GenreReceiverImpl implements GenreReceiver {
+public class GenreReceiverImpl implements EntityReceiver<Genre> {
     private static final Logger LOGGER = LoggerFactory.getLogger(GenreReceiverImpl.class);
 
     @Override
-    public boolean addNewGenre(Genre genre) throws ReceiverException {
+    public boolean addNewEntity(Genre genre) throws ReceiverException {
         try {
             Repository<Genre> repository = new GenreRepository();
             LOGGER.debug("trying to add genre: {}", genre.getName());
@@ -27,13 +27,13 @@ public class GenreReceiverImpl implements GenreReceiver {
                 return false;
             }
 
-            switch (repository.checkStatus(genre)) {
+            switch (repository.getStatus(genre)) {
                 case ACTIVE:
                     LOGGER.debug("found active genre: {}", genre.getName());
                     return false;
                 case DELETE:
                     LOGGER.debug("found deleted genre: {}", genre.getName());
-                    repository.setStatus(genre);
+                    repository.undelete(genre);
                     return true;
                 case NA:
                     repository.add(genre);
@@ -48,7 +48,7 @@ public class GenreReceiverImpl implements GenreReceiver {
     }
 
     @Override
-    public boolean deleteGenre(Genre genre) throws ReceiverException {
+    public boolean deleteEntity(Genre genre) throws ReceiverException {
         try {
             Repository<Genre> repository = new GenreRepository();
             LOGGER.debug("trying to delete genre: {}", genre.getName());
@@ -66,7 +66,7 @@ public class GenreReceiverImpl implements GenreReceiver {
     }
 
     @Override
-    public boolean updateGenre(Genre genre) throws ReceiverException {
+    public boolean updateEntity(Genre genre) throws ReceiverException {
         try {
             Repository<Genre> repository = new GenreRepository();
 
@@ -87,7 +87,7 @@ public class GenreReceiverImpl implements GenreReceiver {
     }
 
     @Override
-    public List<Genre> getAllGenres() throws ReceiverException {
+    public List<Genre> getAllEntities() throws ReceiverException {
         try {
             Repository<Genre> repository = new GenreRepository();
             Specification specification = new GetAllGenresSpecification();

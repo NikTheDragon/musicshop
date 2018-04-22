@@ -1,8 +1,8 @@
 package by.kurlovich.musicshop.receiver.impl;
 
 import by.kurlovich.musicshop.entity.Track;
+import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
-import by.kurlovich.musicshop.receiver.TrackReceiver;
 import by.kurlovich.musicshop.repository.Repository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
@@ -13,11 +13,11 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public class TrackReceiverImpl implements TrackReceiver {
+public class TrackReceiverImpl implements EntityReceiver<Track> {
     private static final Logger LOGGER = LoggerFactory.getLogger(TrackReceiverImpl.class);
 
     @Override
-    public boolean addNewTrack(Track track) throws ReceiverException {
+    public boolean addNewEntity(Track track) throws ReceiverException {
         try {
             Repository<Track> repository = new TrackRepository();
             LOGGER.debug("trying to add track: {}", track.getName());
@@ -26,13 +26,13 @@ public class TrackReceiverImpl implements TrackReceiver {
                 return false;
             }
 
-            switch (repository.checkStatus(track)) {
+            switch (repository.getStatus(track)) {
                 case ACTIVE:
                     LOGGER.debug("found active track: {}", track.getName());
                     return false;
                 case DELETE:
                     LOGGER.debug("found deleted track: {}", track.getName());
-                    repository.setStatus(track);
+                    repository.undelete(track);
                     return true;
                 case NA:
                     repository.add(track);
@@ -47,7 +47,7 @@ public class TrackReceiverImpl implements TrackReceiver {
     }
 
     @Override
-    public boolean deleteTrack(Track track) throws ReceiverException {
+    public boolean deleteEntity(Track track) throws ReceiverException {
         try {
             Repository<Track> repository = new TrackRepository();
             LOGGER.debug("trying to delete track: {}", track.getName());
@@ -65,7 +65,7 @@ public class TrackReceiverImpl implements TrackReceiver {
     }
 
     @Override
-    public boolean updateTrack(Track track) throws ReceiverException {
+    public boolean updateEntity(Track track) throws ReceiverException {
         try {
             Repository<Track> repository = new TrackRepository();
             LOGGER.debug("trying to update track: {}", track.getName());
@@ -83,7 +83,7 @@ public class TrackReceiverImpl implements TrackReceiver {
     }
 
     @Override
-    public List<Track> getAllTracks() throws ReceiverException {
+    public List<Track> getAllEntities() throws ReceiverException {
         try {
             Repository<Track> repository = new TrackRepository();
             Specification specification = new GetAllTracksSpecification();

@@ -94,35 +94,36 @@
                     </td>
                     <td><input id="year" name="year" type="text" value=""></td>
                 </tr>
+            </table>
+    <table>
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td width="100%"></td>
                     <form id="formCreate" action="/mainServlet" method="get">
-                        <input type="hidden" name="command" value="create_track">
+                        <input type="hidden" name="command" value="create_album">
                         <input type="hidden" name="submit_id" value="">
                         <input type="hidden" name="submit_name" value="">
                         <input type="hidden" name="submit_author" value="">
                         <input type="hidden" name="submit_genre" value="">
                         <input type="hidden" name="submit_year" value="">
-                        <td><input type="button" name="button" onclick="submitButton('formCreate')" value="${createButton}"></td>
+                        <td><input type="button" name="button" onclick="submitButton('formCreate')" value="${createButton}" style="width: 200px"></td>
                     </form>
                     <form id="formUpdate" action="/mainServlet" method="get">
-                        <input type="hidden" name="command" value="update_track">
+                        <input type="hidden" name="command" value="update_album">
                         <input type="hidden" name="submit_id" value="">
                         <input type="hidden" name="submit_name" value="">
                         <input type="hidden" name="submit_author" value="">
                         <input type="hidden" name="submit_genre" value="">
                         <input type="hidden" name="submit_year" value="">
-                        <td><input type="button" name="button" onclick="submitButton('formUpdate')" value="${updateButton}"></td>
+                        <td><input type="button" name="button" onclick="submitButton('formUpdate')" value="${updateButton}" style="width: 200px"></td>
                     </form>
                     <form id="formDelete" action="/mainServlet" method="get">
-                        <input type="hidden" name="command" value="delete_track">
+                        <input type="hidden" name="command" value="delete_album">
                         <input type="hidden" name="submit_id" value="">
                         <input type="hidden" name="submit_name" value="">
                         <input type="hidden" name="submit_author" value="">
                         <input type="hidden" name="submit_genre" value="">
                         <input type="hidden" name="submit_year" value="">
-                        <td><input type="button" name="button" onclick="submitButton('formDelete')" value="${deleteButton}"></td>
+                        <td><input type="button" name="button" onclick="submitButton('formDelete')" value="${deleteButton}" style="width: 200px"></td>
                     </form>
                 </tr>
             </table>

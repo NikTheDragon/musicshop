@@ -2,7 +2,7 @@ package by.kurlovich.musicshop.command.common;
 
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.content.CommandResult;
-import by.kurlovich.musicshop.pagefactory.PageStore;
+import by.kurlovich.musicshop.pages.PageStore;
 
 import javax.servlet.http.HttpServletRequest;
 

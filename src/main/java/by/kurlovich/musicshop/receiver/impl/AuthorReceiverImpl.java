@@ -1,7 +1,7 @@
 package by.kurlovich.musicshop.receiver.impl;
 
 import by.kurlovich.musicshop.entity.Author;
-import by.kurlovich.musicshop.receiver.AuthorReceiver;
+import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.repository.Repository;
 import by.kurlovich.musicshop.repository.RepositoryException;
@@ -13,11 +13,11 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public class AuthorReceiverImpl implements AuthorReceiver {
+public class AuthorReceiverImpl implements EntityReceiver<Author> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorReceiverImpl.class);
 
     @Override
-    public boolean addNewAuthor(Author author) throws ReceiverException {
+    public boolean addNewEntity(Author author) throws ReceiverException {
         try {
             Repository<Author> repository = new AuthorRepository();
             LOGGER.debug("trying to add track: {}", author.getName());
@@ -26,13 +26,13 @@ public class AuthorReceiverImpl implements AuthorReceiver {
                 return false;
             }
 
-            switch (repository.checkStatus(author)) {
+            switch (repository.getStatus(author)) {
                 case ACTIVE:
                     LOGGER.debug("found active author: {}", author.getName());
                     return false;
                 case DELETE:
                     LOGGER.debug("found deleted author: {}", author.getName());
-                    repository.setStatus(author);
+                    repository.undelete(author);
                     return true;
                 case NA:
                     repository.add(author);
@@ -47,7 +47,7 @@ public class AuthorReceiverImpl implements AuthorReceiver {
     }
 
     @Override
-    public boolean deleteAuthor(Author author) throws ReceiverException {
+    public boolean deleteEntity(Author author) throws ReceiverException {
         try {
             Repository<Author> repository = new AuthorRepository();
             LOGGER.debug("trying to delete track: {}", author.getName());
@@ -65,7 +65,7 @@ public class AuthorReceiverImpl implements AuthorReceiver {
     }
 
     @Override
-    public boolean updateAuthor(Author author) throws ReceiverException {
+    public boolean updateEntity(Author author) throws ReceiverException {
         try {
             Repository<Author> repository = new AuthorRepository();
             LOGGER.debug("trying to update author: {}", author.getName());
@@ -83,7 +83,7 @@ public class AuthorReceiverImpl implements AuthorReceiver {
     }
 
     @Override
-    public List<Author> getAllAuthors() throws ReceiverException {
+    public List<Author> getAllEntities() throws ReceiverException {
         try {
             Repository<Author> repository = new AuthorRepository();
             Specification specification = new GetAllAuthorsSpecification();

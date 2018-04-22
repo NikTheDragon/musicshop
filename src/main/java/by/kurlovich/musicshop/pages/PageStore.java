@@ -1,4 +1,4 @@
-package by.kurlovich.musicshop.pagefactory;
+package by.kurlovich.musicshop.pages;
 
 public enum PageStore {
     MAIN_PAGE("/jsp/common/main.jsp"),

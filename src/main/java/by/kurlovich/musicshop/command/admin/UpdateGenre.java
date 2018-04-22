@@ -4,8 +4,8 @@ import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
 import by.kurlovich.musicshop.entity.Genre;
-import by.kurlovich.musicshop.pagefactory.PageStore;
-import by.kurlovich.musicshop.receiver.GenreReceiver;
+import by.kurlovich.musicshop.pages.PageStore;
+import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.validator.AccessValidator;
 import org.slf4j.Logger;
@@ -22,9 +22,9 @@ public class UpdateGenre implements Command {
     private final static Logger LOGGER = LoggerFactory.getLogger(UpdateGenre.class);
     private AccessValidator accessValidator = new AccessValidator();
     private List<String> accessRoles = Arrays.asList("admin");
-    private GenreReceiver receiver;
+    private EntityReceiver receiver;
 
-    public UpdateGenre(GenreReceiver receiver) {
+    public UpdateGenre(EntityReceiver receiver) {
 
         this.receiver = receiver;
     }
@@ -40,11 +40,11 @@ public class UpdateGenre implements Command {
                 genre.setId(request.getParameter("submit_id"));
                 genre.setName(request.getParameter("submit_name"));
 
-                if (receiver.updateGenre(genre)) {
-                    List<Genre> genres = receiver.getAllGenres();
-                    genres.sort(Comparator.comparing(Genre::getName));
+                if (receiver.updateEntity(genre)) {
+                    List<Genre> genreList = receiver.getAllEntities();
+                    genreList.sort(Comparator.comparing(Genre::getName));
 
-                    request.getSession(true).setAttribute("genres", genres);
+                    request.getSession(true).setAttribute("genreList", genreList);
                     request.getSession(true).setAttribute("url", EDIT_GENRES_PAGE);
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_GENRES_PAGE);
                 }
@@ -55,7 +55,7 @@ public class UpdateGenre implements Command {
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in updateGenre.\n" + e, e);
+            throw new CommandException("Exception in UpdateGenre.\n" + e, e);
         }
     }
 }

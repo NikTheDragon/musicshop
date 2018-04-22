@@ -130,7 +130,7 @@ public class TrackRepository implements Repository<Track> {
     }
 
     @Override
-    public Status checkStatus(Track track) throws RepositoryException {
+    public Status getStatus(Track track) throws RepositoryException {
         final int STATUS = 1;
 
         try {
@@ -149,7 +149,7 @@ public class TrackRepository implements Repository<Track> {
 
             connectionPool.releaseConnection(dbConnection);
 
-            return getStatus(status);
+            return Status.getStatus(status);
 
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception in check track status method.\n" + e, e);
@@ -157,7 +157,7 @@ public class TrackRepository implements Repository<Track> {
     }
 
     @Override
-    public void setStatus(Track track) throws RepositoryException {
+    public void undelete(Track track) throws RepositoryException {
         try {
             LOGGER.debug("Set track {} status to active.", track.getName());
 

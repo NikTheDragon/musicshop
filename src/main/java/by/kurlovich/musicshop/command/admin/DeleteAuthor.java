@@ -4,13 +4,11 @@ import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
 import by.kurlovich.musicshop.entity.Author;
-import by.kurlovich.musicshop.entity.Genre;
-import by.kurlovich.musicshop.pagefactory.PageStore;
-import by.kurlovich.musicshop.receiver.AuthorReceiver;
-import by.kurlovich.musicshop.receiver.GenreReceiver;
+import by.kurlovich.musicshop.pages.PageStore;
+import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
-import by.kurlovich.musicshop.receiver.impl.GenreReceiverImpl;
 import by.kurlovich.musicshop.validator.AccessValidator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,9 +23,9 @@ public class DeleteAuthor implements Command {
     private final static Logger LOGGER = LoggerFactory.getLogger(DeleteAuthor.class);
     private AccessValidator accessValidator = new AccessValidator();
     private List<String> accessRoles = Arrays.asList("admin");
-    private AuthorReceiver receiver;
+    private EntityReceiver receiver;
 
-    public DeleteAuthor(AuthorReceiver receiver) {
+    public DeleteAuthor(EntityReceiver receiver) {
 
         this.receiver = receiver;
     }
@@ -37,7 +35,6 @@ public class DeleteAuthor implements Command {
         try {
             String userRole = (String) request.getSession(true).getAttribute("role");
             request.setAttribute("message", "denied");
-            GenreReceiver genreReceiver = new GenreReceiverImpl();
 
             if (accessValidator.validate(accessRoles, userRole)) {
                 Author author = new Author();
@@ -45,15 +42,11 @@ public class DeleteAuthor implements Command {
                 author.setGenre(request.getParameter("submit_genre"));
                 author.setType(request.getParameter("submit_type"));
 
-                if (receiver.deleteAuthor(author)) {
-                    List<Genre> genres = genreReceiver.getAllGenres();
-                    genres.sort(Comparator.comparing(Genre::getName));
-
-                    List<Author> authorList = receiver.getAllAuthors();
+                if (receiver.deleteEntity(author)) {
+                    List<Author> authorList = receiver.getAllEntities();
                     authorList.sort(Comparator.comparing(Author::getName));
 
                     request.getSession(true).setAttribute("authorList", authorList);
-                    request.getSession(true).setAttribute("genres", genres);
                     request.getSession(true).setAttribute("url", EDIT_AUTHORS_PAGE);
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_AUTHORS_PAGE);
                 }
@@ -64,7 +57,7 @@ public class DeleteAuthor implements Command {
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in Delete Author.", e);
+            throw new CommandException("Exception in Delete Author." + e, e);
         }
     }
 }

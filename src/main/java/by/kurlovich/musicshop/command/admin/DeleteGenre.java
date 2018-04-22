@@ -4,10 +4,11 @@ import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
 import by.kurlovich.musicshop.entity.Genre;
-import by.kurlovich.musicshop.pagefactory.PageStore;
-import by.kurlovich.musicshop.receiver.GenreReceiver;
+import by.kurlovich.musicshop.pages.PageStore;
+import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.validator.AccessValidator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,9 +23,9 @@ public class DeleteGenre implements Command {
     private final static Logger LOGGER = LoggerFactory.getLogger(DeleteGenre.class);
     private AccessValidator accessValidator = new AccessValidator();
     private List<String> accessRoles = Arrays.asList("admin");
-    private GenreReceiver receiver;
+    private EntityReceiver receiver;
 
-    public DeleteGenre(GenreReceiver receiver) {
+    public DeleteGenre(EntityReceiver receiver) {
 
         this.receiver = receiver;
     }
@@ -33,14 +34,14 @@ public class DeleteGenre implements Command {
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
             String userRole = (String) request.getSession(true).getAttribute("role");
-            request.setAttribute("nocommand", "Access denied!");
+            request.setAttribute("message", "denied");
 
             if (accessValidator.validate(accessRoles, userRole)) {
                 Genre genre = new Genre();
                 genre.setName(request.getParameter("submit_name"));
 
-                if (receiver.deleteGenre(genre)) {
-                    List<Genre> genres = receiver.getAllGenres();
+                if (receiver.deleteEntity(genre)) {
+                    List<Genre> genres = receiver.getAllEntities();
                     genres.sort(Comparator.comparing(Genre::getName));
 
                     request.getSession(true).setAttribute("genres", genres);
@@ -48,13 +49,13 @@ public class DeleteGenre implements Command {
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_GENRES_PAGE);
                 }
 
-                request.setAttribute("nocommand", "Can't delete genre.");
+                request.setAttribute("message", "undelete");
             }
             request.getSession(true).setAttribute("url", ERROR_PAGE);
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in Delete Genre.", e);
+            throw new CommandException("Exception in Delete Genre.\n" + e, e);
         }
     }
 }

@@ -1,7 +1,7 @@
 package by.kurlovich.musicshop.receiver.impl;
 
 import by.kurlovich.musicshop.entity.Album;
-import by.kurlovich.musicshop.receiver.AlbumReceiver;
+import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.repository.Repository;
 import by.kurlovich.musicshop.repository.RepositoryException;
@@ -13,11 +13,11 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public class AlbumReceiverImpl implements AlbumReceiver {
+public class AlbumReceiverImpl implements EntityReceiver<Album> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AlbumReceiverImpl.class);
 
     @Override
-    public boolean addNewAuthor(Album album) throws ReceiverException {
+    public boolean addNewEntity(Album album) throws ReceiverException {
         try {
             Repository<Album> repository = new AlbumRepository();
             LOGGER.debug("trying to add album: {}", album.getName());
@@ -26,13 +26,13 @@ public class AlbumReceiverImpl implements AlbumReceiver {
                 return false;
             }
 
-            switch (repository.checkStatus(album)) {
+            switch (repository.getStatus(album)) {
                 case ACTIVE:
                     LOGGER.debug("found active album: {}", album.getName());
                     return false;
                 case DELETE:
                     LOGGER.debug("found deleted album: {}", album.getName());
-                    repository.setStatus(album);
+                    repository.undelete(album);
                     return true;
                 case NA:
                     repository.add(album);
@@ -47,7 +47,7 @@ public class AlbumReceiverImpl implements AlbumReceiver {
     }
 
     @Override
-    public boolean deleteAuthor(Album album) throws ReceiverException {
+    public boolean deleteEntity(Album album) throws ReceiverException {
         try {
             Repository<Album> repository = new AlbumRepository();
             LOGGER.debug("trying to delete album: {}", album.getName());
@@ -65,7 +65,7 @@ public class AlbumReceiverImpl implements AlbumReceiver {
     }
 
     @Override
-    public boolean updateAuthor(Album album) throws ReceiverException {
+    public boolean updateEntity(Album album) throws ReceiverException {
         try {
             Repository<Album> repository = new AlbumRepository();
             LOGGER.debug("trying to update album: {}", album.getName());
@@ -83,7 +83,7 @@ public class AlbumReceiverImpl implements AlbumReceiver {
     }
 
     @Override
-    public List<Album> getAllAlbums() throws ReceiverException {
+    public List<Album> getAllEntities() throws ReceiverException {
         try {
             Repository<Album> repository = new AlbumRepository();
             Specification specification = new GetAllAlbumsSpecification();

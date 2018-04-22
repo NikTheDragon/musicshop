@@ -72,7 +72,7 @@
                     <td>
                         <select id="genre" name="genre" size="1">
                             <option value=""></option>
-                            <c:forEach var="line" items="${genres}">
+                            <c:forEach var="line" items="${genreList}">
                                 <c:if test="${line.status=='active'}">
                                     <option value="${line.name}">${line.name}</option>
                                 </c:if>
@@ -82,8 +82,8 @@
                     <td>
                         <select id="type" name="type" size="1">
                             <option value=""></option>
-                            <option value="single">${singleSelector}</option>
-                            <option value="band">${bandSelector}</option>
+                            <option value="Певец">${singleSelector}</option>
+                            <option value="Группа">${bandSelector}</option>
                         </select>
                     </td>
 

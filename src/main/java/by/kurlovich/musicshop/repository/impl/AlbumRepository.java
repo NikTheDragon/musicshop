@@ -22,7 +22,7 @@ public class AlbumRepository implements Repository<Album> {
     private static final String GET_STATUS = "SELECT status FROM albums WHERE name=?";
     private static final String SET_STATUS = "UPDATE albums SET status='active' WHERE name=? AND author=(SELECT id FROM authors WHERE name=?) genre=(SELECT id FROM genres WHERE name=?) AND year=?";
     private static final String ADD_ALBUM = "INSERT INTO albums (name, author, genre, year, status) VALUES (?,(SELECT id FROM authors WHERE name=?),(SELECT id FROM genres WHERE name=?),?,?)";
-    private static final String DELETE_ALBUM = "UPDATE albums SET status='deleted' WHERE name=?";
+    private static final String DELETE_ALBUM = "UPDATE albums SET status='deleted' WHERE name=? AND author=(SELECT id FROM authors WHERE name=?)";
     private static final String UPDATE_ALBUM = "UPDATE albums SET name=?, (SELECT id FROM authors WHERE name=?), genre=(SELECT id FROM genres WHERE name=?), year=? WHERE id=?";
     private DBConnection dbConnection;
 
@@ -58,6 +58,7 @@ public class AlbumRepository implements Repository<Album> {
 
             try (PreparedStatement ps = connection.prepareStatement(DELETE_ALBUM)) {
                 ps.setString(1, item.getName());
+                ps.setString(2, item.getAuthor());
 
                 ps.executeUpdate();
             }
@@ -118,7 +119,7 @@ public class AlbumRepository implements Repository<Album> {
     }
 
     @Override
-    public Status checkStatus(Album item) throws RepositoryException {
+    public Status getStatus(Album item) throws RepositoryException {
         final int STATUS = 1;
 
         try (DBConnection dbConnection = new DBConnection()) {
@@ -126,27 +127,26 @@ public class AlbumRepository implements Repository<Album> {
             LOGGER.debug("Checking album {} status.", item.getName());
             Connection connection = dbConnection.getConnection();
 
-            try (PreparedStatement ps = connection.prepareStatement(GET_STATUS);
-                 ResultSet rs = ps.executeQuery()) {
+            try (PreparedStatement ps = connection.prepareStatement(GET_STATUS)) {
 
                 ps.setString(1, item.getName());
-
-                while (rs.next()) {
-                    status = (rs.getString(STATUS));
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        status = (rs.getString(STATUS));
+                    }
                 }
             }
 
-            return getStatus(status);
+            return Status.getStatus(status);
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in check album status method.\n" + e, e);
+            throw new RepositoryException("Exception in get album status method.\n" + e, e);
         }
     }
 
 
-
     @Override
-    public void setStatus(Album item) throws RepositoryException {
+    public void undelete(Album item) throws RepositoryException {
         try (DBConnection dbConnection = new DBConnection()) {
             LOGGER.debug("Set album {} status to active.", item.getName());
             Connection connection = dbConnection.getConnection();

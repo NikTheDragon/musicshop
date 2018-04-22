@@ -20,9 +20,11 @@ public enum CommandType {
     CREATE_GENRE(new CreateGenre(new GenreReceiverImpl())::execute),
     CREATE_TRACK(new CreateTrack(new TrackReceiverImpl())::execute),
     CREATE_AUTHOR(new CreateAuthor(new AuthorReceiverImpl())::execute),
+    CREATE_ALBUM(new CreateAlbum(new AlbumReceiverImpl())::execute),
     DELETE_GENRE(new DeleteGenre(new GenreReceiverImpl())::execute),
     DELETE_TRACK(new DeleteTrack(new TrackReceiverImpl())::execute),
     DELETE_AUTHOR(new DeleteAuthor(new AuthorReceiverImpl())::execute),
+    DELETE_ALBUM(new DeleteAlbum(new AlbumReceiverImpl())::execute),
     UPDATE_GENRE(new UpdateGenre(new GenreReceiverImpl())::execute),
     UPDATE_TRACK(new UpdateTrack(new TrackReceiverImpl())::execute),
     UPDATE_AUTHOR(new UpdateAuthor(new AuthorReceiverImpl())::execute);

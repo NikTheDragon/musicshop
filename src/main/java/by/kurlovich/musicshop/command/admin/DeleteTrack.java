@@ -3,14 +3,12 @@ package by.kurlovich.musicshop.command.admin;
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
-import by.kurlovich.musicshop.entity.Genre;
 import by.kurlovich.musicshop.entity.Track;
-import by.kurlovich.musicshop.pagefactory.PageStore;
-import by.kurlovich.musicshop.receiver.GenreReceiver;
+import by.kurlovich.musicshop.pages.PageStore;
+import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
-import by.kurlovich.musicshop.receiver.TrackReceiver;
-import by.kurlovich.musicshop.receiver.impl.GenreReceiverImpl;
 import by.kurlovich.musicshop.validator.AccessValidator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,9 +23,9 @@ public class DeleteTrack implements Command {
     private final static Logger LOGGER = LoggerFactory.getLogger(DeleteTrack.class);
     private AccessValidator accessValidator = new AccessValidator();
     private List<String> accessRoles = Arrays.asList("admin");
-    private TrackReceiver receiver;
+    private EntityReceiver receiver;
 
-    public DeleteTrack(TrackReceiver receiver) {
+    public DeleteTrack(EntityReceiver receiver) {
 
         this.receiver = receiver;
     }
@@ -37,7 +35,6 @@ public class DeleteTrack implements Command {
         try {
             String userRole = (String) request.getSession(true).getAttribute("role");
             request.setAttribute("message", "denied");
-            GenreReceiver genreReceiver = new GenreReceiverImpl();
 
             if (accessValidator.validate(accessRoles, userRole)) {
                 Track track = new Track();
@@ -47,15 +44,11 @@ public class DeleteTrack implements Command {
                 track.setYear(request.getParameter("submit_year"));
                 track.setLength(request.getParameter("submit_length"));
 
-                if (receiver.deleteTrack(track)) {
-                    List<Genre> genres = genreReceiver.getAllGenres();
-                    genres.sort(Comparator.comparing(Genre::getName));
-
-                    List<Track> trackList = receiver.getAllTracks();
+                if (receiver.deleteEntity(track)) {
+                    List<Track> trackList = receiver.getAllEntities();
                     trackList.sort(Comparator.comparing(Track::getName));
 
                     request.getSession(true).setAttribute("trackList", trackList);
-                    request.getSession(true).setAttribute("genres", genres);
                     request.getSession(true).setAttribute("url", EDIT_TRACKS_PAGE);
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_TRACKS_PAGE);
                 }

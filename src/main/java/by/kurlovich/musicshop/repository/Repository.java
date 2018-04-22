@@ -7,28 +7,32 @@ public interface Repository<T> {
         ACTIVE,
         DELETE,
         NA;
-    }
 
-    void add(T item) throws RepositoryException;
-    void delete (T item) throws RepositoryException;
-    void update (T item) throws RepositoryException;
+        public static Status getStatus(String value) {
+            if (value == null) {
+                value = "";
+            }
 
-    List<T> query(Specification specification) throws RepositoryException;
-    Status checkStatus(T item) throws RepositoryException;
-    void setStatus (T item) throws RepositoryException;
-
-    static Status get(String value) {
-        switch (value) {
-            case "active":
-                return Status.ACTIVE;
-            case "deleted":
-                return Status.DELETE;
-            default:
-                return Status.NA;
+            switch (value) {
+                case "active":
+                    return Status.ACTIVE;
+                case "deleted":
+                    return Status.DELETE;
+                default:
+                    return Status.NA;
+            }
         }
     }
 
-    default Status getStatus(String status) {
-        return get(status);
-    }
+    void add(T item) throws RepositoryException;
+
+    void delete(T item) throws RepositoryException;
+
+    void update(T item) throws RepositoryException;
+
+    List<T> query(Specification specification) throws RepositoryException;
+
+    Status getStatus(T item) throws RepositoryException;
+
+    void undelete(T item) throws RepositoryException;
 }

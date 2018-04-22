@@ -116,7 +116,7 @@ public class AuthorRepository implements Repository<Author> {
     }
 
     @Override
-    public Status checkStatus(Author item) throws RepositoryException {
+    public Status getStatus(Author item) throws RepositoryException {
         final int STATUS = 1;
 
         try (DBConnection dbConnection = new DBConnection()) {
@@ -134,7 +134,7 @@ public class AuthorRepository implements Repository<Author> {
                 }
             }
 
-            return getStatus(status);
+            return Status.getStatus(status);
 
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception in check author status method.\n" + e, e);
@@ -142,7 +142,7 @@ public class AuthorRepository implements Repository<Author> {
     }
 
     @Override
-    public void setStatus(Author item) throws RepositoryException {
+    public void undelete(Author item) throws RepositoryException {
         try (DBConnection dbConnection = new DBConnection()) {
             LOGGER.debug("Set author {} status to active.", item.getName());
             Connection connection = dbConnection.getConnection();

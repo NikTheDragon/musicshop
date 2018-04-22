@@ -5,9 +5,8 @@ import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
 import by.kurlovich.musicshop.entity.Author;
 import by.kurlovich.musicshop.entity.Genre;
-import by.kurlovich.musicshop.pagefactory.PageStore;
-import by.kurlovich.musicshop.receiver.AuthorReceiver;
-import by.kurlovich.musicshop.receiver.GenreReceiver;
+import by.kurlovich.musicshop.pages.PageStore;
+import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.receiver.impl.GenreReceiverImpl;
 import by.kurlovich.musicshop.validator.AccessValidator;
@@ -22,9 +21,9 @@ public class ShowEditAuthorsPage implements Command {
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private AccessValidator accessValidator = new AccessValidator();
     private List<String> accessRoles = Arrays.asList("admin");
-    private AuthorReceiver receiver;
+    private EntityReceiver receiver;
 
-    public ShowEditAuthorsPage(AuthorReceiver receiver) {
+    public ShowEditAuthorsPage(EntityReceiver receiver) {
         this.receiver = receiver;
     }
 
@@ -34,15 +33,15 @@ public class ShowEditAuthorsPage implements Command {
             String userRole = (String) request.getSession(true).getAttribute("role");
 
             if (accessValidator.validate(accessRoles, userRole)) {
-                GenreReceiver genreReceiver = new GenreReceiverImpl();
+                EntityReceiver genreReceiver = new GenreReceiverImpl();
 
-                List<Genre> genres = genreReceiver.getAllGenres();
-                genres.sort(Comparator.comparing(Genre::getName));
+                List<Genre> genreList = genreReceiver.getAllEntities();
+                genreList.sort(Comparator.comparing(Genre::getName));
 
-                List<Author> authorList = receiver.getAllAuthors();
+                List<Author> authorList = receiver.getAllEntities();
                 authorList.sort(Comparator.comparing(Author::getName));
 
-                request.getSession(true).setAttribute("genres", genres);
+                request.getSession(true).setAttribute("genreList", genreList);
                 request.getSession(true).setAttribute("authorList", authorList);
                 request.getSession(true).setAttribute("url", EDIT_AUTHORS_PAGE);
                 return new CommandResult(CommandResult.ResponseType.FORWARD, EDIT_AUTHORS_PAGE);
@@ -53,7 +52,7 @@ public class ShowEditAuthorsPage implements Command {
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in Show Edit Authors Page.\n"+e, e);
+            throw new CommandException("Exception in ShowEditAuthorsPage.\n"+e, e);
         }
 
     }

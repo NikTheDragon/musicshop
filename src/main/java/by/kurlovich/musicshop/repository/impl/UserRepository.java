@@ -106,12 +106,12 @@ public class UserRepository implements Repository<User> {
     }
 
     @Override
-    public Status checkStatus(User item) throws RepositoryException {
+    public Status getStatus(User item) throws RepositoryException {
         return null;
     }
 
     @Override
-    public void setStatus(User item) throws RepositoryException {
+    public void undelete(User item) throws RepositoryException {
 
     }
 }
