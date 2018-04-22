@@ -38,12 +38,15 @@ public class UpdateTrack implements Command {
 
             if (accessValidator.validate(accessRoles, userRole)) {
                 Track track = new Track();
+
                 track.setId((request.getParameter("submit_id")));
                 track.setName(request.getParameter("submit_name"));
                 track.setAuthor(request.getParameter("submit_author"));
                 track.setGenre(request.getParameter("submit_genre"));
                 track.setYear(request.getParameter("submit_year"));
                 track.setLength(request.getParameter("submit_length"));
+
+                LOGGER.debug("Updating track: {}", track.getName());
 
                 if (receiver.updateEntity(track)) {
                     List<Track> trackList = receiver.getAllEntities();

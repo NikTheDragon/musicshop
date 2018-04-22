@@ -44,6 +44,8 @@ public class DeleteTrack implements Command {
                 track.setYear(request.getParameter("submit_year"));
                 track.setLength(request.getParameter("submit_length"));
 
+                LOGGER.debug("Deleting track: {}", track.getName());
+
                 if (receiver.deleteEntity(track)) {
                     List<Track> trackList = receiver.getAllEntities();
                     trackList.sort(Comparator.comparing(Track::getName));

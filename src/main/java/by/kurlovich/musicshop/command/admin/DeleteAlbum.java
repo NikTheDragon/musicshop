@@ -44,7 +44,7 @@ public class DeleteAlbum implements Command {
                 album.setAuthor(request.getParameter("submit_author"));
                 album.setYear(Integer.parseInt(request.getParameter("submit_year")));
 
-                LOGGER.debug("Deleting album: {}", album);
+                LOGGER.debug("Deleting album: {}", album.getName());
 
                 if (receiver.deleteEntity(album)) {
                     List<Album> albumList = receiver.getAllEntities();
@@ -62,7 +62,7 @@ public class DeleteAlbum implements Command {
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in CreateAlbum.\n" + e, e);
+            throw new CommandException("Exception in DeleteAlbum.\n" + e, e);
         }
     }
 }

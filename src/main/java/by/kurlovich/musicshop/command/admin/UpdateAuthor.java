@@ -38,10 +38,13 @@ public class UpdateAuthor implements Command {
 
             if (accessValidator.validate(accessRoles, userRole)) {
                 Author author = new Author();
+
                 author.setId(request.getParameter("submit_id"));
                 author.setName(request.getParameter("submit_name"));
                 author.setGenre(request.getParameter("submit_genre"));
                 author.setType(request.getParameter("submit_type"));
+
+                LOGGER.debug("Updating author: {}", author.getName());
 
                 if (receiver.updateEntity(author)) {
                     List<Author> authorList = receiver.getAllEntities();
@@ -52,7 +55,7 @@ public class UpdateAuthor implements Command {
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_AUTHORS_PAGE);
                 }
 
-                request.setAttribute("message", "Can't update author.");
+                request.setAttribute("message", "unupdate");
             }
             request.getSession(true).setAttribute("url", ERROR_PAGE);
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);

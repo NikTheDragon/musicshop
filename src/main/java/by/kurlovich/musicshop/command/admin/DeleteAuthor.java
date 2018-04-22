@@ -38,9 +38,12 @@ public class DeleteAuthor implements Command {
 
             if (accessValidator.validate(accessRoles, userRole)) {
                 Author author = new Author();
+
                 author.setName(request.getParameter("submit_name"));
                 author.setGenre(request.getParameter("submit_genre"));
                 author.setType(request.getParameter("submit_type"));
+
+                LOGGER.debug("Deleting author: {}", author.getName());
 
                 if (receiver.deleteEntity(author)) {
                     List<Author> authorList = receiver.getAllEntities();
@@ -57,7 +60,7 @@ public class DeleteAuthor implements Command {
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in Delete Author." + e, e);
+            throw new CommandException("Exception in DeleteAuthor." + e, e);
         }
     }
 }

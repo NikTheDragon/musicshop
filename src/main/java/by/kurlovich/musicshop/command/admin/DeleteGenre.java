@@ -40,11 +40,13 @@ public class DeleteGenre implements Command {
                 Genre genre = new Genre();
                 genre.setName(request.getParameter("submit_name"));
 
-                if (receiver.deleteEntity(genre)) {
-                    List<Genre> genres = receiver.getAllEntities();
-                    genres.sort(Comparator.comparing(Genre::getName));
+                LOGGER.debug("Deleting genre: {}", genre.getName());
 
-                    request.getSession(true).setAttribute("genres", genres);
+                if (receiver.deleteEntity(genre)) {
+                    List<Genre> genreList = receiver.getAllEntities();
+                    genreList.sort(Comparator.comparing(Genre::getName));
+
+                    request.getSession(true).setAttribute("genreList", genreList);
                     request.getSession(true).setAttribute("url", EDIT_GENRES_PAGE);
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_GENRES_PAGE);
                 }
@@ -55,7 +57,7 @@ public class DeleteGenre implements Command {
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in Delete Genre.\n" + e, e);
+            throw new CommandException("Exception in DeleteGenre.\n" + e, e);
         }
     }
 }

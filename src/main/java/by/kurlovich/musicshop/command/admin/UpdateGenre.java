@@ -38,8 +38,11 @@ public class UpdateGenre implements Command {
 
             if (accessValidator.validate(accessRoles, userRole)) {
                 Genre genre = new Genre();
+
                 genre.setId(request.getParameter("submit_id"));
                 genre.setName(request.getParameter("submit_name"));
+
+                LOGGER.debug("Updating genre: {}", genre.getName());
 
                 if (receiver.updateEntity(genre)) {
                     List<Genre> genreList = receiver.getAllEntities();
@@ -50,7 +53,7 @@ public class UpdateGenre implements Command {
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_GENRES_PAGE);
                 }
 
-                request.setAttribute("message", "Can't update genre.");
+                request.setAttribute("message", "unupdate");
             }
             request.getSession(true).setAttribute("url", ERROR_PAGE);
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
