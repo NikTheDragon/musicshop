@@ -35,10 +35,10 @@ public class DeleteAlbum implements Command {
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
             String userRole = (String) request.getSession(true).getAttribute("role");
-            request.setAttribute("message", "denied");
 
             if (accessValidator.validate(accessRoles, userRole)) {
                 Album album = new Album();
+
                 album.setName(request.getParameter("submit_name"));
                 album.setGenre(request.getParameter("submit_genre"));
                 album.setAuthor(request.getParameter("submit_author"));
@@ -56,9 +56,12 @@ public class DeleteAlbum implements Command {
                 }
 
                 request.setAttribute("message", "undelete");
+
+            } else {
+                request.setAttribute("message", "denied");
+                request.getSession(true).setAttribute("url", ERROR_PAGE);
             }
 
-            request.getSession(true).setAttribute("url", ERROR_PAGE);
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {

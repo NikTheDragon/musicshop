@@ -6,16 +6,15 @@ import by.kurlovich.musicshop.pages.PageStore;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class CommandNotFound implements Command {
-    private String errorPage = PageStore.ERROR_PAGE.getPageName();
+public class ShowErrorPage implements Command {
+    private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
 
-    public CommandNotFound() {
+    public ShowErrorPage() {
     }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {
 
-        request.getSession(true).setAttribute("url", errorPage);
-        return new CommandResult(CommandResult.ResponseType.FORWARD, errorPage);
+        return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
     }
 }

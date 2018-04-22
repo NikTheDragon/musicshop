@@ -8,6 +8,7 @@ import by.kurlovich.musicshop.pages.PageStore;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.validator.AccessValidator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,6 +39,7 @@ public class CreateAlbum implements Command {
 
             if (accessValidator.validate(accessRoles, userRole)) {
                 Album album = new Album();
+
                 album.setName(request.getParameter("submit_name"));
                 album.setGenre(request.getParameter("submit_genre"));
                 album.setAuthor(request.getParameter("submit_author"));
@@ -56,9 +58,11 @@ public class CreateAlbum implements Command {
                 }
 
                 request.setAttribute("message", "exists");
+
+            } else {
+                request.getSession(true).setAttribute("url", ERROR_PAGE);
             }
 
-            request.getSession(true).setAttribute("url", ERROR_PAGE);
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {

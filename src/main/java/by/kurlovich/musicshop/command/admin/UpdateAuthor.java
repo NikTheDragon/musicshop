@@ -56,8 +56,11 @@ public class UpdateAuthor implements Command {
                 }
 
                 request.setAttribute("message", "unupdate");
+
+            } else {
+                request.getSession(true).setAttribute("url", ERROR_PAGE);
             }
-            request.getSession(true).setAttribute("url", ERROR_PAGE);
+
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {

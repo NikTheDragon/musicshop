@@ -55,8 +55,11 @@ public class DeleteAuthor implements Command {
                 }
 
                 request.setAttribute("message", "undelete");
+
+            } else {
+                request.getSession(true).setAttribute("url", ERROR_PAGE);
             }
-            request.getSession(true).setAttribute("url", ERROR_PAGE);
+
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {

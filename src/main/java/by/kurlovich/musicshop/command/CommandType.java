@@ -5,7 +5,7 @@ import by.kurlovich.musicshop.command.common.*;
 import by.kurlovich.musicshop.receiver.impl.*;
 
 public enum CommandType {
-    COMMAND_NOT_FOUND(new CommandNotFound()::execute),
+    SHOW_ERROR_PAGE(new ShowErrorPage()::execute),
     CHANGE_LANGUAGE(new ChangeLanguage()::execute),
     REG_NEW_USER(new RegNewUser(new UserReceiverImpl())::execute),
     LOGIN_USER(new LoginUser(new UserReceiverImpl())::execute),
@@ -32,7 +32,8 @@ public enum CommandType {
     UPDATE_TRACK(new UpdateTrack(new TrackReceiverImpl())::execute),
     UPDATE_AUTHOR(new UpdateAuthor(new AuthorReceiverImpl())::execute),
     UPDATE_ALBUM(new UpdateAlbum(new AlbumReceiverImpl())::execute),
-    UPDATE_MIX(new UpdateMix(new MixReceiverImpl())::execute);
+    UPDATE_MIX(new UpdateMix(new MixReceiverImpl())::execute),
+    BACK_TO_PAGE(new BackToPage()::execute);
 
     private Command command;
 

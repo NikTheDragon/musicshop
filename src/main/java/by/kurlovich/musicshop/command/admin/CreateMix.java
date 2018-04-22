@@ -35,10 +35,10 @@ public class CreateMix implements Command {
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
             String userRole = (String) request.getSession(true).getAttribute("role");
-            request.setAttribute("message", "denied");
 
             if (accessValidator.validate(accessRoles, userRole)) {
                 Mix mix = new Mix();
+
                 mix.setName(request.getParameter("submit_name"));
                 mix.setGenre(request.getParameter("submit_genre"));
                 mix.setYear(request.getParameter("submit_year"));
@@ -56,9 +56,12 @@ public class CreateMix implements Command {
                 }
 
                 request.setAttribute("message", "exists");
+
+            } else {
+                request.setAttribute("message", "denied");
+                request.getSession(true).setAttribute("url", ERROR_PAGE);
             }
 
-            request.getSession(true).setAttribute("url", ERROR_PAGE);
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {

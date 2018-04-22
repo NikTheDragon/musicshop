@@ -58,9 +58,11 @@ public class CreateTrack implements Command {
                 }
 
                 request.setAttribute("message", "exists");
+
+            } else {
+                request.getSession(true).setAttribute("url", ERROR_PAGE);
             }
 
-            request.getSession(true).setAttribute("url", ERROR_PAGE);
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {

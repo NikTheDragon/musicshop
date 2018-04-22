@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class CreateGenre implements Command {
@@ -36,20 +37,27 @@ public class CreateGenre implements Command {
 
             if (accessValidator.validate(accessRoles, userRole)) {
                 Genre genre = new Genre();
+
                 genre.setName(request.getParameter("submit_name"));
                 genre.setStatus("active");
 
+                LOGGER.debug("Creating genre: {}", genre.getName());
+
                 if (receiver.addNewEntity(genre)) {
-                    List<Genre> genres = receiver.getAllEntities();
-                    request.getSession(true).setAttribute("genres", genres);
+                    List<Genre> genreList = receiver.getAllEntities();
+                    genreList.sort(Comparator.comparing(Genre::getName));
+
+                    request.getSession(true).setAttribute("genreList", genreList);
                     request.getSession(true).setAttribute("url", EDIT_GENRES_PAGE);
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_GENRES_PAGE);
                 }
 
                 request.setAttribute("message", "exists");
+
+            } else {
+                request.getSession(true).setAttribute("url", ERROR_PAGE);
             }
 
-            request.getSession(true).setAttribute("url", ERROR_PAGE);
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {

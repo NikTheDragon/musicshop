@@ -1,5 +1,7 @@
 package by.kurlovich.musicshop.entity;
 
+import java.util.Objects;
+
 public class Track {
     private static final long serialVersionUID = 1L;
     private String id;
@@ -64,6 +66,26 @@ public class Track {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Track track = (Track) o;
+        return Objects.equals(id, track.id) &&
+                Objects.equals(name, track.name) &&
+                Objects.equals(author, track.author) &&
+                Objects.equals(genre, track.genre) &&
+                Objects.equals(year, track.year) &&
+                Objects.equals(length, track.length) &&
+                Objects.equals(status, track.status);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, name, author, genre, year, length, status);
     }
 
     @Override
