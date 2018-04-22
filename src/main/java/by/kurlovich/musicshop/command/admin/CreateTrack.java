@@ -45,7 +45,7 @@ public class CreateTrack implements Command {
                 track.setLength(request.getParameter("submit_length"));
                 track.setStatus("active");
 
-                LOGGER.debug("Creating track: {}", track);
+                LOGGER.debug("Creating track: {}", track.getName());
 
                 if (receiver.addNewEntity(track)) {
                     List<Track> trackList = receiver.getAllEntities();
@@ -56,14 +56,14 @@ public class CreateTrack implements Command {
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_TRACKS_PAGE);
                 }
 
-                request.setAttribute("message", "track exists");
+                request.setAttribute("message", "exists");
             }
 
             request.getSession(true).setAttribute("url", ERROR_PAGE);
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in Create Genre.", e);
+            throw new CommandException("Exception in CreateTrack.\n" + e, e);
         }
     }
 }

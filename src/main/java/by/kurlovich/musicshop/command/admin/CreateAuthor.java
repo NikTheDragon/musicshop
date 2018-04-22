@@ -43,7 +43,7 @@ public class CreateAuthor implements Command {
                 author.setType(request.getParameter("submit_type"));
                 author.setStatus("active");
 
-                LOGGER.debug("Creating track: {}", author);
+                LOGGER.debug("Creating author: {}", author.getName());
 
                 if (receiver.addNewEntity(author)) {
                     List<Author> authorList = receiver.getAllEntities();
@@ -54,14 +54,14 @@ public class CreateAuthor implements Command {
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_AUTHORS_PAGE);
                 }
 
-                request.setAttribute("message", "track exists");
+                request.setAttribute("message", "exists");
             }
 
             request.getSession(true).setAttribute("url", ERROR_PAGE);
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in Create Author.\n" + e, e);
+            throw new CommandException("Exception in CreateAuthor.\n" + e, e);
         }
     }
 }

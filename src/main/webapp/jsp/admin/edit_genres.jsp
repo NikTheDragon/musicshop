@@ -32,7 +32,7 @@
         <td>
             <table id="customers" align="center">
                 <tr align="center">
-                    <th width="35%">Genre's name</th>
+                    <th width="35%">${nameHeader}</th>
                 </tr>
 
                 <c:forEach var="genre" items="${genreList}">

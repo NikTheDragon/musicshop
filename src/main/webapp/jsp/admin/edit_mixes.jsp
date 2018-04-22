@@ -7,7 +7,7 @@
 <head>
     <link href="<c:url value="/css/main.css" />" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>edit albums page</title>
+    <title>edit mixes page</title>
 
     <%@include file="/WEB-INF/jspf/locale.jsp" %>
 
@@ -32,17 +32,15 @@
         <td>
             <table id="customers" width="100%">
                 <tr>
-                    <th width="35%">${nameHeader}</th>
-                    <th width="35%">${authorHeader}</th>
+                    <th width="80%">${nameHeader}</th>
                     <th width="10%">${genreHeader}</th>
                     <th width="10%">${yearHeader}</th>
                 </tr>
 
                 <c:forEach var="album" items="${albumList}">
                     <c:if test="${album.status == 'active'}">
-                        <tr id="${album.id}" onclick="getAlbumInfo(this.id)">
+                        <tr id="${album.id}" onclick="getMixInfo(this.id)">
                             <td id="${album.id}name">${album.name}</td>
-                            <td id="${album.id}author">${album.author}</td>
                             <td id="${album.id}genre">${album.genre}</td>
                             <td id="${album.id}year">${album.year}</td>
                         </tr>
@@ -65,23 +63,12 @@
         <td>
             <table width="100%">
                 <tr>
-                    <th width="35%">${nameHeader}</th>
-                    <th width="35%">${authorHeader}</th>
+                    <th width="80%">${nameHeader}</th>
                     <th width="10%">${genreHeader}</th>
                     <th width="10%">${yearHeader}</th>
                 </tr>
                 <tr>
                     <td><input id="name" name="name" type="text" value=""></td>
-                    <td>
-                        <select id="author" name="author" size="1">
-                            <option value=""></option>
-                            <c:forEach var="line" items="${authorList}">
-                                <c:if test="${line.status=='active'}">
-                                    <option value="${line.name}">${line.name}</option>
-                                </c:if>
-                            </c:forEach>
-                        </select>
-                    </td>
                     <td>
                         <select id="genre" name="genre" size="1">
                             <option value=""></option>
@@ -95,32 +82,29 @@
                     <td><input id="year" name="year" type="text" value=""></td>
                 </tr>
             </table>
-    <table>
+            <table>
                 <tr>
                     <td width="100%"></td>
                     <form id="formCreate" action="/mainServlet" method="get">
-                        <input type="hidden" name="command" value="create_album">
+                        <input type="hidden" name="command" value="create_mix">
                         <input type="hidden" name="submit_id" value="">
                         <input type="hidden" name="submit_name" value="">
-                        <input type="hidden" name="submit_author" value="">
                         <input type="hidden" name="submit_genre" value="">
                         <input type="hidden" name="submit_year" value="">
                         <td><input type="button" name="button" onclick="submitButton('formCreate')" value="${createButton}" style="width: 200px"></td>
                     </form>
                     <form id="formUpdate" action="/mainServlet" method="get">
-                        <input type="hidden" name="command" value="update_album">
+                        <input type="hidden" name="command" value="update_mix">
                         <input type="hidden" name="submit_id" value="">
                         <input type="hidden" name="submit_name" value="">
-                        <input type="hidden" name="submit_author" value="">
                         <input type="hidden" name="submit_genre" value="">
                         <input type="hidden" name="submit_year" value="">
                         <td><input type="button" name="button" onclick="submitButton('formUpdate')" value="${updateButton}" style="width: 200px"></td>
                     </form>
                     <form id="formDelete" action="/mainServlet" method="get">
-                        <input type="hidden" name="command" value="delete_album">
+                        <input type="hidden" name="command" value="delete_mix">
                         <input type="hidden" name="submit_id" value="">
                         <input type="hidden" name="submit_name" value="">
-                        <input type="hidden" name="submit_author" value="">
                         <input type="hidden" name="submit_genre" value="">
                         <input type="hidden" name="submit_year" value="">
                         <td><input type="button" name="button" onclick="submitButton('formDelete')" value="${deleteButton}" style="width: 200px"></td>
@@ -134,13 +118,11 @@
 </table>
 
 <script>
-    function getAlbumInfo(clicked_row) {
+    function getMixInfo(clicked_row) {
         var name = document.getElementById("name");
-        var author = document.getElementById("author");
         var genre = document.getElementById("genre");
         var year = document.getElementById("year");
         name.value = document.getElementById(clicked_row + "name").textContent;
-        author.value = document.getElementById(clicked_row + "author").textContent;
         genre.value = document.getElementById(clicked_row + "genre").textContent;
         year.value = document.getElementById(clicked_row + "year").textContent;
 
@@ -153,7 +135,6 @@
 
     function submitButton(formName) {
         var trackName = document.getElementById("name");
-        var trackAuthor = document.getElementById("author");
         var trackGenre = document.getElementById("genre");
         var trackYear = document.getElementById("year");
 
@@ -161,12 +142,6 @@
 
         for (var i = 0; i < countName.length; i++) {
             countName[i].setAttribute("value", trackName.value);
-        }
-
-        var countAuthor = document.getElementsByName("submit_author");
-
-        for (var i = 0; i < countAuthor.length; i++) {
-            countAuthor[i].setAttribute("value", trackAuthor.value);
         }
 
         var countGenre = document.getElementsByName("submit_genre");

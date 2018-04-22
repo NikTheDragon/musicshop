@@ -44,7 +44,7 @@ public class CreateAlbum implements Command {
                 album.setYear(Integer.parseInt(request.getParameter("submit_year")));
                 album.setStatus("active");
 
-                LOGGER.debug("Creating album: {}", album);
+                LOGGER.debug("Creating album: {}", album.getName());
 
                 if (receiver.addNewEntity(album)) {
                     List<Album> albumList = receiver.getAllEntities();
@@ -55,7 +55,7 @@ public class CreateAlbum implements Command {
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_ALBUMS_PAGE);
                 }
 
-                request.setAttribute("message", "album exists");
+                request.setAttribute("message", "exists");
             }
 
             request.getSession(true).setAttribute("url", ERROR_PAGE);

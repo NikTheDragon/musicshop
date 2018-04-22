@@ -32,9 +32,9 @@
         <td>
             <table id="customers" width="100%">
                 <tr>
-                    <th width="80%">Name</th>
-                    <th width="10%">Genre</th>
-                    <th width="10%">Type</th>
+                    <th width="80%">${nameHeader}</th>
+                    <th width="10%">${genreHeader}</th>
+                    <th width="10%">${typeHeader}</th>
                 </tr>
 
                 <c:forEach var="author" items="${authorList}">
@@ -63,9 +63,9 @@
         <td>
             <table width="100%">
                 <tr>
-                    <th width="80%">Name</th>
-                    <th width="10%">Genre</th>
-                    <th width="10%">Type</th>
+                    <th width="80%">${nameHeader}</th>
+                    <th width="10%">${genreHeader}</th>
+                    <th width="10%">${typeHeader}</th>
                 </tr>
                 <tr>
                     <td><input id="name" name="name" type="text" value=""></td>

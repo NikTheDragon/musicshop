@@ -20,10 +20,10 @@ import java.util.List;
 public class AlbumRepository implements Repository<Album> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AlbumRepository.class);
     private static final String GET_STATUS = "SELECT status FROM albums WHERE name=?";
-    private static final String SET_STATUS = "UPDATE albums SET status='active' WHERE name=? AND author=(SELECT id FROM authors WHERE name=?) genre=(SELECT id FROM genres WHERE name=?) AND year=?";
+    private static final String SET_STATUS = "UPDATE albums SET status='active' WHERE name=? AND author=(SELECT id FROM authors WHERE name=?) AND genre=(SELECT id FROM genres WHERE name=?) AND year=?";
     private static final String ADD_ALBUM = "INSERT INTO albums (name, author, genre, year, status) VALUES (?,(SELECT id FROM authors WHERE name=?),(SELECT id FROM genres WHERE name=?),?,?)";
     private static final String DELETE_ALBUM = "UPDATE albums SET status='deleted' WHERE name=? AND author=(SELECT id FROM authors WHERE name=?)";
-    private static final String UPDATE_ALBUM = "UPDATE albums SET name=?, (SELECT id FROM authors WHERE name=?), genre=(SELECT id FROM genres WHERE name=?), year=? WHERE id=?";
+    private static final String UPDATE_ALBUM = "UPDATE albums SET name=?, author=(SELECT id FROM authors WHERE name=?), genre=(SELECT id FROM genres WHERE name=?), year=? WHERE id=?";
     private DBConnection dbConnection;
 
     public AlbumRepository() {

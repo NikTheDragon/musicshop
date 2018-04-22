@@ -33,11 +33,11 @@
             <div style="width:100%; height:400px; overflow:auto;">
             <table id="customers" width="100%">
                 <tr>
-                    <th width="35%">Name</th>
-                    <th width="35%">Author</th>
-                    <th width="10%">Genre</th>
-                    <th width="10%">Year</th>
-                    <th width="10%">Length</th>
+                    <th width="35%">${nameHeader}</th>
+                    <th width="35%">${authorHeader}</th>
+                    <th width="10%">${genreHeader}</th>
+                    <th width="10%">${yearHeader}</th>
+                    <th width="10%">${lengthHeader}</th>
                 </tr>
 
                 <c:forEach var="track" items="${trackList}">
@@ -68,11 +68,11 @@
         <td>
             <table width="100%">
                 <tr>
-                    <th width="35%">Name</th>
-                    <th width="35%">Author</th>
-                    <th width="10%">Genre</th>
-                    <th width="10%">Year</th>
-                    <th width="10%">Length</th>
+                    <th width="35%">${nameHeader}</th>
+                    <th width="35%">${authorHeader}</th>
+                    <th width="10%">${genreHeader}</th>
+                    <th width="10%">${yearHeader}</th>
+                    <th width="10%">${lengthHeader}</th>
                 </tr>
                 <tr>
                     <td><input id="name" name="name" type="text" value=""></td>

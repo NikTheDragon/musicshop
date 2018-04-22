@@ -42,7 +42,7 @@ public class RegNewUser implements Command {
             messageMap = receiver.validateUser(user);
 
             if (!Boolean.parseBoolean(messageMap.get("validate"))) {
-                request.setAttribute("message", messageMap);
+                request.setAttribute("messages", messageMap);
                 return new CommandResult(CommandResult.ResponseType.FORWARD, REG_PAGE);
             }
 
@@ -52,12 +52,12 @@ public class RegNewUser implements Command {
                 request.getSession(true).setAttribute("role", user.getRole());
                 return new CommandResult(CommandResult.ResponseType.REDIRECT, REGISTRATION_COMPLETE);
             } else {
-                messageMap.put("loginMessage", "login in use");
-                request.setAttribute("message", messageMap);
+                messageMap.put("loginMessage", "login");
+                request.setAttribute("messages", messageMap);
                 return new CommandResult(CommandResult.ResponseType.FORWARD, REG_PAGE);
             }
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in RegNewUser", e);
+            throw new CommandException("Exception in RegNewUser.\n" + e, e);
         }
     }
 }
