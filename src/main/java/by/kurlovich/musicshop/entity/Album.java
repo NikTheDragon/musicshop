@@ -2,12 +2,13 @@ package by.kurlovich.musicshop.entity;
 
 import java.util.Objects;
 
-public class Author {
+public class Album {
     private static final long serialVersionUID = 1L;
     private String id;
     private String name;
+    private String author;
     private String genre;
-    private String type;
+    private int year;
     private String status;
 
     public String getId() {
@@ -26,6 +27,14 @@ public class Author {
         this.name = name;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
     public String getGenre() {
         return genre;
     }
@@ -34,12 +43,12 @@ public class Author {
         this.genre = genre;
     }
 
-    public String getType() {
-        return type;
+    public int getYear() {
+        return year;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setYear(int year) {
+        this.year = year;
     }
 
     public String getStatus() {
@@ -54,27 +63,29 @@ public class Author {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Author author = (Author) o;
-        return Objects.equals(id, author.id) &&
-                Objects.equals(name, author.name) &&
-                Objects.equals(genre, author.genre) &&
-                Objects.equals(type, author.type) &&
-                Objects.equals(status, author.status);
+        Album album = (Album) o;
+        return year == album.year &&
+                Objects.equals(id, album.id) &&
+                Objects.equals(name, album.name) &&
+                Objects.equals(author, album.author) &&
+                Objects.equals(genre, album.genre) &&
+                Objects.equals(status, album.status);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, genre, type, status);
+        return Objects.hash(id, name, author, genre, year, status);
     }
 
     @Override
     public String toString() {
-        return "Author{" +
+        return "Album{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
+                ", author='" + author + '\'' +
                 ", genre='" + genre + '\'' +
-                ", type='" + type + '\'' +
+                ", year=" + year +
                 ", status='" + status + '\'' +
                 '}';
     }

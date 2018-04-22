@@ -149,14 +149,7 @@ public class TrackRepository implements Repository<Track> {
 
             connectionPool.releaseConnection(dbConnection);
 
-            switch (status) {
-                case "active":
-                    return Status.ACTIVE;
-                case "deleted":
-                    return Status.DELETE;
-                default:
-                    return Status.NA;
-            }
+            return getStatus(status);
 
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception in check track status method.\n" + e, e);

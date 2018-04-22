@@ -2,6 +2,7 @@ package by.kurlovich.musicshop.repository.impl;
 
 import by.kurlovich.musicshop.dbconnection.ConnectionException;
 import by.kurlovich.musicshop.dbconnection.ConnectionPool;
+import by.kurlovich.musicshop.dbconnection.DBConnection;
 import by.kurlovich.musicshop.entity.Author;
 import by.kurlovich.musicshop.repository.Repository;
 import by.kurlovich.musicshop.repository.RepositoryException;
@@ -24,23 +25,19 @@ public class AuthorRepository implements Repository<Author> {
     private static final String ADD_AUTHOR = "INSERT INTO authors (name, genre, type, status) VALUES (?,(SELECT id FROM genres WHERE name=?),?,?)";
     private static final String DELETE_AUTHOR = "UPDATE authors SET status='deleted' WHERE name=?";
     private static final String UPDATE_AUTHOR = "UPDATE authors SET name=?, genre=(SELECT id FROM genres WHERE name=?), type=? WHERE id=?";
-    private ConnectionPool connectionPool;
+    private DBConnection dbConnection;
 
-    public AuthorRepository() throws RepositoryException {
-        try {
-            LOGGER.debug("Creating author Repository class.");
-            connectionPool = ConnectionPool.getInstance();
-        } catch (ConnectionException e) {
-            throw new RepositoryException("Can't create dbconnection pool.\n" + e, e);
-        }
+    public AuthorRepository() {
+        LOGGER.debug("Creating author Repository class.");
     }
 
     @Override
     public void add(Author item) throws RepositoryException {
-        try {
+        try (DBConnection dbConnection = new DBConnection()) {
             LOGGER.debug("Adding new author {}", item.getName());
-            Connection dbConnection = connectionPool.getConnection();
-            try (PreparedStatement ps = dbConnection.prepareStatement(ADD_AUTHOR)) {
+            Connection connection = dbConnection.getConnection();
+
+            try (PreparedStatement ps = connection.prepareStatement(ADD_AUTHOR)) {
                 ps.setString(1, item.getName());
                 ps.setString(2, item.getGenre());
                 ps.setString(3, item.getType());
@@ -48,7 +45,6 @@ public class AuthorRepository implements Repository<Author> {
 
                 ps.executeUpdate();
             }
-            connectionPool.releaseConnection(dbConnection);
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception in add author.\n" + e, e);
         }
@@ -56,15 +52,15 @@ public class AuthorRepository implements Repository<Author> {
 
     @Override
     public void delete(Author item) throws RepositoryException {
-        try {
+        try (DBConnection dbConnection = new DBConnection()) {
             LOGGER.debug("Deleting author {}", item.getName());
-            Connection dbConnection = connectionPool.getConnection();
-            try (PreparedStatement ps = dbConnection.prepareStatement(DELETE_AUTHOR)) {
+            Connection connection = dbConnection.getConnection();
+
+            try (PreparedStatement ps = connection.prepareStatement(DELETE_AUTHOR)) {
                 ps.setString(1, item.getName());
 
                 ps.executeUpdate();
             }
-            connectionPool.releaseConnection(dbConnection);
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception in delete author.\n" + e, e);
         }
@@ -72,10 +68,11 @@ public class AuthorRepository implements Repository<Author> {
 
     @Override
     public void update(Author item) throws RepositoryException {
-        try {
+        try (DBConnection dbConnection = new DBConnection()) {
             LOGGER.debug("Updating author {}", item.getName());
-            Connection dbConnection = connectionPool.getConnection();
-            try (PreparedStatement ps = dbConnection.prepareStatement(UPDATE_AUTHOR)) {
+            Connection connection = dbConnection.getConnection();
+
+            try (PreparedStatement ps = connection.prepareStatement(UPDATE_AUTHOR)) {
                 ps.setString(1, item.getName());
                 ps.setString(2, item.getGenre());
                 ps.setString(3, item.getType());
@@ -83,7 +80,6 @@ public class AuthorRepository implements Repository<Author> {
 
                 ps.executeUpdate();
             }
-            connectionPool.releaseConnection(dbConnection);
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception in update author.\n" + e, e);
         }
@@ -94,9 +90,10 @@ public class AuthorRepository implements Repository<Author> {
         SqlSpecification sqlSpecification = (SqlSpecification) specification;
         List<Author> authorList = new ArrayList<>();
 
-        try {
-            Connection dbConnection = connectionPool.getConnection();
-            try (PreparedStatement ps = dbConnection.prepareStatement(sqlSpecification.toSqlQuery());
+        try (DBConnection dbConnection = new DBConnection()) {
+            Connection connection = dbConnection.getConnection();
+
+            try (PreparedStatement ps = connection.prepareStatement(sqlSpecification.toSqlQuery());
                  ResultSet rs = ps.executeQuery()) {
 
                 while (rs.next()) {
@@ -110,9 +107,6 @@ public class AuthorRepository implements Repository<Author> {
 
                     authorList.add(author);
                 }
-
-                connectionPool.releaseConnection(dbConnection);
-
                 return authorList;
             }
 
@@ -125,11 +119,12 @@ public class AuthorRepository implements Repository<Author> {
     public Status checkStatus(Author item) throws RepositoryException {
         final int STATUS = 1;
 
-        try {
+        try (DBConnection dbConnection = new DBConnection()) {
             String status = "";
             LOGGER.debug("Checking author {} status.", item.getName());
-            Connection dbConnection = connectionPool.getConnection();
-            try (PreparedStatement ps = dbConnection.prepareStatement(GET_STATUS)) {
+            Connection connection = dbConnection.getConnection();
+
+            try (PreparedStatement ps = connection.prepareStatement(GET_STATUS)) {
                 ps.setString(1, item.getName());
 
                 try (ResultSet rs = ps.executeQuery()) {
@@ -139,38 +134,26 @@ public class AuthorRepository implements Repository<Author> {
                 }
             }
 
-            connectionPool.releaseConnection(dbConnection);
-
-            switch (status) {
-                case "active":
-                    return Status.ACTIVE;
-                case "deleted":
-                    return Status.DELETE;
-                default:
-                    return Status.NA;
-            }
+            return getStatus(status);
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in check track status method.\n" + e, e);
+            throw new RepositoryException("Exception in check author status method.\n" + e, e);
         }
     }
 
     @Override
     public void setStatus(Author item) throws RepositoryException {
-        try {
+        try (DBConnection dbConnection = new DBConnection()) {
             LOGGER.debug("Set author {} status to active.", item.getName());
+            Connection connection = dbConnection.getConnection();
 
-            Connection dbConnection = connectionPool.getConnection();
-            try (PreparedStatement ps = dbConnection.prepareStatement(SET_STATUS)) {
+            try (PreparedStatement ps = connection.prepareStatement(SET_STATUS)) {
                 ps.setString(1, item.getName());
                 ps.setString(2, item.getGenre());
                 ps.setString(3, item.getType());
 
                 ps.executeUpdate();
             }
-
-            connectionPool.releaseConnection(dbConnection);
-
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception in set track status method.\n" + e, e);
         }

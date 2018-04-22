@@ -9,7 +9,8 @@ public enum PageStore {
     ADMIN_PAGE("/jsp/admin/admin_main.jsp"),
     EDIT_TRACKS_PAGE("/jsp/admin/edit_tracks.jsp"),
     EDIT_GENRES_PAGE("/jsp/admin/edit_genres.jsp"),
-    EDIT_AUTHORS_PAGE("/jsp/admin/edit_authors.jsp");
+    EDIT_AUTHORS_PAGE("/jsp/admin/edit_authors.jsp"),
+    EDIT_ALBUMS_PAGE("/jsp/admin/edit_albums.jsp");
 
     private String pageName;
 

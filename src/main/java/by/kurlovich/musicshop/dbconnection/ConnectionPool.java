@@ -43,13 +43,13 @@ public class ConnectionPool {
     public synchronized Connection getConnection() throws ConnectionException {
         try {
             if (!connectionsQueue.isEmpty()) {
+                //DBConnection dbConnection = new DBConnection(connectionsQueue.take(), false);
                 connection = connectionsQueue.take();
                 if (connection.isClosed()) {
                     connection = getConnection();
                 }
             } else {
-                //to do exception
-                return null;
+                throw new ConnectionException("Can't get connection from queue.");
             }
 
             currentConnections.decrementAndGet();
