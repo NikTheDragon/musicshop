@@ -13,6 +13,7 @@
 <fmt:message key="updateButton" var="updateButton" />
 <fmt:message key="deleteButton" var="deleteButton" />
 <fmt:message key="registerButton" var="registerButton" />
+<fmt:message key="contentButton" var="contentButton" />
 <fmt:message key="returnButton" var="returnButton" />
 <fmt:message key="showUserPageButton" var="showUserPageButton" />
 <fmt:message key="name" var="name" />

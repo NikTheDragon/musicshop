@@ -49,7 +49,7 @@ public class UpdateMix implements Command {
                     List<Mix> mixList = receiver.getAllEntities();
                     mixList.sort(Comparator.comparing(Mix::getName));
 
-                    request.getSession(true).setAttribute("albumList", mixList);
+                    request.getSession(true).setAttribute("mixList", mixList);
                     request.getSession(true).setAttribute("url", EDIT_MIXES_PAGE);
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_MIXES_PAGE);
                 }

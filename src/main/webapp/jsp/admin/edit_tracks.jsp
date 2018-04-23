@@ -31,7 +31,7 @@
         </td>
         <td>
             <div style="width:100%; height:400px; overflow:auto;">
-            <table id="customers" width="100%">
+            <table id="fancyTable" width="100%">
                 <tr>
                     <th width="35%">${nameHeader}</th>
                     <th width="35%">${authorHeader}</th>

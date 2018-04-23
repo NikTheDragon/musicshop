@@ -30,7 +30,7 @@
         <td width="5%">
         </td>
         <td>
-            <table id="customers" width="100%">
+            <table id="fancyTable" width="100%">
                 <tr>
                     <th width="35%">${nameHeader}</th>
                     <th width="35%">${authorHeader}</th>
@@ -95,9 +95,15 @@
                     <td><input id="year" name="year" type="text" value=""></td>
                 </tr>
             </table>
-    <table>
+            <table>
                 <tr>
-                    <td width="100%"></td>
+                    <td style="width: 100%"></td>
+                    <form id="formContent" action="/mainServlet" method="get">
+                        <input type="hidden" name="command" value="edit_album_content">
+                        <input type="hidden" name="submit_id" value="">
+                        <td><input id="contentButton" type="submit" name="button" value="${contentButton}"
+                                   style="display: none; width: 200px"></td>
+                    </form>
                     <form id="formCreate" action="/mainServlet" method="get">
                         <input type="hidden" name="command" value="create_album">
                         <input type="hidden" name="submit_id" value="">
@@ -105,7 +111,8 @@
                         <input type="hidden" name="submit_author" value="">
                         <input type="hidden" name="submit_genre" value="">
                         <input type="hidden" name="submit_year" value="">
-                        <td><input type="button" name="button" onclick="submitButton('formCreate')" value="${createButton}" style="width: 200px"></td>
+                        <td><input type="button" name="button" onclick="submitButton('formCreate')"
+                                   value="${createButton}" style="width: 200px"></td>
                     </form>
                     <form id="formUpdate" action="/mainServlet" method="get">
                         <input type="hidden" name="command" value="update_album">
@@ -114,7 +121,8 @@
                         <input type="hidden" name="submit_author" value="">
                         <input type="hidden" name="submit_genre" value="">
                         <input type="hidden" name="submit_year" value="">
-                        <td><input type="button" name="button" onclick="submitButton('formUpdate')" value="${updateButton}" style="width: 200px"></td>
+                        <td><input type="button" name="button" onclick="submitButton('formUpdate')"
+                                   value="${updateButton}" style="width: 200px"></td>
                     </form>
                     <form id="formDelete" action="/mainServlet" method="get">
                         <input type="hidden" name="command" value="delete_album">
@@ -123,7 +131,8 @@
                         <input type="hidden" name="submit_author" value="">
                         <input type="hidden" name="submit_genre" value="">
                         <input type="hidden" name="submit_year" value="">
-                        <td><input type="button" name="button" onclick="submitButton('formDelete')" value="${deleteButton}" style="width: 200px"></td>
+                        <td><input type="button" name="button" onclick="submitButton('formDelete')"
+                                   value="${deleteButton}" style="width: 200px"></td>
                     </form>
                 </tr>
             </table>
@@ -143,6 +152,8 @@
         author.value = document.getElementById(clicked_row + "author").textContent;
         genre.value = document.getElementById(clicked_row + "genre").textContent;
         year.value = document.getElementById(clicked_row + "year").textContent;
+
+        document.getElementById("contentButton").style.display = "block";
 
         var countId = document.getElementsByName("submit_id");
 

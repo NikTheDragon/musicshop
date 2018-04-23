@@ -34,7 +34,6 @@ public class DeleteTrack implements Command {
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
             String userRole = (String) request.getSession(true).getAttribute("role");
-            request.setAttribute("message", "denied");
 
             if (accessValidator.validate(accessRoles, userRole)) {
                 Track track = new Track();
@@ -58,6 +57,7 @@ public class DeleteTrack implements Command {
                 request.setAttribute("message", "undelete");
 
             } else {
+                request.setAttribute("message", "denied");
                 request.getSession(true).setAttribute("url", ERROR_PAGE);
             }
 

@@ -33,7 +33,6 @@ public class CreateGenre implements Command {
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
             String userRole = (String) request.getSession(true).getAttribute("role");
-            request.setAttribute("message", "denied");
 
             if (accessValidator.validate(accessRoles, userRole)) {
                 Genre genre = new Genre();
@@ -55,6 +54,7 @@ public class CreateGenre implements Command {
                 request.setAttribute("message", "exists");
 
             } else {
+                request.setAttribute("message", "denied");
                 request.getSession(true).setAttribute("url", ERROR_PAGE);
             }
 

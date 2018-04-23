@@ -30,19 +30,19 @@
         <td width="5%">
         </td>
         <td>
-            <table id="customers" width="100%">
+            <table id="fancyTable" width="100%">
                 <tr>
                     <th width="80%">${nameHeader}</th>
                     <th width="10%">${genreHeader}</th>
                     <th width="10%">${yearHeader}</th>
                 </tr>
 
-                <c:forEach var="album" items="${albumList}">
-                    <c:if test="${album.status == 'active'}">
-                        <tr id="${album.id}" onclick="getMixInfo(this.id)">
-                            <td id="${album.id}name">${album.name}</td>
-                            <td id="${album.id}genre">${album.genre}</td>
-                            <td id="${album.id}year">${album.year}</td>
+                <c:forEach var="mix" items="${mixList}">
+                    <c:if test="${mix.status == 'active'}">
+                        <tr id="${mix.id}" onclick="getMixInfo(this.id)">
+                            <td id="${mix.id}name">${mix.name}</td>
+                            <td id="${mix.id}genre">${mix.genre}</td>
+                            <td id="${mix.id}year">${mix.year}</td>
                         </tr>
                     </c:if>
                 </c:forEach>
@@ -82,16 +82,23 @@
                     <td><input id="year" name="year" type="text" value=""></td>
                 </tr>
             </table>
-            <table>
+            <table style="width: 100%">
                 <tr>
-                    <td width="100%"></td>
+                    <td style="width: 100%"></td>
+                    <form id="formContent" action="/mainServlet" method="get">
+                        <input type="hidden" name="command" value="show_edit_mixes_content_page">
+                        <input type="hidden" name="submit_id" value="">
+                        <td><input id="contentButton" type="submit" name="button" value="${contentButton}"
+                                   style="display: none; width: 200px"></td>
+                    </form>
                     <form id="formCreate" action="/mainServlet" method="get">
                         <input type="hidden" name="command" value="create_mix">
                         <input type="hidden" name="submit_id" value="">
                         <input type="hidden" name="submit_name" value="">
                         <input type="hidden" name="submit_genre" value="">
                         <input type="hidden" name="submit_year" value="">
-                        <td><input type="button" name="button" onclick="submitButton('formCreate')" value="${createButton}" style="width: 200px"></td>
+                        <td><input type="button" name="button" onclick="submitButton('formCreate')"
+                                   value="${createButton}" style="width: 200px"></td>
                     </form>
                     <form id="formUpdate" action="/mainServlet" method="get">
                         <input type="hidden" name="command" value="update_mix">
@@ -99,7 +106,8 @@
                         <input type="hidden" name="submit_name" value="">
                         <input type="hidden" name="submit_genre" value="">
                         <input type="hidden" name="submit_year" value="">
-                        <td><input type="button" name="button" onclick="submitButton('formUpdate')" value="${updateButton}" style="width: 200px"></td>
+                        <td><input type="button" name="button" onclick="submitButton('formUpdate')"
+                                   value="${updateButton}" style="width: 200px"></td>
                     </form>
                     <form id="formDelete" action="/mainServlet" method="get">
                         <input type="hidden" name="command" value="delete_mix">
@@ -107,7 +115,8 @@
                         <input type="hidden" name="submit_name" value="">
                         <input type="hidden" name="submit_genre" value="">
                         <input type="hidden" name="submit_year" value="">
-                        <td><input type="button" name="button" onclick="submitButton('formDelete')" value="${deleteButton}" style="width: 200px"></td>
+                        <td><input type="button" name="button" onclick="submitButton('formDelete')"
+                                   value="${deleteButton}" style="width: 200px"></td>
                     </form>
                 </tr>
             </table>
@@ -125,6 +134,8 @@
         name.value = document.getElementById(clicked_row + "name").textContent;
         genre.value = document.getElementById(clicked_row + "genre").textContent;
         year.value = document.getElementById(clicked_row + "year").textContent;
+
+        document.getElementById("contentButton").style.display = "block";
 
         var countId = document.getElementsByName("submit_id");
 

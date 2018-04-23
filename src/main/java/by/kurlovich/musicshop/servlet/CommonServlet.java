@@ -32,10 +32,6 @@ public class CommonServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            LOGGER.debug("Command = {}", request.getParameter("command"));
-            LOGGER.debug("submit_id = {}", request.getParameter("submit_id"));
-            LOGGER.debug("submit_name = {}", request.getParameter("submit_name"));
-
             Command command = commandFactory.getCommand(request);
             CommandResult commandResult = command.execute(request);
 
@@ -51,7 +47,7 @@ public class CommonServlet extends HttpServlet {
                     response.sendRedirect(commandResult.getPage());
                     break;
                 default:
-                    request.setAttribute("nocommand", "Unknown response type.");
+                    request.setAttribute("message", "Unknown response type.");
                     dispatcher = request.getRequestDispatcher(PageStore.ERROR_PAGE.getPageName());
                     dispatcher.forward(request, response);
             }

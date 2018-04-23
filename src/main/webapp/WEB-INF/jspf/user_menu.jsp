@@ -14,16 +14,7 @@
                     </div>
                 </li>
                 <li><a href="#news">${contacts}</a></li>
-                <li class="dropdown">
-                    <a href="javascript:void(0)" class="dropbtn">${search}</a>
-                    <div class="dropdown-content">
-                        <form target="/mainServlet" method="get">
-                            <input type="hidden" name="command" value="search">
-                            <input type="text" name="text" value="" placeholder="Search..">
-                        </form>
-                    </div>
-                </li>
-                <li class="dropdown">
+                 <li class="dropdown">
                     <a href="javascript:void(0)" class="dropbtn">${folders}</a>
                     <div class="dropdown-content">
                         <a href="#">${cart}</a>

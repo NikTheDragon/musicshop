@@ -34,7 +34,6 @@ public class UpdateAuthor implements Command {
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
             String userRole = (String) request.getSession(true).getAttribute("role");
-            request.setAttribute("message", "denied");
 
             if (accessValidator.validate(accessRoles, userRole)) {
                 Author author = new Author();
@@ -58,6 +57,7 @@ public class UpdateAuthor implements Command {
                 request.setAttribute("message", "unupdate");
 
             } else {
+                request.setAttribute("message", "denied");
                 request.getSession(true).setAttribute("url", ERROR_PAGE);
             }
 

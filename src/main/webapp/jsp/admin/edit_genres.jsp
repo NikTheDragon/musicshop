@@ -30,7 +30,7 @@
         <td width="5%">
         </td>
         <td>
-            <table id="customers" align="center">
+            <table id="fancyTable" align="center">
                 <tr align="center">
                     <th width="35%">${nameHeader}</th>
                 </tr>

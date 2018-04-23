@@ -12,10 +12,12 @@ import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ConnectionPool {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionPool.class);
     private static final String DB_PROPERTIES_FILE = "db.properties";
+    private static ReentrantLock lock = new ReentrantLock();
     private static ConnectionPool instance;
     private BlockingQueue<Connection> connectionsQueue;
     private String dbDriver;
@@ -32,18 +34,20 @@ public class ConnectionPool {
         connectionsInit();
     }
 
-    public static synchronized ConnectionPool getInstance() throws ConnectionException {
+    public static ConnectionPool getInstance() throws ConnectionException {
+        lock.lock();
         if (instance == null) {
             instance = new ConnectionPool();
         }
 
+        lock.unlock();
         return instance;
     }
 
-    public synchronized Connection getConnection() throws ConnectionException {
+    public Connection getConnection() throws ConnectionException {
+        lock.lock();
         try {
             if (!connectionsQueue.isEmpty()) {
-                //DBConnection dbConnection = new DBConnection(connectionsQueue.take(), false);
                 connection = connectionsQueue.take();
                 if (connection.isClosed()) {
                     connection = getConnection();
@@ -58,20 +62,27 @@ public class ConnectionPool {
 
             return connection;
         } catch (InterruptedException | SQLException e) {
-            throw new ConnectionException("Problems with getting connections from pool", e);
+            throw new ConnectionException("Problems with getting connections from pool.\n" + e, e);
+        } finally {
+            lock.unlock();
         }
     }
 
-    public synchronized void releaseConnection(Connection connection) throws ConnectionException {
-        if (connection != null && currentConnections.intValue() < maxConnections) {
-            try {
+    public void releaseConnection(Connection connection) throws ConnectionException {
+        lock.lock();
+        try {
+            if (connection != null && currentConnections.intValue() < maxConnections) {
+
                 connectionsQueue.put(connection);
                 currentConnections.incrementAndGet();
 
                 LOGGER.debug("Release dbconnection. Connections left: {}.", currentConnections);
-            } catch (InterruptedException e) {
-                throw new ConnectionException("Problems in dbconnection queue.", e);
+
             }
+        } catch (InterruptedException e) {
+            throw new ConnectionException("Problems in dbconnection queue.\n" + e, e);
+        } finally {
+            lock.unlock();
         }
     }
 
@@ -95,7 +106,7 @@ public class ConnectionPool {
             }
             LOGGER.debug("db pool parameters initialized.");
         } catch (IOException e) {
-            throw new ConnectionException("Can't load parameters in dbconnection pool", e);
+            throw new ConnectionException("Can't load parameters in dbconnection pool.\n" + e, e);
         }
     }
 
@@ -105,29 +116,34 @@ public class ConnectionPool {
 
             LOGGER.debug("db driver initialized.");
         } catch (IllegalAccessException | InstantiationException | ClassNotFoundException e) {
-            throw new ConnectionException("Can't load db driver in dbconnection pool", e);
+            throw new ConnectionException("Can't load db driver in dbconnection pool.\n" + e, e);
         }
     }
 
     private void connectionsInit() throws ConnectionException {
-        for (int i = 0; i < maxConnections; i++) {
-            try {
+        lock.lock();
+        try {
+            for (int i = 0; i < maxConnections; i++) {
+
                 if (newConnection() != null) {
                     connectionsQueue.put(newConnection());
                 }
 
                 LOGGER.debug("db pool {} connections initialized.", maxConnections);
-            } catch (InterruptedException e) {
-                throw new ConnectionException("Problems in dbconnection queue.", e);
+
             }
+        } catch (InterruptedException e) {
+            throw new ConnectionException("Problems in dbconnection queue.\n" + e, e);
+        } finally {
+            lock.unlock();
         }
     }
 
-    private Connection newConnection() {
+    private Connection newConnection() throws ConnectionException {
         try {
             connection = DriverManager.getConnection(connectionUrl, userName, password);
         } catch (SQLException e) {
-            return null;
+            throw new ConnectionException("Exception in newConnection of ConnectionPool.\n" + e, e);
         }
 
         return connection;
