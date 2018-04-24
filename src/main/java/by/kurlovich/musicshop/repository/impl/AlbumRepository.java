@@ -1,12 +1,15 @@
 package by.kurlovich.musicshop.repository.impl;
 
 import by.kurlovich.musicshop.dbconnection.ConnectionException;
+import by.kurlovich.musicshop.dbconnection.ConnectionPool;
 import by.kurlovich.musicshop.dbconnection.DBConnection;
+import by.kurlovich.musicshop.dbconnection.ProxyConnection;
 import by.kurlovich.musicshop.entity.Album;
 import by.kurlovich.musicshop.repository.Repository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.SqlSpecification;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +28,7 @@ public class AlbumRepository implements Repository<Album> {
     private static final String DELETE_ALBUM = "UPDATE albums SET status='deleted' WHERE name=? AND author=(SELECT id FROM authors WHERE name=?)";
     private static final String UPDATE_ALBUM = "UPDATE albums SET name=?, author=(SELECT id FROM authors WHERE name=?), genre=(SELECT id FROM genres WHERE name=?), year=? WHERE id=?";
     private DBConnection dbConnection;
+    private ConnectionPool pool;
 
     public AlbumRepository() {
         LOGGER.debug("Creating album Repository class.");
@@ -37,6 +41,7 @@ public class AlbumRepository implements Repository<Album> {
             Connection connection = dbConnection.getConnection();
 
             try (PreparedStatement ps = connection.prepareStatement(ADD_ALBUM)) {
+
                 ps.setString(1, item.getName());
                 ps.setString(2, item.getAuthor());
                 ps.setString(3, item.getGenre());

@@ -5,7 +5,7 @@ import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
 import by.kurlovich.musicshop.entity.Author;
 import by.kurlovich.musicshop.entity.Genre;
-import by.kurlovich.musicshop.pages.PageStore;
+import by.kurlovich.musicshop.store.PageStore;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.receiver.impl.GenreReceiverImpl;

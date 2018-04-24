@@ -4,7 +4,7 @@ import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
 import by.kurlovich.musicshop.entity.Track;
-import by.kurlovich.musicshop.pages.PageStore;
+import by.kurlovich.musicshop.store.PageStore;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.validator.AccessValidator;
