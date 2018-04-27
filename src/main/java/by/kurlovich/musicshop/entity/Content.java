@@ -5,8 +5,10 @@ import java.util.Objects;
 public class Content {
     private static final long serialVersionUID = 1L;
     private String entityId;
+    private String trackId;
     private String trackName;
     private String authorName;
+    private String length;
     private String status;
 
     public String getEntityId() {
@@ -15,6 +17,14 @@ public class Content {
 
     public void setEntityId(String entityId) {
         this.entityId = entityId;
+    }
+
+    public String getTrackId() {
+        return trackId;
+    }
+
+    public void setTrackId(String trackId) {
+        this.trackId = trackId;
     }
 
     public String getTrackName() {
@@ -33,6 +43,14 @@ public class Content {
         this.authorName = authorName;
     }
 
+    public String getLength() {
+        return length;
+    }
+
+    public void setLength(String length) {
+        this.length = length;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -47,14 +65,16 @@ public class Content {
         if (o == null || getClass() != o.getClass()) return false;
         Content content = (Content) o;
         return Objects.equals(entityId, content.entityId) &&
+                Objects.equals(trackId, content.trackId) &&
                 Objects.equals(trackName, content.trackName) &&
                 Objects.equals(authorName, content.authorName) &&
+                Objects.equals(length, content.length) &&
                 Objects.equals(status, content.status);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(entityId, trackName, authorName, status);
+        return Objects.hash(entityId, trackId, trackName, authorName, length, status);
     }
 }

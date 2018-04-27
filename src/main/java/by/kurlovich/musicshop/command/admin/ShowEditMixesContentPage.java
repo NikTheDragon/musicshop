@@ -32,9 +32,9 @@ public class ShowEditMixesContentPage implements Command {
             List<String> accessRoles = Arrays.asList("admin");
             String userRole = (String) request.getSession(true).getAttribute("role");
 
-            Set<String> names = new HashSet<>();
-            Set<String> authors = new HashSet<>();
-            Set<String> genres = new HashSet<>();
+            Set<String> uniqueNames = new HashSet<>();
+            Set<String> uniqueAuthors = new HashSet<>();
+            Set<String> uniqueGenres = new HashSet<>();
 
             if (accessValidator.validate(accessRoles, userRole)) {
                 String mixId = request.getParameter("submit_id");
@@ -43,9 +43,9 @@ public class ShowEditMixesContentPage implements Command {
                 List<Track> trackList = trackReceiver.getAllEntities();
 
                 for (Track track : trackList) {
-                    names.add(track.getName());
-                    authors.add(track.getAuthor());
-                    genres.add(track.getGenre());
+                    uniqueNames.add(track.getName());
+                    uniqueAuthors.add(track.getAuthor());
+                    uniqueGenres.add(track.getGenre());
                 }
 
                 List<Mix> mixList = (List<Mix>) request.getSession(true).getAttribute("mixList");
@@ -57,9 +57,9 @@ public class ShowEditMixesContentPage implements Command {
                     }
                 }
 
-                request.getSession(true).setAttribute("namesSet", names);
-                request.getSession(true).setAttribute("authorsSet", authors);
-                request.getSession(true).setAttribute("genresSet", genres);
+                request.getSession(true).setAttribute("namesSet", uniqueNames);
+                request.getSession(true).setAttribute("authorsSet", uniqueAuthors);
+                request.getSession(true).setAttribute("genresSet", uniqueGenres);
                 request.getSession(true).setAttribute("trackList", trackList);
                 request.getSession(true).setAttribute("contentList", contentList);
                 request.getSession(true).setAttribute("url", EDIT_MIXES_CONTENT_PAGE);

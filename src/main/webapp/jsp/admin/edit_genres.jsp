@@ -27,12 +27,20 @@
 
 <table width="100%">
     <tr>
+        <td style="text-align: center">
+            <h2>Список жанров</h2>
+        </td>
+    </tr>
+</table>
+
+<table width="100%">
+    <tr>
         <td width="5%">
         </td>
         <td>
             <table id="fancyTable" align="center">
                 <tr align="center">
-                    <th width="35%">${nameHeader}</th>
+                    <th width="35%">${titleHeader}</th>
                 </tr>
 
                 <c:forEach var="genre" items="${genreList}">

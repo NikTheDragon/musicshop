@@ -35,7 +35,7 @@ public class SubmitTrackCommand implements Command {
             if (accessValidator.validate(accessRoles, userRole)) {
                 String author = request.getParameter("submit_author");
                 String genre = request.getParameter("submit_genre");
-                String mixId = request.getParameter("submit_id");
+                String mixId = request.getParameter("submit_mix_id");
                 EntityReceiver trackReceiver = new TrackReceiverImpl();
 
                 List<Track> trackList = trackReceiver.getAllEntities();
@@ -51,14 +51,6 @@ public class SubmitTrackCommand implements Command {
                         authors.add(track.getAuthor());
                     }
                     genres.add(track.getGenre());
-                }
-
-                List<Mix> mixList = (List<Mix>) request.getSession(true).getAttribute("mixList");
-
-                for (Mix mix : mixList) {
-                    if (mix.getId().equals(mixId)) {
-                        request.getSession(true).setAttribute("currentMix", mix);
-                    }
                 }
 
                 request.setAttribute("currentAuthor", author);

@@ -99,4 +99,9 @@ public class GenreReceiverImpl implements EntityReceiver<Genre> {
             throw new ReceiverException("Exception in Get All Genres.", e);
         }
     }
+
+    @Override
+    public List<Genre> getSpecifiedEntities(String param) throws ReceiverException {
+        return null;
+    }
 }

@@ -9,6 +9,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>edit mixes content page</title>
 
+
+
     <%@include file="/WEB-INF/jspf/locale.jsp" %>
 
 </head>
@@ -25,6 +27,15 @@
 
 <br>
 
+
+<table width="100%">
+    <tr>
+        <td style="text-align: center">
+            <h2>Сборка</h2>
+        </td>
+    </tr>
+</table>
+
 <table id="fancyTable" style="width: 80%; margin-left: auto; margin-right: auto;">
     <tr>
         <th style="width: 60%; alignment: center">${currentMix.name}</th>
@@ -33,20 +44,24 @@
     </tr>
 </table>
 
-<br>
+<table width="100%">
+    <tr>
+        <td style="text-align: center">
+            <h2>Содержимое сборки</h2>
+        </td>
+    </tr>
+</table>
 
 <table id="fancyTable" style="width: 80%; margin-left: auto; margin-right: auto;">
     <tr>
-        <th width="45%">${nameHeader}</th>
-        <th width="45%">${authorHeader}</th>
-        <th width="10%">${genreHeader}</th>
+        <th width="60%">${titleHeader}</th>
+        <th width="40%">${authorHeader}</th>
     </tr>
     <c:forEach var="content" items="${contentList}">
-        <c:if test="${content.status != 'active'}">
-            <tr>
-                <td>${content.trackName}</td>
-                <td>${content.authorName}</td>
-                <td>${currentMix.genre}</td>
+        <c:if test="${content.status == 'active'}">
+            <tr id="${content.trackId}" onclick="formTrackInfo(this.id)">
+                <td id="${content.trackId}track">${content.trackName}</td>
+                <td id="${content.trackId}author">${content.authorName}</td>
             </tr>
         </c:if>
     </c:forEach>
@@ -55,7 +70,7 @@
 <table style="width: 80%; margin-left: auto; margin-right: auto;">
     <tr>
         <td width="45%">
-            <select id="track" name="track" size="1">
+            <select id="trackSelector" name="trackSelector" size="1">
                 <option style="background-color:lightskyblue" value=""></option>
                 <c:forEach var="line" items="${namesSet}">
                     <option value="${line}">${line}</option>
@@ -63,7 +78,7 @@
             </select>
         </td>
         <td width="45%">
-            <select id="author" name="author" size="1" onchange="sendParams('submitAuthor')">
+            <select id="authorSelector" name="authorSelector" size="1" onchange="submitSelector('submitAuthor')">
                 <option style="background-color:lightskyblue" value="${currentAuthor}">${currentAuthor}</option>
                 <c:forEach var="line" items="${authorsSet}">
                     <option value="${line}">${line}</option>
@@ -71,7 +86,7 @@
             </select>
         </td>
         <td width="10%">
-            <select id="genre" name="genre" size="1" onchange="sendParams('submitGenre')">
+            <select id="genreSelector" name="genreSelector" size="1" onchange="submitSelector('submitGenre')">
                 <c:if test="${currentGenre!=null}">
                     <option style="background-color:lightskyblue" value="${currentGenre}">${currentGenre}</option>
                 </c:if>
@@ -99,6 +114,7 @@
         <form id="formDelete" action="/mainServlet" method="get">
             <input type="hidden" name="command" value="delete_track_from_mix">
             <input type="hidden" name="submit_mix_id" value="${currentMix.id}">
+            <input type="hidden" name="submit_track_id" value="">
             <input type="hidden" name="submit_track" value="">
             <input type="hidden" name="submit_author" value="">
             <input type="hidden" name="submit_genre" value="">
@@ -118,18 +134,28 @@
 </table>
 
 <script>
-    function sendParams(formName) {
-        var trackAuthor = document.getElementById("author");
-        var trackGenre = document.getElementById("genre");
+
+    $("tr").click(function(){
+        $(this).addClass("selected").siblings().removeClass("selected");
+    });
+
+    function formTrackInfo(trackId) {
+        var countId = document.getElementsByName("submit_track_id");
+        for (var i = 0; i < countId.length; i++) {
+            countId[i].setAttribute("value", trackId);
+        }
+    }
+
+    function submitSelector(formName) {
+        var trackAuthor = document.getElementById("authorSelector");
+        var trackGenre = document.getElementById("genreSelector");
 
         var countAuthor = document.getElementsByName("submit_author");
-
         for (var i = 0; i < countAuthor.length; i++) {
             countAuthor[i].setAttribute("value", trackAuthor.value);
         }
 
         var countGenre = document.getElementsByName("submit_genre");
-
         for (var i = 0; i < countGenre.length; i++) {
             countGenre[i].setAttribute("value", trackGenre.value);
         }
@@ -138,22 +164,20 @@
     }
 
     function submitButton(formName) {
-        var trackAuthor = document.getElementById("author");
-        var trackTrack = document.getElementById("track");
+        var trackAuthor = document.getElementById("authorSelector").value;
+        var trackTrack = document.getElementById("trackSelector").value;
 
         var countAuthor = document.getElementsByName("submit_author");
-
         for (var i = 0; i < countAuthor.length; i++) {
-            countAuthor[i].setAttribute("value", trackAuthor.value);
+            countAuthor[i].setAttribute("value", trackAuthor);
         }
 
         var countTrack = document.getElementsByName("submit_track");
-
         for (var i = 0; i < countTrack.length; i++) {
-            countTrack[i].setAttribute("value", trackTrack.value);
+            countTrack[i].setAttribute("value", trackTrack);
         }
 
-        if(trackAuthor.value != "" && trackTrack.value != "") {
+        if(trackAuthor != "" && trackTrack != "") {
             document.getElementById(formName).submit();
         }
     }

@@ -16,15 +16,15 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class CreateGenre implements Command {
+public class CreateGenreCommand implements Command {
     private final static String EDIT_GENRES_PAGE = PageStore.EDIT_GENRES_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
-    private final static Logger LOGGER = LoggerFactory.getLogger(CreateGenre.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(CreateGenreCommand.class);
     private AccessValidator accessValidator = new AccessValidator();
     private List<String> accessRoles = Arrays.asList("admin");
     private EntityReceiver receiver;
 
-    public CreateGenre(EntityReceiver receiver) {
+    public CreateGenreCommand(EntityReceiver receiver) {
 
         this.receiver = receiver;
     }
@@ -61,7 +61,7 @@ public class CreateGenre implements Command {
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in CreateGenre.\n" + e, e);
+            throw new CommandException("Exception in CreateGenreCommand.\n" + e, e);
         }
     }
 }

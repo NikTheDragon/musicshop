@@ -118,6 +118,8 @@ p.sansserif {
 
 #fancyTable tr:hover {background-color: #ddd;}
 
+#fancyTable tr.selected {background-color: #FFCF8B;}
+
 #fancyTable th {
     padding-top: 6px;
     padding-bottom: 6px;

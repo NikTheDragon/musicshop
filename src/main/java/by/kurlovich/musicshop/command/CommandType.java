@@ -18,17 +18,20 @@ public enum CommandType {
     SHOW_EDIT_AUTHORS_PAGE(new ShowEditAuthorsPage(new AuthorReceiverImpl())::execute),
     SHOW_EDIT_ALBUMS_PAGE(new ShowEditAlbumsPage(new AlbumReceiverImpl())::execute),
     SHOW_EDIT_MIXES_PAGE(new ShowEditMixesPage(new MixReceiverImpl())::execute),
-    SHOW_EDIT_MIXES_CONTENT_PAGE(new ShowEditMixesContentPage(new ContentReceiverImpl())::execute),
-    CREATE_GENRE(new CreateGenre(new GenreReceiverImpl())::execute),
-    CREATE_TRACK(new CreateTrack(new TrackReceiverImpl())::execute),
-    CREATE_AUTHOR(new CreateAuthor(new AuthorReceiverImpl())::execute),
+    SHOW_EDIT_MIXES_CONTENT_PAGE(new ShowEditMixesContentPage(new MixContentReceiverImpl())::execute),
+    SHOW_EDIT_ALBUMS_CONTENT_PAGE(new ShowEditAlbumsContentPageCommand(new AlbumContentReceiverImpl())::execute),
+    CREATE_GENRE(new CreateGenreCommand(new GenreReceiverImpl())::execute),
+    CREATE_TRACK(new CreateTrackCommand(new TrackReceiverImpl())::execute),
+    CREATE_AUTHOR(new CreateAuthorCommand(new AuthorReceiverImpl())::execute),
     CREATE_ALBUM(new CreateAlbumCommand(new AlbumReceiverImpl())::execute),
-    CREATE_MIX(new CreateMix(new MixReceiverImpl())::execute),
+    CREATE_MIX(new CreateMixCommand(new MixReceiverImpl())::execute),
     DELETE_GENRE(new DeleteGenre(new GenreReceiverImpl())::execute),
     DELETE_TRACK(new DeleteTrack(new TrackReceiverImpl())::execute),
     DELETE_AUTHOR(new DeleteAuthor(new AuthorReceiverImpl())::execute),
     DELETE_ALBUM(new DeleteAlbum(new AlbumReceiverImpl())::execute),
     DELETE_MIX(new DeleteMix(new MixReceiverImpl())::execute),
+    DELETE_TRACK_FROM_MIX(new DeleteTrackFromMixCommand(new MixContentReceiverImpl())::execute),
+    DELETE_TRACK_FROM_ALBUM(new DeleteTrackFromAlbumCommand(new AlbumContentReceiverImpl())::execute),
     UPDATE_GENRE(new UpdateGenre(new GenreReceiverImpl())::execute),
     UPDATE_TRACK(new UpdateTrack(new TrackReceiverImpl())::execute),
     UPDATE_AUTHOR(new UpdateAuthor(new AuthorReceiverImpl())::execute),
@@ -36,7 +39,8 @@ public enum CommandType {
     UPDATE_MIX(new UpdateMix(new MixReceiverImpl())::execute),
     BACK_TO_PAGE(new BackToPage()::execute),
     SUBMIT_TRACK(new SubmitTrackCommand()::execute),
-    ADD_TRACK_TO_MIX(new AddTrackToMixCommand(new ContentReceiverImpl())::execute);
+    ADD_TRACK_TO_MIX(new AddTrackToMixCommand(new MixContentReceiverImpl())::execute),
+    ADD_TRACK_TO_ALBUM(new AddTrackToAlbumCommand(new AlbumContentReceiverImpl())::execute);
 
     private Command command;
 

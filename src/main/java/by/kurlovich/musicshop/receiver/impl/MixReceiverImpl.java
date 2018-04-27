@@ -96,4 +96,9 @@ public class MixReceiverImpl implements EntityReceiver<Mix> {
             throw new ReceiverException("Exception in getAllEntities of MixReceiver.\n" + e, e);
         }
     }
+
+    @Override
+    public List<Mix> getSpecifiedEntities(String param) throws ReceiverException {
+        return null;
+    }
 }

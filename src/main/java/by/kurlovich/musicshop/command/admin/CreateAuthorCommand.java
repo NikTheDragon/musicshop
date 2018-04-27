@@ -16,15 +16,15 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class CreateAuthor implements Command {
+public class CreateAuthorCommand implements Command {
     private final static String EDIT_AUTHORS_PAGE = PageStore.EDIT_AUTHORS_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
-    private final static Logger LOGGER = LoggerFactory.getLogger(CreateAuthor.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(CreateAuthorCommand.class);
     private AccessValidator accessValidator = new AccessValidator();
     private List<String> accessRoles = Arrays.asList("admin");
     private EntityReceiver receiver;
 
-    public CreateAuthor(EntityReceiver receiver) {
+    public CreateAuthorCommand(EntityReceiver receiver) {
 
         this.receiver = receiver;
     }
@@ -63,7 +63,7 @@ public class CreateAuthor implements Command {
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in CreateAuthor.\n" + e, e);
+            throw new CommandException("Exception in CreateAuthorCommand.\n" + e, e);
         }
     }
 }

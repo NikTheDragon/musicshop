@@ -17,15 +17,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContentRepository implements Repository<Content> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ContentRepository.class);
-    private static final String ADD_CONTENT = "INSERT INTO mixes_content (entity_id, track_id) VALUES (?,(SELECT id FROM tracks WHERE name=? AND author=(SELECT id FROM authors WHERE name=?)))";
-    private static final String DELETE_CONTENT = "UPDATE mixes_content SET status='deleted' WHERE entity_id=? AND track_id=(SELECT id FROM tracks WHERE name=? AND author=(SELECT id FROM authors WHERE name=?))";
+public class MixContentRepository implements Repository<Content> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MixContentRepository.class);
+    private static final String ADD_CONTENT = "INSERT INTO mixes_content (mix_id, track_id, status) VALUES (?,(SELECT id FROM tracks WHERE name=? AND author=(SELECT id FROM authors WHERE name=?)), 'active')";
+    private static final String DELETE_CONTENT = "UPDATE mixes_content SET status='deleted' WHERE mix_id=? AND track_id=?";
     private static final String GET_STATUS = "SELECT status FROM mixes_content WHERE mix_id=? AND track_id=(SELECT id FROM tracks WHERE name=? AND author=(SELECT id FROM authors WHERE name=?))";
     private static final String SET_STATUS = "UPDATE mixes_content SET status='active' WHERE mix_id=? AND track_id=(SELECT id FROM tracks WHERE name=? AND author=(SELECT id FROM authors WHERE name=?))";
     private DBConnection dbConnection;
 
-    public ContentRepository() {
+    public MixContentRepository() {
         LOGGER.debug("Creating content Repository class.");
     }
 
@@ -44,25 +44,24 @@ public class ContentRepository implements Repository<Content> {
                 ps.executeUpdate();
             }
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in add of ContentRepository.\n" + e, e);
+            throw new RepositoryException("Exception in add of MixContentRepository.\n" + e, e);
         }
     }
 
     @Override
     public void delete(Content item) throws RepositoryException {
         try (DBConnection dbConnection = new DBConnection()) {
-            LOGGER.debug("Deleting content for: {}", item.getTrackName());
+            LOGGER.debug("Deleting content");
             Connection connection = dbConnection.getConnection();
 
             try (PreparedStatement ps = connection.prepareStatement(DELETE_CONTENT)) {
                 ps.setString(1, item.getEntityId());
-                ps.setString(2, item.getTrackName());
-                ps.setString(3, item.getAuthorName());
+                ps.setString(2, item.getTrackId());
 
                 ps.executeUpdate();
             }
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in delete of ContentRepository.\n" + e, e);
+            throw new RepositoryException("Exception in delete of MixContentRepository.\n" + e, e);
         }
     }
 
@@ -84,9 +83,10 @@ public class ContentRepository implements Repository<Content> {
                         Content content = new Content();
 
                         content.setEntityId(rs.getString(1));
-                        content.setTrackName(rs.getString(2));
-                        content.setAuthorName(rs.getString(3));
-                        content.setStatus(rs.getString(4));
+                        content.setTrackId(rs.getString(2));
+                        content.setTrackName(rs.getString(3));
+                        content.setAuthorName(rs.getString(4));
+                        content.setStatus(rs.getString(5));
 
                         contentList.add(content);
                     }
@@ -95,7 +95,7 @@ public class ContentRepository implements Repository<Content> {
             }
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception query of ContentRepository.\n" + e, e);
+            throw new RepositoryException("Exception query of MixContentRepository.\n" + e, e);
         }
     }
 
@@ -123,7 +123,7 @@ public class ContentRepository implements Repository<Content> {
             return Status.getStatus(status);
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in getStatus of ContentRepository.\n" + e, e);
+            throw new RepositoryException("Exception in getStatus of MixContentRepository.\n" + e, e);
         }
     }
 
@@ -142,7 +142,7 @@ public class ContentRepository implements Repository<Content> {
             }
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception undelete of ContentRepository.\n" + e, e);
+            throw new RepositoryException("Exception undelete of MixContentRepository.\n" + e, e);
         }
     }
 }

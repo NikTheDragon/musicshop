@@ -27,32 +27,40 @@
 
 <table width="100%">
     <tr>
+        <td style="text-align: center">
+            <h2>Список треков</h2>
+        </td>
+    </tr>
+</table>
+
+<table width="100%">
+    <tr>
         <td width="5%">
         </td>
         <td>
             <div style="width:100%; height:400px; overflow:auto;">
-            <table id="fancyTable" width="100%">
-                <tr>
-                    <th width="35%">${nameHeader}</th>
-                    <th width="35%">${authorHeader}</th>
-                    <th width="10%">${genreHeader}</th>
-                    <th width="10%">${yearHeader}</th>
-                    <th width="10%">${lengthHeader}</th>
-                </tr>
+                <table id="fancyTable" width="100%">
+                    <tr>
+                        <th width="35%">${titleHeader}</th>
+                        <th width="35%">${authorHeader}</th>
+                        <th width="10%">${genreHeader}</th>
+                        <th width="10%">${yearHeader}</th>
+                        <th width="10%">${lengthHeader}</th>
+                    </tr>
 
-                <c:forEach var="track" items="${trackList}">
-                    <c:if test="${track.status == 'active'}">
-                        <tr id="${track.id}" onclick="get_track_info(this.id)">
-                            <td id="${track.id}name">${track.name}</td>
-                            <td id="${track.id}author">${track.author}</td>
-                            <td id="${track.id}genre">${track.genre}</td>
-                            <td id="${track.id}year">${track.year}</td>
-                            <td id="${track.id}length">${track.length}</td>
-                        </tr>
-                    </c:if>
-                </c:forEach>
+                    <c:forEach var="track" items="${trackList}">
+                        <c:if test="${track.status == 'active'}">
+                            <tr id="${track.id}" onclick="get_track_info(this.id)">
+                                <td id="${track.id}name">${track.name}</td>
+                                <td id="${track.id}author">${track.author}</td>
+                                <td id="${track.id}genre">${track.genre}</td>
+                                <td id="${track.id}year">${track.year}</td>
+                                <td id="${track.id}length">${track.length}</td>
+                            </tr>
+                        </c:if>
+                    </c:forEach>
 
-            </table>
+                </table>
         </td>
         <td width="5%">
         </td>
@@ -68,7 +76,7 @@
         <td>
             <table width="100%">
                 <tr>
-                    <th width="35%">${nameHeader}</th>
+                    <th width="35%">${titleHeader}</th>
                     <th width="35%">${authorHeader}</th>
                     <th width="10%">${genreHeader}</th>
                     <th width="10%">${yearHeader}</th>
@@ -78,13 +86,13 @@
                     <td><input id="name" name="name" type="text" value=""></td>
                     <td>
                         <select id="author" name="author" size="1">
-                        <option value=""></option>
-                        <c:forEach var="line" items="${authorList}">
-                            <c:if test="${line.status=='active'}">
-                                <option value="${line.name}">${line.name}</option>
-                            </c:if>
-                        </c:forEach>
-                    </select>
+                            <option value=""></option>
+                            <c:forEach var="line" items="${authorList}">
+                                <c:if test="${line.status=='active'}">
+                                    <option value="${line.name}">${line.name}</option>
+                                </c:if>
+                            </c:forEach>
+                        </select>
                     </td>
                     <td>
                         <select id="genre" name="genre" size="1">
@@ -110,7 +118,8 @@
                         <input type="hidden" name="submit_genre" value="">
                         <input type="hidden" name="submit_year" value="">
                         <input type="hidden" name="submit_length" value="">
-                        <td><input type="button" name="button" onclick="deleteTrack('formCreate')" value="${createButton}"></td>
+                        <td><input type="button" name="button" onclick="deleteTrack('formCreate')"
+                                   value="${createButton}"></td>
                     </form>
                     <form id="formUpdate" action="/mainServlet" method="get">
                         <input type="hidden" name="command" value="update_track">
@@ -120,7 +129,8 @@
                         <input type="hidden" name="submit_genre" value="">
                         <input type="hidden" name="submit_year" value="">
                         <input type="hidden" name="submit_length" value="">
-                        <td><input type="button" name="button" onclick="deleteTrack('formUpdate')" value="${updateButton}"></td>
+                        <td><input type="button" name="button" onclick="deleteTrack('formUpdate')"
+                                   value="${updateButton}"></td>
                     </form>
                     <form id="formDelete" action="/mainServlet" method="get">
                         <input type="hidden" name="command" value="delete_track">
@@ -130,7 +140,8 @@
                         <input type="hidden" name="submit_genre" value="">
                         <input type="hidden" name="submit_year" value="">
                         <input type="hidden" name="submit_length" value="">
-                        <td><input type="button" name="button" onclick="deleteTrack('formDelete')" value="${deleteButton}"></td>
+                        <td><input type="button" name="button" onclick="deleteTrack('formDelete')"
+                                   value="${deleteButton}"></td>
                     </form>
                 </tr>
             </table>

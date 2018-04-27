@@ -12,7 +12,8 @@ public enum PageStore {
     EDIT_AUTHORS_PAGE("/jsp/admin/edit_authors.jsp"),
     EDIT_MIXES_PAGE("/jsp/admin/edit_mixes.jsp"),
     EDIT_ALBUMS_PAGE("/jsp/admin/edit_albums.jsp"),
-    EDIT_MIXES_CONTENT_PAGE("/jsp/admin/edit_mixes_content.jsp");
+    EDIT_MIXES_CONTENT_PAGE("/jsp/admin/edit_mixes_content.jsp"),
+    EDIT_ALBUMS_CONTENT_PAGE("/jsp/admin/edit_albums_content.jsp");
 
     private String pageName;
 

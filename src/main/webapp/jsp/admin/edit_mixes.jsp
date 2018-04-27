@@ -25,6 +25,15 @@
 
 <br>
 
+
+<table width="100%">
+    <tr>
+        <td style="text-align: center">
+            <h2>Сборки песен</h2>
+        </td>
+    </tr>
+</table>
+
 <table width="100%">
     <tr>
         <td width="5%">
@@ -32,7 +41,7 @@
         <td>
             <table id="fancyTable" width="100%">
                 <tr>
-                    <th width="80%">${nameHeader}</th>
+                    <th width="80%">${titleHeader}</th>
                     <th width="10%">${genreHeader}</th>
                     <th width="10%">${yearHeader}</th>
                 </tr>
@@ -63,7 +72,7 @@
         <td>
             <table width="100%">
                 <tr>
-                    <th width="80%">${nameHeader}</th>
+                    <th width="80%">${titleHeader}</th>
                     <th width="10%">${genreHeader}</th>
                     <th width="10%">${yearHeader}</th>
                 </tr>

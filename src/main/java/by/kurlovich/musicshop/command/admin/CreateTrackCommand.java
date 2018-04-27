@@ -3,7 +3,7 @@ package by.kurlovich.musicshop.command.admin;
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
-import by.kurlovich.musicshop.entity.Mix;
+import by.kurlovich.musicshop.entity.Track;
 import by.kurlovich.musicshop.store.PageStore;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
@@ -17,15 +17,15 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class CreateMix implements Command {
-    private final static String EDIT_MIXES_PAGE = PageStore.EDIT_MIXES_PAGE.getPageName();
+public class CreateTrackCommand implements Command {
+    private final static String EDIT_TRACKS_PAGE = PageStore.EDIT_TRACKS_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
-    private final static Logger LOGGER = LoggerFactory.getLogger(CreateMix.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(CreateTrackCommand.class);
     private AccessValidator accessValidator = new AccessValidator();
     private List<String> accessRoles = Arrays.asList("admin");
     private EntityReceiver receiver;
 
-    public CreateMix(EntityReceiver receiver) {
+    public CreateTrackCommand(EntityReceiver receiver) {
 
         this.receiver = receiver;
     }
@@ -37,22 +37,23 @@ public class CreateMix implements Command {
             String userRole = (String) request.getSession(true).getAttribute("role");
 
             if (accessValidator.validate(accessRoles, userRole)) {
-                Mix mix = new Mix();
+                Track track = new Track();
+                track.setName(request.getParameter("submit_name"));
+                track.setAuthor(request.getParameter("submit_author"));
+                track.setGenre(request.getParameter("submit_genre"));
+                track.setYear(request.getParameter("submit_year"));
+                track.setLength(request.getParameter("submit_length"));
+                track.setStatus("active");
 
-                mix.setName(request.getParameter("submit_name"));
-                mix.setGenre(request.getParameter("submit_genre"));
-                mix.setYear(request.getParameter("submit_year"));
-                mix.setStatus("active");
+                LOGGER.debug("Creating track: {}", track.getName());
 
-                LOGGER.debug("Creating mix: {}", mix.getName());
+                if (receiver.addNewEntity(track)) {
+                    List<Track> trackList = receiver.getAllEntities();
+                    trackList.sort(Comparator.comparing(Track::getAuthor));
 
-                if (receiver.addNewEntity(mix)) {
-                    List<Mix> mixList = receiver.getAllEntities();
-                    mixList.sort(Comparator.comparing(Mix::getName));
-
-                    request.getSession(true).setAttribute("mixList", mixList);
-                    request.getSession(true).setAttribute("url", EDIT_MIXES_PAGE);
-                    return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_MIXES_PAGE);
+                    request.getSession(true).setAttribute("trackList", trackList);
+                    request.getSession(true).setAttribute("url", EDIT_TRACKS_PAGE);
+                    return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_TRACKS_PAGE);
                 }
 
                 request.setAttribute("message", "exists");
@@ -65,7 +66,7 @@ public class CreateMix implements Command {
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in CreateMix.\n" + e, e);
+            throw new CommandException("Exception in CreateTrackCommand.\n" + e, e);
         }
     }
 }

@@ -8,6 +8,7 @@ import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.impl.TrackRepository;
 import by.kurlovich.musicshop.specification.GetAllTracksSpecification;
+import by.kurlovich.musicshop.specification.GetTracksByParamSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -92,7 +93,21 @@ public class TrackReceiverImpl implements EntityReceiver<Track> {
             return repository.query(specification);
 
         } catch (RepositoryException e) {
-            throw new ReceiverException("Exception in Get All Tracks.\n"+e, e);
+            throw new ReceiverException("Exception in getAllEntities of TrackReceiverImpl.\n"+e, e);
+        }
+    }
+
+    @Override
+    public List<Track> getSpecifiedEntities(String param) throws ReceiverException {
+        try {
+            Repository<Track> repository = new TrackRepository();
+            Specification specification = new GetTracksByParamSpecification(param);
+            LOGGER.debug("trying to get specified author: {}, tracks.", param);
+
+            return repository.query(specification);
+
+        } catch (RepositoryException e) {
+            throw new ReceiverException("Exception in getSpecifiedEntities of TrackReceiverImpl.\n" + e, e);
         }
     }
 }

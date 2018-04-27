@@ -7,6 +7,8 @@ import by.kurlovich.musicshop.repository.Repository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.impl.AlbumRepository;
+import by.kurlovich.musicshop.specification.GetAlbumContentByParamSpecification;
+import by.kurlovich.musicshop.specification.GetAlbumsByParamSpecification;
 import by.kurlovich.musicshop.specification.GetAllAlbumsSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +44,7 @@ public class AlbumReceiverImpl implements EntityReceiver<Album> {
             }
 
         } catch (RepositoryException e) {
-            throw new ReceiverException("Exception in addNewAlbum.\n" + e, e);
+            throw new ReceiverException("Exception in addNewEntity of AlbumReceiverImpl.\n" + e, e);
         }
     }
 
@@ -60,7 +62,7 @@ public class AlbumReceiverImpl implements EntityReceiver<Album> {
             return true;
 
         } catch (RepositoryException e) {
-            throw new ReceiverException("Exception in deleteAlbum.\n" + e, e);
+            throw new ReceiverException("Exception in deleteEntity of AlbumReceiverImpl.\n" + e, e);
         }
     }
 
@@ -78,7 +80,7 @@ public class AlbumReceiverImpl implements EntityReceiver<Album> {
             return true;
 
         } catch (RepositoryException e) {
-            throw new ReceiverException("Exception in updateAlbum.\n" + e, e);
+            throw new ReceiverException("Exception in updateEntity of AlbumReceiverImpl.\n" + e, e);
         }
     }
 
@@ -92,7 +94,21 @@ public class AlbumReceiverImpl implements EntityReceiver<Album> {
             return repository.query(specification);
 
         } catch (RepositoryException e) {
-            throw new ReceiverException("Exception in getAllAlbums.\n" + e, e);
+            throw new ReceiverException("Exception in getAllEntities of AlbumReceiverImpl.\n" + e, e);
+        }
+    }
+
+    @Override
+    public List<Album> getSpecifiedEntities(String param) throws ReceiverException {
+        try {
+            Repository<Album> repository = new AlbumRepository();
+            Specification specification = new GetAlbumsByParamSpecification(param);
+            LOGGER.debug("trying to get specified albums with id {}.", param);
+
+            return repository.query(specification);
+
+        } catch (RepositoryException e) {
+            throw new ReceiverException("Exception in getSpecifiedEntities of AlbumReceiverImpl.\n" + e, e);
         }
     }
 }

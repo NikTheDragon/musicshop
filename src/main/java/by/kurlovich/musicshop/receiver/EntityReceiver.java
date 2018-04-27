@@ -7,4 +7,5 @@ public interface EntityReceiver<T> {
     boolean deleteEntity(T item) throws ReceiverException;
     boolean updateEntity(T item) throws ReceiverException;
     List<T> getAllEntities() throws ReceiverException;
+    List<T> getSpecifiedEntities(String param) throws ReceiverException;
 }

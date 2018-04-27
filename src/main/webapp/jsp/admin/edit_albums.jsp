@@ -24,6 +24,14 @@
 <%@include file="/WEB-INF/jspf/admin_menu.jsp" %>
 
 <br>
+<table width="100%">
+    <tr>
+        <td style="text-align: center">
+            <h2>Список альбомов</h2>
+        </td>
+    </tr>
+</table>
+
 
 <table width="100%">
     <tr>
@@ -32,7 +40,7 @@
         <td>
             <table id="fancyTable" width="100%">
                 <tr>
-                    <th width="35%">${nameHeader}</th>
+                    <th width="35%">${titleHeader}</th>
                     <th width="35%">${authorHeader}</th>
                     <th width="10%">${genreHeader}</th>
                     <th width="10%">${yearHeader}</th>
@@ -65,7 +73,7 @@
         <td>
             <table width="100%">
                 <tr>
-                    <th width="35%">${nameHeader}</th>
+                    <th width="35%">${titleHeader}</th>
                     <th width="35%">${authorHeader}</th>
                     <th width="10%">${genreHeader}</th>
                     <th width="10%">${yearHeader}</th>
@@ -99,7 +107,7 @@
                 <tr>
                     <td style="width: 100%"></td>
                     <form id="formContent" action="/mainServlet" method="get">
-                        <input type="hidden" name="command" value="edit_album_content">
+                        <input type="hidden" name="command" value="show_edit_albums_content_page">
                         <input type="hidden" name="submit_id" value="">
                         <td><input id="contentButton" type="submit" name="button" value="${contentButton}"
                                    style="display: none; width: 200px"></td>

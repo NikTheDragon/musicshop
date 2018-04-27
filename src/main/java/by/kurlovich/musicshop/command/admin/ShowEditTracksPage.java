@@ -42,7 +42,7 @@ public class ShowEditTracksPage implements Command {
                 genreList.sort(Comparator.comparing(Genre::getName));
 
                 List<Track> trackList = receiver.getAllEntities();
-                trackList.sort(Comparator.comparing(Track::getName));
+                trackList.sort(Comparator.comparing(Track::getAuthor));
 
                 List<Author> authorList = authorReceiver.getAllEntities();
                 authorList.sort(Comparator.comparing(Author::getName));

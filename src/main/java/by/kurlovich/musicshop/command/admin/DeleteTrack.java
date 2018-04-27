@@ -47,7 +47,7 @@ public class DeleteTrack implements Command {
 
                 if (receiver.deleteEntity(track)) {
                     List<Track> trackList = receiver.getAllEntities();
-                    trackList.sort(Comparator.comparing(Track::getName));
+                    trackList.sort(Comparator.comparing(Track::getAuthor));
 
                     request.getSession(true).setAttribute("trackList", trackList);
                     request.getSession(true).setAttribute("url", EDIT_TRACKS_PAGE);

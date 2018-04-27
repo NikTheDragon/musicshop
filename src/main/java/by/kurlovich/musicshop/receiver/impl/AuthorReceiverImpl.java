@@ -95,4 +95,9 @@ public class AuthorReceiverImpl implements EntityReceiver<Author> {
             throw new ReceiverException("Exception in Get All Authors.\n" + e, e);
         }
     }
+
+    @Override
+    public List<Author> getSpecifiedEntities(String param) throws ReceiverException {
+        return null;
+    }
 }
