@@ -21,9 +21,7 @@ public class DeleteAlbum implements Command {
     private final static String EDIT_ALBUMS_PAGE = PageStore.EDIT_ALBUMS_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private final static Logger LOGGER = LoggerFactory.getLogger(DeleteAlbum.class);
-    private AccessValidator accessValidator = new AccessValidator();
-    private List<String> accessRoles = Arrays.asList("admin");
-    private EntityReceiver receiver;
+    private final EntityReceiver receiver;
 
     public DeleteAlbum(EntityReceiver receiver) {
 
@@ -34,15 +32,13 @@ public class DeleteAlbum implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
+            AccessValidator accessValidator = new AccessValidator();
+            List<String> accessRoles = Arrays.asList("admin");
+
             String userRole = (String) request.getSession(true).getAttribute("role");
 
             if (accessValidator.validate(accessRoles, userRole)) {
-                Album album = new Album();
-
-                album.setName(request.getParameter("submit_name"));
-                album.setGenre(request.getParameter("submit_genre"));
-                album.setAuthor(request.getParameter("submit_author"));
-                album.setYear(Integer.parseInt(request.getParameter("submit_year")));
+                Album album = createAlbum(request);
 
                 LOGGER.debug("Deleting album: {}", album.getName());
 
@@ -67,5 +63,16 @@ public class DeleteAlbum implements Command {
         } catch (ReceiverException e) {
             throw new CommandException("Exception in DeleteAlbum.\n" + e, e);
         }
+    }
+
+    private Album createAlbum(HttpServletRequest request) {
+        Album album = new Album();
+
+        album.setName(request.getParameter("submit_name"));
+        album.setGenre(request.getParameter("submit_genre"));
+        album.setAuthor(request.getParameter("submit_author"));
+        album.setYear(Integer.parseInt(request.getParameter("submit_year")));
+
+        return album;
     }
 }

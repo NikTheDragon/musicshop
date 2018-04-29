@@ -9,6 +9,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>edit tracks page</title>
 
+    <script src="/js/jquery.min.js"></script>
+
     <%@include file="/WEB-INF/jspf/locale.jsp" %>
 
 </head>
@@ -61,6 +63,7 @@
                     </c:forEach>
 
                 </table>
+            </div>
         </td>
         <td width="5%">
         </td>
@@ -152,6 +155,11 @@
 </table>
 
 <script>
+
+    $("tr").click(function(){
+        $(this).addClass("selected").siblings().removeClass("selected");
+    });
+
     function get_track_info(clicked_row) {
         var name = document.getElementById("name");
         var author = document.getElementById("author");

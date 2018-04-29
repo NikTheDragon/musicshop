@@ -7,6 +7,7 @@ import by.kurlovich.musicshop.repository.Repository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.impl.UserRepository;
+import by.kurlovich.musicshop.specification.GetAllUsersSpecification;
 import by.kurlovich.musicshop.specification.GetUserByLoginPasswordSpecification;
 import by.kurlovich.musicshop.specification.GetUserByLoginSpecification;
 import by.kurlovich.musicshop.validator.ObjectValidator;
@@ -21,8 +22,18 @@ public class UserReceiverImpl implements UserReceiver {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserReceiverImpl.class);
     private ObjectValidator objectValidator = new ObjectValidator();
 
-    public UserReceiverImpl() {
+    @Override
+    public List<User> getAllUsers() throws ReceiverException {
+        try {
+            Repository<User> repository = new UserRepository();
+            Specification specification = new GetAllUsersSpecification();
+            LOGGER.debug("trying to get all users.");
 
+            return repository.query(specification);
+
+        } catch (RepositoryException e) {
+            throw new ReceiverException("Exception in getAllUsers of UserReceiverImpl.\n" + e, e);
+        }
     }
 
     public Map<String, String> validateUser(User user) {
@@ -72,6 +83,19 @@ public class UserReceiverImpl implements UserReceiver {
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in addNewUser", e);
+        }
+    }
+
+    public List<User> getAllEntities() throws ReceiverException {
+        try {
+            Repository<User> repository = new UserRepository();
+            Specification specification = new GetAllUsersSpecification();
+            LOGGER.debug("trying to get all users.");
+
+            return repository.query(specification);
+
+        } catch (RepositoryException e) {
+            throw new ReceiverException("Exception in getAllEntities of UserReceiverImpl.\n" + e, e);
         }
     }
 }

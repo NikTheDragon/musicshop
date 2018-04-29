@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserRepository implements Repository<User> {
-    private static final String ADD_CLIENT = "INSERT INTO users (name,surname,login,password,email,role,status) VALUES (?,?,?,?,?,?,?)";
+    private static final String ADD_USER = "INSERT INTO users (name,surname,login,password,email,role,status) VALUES (?,?,?,?,?,?,?)";
     private static final Logger LOGGER = LoggerFactory.getLogger(UserRepository.class);
     private ConnectionPool connectionPool;
 
@@ -28,6 +28,7 @@ public class UserRepository implements Repository<User> {
     static final int EMAIL = 6;
     static final int ROLE = 7;
     static final int STATUS = 8;
+    static final int POINTS = 9;
 
     public UserRepository() throws RepositoryException {
         try {
@@ -42,7 +43,7 @@ public class UserRepository implements Repository<User> {
     public void add(User user) throws RepositoryException {
         try {
             Connection dbConnection = connectionPool.getConnection();
-            try (PreparedStatement ps = dbConnection.prepareStatement(ADD_CLIENT)) {
+            try (PreparedStatement ps = dbConnection.prepareStatement(ADD_USER)) {
                 ps.setString(NAME, user.getName());
                 ps.setString(SURNAME, user.getSurname());
                 ps.setString(LOGIN, user.getLogin());
@@ -71,15 +72,15 @@ public class UserRepository implements Repository<User> {
 
     @Override
     public List<User> query(Specification specification) throws RepositoryException {
-        LOGGER.debug("Inside User Repositiry query method.");
-        final SqlSpecification sqlSpecification = (SqlSpecification) specification;
-        final List<User> userList = new ArrayList<>();
+        LOGGER.debug("Requesting all users.");
+        SqlSpecification sqlSpecification = (SqlSpecification) specification;
+        List<User> allUsers = new ArrayList<>();
+
         try {
             Connection dbConnection = connectionPool.getConnection();
             try (PreparedStatement ps = dbConnection.prepareStatement(sqlSpecification.toSqlQuery());
                  ResultSet rs = ps.executeQuery()) {
 
-                LOGGER.debug("ps string: {}", sqlSpecification.toSqlQuery());
                 while (rs.next()) {
                     User user = new User();
 
@@ -91,13 +92,14 @@ public class UserRepository implements Repository<User> {
                     user.setEmail(rs.getString(EMAIL));
                     user.setRole(rs.getString(ROLE));
                     user.setStatus(rs.getString(STATUS));
+                    user.setPoints(rs.getInt(POINTS));
 
-                    userList.add(user);
+                    allUsers.add(user);
                 }
 
                 connectionPool.releaseConnection(dbConnection);
 
-                return userList;
+                return allUsers;
             }
 
         } catch (SQLException | ConnectionException e) {

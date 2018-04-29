@@ -50,10 +50,14 @@
                     </div>
                 </li>
                 <li class="dropdown">
-                    <a href="javascript:void(0)" class="dropbtn">Admin users</a>
+                    <a href="javascript:void(0)" class="dropbtn">${adminUsers}</a>
                     <div class="dropdown-content">
-                        <a href="#">Edit users</a>
-                        <a href="#">Add new user</a>
+                        <form target="/mainServlet" method="get">
+                            <a href="<c:url value="/mainServlet">
+                                <c:param name="command" value="show_users_page"/>
+                                 </c:url>
+                            ">${editUsers}</a>
+                        </form>
                     </div>
                 </li>
                 <li class="dropdown">

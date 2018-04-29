@@ -20,6 +20,7 @@ public enum CommandType {
     SHOW_EDIT_MIXES_PAGE(new ShowEditMixesPage(new MixReceiverImpl())::execute),
     SHOW_EDIT_MIXES_CONTENT_PAGE(new ShowEditMixesContentPage(new MixContentReceiverImpl())::execute),
     SHOW_EDIT_ALBUMS_CONTENT_PAGE(new ShowEditAlbumsContentPageCommand(new AlbumContentReceiverImpl())::execute),
+    SHOW_USERS_PAGE(new ShowUsersPageCommand(new UserReceiverImpl())),
     CREATE_GENRE(new CreateGenreCommand(new GenreReceiverImpl())::execute),
     CREATE_TRACK(new CreateTrackCommand(new TrackReceiverImpl())::execute),
     CREATE_AUTHOR(new CreateAuthorCommand(new AuthorReceiverImpl())::execute),

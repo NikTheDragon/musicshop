@@ -40,9 +40,9 @@
         <td>
             <table id="fancyTable" width="100%">
                 <tr>
-                    <th width="80%">${nameHeader}</th>
-                    <th width="10%">${genreHeader}</th>
-                    <th width="10%">${typeHeader}</th>
+                    <th width="80%" onclick="sortTable('fancyTable', 0)">${nameHeader}</th>
+                    <th width="10%" onclick="sortTable('fancyTable', 1)">${genreHeader}</th>
+                    <th width="10%" onclick="sortTable('fancyTable', 2)">${typeHeader}</th>
                 </tr>
 
                 <c:forEach var="author" items="${authorList}">
@@ -175,6 +175,6 @@
     }
 
 </script>
-
+<script src="/js/tableSort.js"></script>
 </body>
 </html>

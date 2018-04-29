@@ -1,5 +1,7 @@
 package by.kurlovich.musicshop.entity;
 
+import java.util.Objects;
+
 public class User {
     private static final long serialVersionUID = 1L;
     private String id;
@@ -10,6 +12,7 @@ public class User {
     private String email;
     private String role;
     private String status;
+    private int points;
 
     public User() {
 
@@ -79,16 +82,33 @@ public class User {
         this.status = status;
     }
 
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
     @Override
-    public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", role='" + role + '\'' +
-                ", status='" + status + '\'' +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return points == user.points &&
+                Objects.equals(id, user.id) &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(surname, user.surname) &&
+                Objects.equals(login, user.login) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(role, user.role) &&
+                Objects.equals(status, user.status);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, name, surname, login, password, email, role, status, points);
     }
 }

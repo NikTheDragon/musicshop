@@ -9,7 +9,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>edit mixes content page</title>
 
-
+    <script src="/js/jquery.min.js"></script>
 
     <%@include file="/WEB-INF/jspf/locale.jsp" %>
 

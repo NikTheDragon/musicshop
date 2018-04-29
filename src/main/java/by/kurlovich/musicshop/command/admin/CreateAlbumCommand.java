@@ -37,13 +37,7 @@ public class CreateAlbumCommand implements Command {
             String userRole = (String) request.getSession(true).getAttribute("role");
 
             if (accessValidator.validate(accessRoles, userRole)) {
-                Album album = new Album();
-
-                album.setName(request.getParameter("submit_name"));
-                album.setGenre(request.getParameter("submit_genre"));
-                album.setAuthor(request.getParameter("submit_author"));
-                album.setYear(Integer.parseInt(request.getParameter("submit_year")));
-                album.setStatus("active");
+                Album album = createAlbum(request);
 
                 LOGGER.debug("Creating album: {}", album.getName());
 
@@ -68,5 +62,17 @@ public class CreateAlbumCommand implements Command {
         } catch (ReceiverException e) {
             throw new CommandException("Exception in CreateAlbumCommand.\n" + e, e);
         }
+    }
+
+    private Album createAlbum(HttpServletRequest request) {
+        Album album = new Album();
+
+        album.setName(request.getParameter("submit_name"));
+        album.setGenre(request.getParameter("submit_genre"));
+        album.setAuthor(request.getParameter("submit_author"));
+        album.setYear(Integer.parseInt(request.getParameter("submit_year")));
+        album.setStatus("active");
+
+        return album;
     }
 }

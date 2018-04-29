@@ -21,8 +21,6 @@ public class DeleteMix implements Command {
     private final static String EDIT_MIXES_PAGE = PageStore.EDIT_MIXES_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private final static Logger LOGGER = LoggerFactory.getLogger(DeleteMix.class);
-    private AccessValidator accessValidator = new AccessValidator();
-    private List<String> accessRoles = Arrays.asList("admin");
     private EntityReceiver receiver;
 
     public DeleteMix(EntityReceiver receiver) {
@@ -33,6 +31,8 @@ public class DeleteMix implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
+            AccessValidator accessValidator = new AccessValidator();
+            List<String> accessRoles = Arrays.asList("admin");
             String userRole = (String) request.getSession(true).getAttribute("role");
 
             if (accessValidator.validate(accessRoles, userRole)) {
@@ -43,10 +43,10 @@ public class DeleteMix implements Command {
                 LOGGER.debug("Deleting mix: {}", mix.getName());
 
                 if (receiver.deleteEntity(mix)) {
-                    List<Mix> mixList = receiver.getAllEntities();
-                    mixList.sort(Comparator.comparing(Mix::getName));
+                    List<Mix> allMixes = receiver.getAllEntities();
+                    allMixes.sort(Comparator.comparing(Mix::getName));
 
-                    request.getSession(true).setAttribute("mixList", mixList);
+                    request.getSession(true).setAttribute("mixList", allMixes);
                     request.getSession(true).setAttribute("url", EDIT_MIXES_PAGE);
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_MIXES_PAGE);
                 }
