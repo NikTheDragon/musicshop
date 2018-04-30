@@ -6,15 +6,15 @@ import by.kurlovich.musicshop.store.PageStore;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class ShowMainPage implements Command {
-    private String mainPage = PageStore.MAIN_PAGE.getPageName();
+public class ShowRegPageCommand implements Command {
+    private final static String REG_PAGE = PageStore.REG_PAGE.getPageName();
 
-    public ShowMainPage() {
+    public ShowRegPageCommand() {
     }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {
-        request.getSession(true).setAttribute("url", mainPage);
-        return new CommandResult(CommandResult.ResponseType.FORWARD, mainPage);
+        request.getSession(true).setAttribute("url", REG_PAGE);
+        return new CommandResult(CommandResult.ResponseType.FORWARD, REG_PAGE);
     }
 }

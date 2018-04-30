@@ -3,7 +3,7 @@ package by.kurlovich.musicshop.command.admin;
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
-import by.kurlovich.musicshop.entity.Mix;
+import by.kurlovich.musicshop.entity.Album;
 import by.kurlovich.musicshop.store.PageStore;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
@@ -17,38 +17,38 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class DeleteMix implements Command {
-    private final static String EDIT_MIXES_PAGE = PageStore.EDIT_MIXES_PAGE.getPageName();
+public class DeleteAlbumCommand implements Command {
+    private final static String EDIT_ALBUMS_PAGE = PageStore.EDIT_ALBUMS_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
-    private final static Logger LOGGER = LoggerFactory.getLogger(DeleteMix.class);
-    private EntityReceiver receiver;
+    private final static Logger LOGGER = LoggerFactory.getLogger(DeleteAlbumCommand.class);
+    private final EntityReceiver receiver;
 
-    public DeleteMix(EntityReceiver receiver) {
+    public DeleteAlbumCommand(EntityReceiver receiver) {
 
         this.receiver = receiver;
     }
+
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
             AccessValidator accessValidator = new AccessValidator();
             List<String> accessRoles = Arrays.asList("admin");
+
             String userRole = (String) request.getSession(true).getAttribute("role");
 
             if (accessValidator.validate(accessRoles, userRole)) {
-                Mix mix = new Mix();
+                Album album = createAlbum(request);
 
-                mix.setName(request.getParameter("submit_name"));
+                LOGGER.debug("Deleting album: {}", album.getName());
 
-                LOGGER.debug("Deleting mix: {}", mix.getName());
+                if (receiver.deleteEntity(album)) {
+                    List<Album> albumList = receiver.getAllEntities();
+                    albumList.sort(Comparator.comparing(Album::getName));
 
-                if (receiver.deleteEntity(mix)) {
-                    List<Mix> allMixes = receiver.getAllEntities();
-                    allMixes.sort(Comparator.comparing(Mix::getName));
-
-                    request.getSession(true).setAttribute("mixList", allMixes);
-                    request.getSession(true).setAttribute("url", EDIT_MIXES_PAGE);
-                    return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_MIXES_PAGE);
+                    request.getSession(true).setAttribute("albumList", albumList);
+                    request.getSession(true).setAttribute("url", EDIT_ALBUMS_PAGE);
+                    return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_ALBUMS_PAGE);
                 }
 
                 request.setAttribute("message", "undelete");
@@ -61,7 +61,18 @@ public class DeleteMix implements Command {
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in DeleteMix.\n" + e, e);
+            throw new CommandException("Exception in DeleteAlbumCommand.\n" + e, e);
         }
+    }
+
+    private Album createAlbum(HttpServletRequest request) {
+        Album album = new Album();
+
+        album.setName(request.getParameter("submit_name"));
+        album.setGenre(request.getParameter("submit_genre"));
+        album.setAuthor(request.getParameter("submit_author"));
+        album.setYear(Integer.parseInt(request.getParameter("submit_year")));
+
+        return album;
     }
 }

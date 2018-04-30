@@ -3,11 +3,12 @@ package by.kurlovich.musicshop.command.admin;
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
-import by.kurlovich.musicshop.entity.Genre;
+import by.kurlovich.musicshop.entity.Mix;
 import by.kurlovich.musicshop.store.PageStore;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.validator.AccessValidator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,13 +17,13 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class CreateGenreCommand implements Command {
-    private final static String EDIT_GENRES_PAGE = PageStore.EDIT_GENRES_PAGE.getPageName();
+public class DeleteMixCommand implements Command {
+    private final static String EDIT_MIXES_PAGE = PageStore.EDIT_MIXES_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
-    private final static Logger LOGGER = LoggerFactory.getLogger(CreateGenreCommand.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(DeleteMixCommand.class);
     private EntityReceiver receiver;
 
-    public CreateGenreCommand(EntityReceiver receiver) {
+    public DeleteMixCommand(EntityReceiver receiver) {
 
         this.receiver = receiver;
     }
@@ -30,27 +31,27 @@ public class CreateGenreCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
+            AccessValidator accessValidator = new AccessValidator();
             List<String> accessRoles = Arrays.asList("admin");
             String userRole = (String) request.getSession(true).getAttribute("role");
 
-            if (AccessValidator.validate(accessRoles, userRole)) {
-                Genre genre = new Genre();
+            if (accessValidator.validate(accessRoles, userRole)) {
+                Mix mix = new Mix();
 
-                genre.setName(request.getParameter("submit_name"));
-                genre.setStatus("active");
+                mix.setName(request.getParameter("submit_name"));
 
-                LOGGER.debug("Creating genre: {}", genre.getName());
+                LOGGER.debug("Deleting mix: {}", mix.getName());
 
-                if (receiver.addNewEntity(genre)) {
-                    List<Genre> genreList = receiver.getAllEntities();
-                    genreList.sort(Comparator.comparing(Genre::getName));
+                if (receiver.deleteEntity(mix)) {
+                    List<Mix> allMixes = receiver.getAllEntities();
+                    allMixes.sort(Comparator.comparing(Mix::getName));
 
-                    request.getSession(true).setAttribute("genreList", genreList);
-                    request.getSession(true).setAttribute("url", EDIT_GENRES_PAGE);
-                    return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_GENRES_PAGE);
+                    request.getSession(true).setAttribute("mixList", allMixes);
+                    request.getSession(true).setAttribute("url", EDIT_MIXES_PAGE);
+                    return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_MIXES_PAGE);
                 }
 
-                request.setAttribute("message", "exists");
+                request.setAttribute("message", "undelete");
 
             } else {
                 request.setAttribute("message", "denied");
@@ -60,7 +61,7 @@ public class CreateGenreCommand implements Command {
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in CreateGenreCommand.\n" + e, e);
+            throw new CommandException("Exception in DeleteMixCommand.\n" + e, e);
         }
     }
 }

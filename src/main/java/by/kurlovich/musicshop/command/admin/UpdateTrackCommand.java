@@ -3,7 +3,7 @@ package by.kurlovich.musicshop.command.admin;
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
-import by.kurlovich.musicshop.entity.Genre;
+import by.kurlovich.musicshop.entity.Track;
 import by.kurlovich.musicshop.store.PageStore;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
@@ -17,15 +17,15 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class UpdateGenre implements Command {
-    private final static String EDIT_GENRES_PAGE = PageStore.EDIT_GENRES_PAGE.getPageName();
+public class UpdateTrackCommand implements Command {
+    private final static String EDIT_TRACKS_PAGE = PageStore.EDIT_TRACKS_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
-    private final static Logger LOGGER = LoggerFactory.getLogger(UpdateGenre.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(UpdateTrackCommand.class);
     private AccessValidator accessValidator = new AccessValidator();
     private List<String> accessRoles = Arrays.asList("admin");
     private EntityReceiver receiver;
 
-    public UpdateGenre(EntityReceiver receiver) {
+    public UpdateTrackCommand(EntityReceiver receiver) {
 
         this.receiver = receiver;
     }
@@ -36,23 +36,27 @@ public class UpdateGenre implements Command {
             String userRole = (String) request.getSession(true).getAttribute("role");
 
             if (accessValidator.validate(accessRoles, userRole)) {
-                Genre genre = new Genre();
+                Track track = new Track();
 
-                genre.setId(request.getParameter("submit_id"));
-                genre.setName(request.getParameter("submit_name"));
+                track.setId((request.getParameter("submit_id")));
+                track.setName(request.getParameter("submit_name"));
+                track.setAuthor(request.getParameter("submit_author"));
+                track.setGenre(request.getParameter("submit_genre"));
+                track.setYear(request.getParameter("submit_year"));
+                track.setLength(request.getParameter("submit_length"));
 
-                LOGGER.debug("Updating genre: {}", genre.getName());
+                LOGGER.debug("Updating track: {}", track.getName());
 
-                if (receiver.updateEntity(genre)) {
-                    List<Genre> genreList = receiver.getAllEntities();
-                    genreList.sort(Comparator.comparing(Genre::getName));
+                if (receiver.updateEntity(track)) {
+                    List<Track> trackList = receiver.getAllEntities();
+                    trackList.sort(Comparator.comparing(Track::getAuthor));
 
-                    request.getSession(true).setAttribute("genreList", genreList);
-                    request.getSession(true).setAttribute("url", EDIT_GENRES_PAGE);
-                    return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_GENRES_PAGE);
+                    request.getSession(true).setAttribute("trackList", trackList);
+                    request.getSession(true).setAttribute("url", EDIT_TRACKS_PAGE);
+                    return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_TRACKS_PAGE);
                 }
 
-                request.setAttribute("message", "unupdate");
+                request.setAttribute("message", "undelete");
 
             } else {
                 request.setAttribute("message", "denied");
@@ -62,7 +66,7 @@ public class UpdateGenre implements Command {
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in UpdateGenre.\n" + e, e);
+            throw new CommandException("Exception in UpdateTrackCommand.\n" + e, e);
         }
     }
 }

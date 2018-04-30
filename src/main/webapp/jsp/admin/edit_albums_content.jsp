@@ -45,7 +45,7 @@
     </tr>
 </table>
 
-<table width="100%">
+<table style="width: 80%; margin-left: auto; margin-right: auto;">
     <tr>
         <td style="text-align: center">
             <h2>Содержимое альбома</h2>
@@ -58,11 +58,11 @@
         <th width="70%">${titleHeader}</th>
         <th width="30%">${lengthHeader}</th>
     </tr>
-    <c:forEach var="content" items="${albumContent}">
-        <c:if test="${content.status == 'active'}">
-            <tr id="${content.trackId}" onclick="formTrackInfo(this.id)">
-                <td id="${content.trackId}track">${content.trackName}</td>
-                <td style="text-align: center">${content.length}</td>
+    <c:forEach var="currentContent" items="${albumContent}">
+        <c:if test="${currentContent.status == 'active'}">
+            <tr id="${currentContent.trackId}" onclick="formSubmitInfo(this.id)">
+                <td id="${currentContent.trackId}track">${currentContent.trackName}</td>
+                <td style="text-align: center">${currentContent.length}</td>
             </tr>
         </c:if>
     </c:forEach>
@@ -70,7 +70,7 @@
 
 <table style="width: 80%; margin-left: auto; margin-right: auto;">
     <tr>
-        <td width="100%%">
+        <td width="100%">
             <select id="trackNameSelector" name="trackNameSelector" size="1">
                 <option style="background-color:lightskyblue" value=""></option>
                 <c:forEach var="line" items="${authorTracks}">
@@ -106,7 +106,7 @@
         $(this).addClass("selected").siblings().removeClass("selected");
     });
 
-    function formTrackInfo(trackId) {
+    function formSubmitInfo(trackId) {
         document.getElementById("trackNameSelector").value = document.getElementById(trackId + "track").textContent;
 
         var submitId = document.getElementsByName("submit_track_id");
@@ -116,9 +116,9 @@
     }
 
     function submitButton(formName) {
-        var submitName = document.getElementsByName("submit_track");
-
         var trackName = document.getElementById("trackNameSelector").value;
+
+        var submitName = document.getElementsByName("submit_track");
         for (var i = 0; i < submitName.length; i++) {
             submitName[i].setAttribute("value", trackName);
         }
@@ -127,6 +127,7 @@
             document.getElementById(formName).submit();
         }
     }
+
 </script>
 
 </body>

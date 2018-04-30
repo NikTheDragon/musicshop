@@ -59,7 +59,7 @@
     </tr>
     <c:forEach var="content" items="${contentList}">
         <c:if test="${content.status == 'active'}">
-            <tr id="${content.trackId}" onclick="formTrackInfo(this.id)">
+            <tr id="${content.trackId}" onclick="formSubmitInfo(this.id)">
                 <td id="${content.trackId}track">${content.trackName}</td>
                 <td id="${content.trackId}author">${content.authorName}</td>
             </tr>
@@ -139,7 +139,7 @@
         $(this).addClass("selected").siblings().removeClass("selected");
     });
 
-    function formTrackInfo(trackId) {
+    function formSubmitInfo(trackId) {
         var countId = document.getElementsByName("submit_track_id");
         for (var i = 0; i < countId.length; i++) {
             countId[i].setAttribute("value", trackId);

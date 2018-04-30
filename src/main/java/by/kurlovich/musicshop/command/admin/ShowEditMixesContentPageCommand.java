@@ -15,12 +15,12 @@ import by.kurlovich.musicshop.validator.AccessValidator;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
-public class ShowEditMixesContentPage implements Command {
+public class ShowEditMixesContentPageCommand implements Command {
     private final static String EDIT_MIXES_CONTENT_PAGE = PageStore.EDIT_MIXES_CONTENT_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private EntityReceiver receiver;
 
-    public ShowEditMixesContentPage(EntityReceiver receiver) {
+    public ShowEditMixesContentPageCommand(EntityReceiver receiver) {
         this.receiver = receiver;
     }
 
@@ -71,7 +71,7 @@ public class ShowEditMixesContentPage implements Command {
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in ShowEditMixesContentPage.\n" + e, e);
+            throw new CommandException("Exception in ShowEditMixesContentPageCommand.\n" + e, e);
         }
     }
 }

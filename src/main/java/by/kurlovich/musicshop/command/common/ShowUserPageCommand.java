@@ -9,13 +9,13 @@ import java.util.Arrays;
 import java.util.List;
 import by.kurlovich.musicshop.validator.AccessValidator;
 
-public class ShowUserPage implements Command {
+public class ShowUserPageCommand implements Command {
     private String page = PageStore.USER_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private List<String> accessRoles = Arrays.asList("admin", "user");
     private AccessValidator accessValidator = new AccessValidator();
 
-    public ShowUserPage() {
+    public ShowUserPageCommand() {
 
     }
 

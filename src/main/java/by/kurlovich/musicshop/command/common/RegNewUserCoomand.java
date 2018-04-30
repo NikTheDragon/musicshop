@@ -13,28 +13,21 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
-public class RegNewUser implements Command {
-    private final static Logger LOGGER = LoggerFactory.getLogger(RegNewUser.class);
+public class RegNewUserCoomand implements Command {
+    private final static Logger LOGGER = LoggerFactory.getLogger(RegNewUserCoomand.class);
     private static final String REG_PAGE = PageStore.REG_PAGE.getPageName();
     private static final String REGISTRATION_COMPLETE = PageStore.REGISTRATION_COMPLETE.getPageName();
     private UserReceiver receiver;
 
-    public RegNewUser(UserReceiver receiver) {
+    public RegNewUserCoomand(UserReceiver receiver) {
         this.receiver = receiver;
     }
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         Map<String, String> messageMap;
-        User user = new User();
 
-        user.setName(request.getParameter("name"));
-        user.setSurname(request.getParameter("surname"));
-        user.setLogin(request.getParameter("login"));
-        user.setPassword(request.getParameter("password"));
-        user.setEmail(request.getParameter("e-mail"));
-        user.setRole("user");
-        user.setStatus("active");
+        User user = createUser(request);
 
         request.setAttribute("user", user);
 
@@ -57,7 +50,22 @@ public class RegNewUser implements Command {
                 return new CommandResult(CommandResult.ResponseType.FORWARD, REG_PAGE);
             }
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in RegNewUser.\n" + e, e);
+            throw new CommandException("Exception in RegNewUserCoomand.\n" + e, e);
         }
+    }
+
+    private User createUser(HttpServletRequest request) {
+        User user = new User();
+
+        user.setName(request.getParameter("submit_name"));
+        user.setSurname(request.getParameter("submit_surname"));
+        user.setLogin(request.getParameter("submit_login"));
+        user.setPassword(request.getParameter("submit_password"));
+        user.setEmail(request.getParameter("submit_email"));
+        user.setRole("user");
+        user.setStatus("active");
+        user.setPoints(0);
+
+        return user;
     }
 }

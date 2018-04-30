@@ -21,8 +21,6 @@ public class CreateTrackCommand implements Command {
     private final static String EDIT_TRACKS_PAGE = PageStore.EDIT_TRACKS_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private final static Logger LOGGER = LoggerFactory.getLogger(CreateTrackCommand.class);
-    private AccessValidator accessValidator = new AccessValidator();
-    private List<String> accessRoles = Arrays.asList("admin");
     private EntityReceiver receiver;
 
     public CreateTrackCommand(EntityReceiver receiver) {
@@ -30,13 +28,13 @@ public class CreateTrackCommand implements Command {
         this.receiver = receiver;
     }
 
-
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
+            List<String> accessRoles = Arrays.asList("admin");
             String userRole = (String) request.getSession(true).getAttribute("role");
 
-            if (accessValidator.validate(accessRoles, userRole)) {
+            if (AccessValidator.validate(accessRoles, userRole)) {
                 Track track = new Track();
                 track.setName(request.getParameter("submit_name"));
                 track.setAuthor(request.getParameter("submit_author"));

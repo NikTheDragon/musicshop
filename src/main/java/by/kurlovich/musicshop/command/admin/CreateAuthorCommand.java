@@ -20,8 +20,6 @@ public class CreateAuthorCommand implements Command {
     private final static String EDIT_AUTHORS_PAGE = PageStore.EDIT_AUTHORS_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private final static Logger LOGGER = LoggerFactory.getLogger(CreateAuthorCommand.class);
-    private AccessValidator accessValidator = new AccessValidator();
-    private List<String> accessRoles = Arrays.asList("admin");
     private EntityReceiver receiver;
 
     public CreateAuthorCommand(EntityReceiver receiver) {
@@ -29,13 +27,13 @@ public class CreateAuthorCommand implements Command {
         this.receiver = receiver;
     }
 
-
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
+            List<String> accessRoles = Arrays.asList("admin");
             String userRole = (String) request.getSession(true).getAttribute("role");
 
-            if (accessValidator.validate(accessRoles, userRole)) {
+            if (AccessValidator.validate(accessRoles, userRole)) {
                 Author author = new Author();
                 author.setName(request.getParameter("submit_name"));
                 author.setGenre(request.getParameter("submit_genre"));

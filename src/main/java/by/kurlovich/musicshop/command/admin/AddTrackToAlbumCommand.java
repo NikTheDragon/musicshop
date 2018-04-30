@@ -29,13 +29,11 @@ public class AddTrackToAlbumCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
-        AccessValidator accessValidator = new AccessValidator();
-
         try {
             String userRole = (String) request.getSession(true).getAttribute("role");
             List<String> accessRoles = Arrays.asList("admin");
 
-            if (accessValidator.validate(accessRoles, userRole)) {
+            if (AccessValidator.validate(accessRoles, userRole)) {
                 Content content = new Content();
 
                 content.setEntityId(request.getParameter("submit_album_id"));

@@ -12,14 +12,14 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class LoginUser implements Command {
-    private final static Logger LOGGER = LoggerFactory.getLogger(LoginUser.class);
+public class LoginUserCommand implements Command {
+    private final static Logger LOGGER = LoggerFactory.getLogger(LoginUserCommand.class);
     private final static String MAIN_PAGE = PageStore.MAIN_PAGE.getPageName();
     private final static String USER_PAGE = PageStore.USER_PAGE.getPageName();
     private final static String ADMIN_PAGE = PageStore.ADMIN_PAGE.getPageName();
     private UserReceiver receiver;
 
-    public LoginUser(UserReceiver receiver) {
+    public LoginUserCommand(UserReceiver receiver) {
         this.receiver = receiver;
     }
 
@@ -55,7 +55,7 @@ public class LoginUser implements Command {
 
             return new CommandResult(CommandResult.ResponseType.FORWARD, MAIN_PAGE);
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in LoginUser", e);
+            throw new CommandException("Exception in LoginUserCommand", e);
         }
     }
 }

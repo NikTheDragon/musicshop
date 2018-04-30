@@ -8,7 +8,7 @@ import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.impl.TrackRepository;
 import by.kurlovich.musicshop.specification.GetAllTracksSpecification;
-import by.kurlovich.musicshop.specification.GetTracksByParamSpecification;
+import by.kurlovich.musicshop.specification.GetTracksByAuthorNameSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,7 +61,7 @@ public class TrackReceiverImpl implements EntityReceiver<Track> {
             return true;
 
         } catch (RepositoryException e) {
-            throw new ReceiverException("Exception in deleteTrack.\n"+e, e);
+            throw new ReceiverException("Exception in deleteTrack.\n" + e, e);
         }
     }
 
@@ -79,7 +79,7 @@ public class TrackReceiverImpl implements EntityReceiver<Track> {
             return true;
 
         } catch (RepositoryException e) {
-            throw new ReceiverException("Exception in updateTrack.\n"+e, e);
+            throw new ReceiverException("Exception in updateTrack.\n" + e, e);
         }
     }
 
@@ -93,7 +93,7 @@ public class TrackReceiverImpl implements EntityReceiver<Track> {
             return repository.query(specification);
 
         } catch (RepositoryException e) {
-            throw new ReceiverException("Exception in getAllEntities of TrackReceiverImpl.\n"+e, e);
+            throw new ReceiverException("Exception in getAllEntities of TrackReceiverImpl.\n" + e, e);
         }
     }
 
@@ -101,7 +101,7 @@ public class TrackReceiverImpl implements EntityReceiver<Track> {
     public List<Track> getSpecifiedEntities(String param) throws ReceiverException {
         try {
             Repository<Track> repository = new TrackRepository();
-            Specification specification = new GetTracksByParamSpecification(param);
+            Specification specification = new GetTracksByAuthorNameSpecification(param);
             LOGGER.debug("trying to get specified author: {}, tracks.", param);
 
             return repository.query(specification);

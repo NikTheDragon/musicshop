@@ -9,6 +9,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>edit genres page</title>
 
+    <script src="/js/jquery.min.js"></script>
+
     <%@include file="/WEB-INF/jspf/locale.jsp" %>
 
 </head>
@@ -25,7 +27,7 @@
 
 <br>
 
-<table width="100%">
+<table style="width: 80%; margin-left: auto; margin-right: auto;">
     <tr>
         <td style="text-align: center">
             <h2>Список жанров</h2>
@@ -33,79 +35,74 @@
     </tr>
 </table>
 
-<table width="100%">
+<table id="fancyTable" style="width: 80%; margin-left: auto; margin-right: auto;">
+    <tr align="center">
+        <th width="35%">${titleHeader}</th>
+    </tr>
+
+    <c:forEach var="currentGenre" items="${genreList}">
+        <c:if test="${currentGenre.status == 'active'}">
+            <tr id="${currentGenre.id}" onclick="formSubmitInfo(this.id)">
+                <td id="${currentGenre.id}name">${currentGenre.name}</td>
+            </tr>
+        </c:if>
+    </c:forEach>
+
+</table>
+
+<table style="width: 80%; margin-left: auto; margin-right: auto;">
     <tr>
-        <td width="5%">
+        <td width="200">
+            <input id="name" name="name" type="text" value="">
         </td>
-        <td>
-            <table id="fancyTable" align="center">
-                <tr align="center">
-                    <th width="35%">${titleHeader}</th>
-                </tr>
-
-                <c:forEach var="genre" items="${genreList}">
-                    <c:if test="${genre.status == 'active'}">
-                        <tr id="${genre.id}" onclick="show_name(this.id)">
-                            <td id="${genre.id}name">${genre.name}</td>
-                        </tr>
-                    </c:if>
-                </c:forEach>
-
-            </table>
-
-            <table width="100%">
-                <tr>
-                    <td width="200">
-                        <input id="name" name="name" type="text" value="">
-                    </td>
-                    <form id="formCreate" action="/mainServlet" method="get">
-                        <input type="hidden" name="command" value="create_genre">
-                        <input type="hidden" name="submit_id" value="">
-                        <input type="hidden" name="submit_name" value="">
-                        <td><input type="button" name="button" onclick="submitForm('formCreate')" value="${createButton}"></td>
-                    </form>
-                    <form id="formUpdate" action="/mainServlet" method="get">
-                        <input type="hidden" name="command" value="update_genre">
-                        <input type="hidden" name="submit_id" value="">
-                        <input type="hidden" name="submit_name" value="">
-                        <td><input type="button" name="button" onclick="submitForm('formUpdate')" value="${updateButton}"></td>
-                    </form>
-                    <form id="formDelete" action="/mainServlet" method="get">
-                        <input type="hidden" name="command" value="delete_genre">
-                        <input type="hidden" name="submit_id" value="">
-                        <input type="hidden" name="submit_name" value="">
-                        <td><input type="button" name="button" onclick="submitForm('formDelete')" value="${deleteButton}"></td>
-                    </form>
-                </tr>
-
-            </table>
-        </td>
-        <td width="5%">
-        </td>
+        <form id="formCreate" action="/mainServlet" method="get">
+            <input type="hidden" name="command" value="create_genre">
+            <input type="hidden" name="submit_id" value="">
+            <input type="hidden" name="submit_name" value="">
+            <td><input type="button" name="button" onclick="submitButton('formCreate')" value="${createButton}"></td>
+        </form>
+        <form id="formUpdate" action="/mainServlet" method="get">
+            <input type="hidden" name="command" value="update_genre">
+            <input type="hidden" name="submit_id" value="">
+            <input type="hidden" name="submit_name" value="">
+            <td><input type="button" name="button" onclick="submitButton('formUpdate')" value="${updateButton}"></td>
+        </form>
+        <form id="formDelete" action="/mainServlet" method="get">
+            <input type="hidden" name="command" value="delete_genre">
+            <input type="hidden" name="submit_id" value="">
+            <input type="hidden" name="submit_name" value="">
+            <td><input type="button" name="button" onclick="submitButton('formDelete')" value="${deleteButton}"></td>
+        </form>
     </tr>
 
 </table>
 
 <script>
-    function show_name(clicked_row) {
-        var genreName = document.getElementById("name");
-        genreName.value = document.getElementById(clicked_row + "name").textContent;
+
+    $("tr").click(function () {
+        $(this).addClass("selected").siblings().removeClass("selected");
+    });
+
+    function formSubmitInfo(genreId) {
+        document.getElementById("name").value = document.getElementById(genreId + "name").textContent;
 
         var idCount = document.getElementsByName("submit_id");
         for (var i = 0; i < idCount.length; i++) {
-            idCount[i].setAttribute("value", clicked_row);
+            idCount[i].setAttribute("value", genreId);
         }
     }
 
-    function submitForm(formName) {
-        var genreName = document.getElementById("name");
+    function submitButton(formName) {
+        var genreName = document.getElementById("name").value;
 
         var nameCount = document.getElementsByName("submit_name");
         for (var i = 0; i < nameCount.length; i++) {
-            nameCount[i].setAttribute("value", genreName.value);
+            nameCount[i].setAttribute("value", genreName);
         }
 
-        document.getElementById(formName).submit();
+        if(genreName != "") {
+            document.getElementById(formName).submit();
+        }
     }
 
 </script>

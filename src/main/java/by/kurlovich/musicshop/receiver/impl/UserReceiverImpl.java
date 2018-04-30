@@ -8,9 +8,11 @@ import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.impl.UserRepository;
 import by.kurlovich.musicshop.specification.GetAllUsersSpecification;
+import by.kurlovich.musicshop.specification.GetUserByIdSpecification;
 import by.kurlovich.musicshop.specification.GetUserByLoginPasswordSpecification;
 import by.kurlovich.musicshop.specification.GetUserByLoginSpecification;
 import by.kurlovich.musicshop.validator.ObjectValidator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +38,7 @@ public class UserReceiverImpl implements UserReceiver {
         }
     }
 
+    @Override
     public Map<String, String> validateUser(User user) {
         Map<String, String> messageMap = new HashMap<>();
 
@@ -48,6 +51,7 @@ public class UserReceiverImpl implements UserReceiver {
         return messageMap;
     }
 
+    @Override
     public boolean addNewUser(User user) throws ReceiverException {
         try {
             Repository<User> repository = new UserRepository();
@@ -63,10 +67,29 @@ public class UserReceiverImpl implements UserReceiver {
             }
 
         } catch (RepositoryException e) {
-            throw new ReceiverException("Exception in addNewUser", e);
+            throw new ReceiverException("Exception in addNewUser.\n" + e, e);
         }
     }
 
+    @Override
+    public boolean updateUser(User user) throws ReceiverException {
+        try {
+            Repository<User> repository = new UserRepository();
+            LOGGER.debug("trying to update user: {}", user.getName());
+
+            if (user.getName().isEmpty()) {
+                return false;
+            }
+
+            repository.update(user);
+            return true;
+
+        } catch (RepositoryException e) {
+            throw new ReceiverException("Exception in updateUser of UserReceiverImpl.\n" + e, e);
+        }
+    }
+
+    @Override
     public User loginUser(String login, String password) throws ReceiverException {
         try {
             Repository<User> repository = new UserRepository();
@@ -82,20 +105,21 @@ public class UserReceiverImpl implements UserReceiver {
             }
 
         } catch (RepositoryException e) {
-            throw new ReceiverException("Exception in addNewUser", e);
+            throw new ReceiverException("Exception in loginUser.\n" + e, e);
         }
     }
 
-    public List<User> getAllEntities() throws ReceiverException {
+    @Override
+    public List<User> getSpecifiedUsers(String userId) throws ReceiverException {
         try {
             Repository<User> repository = new UserRepository();
-            Specification specification = new GetAllUsersSpecification();
-            LOGGER.debug("trying to get all users.");
+            Specification specification = new GetUserByIdSpecification(userId);
+            LOGGER.debug("trying to get specified users.");
 
             return repository.query(specification);
 
         } catch (RepositoryException e) {
-            throw new ReceiverException("Exception in getAllEntities of UserReceiverImpl.\n" + e, e);
+            throw new ReceiverException("Exception in getSpecifiedUsers of UserReceiverImpl.\n" + e, e);
         }
     }
 }

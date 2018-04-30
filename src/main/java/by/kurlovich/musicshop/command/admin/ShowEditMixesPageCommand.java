@@ -16,14 +16,14 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class ShowEditMixesPage implements Command {
+public class ShowEditMixesPageCommand implements Command {
     private final static String EDIT_MIXES_PAGE = PageStore.EDIT_MIXES_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private AccessValidator accessValidator = new AccessValidator();
     private List<String> accessRoles = Arrays.asList("admin");
     private EntityReceiver receiver;
 
-    public ShowEditMixesPage(EntityReceiver receiver) {
+    public ShowEditMixesPageCommand(EntityReceiver receiver) {
         this.receiver = receiver;
     }
 
@@ -52,7 +52,7 @@ public class ShowEditMixesPage implements Command {
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in ShowEditMixesPage.\n" + e, e);
+            throw new CommandException("Exception in ShowEditMixesPageCommand.\n" + e, e);
         }
     }
 }

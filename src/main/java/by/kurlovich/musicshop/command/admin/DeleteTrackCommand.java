@@ -17,15 +17,15 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class DeleteTrack implements Command {
+public class DeleteTrackCommand implements Command {
     private final static String EDIT_TRACKS_PAGE = PageStore.EDIT_TRACKS_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
-    private final static Logger LOGGER = LoggerFactory.getLogger(DeleteTrack.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(DeleteTrackCommand.class);
     private AccessValidator accessValidator = new AccessValidator();
     private List<String> accessRoles = Arrays.asList("admin");
     private EntityReceiver receiver;
 
-    public DeleteTrack(EntityReceiver receiver) {
+    public DeleteTrackCommand(EntityReceiver receiver) {
 
         this.receiver = receiver;
     }
@@ -64,7 +64,7 @@ public class DeleteTrack implements Command {
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in DeleteTrack.\n" + e, e);
+            throw new CommandException("Exception in DeleteTrackCommand.\n" + e, e);
         }
     }
 }

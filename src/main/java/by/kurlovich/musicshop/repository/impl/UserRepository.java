@@ -17,6 +17,7 @@ import java.util.List;
 
 public class UserRepository implements Repository<User> {
     private static final String ADD_USER = "INSERT INTO users (name,surname,login,password,email,role,status) VALUES (?,?,?,?,?,?,?)";
+    private static final String UPDATE_USER = "UPDATE users SET name=?, surname=?, login=?, password=?, email=?, role=?, status=?, points=? WHERE id=?";
     private static final Logger LOGGER = LoggerFactory.getLogger(UserRepository.class);
     private ConnectionPool connectionPool;
 
@@ -52,7 +53,7 @@ public class UserRepository implements Repository<User> {
                 ps.setString(ROLE, user.getRole());
                 ps.setString(STATUS, user.getStatus());
 
-                //ps.executeUpdate();
+                ps.executeUpdate();
             }
             connectionPool.releaseConnection(dbConnection);
         } catch (SQLException | ConnectionException e) {
@@ -67,7 +68,26 @@ public class UserRepository implements Repository<User> {
 
     @Override
     public void update(User item) throws RepositoryException {
+        try {
+            LOGGER.debug("Updating user {}", item.getName());
+            Connection dbConnection = connectionPool.getConnection();
+            try (PreparedStatement ps = dbConnection.prepareStatement(UPDATE_USER)) {
+                ps.setString(1, item.getName());
+                ps.setString(2, item.getSurname());
+                ps.setString(3, item.getLogin());
+                ps.setString(4, item.getPassword());
+                ps.setString(5, item.getEmail());
+                ps.setString(6, item.getRole());
+                ps.setString(7, item.getStatus());
+                ps.setString(8, String.valueOf(item.getPoints()));
+                ps.setString(9, item.getId());
 
+                ps.executeUpdate();
+            }
+            connectionPool.releaseConnection(dbConnection);
+        } catch (SQLException | ConnectionException e) {
+            throw new RepositoryException("Exception in update of UserRepository.\n" + e, e);
+        }
     }
 
     @Override

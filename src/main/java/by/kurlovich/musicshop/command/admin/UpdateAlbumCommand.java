@@ -17,32 +17,35 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class DeleteAlbum implements Command {
+public class UpdateAlbumCommand implements Command {
     private final static String EDIT_ALBUMS_PAGE = PageStore.EDIT_ALBUMS_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
-    private final static Logger LOGGER = LoggerFactory.getLogger(DeleteAlbum.class);
-    private final EntityReceiver receiver;
+    private final static Logger LOGGER = LoggerFactory.getLogger(UpdateAlbumCommand.class);
+    private AccessValidator accessValidator = new AccessValidator();
+    private List<String> accessRoles = Arrays.asList("admin");
+    private EntityReceiver receiver;
 
-    public DeleteAlbum(EntityReceiver receiver) {
+    public UpdateAlbumCommand(EntityReceiver receiver) {
 
         this.receiver = receiver;
     }
 
-
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
-            AccessValidator accessValidator = new AccessValidator();
-            List<String> accessRoles = Arrays.asList("admin");
-
             String userRole = (String) request.getSession(true).getAttribute("role");
 
             if (accessValidator.validate(accessRoles, userRole)) {
-                Album album = createAlbum(request);
+                Album album = new Album();
+                album.setId(request.getParameter("submit_id"));
+                album.setName(request.getParameter("submit_name"));
+                album.setGenre(request.getParameter("submit_genre"));
+                album.setAuthor(request.getParameter("submit_author"));
+                album.setYear(Integer.parseInt(request.getParameter("submit_year")));
 
-                LOGGER.debug("Deleting album: {}", album.getName());
+                LOGGER.debug("Updating album: {}", album.getName());
 
-                if (receiver.deleteEntity(album)) {
+                if (receiver.updateEntity(album)) {
                     List<Album> albumList = receiver.getAllEntities();
                     albumList.sort(Comparator.comparing(Album::getName));
 
@@ -51,7 +54,7 @@ public class DeleteAlbum implements Command {
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_ALBUMS_PAGE);
                 }
 
-                request.setAttribute("message", "undelete");
+                request.setAttribute("message", "unupdate");
 
             } else {
                 request.setAttribute("message", "denied");
@@ -61,18 +64,7 @@ public class DeleteAlbum implements Command {
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in DeleteAlbum.\n" + e, e);
+            throw new CommandException("Exception in UpdateAlbumCommand.\n" + e, e);
         }
-    }
-
-    private Album createAlbum(HttpServletRequest request) {
-        Album album = new Album();
-
-        album.setName(request.getParameter("submit_name"));
-        album.setGenre(request.getParameter("submit_genre"));
-        album.setAuthor(request.getParameter("submit_author"));
-        album.setYear(Integer.parseInt(request.getParameter("submit_year")));
-
-        return album;
     }
 }

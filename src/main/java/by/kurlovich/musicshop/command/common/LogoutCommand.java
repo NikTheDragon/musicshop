@@ -6,7 +6,7 @@ import by.kurlovich.musicshop.store.PageStore;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class Logout implements Command {
+public class LogoutCommand implements Command {
     private final static String MAIN_PAGE = PageStore.MAIN_PAGE.getPageName();
 
     @Override

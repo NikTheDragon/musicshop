@@ -5,7 +5,12 @@ import java.util.function.BiPredicate;
 
 public class AccessValidator {
 
-    public boolean validate(List<String> accessRoles, String userRole) {
-        return accessRoles.stream().allMatch(s -> s.equals(userRole));
+    public static boolean validate(List<String> accessRoles, String userRole) {
+        for (String roles : accessRoles) {
+            if (roles.equals(userRole)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

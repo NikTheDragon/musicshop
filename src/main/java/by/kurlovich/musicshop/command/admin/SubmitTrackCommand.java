@@ -68,7 +68,7 @@ public class SubmitTrackCommand implements Command {
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in ShowEditMixesContentPage.\n" + e, e);
+            throw new CommandException("Exception in ShowEditMixesContentPageCommand.\n" + e, e);
         }
     }
 }

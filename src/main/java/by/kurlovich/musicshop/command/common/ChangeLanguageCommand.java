@@ -1,17 +1,21 @@
 package by.kurlovich.musicshop.command.common;
 
 import by.kurlovich.musicshop.command.Command;
-import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class BackToPage implements Command {
+public class ChangeLanguageCommand implements Command {
+    public ChangeLanguageCommand() {
+    }
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
-
+    public CommandResult execute(HttpServletRequest request) {
+        String locale = request.getParameter("locale");
         String url = (String) request.getSession(true).getAttribute("url");
+
+        request.getSession(true).setAttribute("locale", locale);
+
         return new CommandResult(CommandResult.ResponseType.FORWARD, url);
     }
 }

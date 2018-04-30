@@ -7,8 +7,7 @@ import by.kurlovich.musicshop.repository.Repository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.impl.AlbumRepository;
-import by.kurlovich.musicshop.specification.GetAlbumContentByParamSpecification;
-import by.kurlovich.musicshop.specification.GetAlbumsByParamSpecification;
+import by.kurlovich.musicshop.specification.GetAlbumByIdSpecification;
 import by.kurlovich.musicshop.specification.GetAllAlbumsSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,7 +101,7 @@ public class AlbumReceiverImpl implements EntityReceiver<Album> {
     public List<Album> getSpecifiedEntities(String param) throws ReceiverException {
         try {
             Repository<Album> repository = new AlbumRepository();
-            Specification specification = new GetAlbumsByParamSpecification(param);
+            Specification specification = new GetAlbumByIdSpecification(param);
             LOGGER.debug("trying to get specified albums with id {}.", param);
 
             return repository.query(specification);

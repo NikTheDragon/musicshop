@@ -17,15 +17,15 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class UpdateMix implements Command {
+public class UpdateMixCommand implements Command {
     private final static String EDIT_MIXES_PAGE = PageStore.EDIT_MIXES_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
-    private final static Logger LOGGER = LoggerFactory.getLogger(UpdateMix.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(UpdateMixCommand.class);
     private AccessValidator accessValidator = new AccessValidator();
     private List<String> accessRoles = Arrays.asList("admin");
     private EntityReceiver receiver;
 
-    public UpdateMix(EntityReceiver receiver) {
+    public UpdateMixCommand(EntityReceiver receiver) {
 
         this.receiver = receiver;
     }
@@ -64,7 +64,7 @@ public class UpdateMix implements Command {
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in UpdateMix.\n" + e, e);
+            throw new CommandException("Exception in UpdateMixCommand.\n" + e, e);
         }
     }
 }

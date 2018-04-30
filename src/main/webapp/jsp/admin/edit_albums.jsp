@@ -9,6 +9,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>edit albums page</title>
 
+    <script src="/js/jquery.min.js"></script>
+
     <%@include file="/WEB-INF/jspf/locale.jsp" %>
 
 </head>
@@ -32,175 +34,153 @@
     </tr>
 </table>
 
-
-<table width="100%">
+<table id="fancyTable" style="width: 80%; margin-left: auto; margin-right: auto;">
     <tr>
-        <td width="5%">
-        </td>
-        <td>
-            <table id="fancyTable" width="100%">
-                <tr>
-                    <th width="35%">${titleHeader}</th>
-                    <th width="35%">${authorHeader}</th>
-                    <th width="10%">${genreHeader}</th>
-                    <th width="10%">${yearHeader}</th>
-                </tr>
-
-                <c:forEach var="album" items="${albumList}">
-                    <c:if test="${album.status == 'active'}">
-                        <tr id="${album.id}" onclick="getAlbumInfo(this.id)">
-                            <td id="${album.id}name">${album.name}</td>
-                            <td id="${album.id}author">${album.author}</td>
-                            <td id="${album.id}genre">${album.genre}</td>
-                            <td id="${album.id}year">${album.year}</td>
-                        </tr>
-                    </c:if>
-                </c:forEach>
-
-            </table>
-        </td>
-        <td width="5%">
-        </td>
+        <th width="35%">${titleHeader}</th>
+        <th width="35%">${authorHeader}</th>
+        <th width="10%">${genreHeader}</th>
+        <th width="10%">${yearHeader}</th>
     </tr>
+
+    <c:forEach var="currentAlbum" items="${albumList}">
+        <c:if test="${currentAlbum.status == 'active'}">
+            <tr id="${currentAlbum.id}" onclick="formSubmitInfo(this.id)">
+                <td id="${currentAlbum.id}name">${currentAlbum.name}</td>
+                <td id="${currentAlbum.id}author">${currentAlbum.author}</td>
+                <td id="${currentAlbum.id}genre">${currentAlbum.genre}</td>
+                <td id="${currentAlbum.id}year">${currentAlbum.year}</td>
+            </tr>
+        </c:if>
+    </c:forEach>
+
 </table>
 
 <br>
 
-<table width="100%">
+<table style="width: 80%; margin-left: auto; margin-right: auto;">
     <tr>
-        <td width="5%">
+        <th width="35%">${titleHeader}</th>
+        <th width="35%">${authorHeader}</th>
+        <th width="10%">${genreHeader}</th>
+        <th width="10%">${yearHeader}</th>
+    </tr>
+    <tr>
+        <td><input id="name" name="name" type="text" value=""></td>
+        <td>
+            <select id="authorSelector" name="authorSelector" size="1">
+                <option value=""></option>
+                <c:forEach var="line" items="${authorList}">
+                    <c:if test="${line.status=='active'}">
+                        <option value="${line.name}">${line.name}</option>
+                    </c:if>
+                </c:forEach>
+            </select>
         </td>
         <td>
-            <table width="100%">
-                <tr>
-                    <th width="35%">${titleHeader}</th>
-                    <th width="35%">${authorHeader}</th>
-                    <th width="10%">${genreHeader}</th>
-                    <th width="10%">${yearHeader}</th>
-                </tr>
-                <tr>
-                    <td><input id="name" name="name" type="text" value=""></td>
-                    <td>
-                        <select id="author" name="author" size="1">
-                            <option value=""></option>
-                            <c:forEach var="line" items="${authorList}">
-                                <c:if test="${line.status=='active'}">
-                                    <option value="${line.name}">${line.name}</option>
-                                </c:if>
-                            </c:forEach>
-                        </select>
-                    </td>
-                    <td>
-                        <select id="genre" name="genre" size="1">
-                            <option value=""></option>
-                            <c:forEach var="line" items="${genreList}">
-                                <c:if test="${line.status=='active'}">
-                                    <option value="${line.name}">${line.name}</option>
-                                </c:if>
-                            </c:forEach>
-                        </select>
-                    </td>
-                    <td><input id="year" name="year" type="text" value=""></td>
-                </tr>
-            </table>
-            <table>
-                <tr>
-                    <td style="width: 100%"></td>
-                    <form id="formContent" action="/mainServlet" method="get">
-                        <input type="hidden" name="command" value="show_edit_albums_content_page">
-                        <input type="hidden" name="submit_id" value="">
-                        <td><input id="contentButton" type="submit" name="button" value="${contentButton}"
-                                   style="display: none; width: 200px"></td>
-                    </form>
-                    <form id="formCreate" action="/mainServlet" method="get">
-                        <input type="hidden" name="command" value="create_album">
-                        <input type="hidden" name="submit_id" value="">
-                        <input type="hidden" name="submit_name" value="">
-                        <input type="hidden" name="submit_author" value="">
-                        <input type="hidden" name="submit_genre" value="">
-                        <input type="hidden" name="submit_year" value="">
-                        <td><input type="button" name="button" onclick="submitButton('formCreate')"
-                                   value="${createButton}" style="width: 200px"></td>
-                    </form>
-                    <form id="formUpdate" action="/mainServlet" method="get">
-                        <input type="hidden" name="command" value="update_album">
-                        <input type="hidden" name="submit_id" value="">
-                        <input type="hidden" name="submit_name" value="">
-                        <input type="hidden" name="submit_author" value="">
-                        <input type="hidden" name="submit_genre" value="">
-                        <input type="hidden" name="submit_year" value="">
-                        <td><input type="button" name="button" onclick="submitButton('formUpdate')"
-                                   value="${updateButton}" style="width: 200px"></td>
-                    </form>
-                    <form id="formDelete" action="/mainServlet" method="get">
-                        <input type="hidden" name="command" value="delete_album">
-                        <input type="hidden" name="submit_id" value="">
-                        <input type="hidden" name="submit_name" value="">
-                        <input type="hidden" name="submit_author" value="">
-                        <input type="hidden" name="submit_genre" value="">
-                        <input type="hidden" name="submit_year" value="">
-                        <td><input type="button" name="button" onclick="submitButton('formDelete')"
-                                   value="${deleteButton}" style="width: 200px"></td>
-                    </form>
-                </tr>
-            </table>
+            <select id="genreSelector" name="genreSelector" size="1">
+                <option value=""></option>
+                <c:forEach var="line" items="${genreList}">
+                    <c:if test="${line.status=='active'}">
+                        <option value="${line.name}">${line.name}</option>
+                    </c:if>
+                </c:forEach>
+            </select>
         </td>
-        <td width="5%">
-        </td>
+        <td><input id="year" name="year" type="text" value=""></td>
+    </tr>
+</table>
+
+<table style="width: 80%; margin-left: auto; margin-right: auto;">
+    <tr>
+        <td style="width: 100%"></td>
+        <form id="formContent" action="/mainServlet" method="get">
+            <input type="hidden" name="command" value="show_edit_albums_content_page">
+            <input type="hidden" name="submit_id" value="">
+            <td><input id="contentButton" type="submit" name="button" value="${contentButton}"
+                       style="display: none; width: 200px"></td>
+        </form>
+        <form id="formCreate" action="/mainServlet" method="get">
+            <input type="hidden" name="command" value="create_album">
+            <input type="hidden" name="submit_id" value="">
+            <input type="hidden" name="submit_name" value="">
+            <input type="hidden" name="submit_author" value="">
+            <input type="hidden" name="submit_genre" value="">
+            <input type="hidden" name="submit_year" value="">
+            <td><input type="button" name="button" onclick="submitButton('formCreate')"
+                       value="${createButton}" style="width: 200px"></td>
+        </form>
+        <form id="formUpdate" action="/mainServlet" method="get">
+            <input type="hidden" name="command" value="update_album">
+            <input type="hidden" name="submit_id" value="">
+            <input type="hidden" name="submit_name" value="">
+            <input type="hidden" name="submit_author" value="">
+            <input type="hidden" name="submit_genre" value="">
+            <input type="hidden" name="submit_year" value="">
+            <td><input type="button" name="button" onclick="submitButton('formUpdate')"
+                       value="${updateButton}" style="width: 200px"></td>
+        </form>
+        <form id="formDelete" action="/mainServlet" method="get">
+            <input type="hidden" name="command" value="delete_album">
+            <input type="hidden" name="submit_id" value="">
+            <input type="hidden" name="submit_name" value="">
+            <input type="hidden" name="submit_author" value="">
+            <input type="hidden" name="submit_genre" value="">
+            <input type="hidden" name="submit_year" value="">
+            <td><input type="button" name="button" onclick="submitButton('formDelete')"
+                       value="${deleteButton}" style="width: 200px"></td>
+        </form>
     </tr>
 </table>
 
 <script>
-    function getAlbumInfo(clicked_row) {
-        var name = document.getElementById("name");
-        var author = document.getElementById("author");
-        var genre = document.getElementById("genre");
-        var year = document.getElementById("year");
-        name.value = document.getElementById(clicked_row + "name").textContent;
-        author.value = document.getElementById(clicked_row + "author").textContent;
-        genre.value = document.getElementById(clicked_row + "genre").textContent;
-        year.value = document.getElementById(clicked_row + "year").textContent;
+
+    $("tr").click(function(){
+        $(this).addClass("selected").siblings().removeClass("selected");
+    });
+
+    function formSubmitInfo(albumId) {
+        document.getElementById("name").value = document.getElementById(albumId + "name").textContent;
+        document.getElementById("authorSelector").value = document.getElementById(albumId + "author").textContent;
+        document.getElementById("genreSelector").value = document.getElementById(albumId + "genre").textContent;
+        document.getElementById("year").value = document.getElementById(albumId + "year").textContent;
 
         document.getElementById("contentButton").style.display = "block";
 
         var countId = document.getElementsByName("submit_id");
-
         for (var i = 0; i < countId.length; i++) {
-            countId[i].setAttribute("value", clicked_row);
+            countId[i].setAttribute("value", albumId);
         }
     }
 
     function submitButton(formName) {
-        var trackName = document.getElementById("name");
-        var trackAuthor = document.getElementById("author");
-        var trackGenre = document.getElementById("genre");
-        var trackYear = document.getElementById("year");
+        var trackName = document.getElementById("name").value;
+        var trackAuthor = document.getElementById("authorSelector").value;
+        var trackGenre = document.getElementById("genreSelector").value;
+        var trackYear = document.getElementById("year").value;
 
         var countName = document.getElementsByName("submit_name");
-
         for (var i = 0; i < countName.length; i++) {
-            countName[i].setAttribute("value", trackName.value);
+            countName[i].setAttribute("value", trackName);
         }
 
         var countAuthor = document.getElementsByName("submit_author");
-
         for (var i = 0; i < countAuthor.length; i++) {
-            countAuthor[i].setAttribute("value", trackAuthor.value);
+            countAuthor[i].setAttribute("value", trackAuthor);
         }
 
         var countGenre = document.getElementsByName("submit_genre");
-
         for (var i = 0; i < countGenre.length; i++) {
-            countGenre[i].setAttribute("value", trackGenre.value);
+            countGenre[i].setAttribute("value", trackGenre);
         }
 
         var countYear = document.getElementsByName("submit_year");
-
         for (var i = 0; i < countYear.length; i++) {
-            countYear[i].setAttribute("value", trackYear.value);
+            countYear[i].setAttribute("value", trackYear);
         }
 
-        document.getElementById(formName).submit();
+        if (trackName != "" && trackAuthor != "" && trackGenre != "" && trackYear != "") {
+            document.getElementById(formName).submit();
+        }
     }
 
 </script>

@@ -35,188 +35,159 @@
     </tr>
 </table>
 
-<table width="100%">
-    <tr>
-        <td width="5%">
-        </td>
-        <td>
-            <div style="width:100%; height:400px; overflow:auto;">
-                <table id="fancyTable" width="100%">
-                    <tr>
-                        <th width="35%">${titleHeader}</th>
-                        <th width="35%">${authorHeader}</th>
-                        <th width="10%">${genreHeader}</th>
-                        <th width="10%">${yearHeader}</th>
-                        <th width="10%">${lengthHeader}</th>
-                    </tr>
+<div style="width:100%; height:400px; overflow:auto;">
+    <table id="fancyTable" style="width: 90%; margin-left: auto; margin-right: auto;">
+        <tr>
+            <th width="35%">${titleHeader}</th>
+            <th width="35%">${authorHeader}</th>
+            <th width="10%">${genreHeader}</th>
+            <th width="10%">${yearHeader}</th>
+            <th width="10%">${lengthHeader}</th>
+        </tr>
 
-                    <c:forEach var="track" items="${trackList}">
-                        <c:if test="${track.status == 'active'}">
-                            <tr id="${track.id}" onclick="get_track_info(this.id)">
-                                <td id="${track.id}name">${track.name}</td>
-                                <td id="${track.id}author">${track.author}</td>
-                                <td id="${track.id}genre">${track.genre}</td>
-                                <td id="${track.id}year">${track.year}</td>
-                                <td id="${track.id}length">${track.length}</td>
-                            </tr>
-                        </c:if>
-                    </c:forEach>
+        <c:forEach var="track" items="${trackList}">
+            <c:if test="${track.status == 'active'}">
+                <tr id="${track.id}" onclick="formSubmitInfo(this.id)">
+                    <td id="${track.id}name">${track.name}</td>
+                    <td id="${track.id}author">${track.author}</td>
+                    <td id="${track.id}genre">${track.genre}</td>
+                    <td id="${track.id}year">${track.year}</td>
+                    <td id="${track.id}length">${track.length}</td>
+                </tr>
+            </c:if>
+        </c:forEach>
 
-                </table>
-            </div>
-        </td>
-        <td width="5%">
-        </td>
-    </tr>
-</table>
+    </table>
+</div>
 
 <br>
 
-<table width="100%">
+<table style="width: 90%; margin-left: auto; margin-right: auto;">
     <tr>
-        <td width="5%">
+        <th width="35%">${titleHeader}</th>
+        <th width="35%">${authorHeader}</th>
+        <th width="10%">${genreHeader}</th>
+        <th width="10%">${yearHeader}</th>
+        <th width="10%">${lengthHeader}</th>
+    </tr>
+    <tr>
+        <td><input id="name" name="name" type="text" value=""></td>
+        <td>
+            <select id="author" name="author" size="1">
+                <option value=""></option>
+                <c:forEach var="line" items="${authorList}">
+                    <c:if test="${line.status=='active'}">
+                        <option value="${line.name}">${line.name}</option>
+                    </c:if>
+                </c:forEach>
+            </select>
         </td>
         <td>
-            <table width="100%">
-                <tr>
-                    <th width="35%">${titleHeader}</th>
-                    <th width="35%">${authorHeader}</th>
-                    <th width="10%">${genreHeader}</th>
-                    <th width="10%">${yearHeader}</th>
-                    <th width="10%">${lengthHeader}</th>
-                </tr>
-                <tr>
-                    <td><input id="name" name="name" type="text" value=""></td>
-                    <td>
-                        <select id="author" name="author" size="1">
-                            <option value=""></option>
-                            <c:forEach var="line" items="${authorList}">
-                                <c:if test="${line.status=='active'}">
-                                    <option value="${line.name}">${line.name}</option>
-                                </c:if>
-                            </c:forEach>
-                        </select>
-                    </td>
-                    <td>
-                        <select id="genre" name="genre" size="1">
-                            <option value=""></option>
-                            <c:forEach var="line" items="${genreList}">
-                                <c:if test="${line.status=='active'}">
-                                    <option value="${line.name}">${line.name}</option>
-                                </c:if>
-                            </c:forEach>
-                        </select>
-                    </td>
-                    <td><input id="year" name="year" type="text" value=""></td>
-                    <td><input id="length" name="length" type="text" value=""></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <form id="formCreate" action="/mainServlet" method="get">
-                        <input type="hidden" name="command" value="create_track">
-                        <input type="hidden" name="submit_id" value="">
-                        <input type="hidden" name="submit_name" value="">
-                        <input type="hidden" name="submit_author" value="">
-                        <input type="hidden" name="submit_genre" value="">
-                        <input type="hidden" name="submit_year" value="">
-                        <input type="hidden" name="submit_length" value="">
-                        <td><input type="button" name="button" onclick="deleteTrack('formCreate')"
-                                   value="${createButton}"></td>
-                    </form>
-                    <form id="formUpdate" action="/mainServlet" method="get">
-                        <input type="hidden" name="command" value="update_track">
-                        <input type="hidden" name="submit_id" value="">
-                        <input type="hidden" name="submit_name" value="">
-                        <input type="hidden" name="submit_author" value="">
-                        <input type="hidden" name="submit_genre" value="">
-                        <input type="hidden" name="submit_year" value="">
-                        <input type="hidden" name="submit_length" value="">
-                        <td><input type="button" name="button" onclick="deleteTrack('formUpdate')"
-                                   value="${updateButton}"></td>
-                    </form>
-                    <form id="formDelete" action="/mainServlet" method="get">
-                        <input type="hidden" name="command" value="delete_track">
-                        <input type="hidden" name="submit_id" value="">
-                        <input type="hidden" name="submit_name" value="">
-                        <input type="hidden" name="submit_author" value="">
-                        <input type="hidden" name="submit_genre" value="">
-                        <input type="hidden" name="submit_year" value="">
-                        <input type="hidden" name="submit_length" value="">
-                        <td><input type="button" name="button" onclick="deleteTrack('formDelete')"
-                                   value="${deleteButton}"></td>
-                    </form>
-                </tr>
-            </table>
+            <select id="genre" name="genre" size="1">
+                <option value=""></option>
+                <c:forEach var="line" items="${genreList}">
+                    <c:if test="${line.status=='active'}">
+                        <option value="${line.name}">${line.name}</option>
+                    </c:if>
+                </c:forEach>
+            </select>
         </td>
-        <td width="5%">
-        </td>
+        <td><input id="year" name="year" type="text" value=""></td>
+        <td><input id="length" name="length" type="text" value=""></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <form id="formCreate" action="/mainServlet" method="get">
+            <input type="hidden" name="command" value="create_track">
+            <input type="hidden" name="submit_id" value="">
+            <input type="hidden" name="submit_name" value="">
+            <input type="hidden" name="submit_author" value="">
+            <input type="hidden" name="submit_genre" value="">
+            <input type="hidden" name="submit_year" value="">
+            <input type="hidden" name="submit_length" value="">
+            <td><input type="button" name="button" onclick="submitButton('formCreate')"
+                       value="${createButton}"></td>
+        </form>
+        <form id="formUpdate" action="/mainServlet" method="get">
+            <input type="hidden" name="command" value="update_track">
+            <input type="hidden" name="submit_id" value="">
+            <input type="hidden" name="submit_name" value="">
+            <input type="hidden" name="submit_author" value="">
+            <input type="hidden" name="submit_genre" value="">
+            <input type="hidden" name="submit_year" value="">
+            <input type="hidden" name="submit_length" value="">
+            <td><input type="button" name="button" onclick="submitButton('formUpdate')"
+                       value="${updateButton}"></td>
+        </form>
+        <form id="formDelete" action="/mainServlet" method="get">
+            <input type="hidden" name="command" value="delete_track">
+            <input type="hidden" name="submit_id" value="">
+            <input type="hidden" name="submit_name" value="">
+            <input type="hidden" name="submit_author" value="">
+            <input type="hidden" name="submit_genre" value="">
+            <input type="hidden" name="submit_year" value="">
+            <input type="hidden" name="submit_length" value="">
+            <td><input type="button" name="button" onclick="submitButton('formDelete')"
+                       value="${deleteButton}"></td>
+        </form>
     </tr>
 </table>
 
 <script>
 
-    $("tr").click(function(){
+    $("tr").click(function () {
         $(this).addClass("selected").siblings().removeClass("selected");
     });
 
-    function get_track_info(clicked_row) {
-        var name = document.getElementById("name");
-        var author = document.getElementById("author");
-        var genre = document.getElementById("genre");
-        var year = document.getElementById("year");
-        var length = document.getElementById("length");
-        name.value = document.getElementById(clicked_row + "name").textContent;
-        author.value = document.getElementById(clicked_row + "author").textContent;
-        genre.value = document.getElementById(clicked_row + "genre").textContent;
-        year.value = document.getElementById(clicked_row + "year").textContent;
-        length.value = document.getElementById(clicked_row + "length").textContent;
+    function formSubmitInfo(trackId) {
+        document.getElementById("name").value = document.getElementById(trackId + "name").textContent;
+        document.getElementById("author").value = document.getElementById(trackId + "author").textContent;
+        document.getElementById("genre").value = document.getElementById(trackId + "genre").textContent;
+        document.getElementById("year").value = document.getElementById(trackId + "year").textContent;
+        document.getElementById("length").value = document.getElementById(trackId + "length").textContent;
 
         var countId = document.getElementsByName("submit_id");
-
         for (var i = 0; i < countId.length; i++) {
-            countId[i].setAttribute("value", clicked_row);
+            countId[i].setAttribute("value", trackId);
         }
     }
 
-    function deleteTrack(formName) {
-        var trackName = document.getElementById("name");
-        var trackAuthor = document.getElementById("author");
-        var trackGenre = document.getElementById("genre");
-        var trackYear = document.getElementById("year");
-        var trackLength = document.getElementById("length");
+    function submitButton(formName) {
+        var trackName = document.getElementById("name").value;
+        var trackAuthor = document.getElementById("author").value;
+        var trackGenre = document.getElementById("genre").value;
+        var trackYear = document.getElementById("year").value;
+        var trackLength = document.getElementById("length").value;
 
         var countName = document.getElementsByName("submit_name");
-
         for (var i = 0; i < countName.length; i++) {
-            countName[i].setAttribute("value", trackName.value);
+            countName[i].setAttribute("value", trackName);
         }
 
         var countAuthor = document.getElementsByName("submit_author");
-
         for (var i = 0; i < countAuthor.length; i++) {
-            countAuthor[i].setAttribute("value", trackAuthor.value);
+            countAuthor[i].setAttribute("value", trackAuthor);
         }
 
         var countGenre = document.getElementsByName("submit_genre");
-
         for (var i = 0; i < countGenre.length; i++) {
-            countGenre[i].setAttribute("value", trackGenre.value);
+            countGenre[i].setAttribute("value", trackGenre);
         }
 
         var countYear = document.getElementsByName("submit_year");
-
         for (var i = 0; i < countYear.length; i++) {
-            countYear[i].setAttribute("value", trackYear.value);
+            countYear[i].setAttribute("value", trackYear);
         }
 
         var countLength = document.getElementsByName("submit_length");
-
         for (var i = 0; i < countLength.length; i++) {
-            countLength[i].setAttribute("value", trackLength.value);
+            countLength[i].setAttribute("value", trackLength);
         }
 
-        document.getElementById(formName).submit();
+        if(trackName != "" && trackAuthor != "" && trackGenre != "" && trackYear != "") {
+            document.getElementById(formName).submit();
+        }
     }
 
 </script>

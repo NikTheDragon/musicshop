@@ -6,15 +6,15 @@ import by.kurlovich.musicshop.store.PageStore;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class ShowErrorPage implements Command {
-    private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
+public class ShowMainPageCommand implements Command {
+    private String mainPage = PageStore.MAIN_PAGE.getPageName();
 
-    public ShowErrorPage() {
+    public ShowMainPageCommand() {
     }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {
-
-        return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
+        request.getSession(true).setAttribute("url", mainPage);
+        return new CommandResult(CommandResult.ResponseType.FORWARD, mainPage);
     }
 }

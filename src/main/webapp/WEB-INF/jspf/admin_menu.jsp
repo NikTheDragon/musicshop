@@ -63,7 +63,12 @@
                 <li class="dropdown">
                     <a href="javascript:void(0)" class="dropbtn">${user.name}</a>
                     <div class="dropdown-content">
-                        <a href="#">${personal}</a>
+                        <form target="/mainServlet" method="get">
+                            <a href="<c:url value="/mainServlet">
+                                <c:param name="command" value="show_personal_page"/>
+                                 </c:url>
+                            ">${personal}</a>
+                        </form>
                         <form target="/mainServlet" method="get">
                             <a href="<c:url value="/mainServlet">
                                 <c:param name="command" value="logout"/>
