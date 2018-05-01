@@ -2,7 +2,9 @@ package by.kurlovich.musicshop.command;
 
 import by.kurlovich.musicshop.command.admin.*;
 import by.kurlovich.musicshop.command.common.*;
+import by.kurlovich.musicshop.command.user.AddPointsCommand;
 import by.kurlovich.musicshop.command.user.ShowPersonalPageCommand;
+import by.kurlovich.musicshop.command.user.ShowPointManagementPageCommand;
 import by.kurlovich.musicshop.command.user.UpdatePersonalInfoCommand;
 import by.kurlovich.musicshop.receiver.impl.*;
 
@@ -15,16 +17,17 @@ public enum CommandType {
     SHOW_MAIN_PAGE(new ShowMainPageCommand()),
     SHOW_USER_PAGE(new ShowUserPageCommand()),
     SHOW_REG_PAGE(new ShowRegPageCommand()),
-    SHOW_EDIT_TRACKS_PAGE(new ShowEditTracksPageCommand(new TrackReceiverImpl())),
+    SHOW_EDIT_TRACKS_PAGE(new ShowEditTracksPageCommand(new TrackReceiverImpl(), new GenreReceiverImpl(), new AuthorReceiverImpl())),
     SHOW_EDIT_GENRES_PAGE(new ShowEditGenresPageCommand(new GenreReceiverImpl())),
-    SHOW_EDIT_AUTHORS_PAGE(new ShowEditAuthorsPageCommand(new AuthorReceiverImpl())),
-    SHOW_EDIT_ALBUMS_PAGE(new ShowEditAlbumsPageCommand(new AlbumReceiverImpl())),
-    SHOW_EDIT_MIXES_PAGE(new ShowEditMixesPageCommand(new MixReceiverImpl())),
-    SHOW_EDIT_MIXES_CONTENT_PAGE(new ShowEditMixesContentPageCommand(new MixContentReceiverImpl())),
-    SHOW_EDIT_ALBUMS_CONTENT_PAGE(new ShowEditAlbumsContentPageCommand(new AlbumContentReceiverImpl())),
+    SHOW_EDIT_AUTHORS_PAGE(new ShowEditAuthorsPageCommand(new AuthorReceiverImpl(), new GenreReceiverImpl())),
+    SHOW_EDIT_ALBUMS_PAGE(new ShowEditAlbumsPageCommand(new AlbumReceiverImpl(), new GenreReceiverImpl(), new AuthorReceiverImpl())),
+    SHOW_EDIT_MIXES_PAGE(new ShowEditMixesPageCommand(new MixReceiverImpl(), new GenreReceiverImpl())),
+    SHOW_EDIT_MIXES_CONTENT_PAGE(new ShowEditMixesContentPageCommand(new MixContentReceiverImpl(), new TrackReceiverImpl(), new MixReceiverImpl())),
+    SHOW_EDIT_ALBUMS_CONTENT_PAGE(new ShowEditAlbumsContentPageCommand(new AlbumContentReceiverImpl(), new TrackReceiverImpl(), new AlbumReceiverImpl())),
     SHOW_USERS_PAGE(new ShowUsersPageCommand(new UserReceiverImpl())),
     SHOW_EDIT_USER_PAGE(new ShowEditUserPageCommand(new UserReceiverImpl())),
     SHOW_PERSONAL_PAGE(new ShowPersonalPageCommand()),
+    SHOW_POINT_MANAGEMENT_PAGE(new ShowPointManagementPageCommand()),
     CREATE_GENRE(new CreateGenreCommand(new GenreReceiverImpl())),
     CREATE_TRACK(new CreateTrackCommand(new TrackReceiverImpl())),
     CREATE_AUTHOR(new CreateAuthorCommand(new AuthorReceiverImpl())),
@@ -45,9 +48,10 @@ public enum CommandType {
     UPDATE_USER(new UpdateUserCommand(new UserReceiverImpl())),
     UPDATE_PERSONAL_INFO(new UpdatePersonalInfoCommand(new UserReceiverImpl())),
     BACK_TO_PAGE(new BackToPageCommand()),
-    SUBMIT_TRACK(new SubmitTrackCommand()),
+    FORM_MIX_CONTENT_INPUT_DATA(new FormMixContentInputDataCommand(new TrackReceiverImpl())),
     ADD_TRACK_TO_MIX(new AddTrackToMixCommand(new MixContentReceiverImpl())),
-    ADD_TRACK_TO_ALBUM(new AddTrackToAlbumCommand(new AlbumContentReceiverImpl()));
+    ADD_TRACK_TO_ALBUM(new AddTrackToAlbumCommand(new AlbumContentReceiverImpl())),
+    ADD_POINTS(new AddPointsCommand(new UserReceiverImpl()));
 
     private Command command;
 

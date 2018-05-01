@@ -8,8 +8,6 @@ import by.kurlovich.musicshop.entity.Content;
 import by.kurlovich.musicshop.entity.Track;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
-import by.kurlovich.musicshop.receiver.impl.AlbumReceiverImpl;
-import by.kurlovich.musicshop.receiver.impl.TrackReceiverImpl;
 import by.kurlovich.musicshop.store.PageStore;
 import by.kurlovich.musicshop.validator.AccessValidator;
 
@@ -20,30 +18,29 @@ import java.util.List;
 public class ShowEditAlbumsContentPageCommand implements Command {
     private final static String EDIT_ALBUMS_CONTENT_PAGE = PageStore.EDIT_ALBUMS_CONTENT_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
-    private EntityReceiver receiver;
+    private EntityReceiver contentReceiver;
+    private EntityReceiver trackReceiver;
+    private EntityReceiver albumReceiver;
 
-    public ShowEditAlbumsContentPageCommand(EntityReceiver receiver) {
-        this.receiver = receiver;
+    public ShowEditAlbumsContentPageCommand(EntityReceiver contentReceiver, EntityReceiver trackReceiver, EntityReceiver albumReceiver) {
+        this.contentReceiver = contentReceiver;
+        this.trackReceiver = trackReceiver;
+        this.albumReceiver = albumReceiver;
     }
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
-        AccessValidator accessValidator = new AccessValidator();
-
         try {
             List<String> accessRoles = Arrays.asList("admin");
             String userRole = (String) request.getSession(true).getAttribute("role");
 
-            if (accessValidator.validate(accessRoles, userRole)) {
+            if (AccessValidator.validate(accessRoles, userRole)) {
                 String albumId = request.getParameter("submit_id");
-                EntityReceiver trackReceiver = new TrackReceiverImpl();
-                EntityReceiver albumReceiver = new AlbumReceiverImpl();
 
                 List<Album> idSpecifiedAlbums = albumReceiver.getSpecifiedEntities(albumId);
-
                 Album currentAlbum = idSpecifiedAlbums.get(0);
 
-                List<Content> currentAlbumContent = receiver.getSpecifiedEntities(albumId);
+                List<Content> currentAlbumContent = contentReceiver.getSpecifiedEntities(albumId);
                 List<Track> currentAlbumAuthorTracks = trackReceiver.getSpecifiedEntities(currentAlbum.getAuthor());
 
                 request.getSession(true).setAttribute("currentAlbum", currentAlbum);

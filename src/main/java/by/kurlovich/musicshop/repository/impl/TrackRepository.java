@@ -3,11 +3,11 @@ package by.kurlovich.musicshop.repository.impl;
 import by.kurlovich.musicshop.dbconnection.ConnectionException;
 import by.kurlovich.musicshop.dbconnection.ConnectionPool;
 import by.kurlovich.musicshop.entity.Track;
-import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.repository.Repository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.SqlSpecification;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,12 +25,12 @@ public class TrackRepository implements Repository<Track> {
     private static final String GET_STATUS = "SELECT status FROM tracks WHERE name=?";
     private static final String SET_STATUS = "UPDATE tracks SET status='active' WHERE name=? AND author=(SELECT id FROM authors WHERE name=?) AND genre=(SELECT id FROM genres WHERE name=?) AND year=? AND length=?";
     private static final Logger LOGGER = LoggerFactory.getLogger(GenreRepository.class);
-    private ConnectionPool connectionPool;
+    private final ConnectionPool pool;
 
     public TrackRepository() throws RepositoryException {
         try {
             LOGGER.debug("Creating track Repository class.");
-            connectionPool = ConnectionPool.getInstance();
+            pool = ConnectionPool.getInstance();
         } catch (ConnectionException e) {
             throw new RepositoryException("Can't create dbconnection pool.\n" + e, e);
         }
@@ -38,144 +38,130 @@ public class TrackRepository implements Repository<Track> {
 
     @Override
     public void add(Track track) throws RepositoryException {
-        try {
-            LOGGER.debug("Adding new track {}", track.getName());
-            Connection dbConnection = connectionPool.getConnection();
-            try (PreparedStatement ps = dbConnection.prepareStatement(ADD_TRACK)) {
-                ps.setString(1, track.getName());
-                ps.setString(2, track.getAuthor());
-                ps.setString(3, track.getGenre());
-                ps.setString(4, track.getYear());
-                ps.setString(5, track.getLength());
-                ps.setString(6, track.getStatus());
+        LOGGER.debug("adding track {}", track.getName());
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(ADD_TRACK)) {
 
-                ps.executeUpdate();
-            }
-            connectionPool.releaseConnection(dbConnection);
+            ps.setString(1, track.getName());
+            ps.setString(2, track.getAuthor());
+            ps.setString(3, track.getGenre());
+            ps.setString(4, track.getYear());
+            ps.setString(5, track.getLength());
+            ps.setString(6, track.getStatus());
+
+            ps.executeUpdate();
+
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in add track.\n" + e, e);
+            throw new RepositoryException("Exception in add of TrackRepository.\n" + e, e);
         }
     }
 
     @Override
     public void delete(Track track) throws RepositoryException {
-        try {
-            LOGGER.debug("Deleting track {}", track.getName());
-            Connection dbConnection = connectionPool.getConnection();
-            try (PreparedStatement ps = dbConnection.prepareStatement(DELETE_TRACK)) {
-                ps.setString(1, track.getName());
-                ps.setString(2, track.getAuthor());
+        LOGGER.debug("deleting track {}", track.getName());
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(DELETE_TRACK)) {
 
-                ps.executeUpdate();
-            }
-            connectionPool.releaseConnection(dbConnection);
+            ps.setString(1, track.getName());
+            ps.setString(2, track.getAuthor());
+
+            ps.executeUpdate();
+
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in delete track.\n" + e, e);
+            throw new RepositoryException("Exception in delete of TrackRepository.\n" + e, e);
         }
     }
 
     @Override
     public void update(Track track) throws RepositoryException {
-        try {
-            LOGGER.debug("Updating track {}", track.getName());
-            Connection dbConnection = connectionPool.getConnection();
-            try (PreparedStatement ps = dbConnection.prepareStatement(UPDATE_TRACK)) {
-                ps.setString(1, track.getName());
-                ps.setString(2, track.getAuthor());
-                ps.setString(3, track.getGenre());
-                ps.setString(4, track.getYear());
-                ps.setString(5, track.getLength());
-                ps.setString(6, track.getId());
+        LOGGER.debug("updating track {}", track.getName());
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(UPDATE_TRACK)) {
 
-                ps.executeUpdate();
-            }
-            connectionPool.releaseConnection(dbConnection);
+            ps.setString(1, track.getName());
+            ps.setString(2, track.getAuthor());
+            ps.setString(3, track.getGenre());
+            ps.setString(4, track.getYear());
+            ps.setString(5, track.getLength());
+            ps.setString(6, track.getId());
+
+            ps.executeUpdate();
+
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in update track.\n" + e, e);
+            throw new RepositoryException("Exception in update of TrackRepository..\n" + e, e);
         }
     }
 
     @Override
     public List<Track> query(Specification specification) throws RepositoryException {
+        LOGGER.debug("quering tracks.");
         SqlSpecification sqlSpecification = (SqlSpecification) specification;
         List<Track> trackList = new ArrayList<>();
 
-        try {
-            Connection dbConnection = connectionPool.getConnection();
-            try (PreparedStatement ps = dbConnection.prepareStatement(sqlSpecification.toSqlQuery())) {
-                try (ResultSet rs = ps.executeQuery()) {
-                    while (rs.next()) {
-                        Track track = new Track();
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sqlSpecification.toSqlQuery());
+             ResultSet rs = ps.executeQuery()) {
 
-                        track.setId(rs.getString(1));
-                        track.setName(rs.getString(2));
-                        track.setAuthor(rs.getString(3));
-                        track.setGenre(rs.getString(4));
-                        track.setYear(rs.getString(5));
-                        track.setLength(rs.getString(6));
-                        track.setStatus(rs.getString(7));
+            while (rs.next()) {
+                Track track = new Track();
 
-                        trackList.add(track);
-                    }
-                }
+                track.setId(rs.getString(1));
+                track.setName(rs.getString(2));
+                track.setAuthor(rs.getString(3));
+                track.setGenre(rs.getString(4));
+                track.setYear(rs.getString(5));
+                track.setLength(rs.getString(6));
+                track.setStatus(rs.getString(7));
 
-                connectionPool.releaseConnection(dbConnection);
-
-                return trackList;
+                trackList.add(track);
             }
 
+            return trackList;
+
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in track query.\n" + e, e);
+            throw new RepositoryException("Exception in query of TrackRepository..\n" + e, e);
         }
     }
 
     @Override
     public Status getStatus(Track track) throws RepositoryException {
-        final int STATUS = 1;
+        LOGGER.debug("checking track {} status.", track.getName());
+        String status = "";
 
-        try {
-            String status = "";
-            LOGGER.debug("Checking track {} status.", track.getName());
-            Connection dbConnection = connectionPool.getConnection();
-            try (PreparedStatement ps = dbConnection.prepareStatement(GET_STATUS)) {
-                ps.setString(1, track.getName());
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(GET_STATUS)) {
 
-                try (ResultSet rs = ps.executeQuery()) {
-                    while (rs.next()) {
-                        status = (rs.getString(STATUS));
-                    }
+            ps.setString(1, track.getName());
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    status = (rs.getString(1));
                 }
             }
-
-            connectionPool.releaseConnection(dbConnection);
 
             return Status.getStatus(status);
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in check track status method.\n" + e, e);
+            throw new RepositoryException("Exception in getStatus of TrackRepository.\n" + e, e);
         }
     }
 
     @Override
     public void undelete(Track track) throws RepositoryException {
-        try {
-            LOGGER.debug("Set track {} status to active.", track.getName());
+        LOGGER.debug("set track {} status to active.", track.getName());
 
-            Connection dbConnection = connectionPool.getConnection();
-            try (PreparedStatement ps = dbConnection.prepareStatement(SET_STATUS)) {
-                ps.setString(1, track.getName());
-                ps.setString(2, track.getAuthor());
-                ps.setString(3, track.getGenre());
-                ps.setString(4, track.getYear());
-                ps.setString(5, track.getLength());
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(SET_STATUS)) {
+            ps.setString(1, track.getName());
+            ps.setString(2, track.getAuthor());
+            ps.setString(3, track.getGenre());
+            ps.setString(4, track.getYear());
+            ps.setString(5, track.getLength());
 
-                ps.executeUpdate();
-            }
-
-            connectionPool.releaseConnection(dbConnection);
+            ps.executeUpdate();
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in set track status method.\n" + e, e);
+            throw new RepositoryException("Exception in undelete of TrackRepository.\n" + e, e);
         }
     }
 }

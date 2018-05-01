@@ -9,6 +9,7 @@ import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.impl.MixRepository;
 import by.kurlovich.musicshop.specification.GetAllAlbumsSpecification;
 import by.kurlovich.musicshop.specification.GetAllMixesSpecification;
+import by.kurlovich.musicshop.specification.GetMixByIdSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -99,6 +100,15 @@ public class MixReceiverImpl implements EntityReceiver<Mix> {
 
     @Override
     public List<Mix> getSpecifiedEntities(String param) throws ReceiverException {
-        return null;
+        try {
+            Repository<Mix> repository = new MixRepository();
+            Specification specification = new GetMixByIdSpecification(param);
+            LOGGER.debug("trying to get specified mix with id {}.", param);
+
+            return repository.query(specification);
+
+        } catch (RepositoryException e) {
+            throw new ReceiverException("Exception in getSpecifiedEntities of MixReceiverImpl.\n" + e, e);
+        }
     }
 }

@@ -34,18 +34,15 @@ public class CreateGenreCommand implements Command {
             String userRole = (String) request.getSession(true).getAttribute("role");
 
             if (AccessValidator.validate(accessRoles, userRole)) {
-                Genre genre = new Genre();
-
-                genre.setName(request.getParameter("submit_name"));
-                genre.setStatus("active");
+                Genre genre = createGenre(request);
 
                 LOGGER.debug("Creating genre: {}", genre.getName());
 
                 if (receiver.addNewEntity(genre)) {
-                    List<Genre> genreList = receiver.getAllEntities();
-                    genreList.sort(Comparator.comparing(Genre::getName));
+                    List<Genre> allGenres = receiver.getAllEntities();
+                    allGenres.sort(Comparator.comparing(Genre::getName));
 
-                    request.getSession(true).setAttribute("genreList", genreList);
+                    request.getSession(true).setAttribute("genreList", allGenres);
                     request.getSession(true).setAttribute("url", EDIT_GENRES_PAGE);
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_GENRES_PAGE);
                 }
@@ -62,5 +59,14 @@ public class CreateGenreCommand implements Command {
         } catch (ReceiverException e) {
             throw new CommandException("Exception in CreateGenreCommand.\n" + e, e);
         }
+    }
+
+    private Genre createGenre (HttpServletRequest request) {
+        Genre genre = new Genre();
+
+        genre.setName(request.getParameter("submit_name"));
+        genre.setStatus("active");
+
+        return genre;
     }
 }

@@ -8,11 +8,13 @@ import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.store.PageStore;
 import by.kurlovich.musicshop.validator.AccessValidator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -29,17 +31,12 @@ public class DeleteTrackFromAlbumCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
-        AccessValidator accessValidator = new AccessValidator();
-        List<String> accessRoles = Arrays.asList("admin");
-
         try {
+            List<String> accessRoles = Arrays.asList("admin");
             String userRole = (String) request.getSession(true).getAttribute("role");
 
-            if (accessValidator.validate(accessRoles, userRole)) {
-                Content content = new Content();
-
-                content.setEntityId(request.getParameter("submit_album_id"));
-                content.setTrackId(request.getParameter("submit_track_id"));
+            if (AccessValidator.validate(accessRoles, userRole)) {
+                Content content = createContent(request);
 
                 LOGGER.debug("Deleting track {} from album {}.", content.getTrackId(), content.getEntityId());
 
@@ -64,5 +61,14 @@ public class DeleteTrackFromAlbumCommand implements Command {
         } catch (ReceiverException e) {
             throw new CommandException("Exception in DeleteTrackFromAlbumCommand.\n" + e, e);
         }
+    }
+
+    private Content createContent(HttpServletRequest request) {
+        Content content = new Content();
+
+        content.setEntityId(request.getParameter("submit_album_id"));
+        content.setTrackId(request.getParameter("submit_track_id"));
+
+        return content;
     }
 }

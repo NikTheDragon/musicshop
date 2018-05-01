@@ -8,6 +8,7 @@ import by.kurlovich.musicshop.store.PageStore;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.validator.AccessValidator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,11 +35,7 @@ public class CreateAuthorCommand implements Command {
             String userRole = (String) request.getSession(true).getAttribute("role");
 
             if (AccessValidator.validate(accessRoles, userRole)) {
-                Author author = new Author();
-                author.setName(request.getParameter("submit_name"));
-                author.setGenre(request.getParameter("submit_genre"));
-                author.setType(request.getParameter("submit_type"));
-                author.setStatus("active");
+                Author author = createAuthor(request);
 
                 LOGGER.debug("Creating author: {}", author.getName());
 
@@ -63,5 +60,16 @@ public class CreateAuthorCommand implements Command {
         } catch (ReceiverException e) {
             throw new CommandException("Exception in CreateAuthorCommand.\n" + e, e);
         }
+    }
+
+    private Author createAuthor (HttpServletRequest request) {
+        Author author = new Author();
+
+        author.setName(request.getParameter("submit_name"));
+        author.setGenre(request.getParameter("submit_genre"));
+        author.setType(request.getParameter("submit_type"));
+        author.setStatus("active");
+
+        return author;
     }
 }

@@ -16,7 +16,8 @@ public enum PageStore {
     EDIT_ALBUMS_CONTENT_PAGE("/jsp/admin/edit_albums_content.jsp"),
     SHOW_EDIT_USER_PAGE("/jsp/admin/edit_user.jsp"),
     SHOW_USERS_PAGE("/jsp/admin/show_users.jsp"),
-    PERSONAL_PAGE("/jsp/user/personal_page.jsp");
+    PERSONAL_PAGE("/jsp/user/personal_page.jsp"),
+    POINTS_PAGE("/jsp/user/point_management.jsp");
 
     private String pageName;
 

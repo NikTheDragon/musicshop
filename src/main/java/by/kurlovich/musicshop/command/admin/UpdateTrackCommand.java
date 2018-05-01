@@ -21,8 +21,6 @@ public class UpdateTrackCommand implements Command {
     private final static String EDIT_TRACKS_PAGE = PageStore.EDIT_TRACKS_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private final static Logger LOGGER = LoggerFactory.getLogger(UpdateTrackCommand.class);
-    private AccessValidator accessValidator = new AccessValidator();
-    private List<String> accessRoles = Arrays.asList("admin");
     private EntityReceiver receiver;
 
     public UpdateTrackCommand(EntityReceiver receiver) {
@@ -33,25 +31,19 @@ public class UpdateTrackCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
+            List<String> accessRoles = Arrays.asList("admin");
             String userRole = (String) request.getSession(true).getAttribute("role");
 
-            if (accessValidator.validate(accessRoles, userRole)) {
-                Track track = new Track();
-
-                track.setId((request.getParameter("submit_id")));
-                track.setName(request.getParameter("submit_name"));
-                track.setAuthor(request.getParameter("submit_author"));
-                track.setGenre(request.getParameter("submit_genre"));
-                track.setYear(request.getParameter("submit_year"));
-                track.setLength(request.getParameter("submit_length"));
+            if (AccessValidator.validate(accessRoles, userRole)) {
+                Track track = createTrack(request);
 
                 LOGGER.debug("Updating track: {}", track.getName());
 
                 if (receiver.updateEntity(track)) {
-                    List<Track> trackList = receiver.getAllEntities();
-                    trackList.sort(Comparator.comparing(Track::getAuthor));
+                    List<Track> allTracks = receiver.getAllEntities();
+                    allTracks.sort(Comparator.comparing(Track::getAuthor));
 
-                    request.getSession(true).setAttribute("trackList", trackList);
+                    request.getSession(true).setAttribute("trackList", allTracks);
                     request.getSession(true).setAttribute("url", EDIT_TRACKS_PAGE);
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_TRACKS_PAGE);
                 }
@@ -68,5 +60,18 @@ public class UpdateTrackCommand implements Command {
         } catch (ReceiverException e) {
             throw new CommandException("Exception in UpdateTrackCommand.\n" + e, e);
         }
+    }
+
+    private Track createTrack(HttpServletRequest request) {
+        Track track = new Track();
+
+        track.setId((request.getParameter("submit_id")));
+        track.setName(request.getParameter("submit_name"));
+        track.setAuthor(request.getParameter("submit_author"));
+        track.setGenre(request.getParameter("submit_genre"));
+        track.setYear(request.getParameter("submit_year"));
+        track.setLength(request.getParameter("submit_length"));
+
+        return track;
     }
 }

@@ -22,9 +22,20 @@
                     </div>
                 </li>
                 <li class="dropdown">
-                    <a href="javascript:void(0)" class="dropbtn">${user.name}</a>
+                    <a href="javascript:void(0)" class="dropbtn">${user.name} (${user.points})</a>
                     <div class="dropdown-content">
-                        <a href="#">${personal}</a>
+                        <form target="/mainServlet" method="get">
+                            <a href="<c:url value="/mainServlet">
+                                <c:param name="command" value="show_personal_page"/>
+                                 </c:url>
+                            ">${personal}</a>
+                        </form>
+                        <form target="/mainServlet" method="get">
+                            <a href="<c:url value="/mainServlet">
+                                <c:param name="command" value="show_point_management_page"/>
+                                 </c:url>
+                            ">Add points</a>
+                        </form>
                         <form target="/mainServlet" method="get">
                             <a href="<c:url value="/mainServlet">
                                 <c:param name="command" value="logout"/>

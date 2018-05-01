@@ -28,16 +28,13 @@ public class DeleteAlbumCommand implements Command {
         this.receiver = receiver;
     }
 
-
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
-            AccessValidator accessValidator = new AccessValidator();
             List<String> accessRoles = Arrays.asList("admin");
-
             String userRole = (String) request.getSession(true).getAttribute("role");
 
-            if (accessValidator.validate(accessRoles, userRole)) {
+            if (AccessValidator.validate(accessRoles, userRole)) {
                 Album album = createAlbum(request);
 
                 LOGGER.debug("Deleting album: {}", album.getName());

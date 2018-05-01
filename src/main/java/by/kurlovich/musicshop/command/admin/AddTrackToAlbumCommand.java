@@ -6,7 +6,6 @@ import by.kurlovich.musicshop.content.CommandResult;
 import by.kurlovich.musicshop.entity.Content;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
-import by.kurlovich.musicshop.receiver.impl.TrackReceiverImpl;
 import by.kurlovich.musicshop.store.PageStore;
 import by.kurlovich.musicshop.validator.AccessValidator;
 
@@ -34,13 +33,7 @@ public class AddTrackToAlbumCommand implements Command {
             List<String> accessRoles = Arrays.asList("admin");
 
             if (AccessValidator.validate(accessRoles, userRole)) {
-                Content content = new Content();
-
-                content.setEntityId(request.getParameter("submit_album_id"));
-                content.setTrackId(request.getParameter("submit_track_id"));
-                content.setTrackName(request.getParameter("submit_track"));
-                content.setAuthorName(request.getParameter("submit_author"));
-                content.setStatus("active");
+                Content content = createContent(request);
 
                 LOGGER.debug("Adding track:{} to album.", content.getTrackName());
 
@@ -64,5 +57,17 @@ public class AddTrackToAlbumCommand implements Command {
         } catch (ReceiverException e) {
             throw new CommandException("Exception in AddTrackToAlbumCommand.\n" + e, e);
         }
+    }
+
+    private Content createContent(HttpServletRequest request) {
+        Content content = new Content();
+
+        content.setEntityId(request.getParameter("submit_album_id"));
+        content.setTrackId(request.getParameter("submit_track_id"));
+        content.setTrackName(request.getParameter("submit_track"));
+        content.setAuthorName(request.getParameter("submit_author"));
+        content.setStatus("active");
+
+        return content;
     }
 }

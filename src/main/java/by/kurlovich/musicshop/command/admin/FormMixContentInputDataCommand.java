@@ -3,12 +3,10 @@ package by.kurlovich.musicshop.command.admin;
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
-import by.kurlovich.musicshop.entity.Mix;
 import by.kurlovich.musicshop.entity.Track;
 import by.kurlovich.musicshop.store.PageStore;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
-import by.kurlovich.musicshop.receiver.impl.TrackReceiverImpl;
 import by.kurlovich.musicshop.validator.AccessValidator;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,10 +15,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class SubmitTrackCommand implements Command {
+public class FormMixContentInputDataCommand implements Command {
     private final static String EDIT_MIXES_CONTENT_PAGE = PageStore.EDIT_MIXES_CONTENT_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
-    private AccessValidator accessValidator = new AccessValidator();
+    EntityReceiver trackReceiver;
+
+    public FormMixContentInputDataCommand (EntityReceiver trackReceiver) {
+        this.trackReceiver = trackReceiver;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
@@ -28,37 +30,35 @@ public class SubmitTrackCommand implements Command {
             List<String> accessRoles = Arrays.asList("admin");
             String userRole = (String) request.getSession(true).getAttribute("role");
 
-            Set<String> names = new HashSet<>();
-            Set<String> authors = new HashSet<>();
-            Set<String> genres = new HashSet<>();
+            if (AccessValidator.validate(accessRoles, userRole)) {
+                String selectedAuthor = request.getParameter("submit_author");
+                String selectedGenre = request.getParameter("submit_genre");
 
-            if (accessValidator.validate(accessRoles, userRole)) {
-                String author = request.getParameter("submit_author");
-                String genre = request.getParameter("submit_genre");
-                String mixId = request.getParameter("submit_mix_id");
-                EntityReceiver trackReceiver = new TrackReceiverImpl();
+                Set<String> uniqueTrackNames = new HashSet<>();
+                Set<String> uniqueAuthors = new HashSet<>();
+                Set<String> uniqueGenres = new HashSet<>();
 
-                List<Track> trackList = trackReceiver.getAllEntities();
+                List<Track> allTracks = trackReceiver.getAllEntities();
 
-                for (Track track : trackList) {
-                    if (track.getAuthor().equals(author)) {
-                        names.add(track.getName());
+                for (Track track : allTracks) {
+                    if (track.getAuthor().equals(selectedAuthor)) {
+                        uniqueTrackNames.add(track.getName());
                     }
-                    if (track.getGenre().equals(genre)) {
-                        authors.add(track.getAuthor());
+                    if (track.getGenre().equals(selectedGenre)) {
+                        uniqueAuthors.add(track.getAuthor());
                     }
-                    if (genre.equals("*")) {
-                        authors.add(track.getAuthor());
+                    if (selectedGenre.equals("*")) {
+                        uniqueAuthors.add(track.getAuthor());
                     }
-                    genres.add(track.getGenre());
+                    uniqueGenres.add(track.getGenre());
                 }
 
-                request.setAttribute("currentAuthor", author);
-                request.setAttribute("currentGenre", genre);
-                request.getSession(true).setAttribute("namesSet", names);
-                request.getSession(true).setAttribute("authorsSet", authors);
-                request.getSession(true).setAttribute("genresSet", genres);
-                request.getSession(true).setAttribute("trackList", trackList);
+                request.setAttribute("currentAuthor", selectedAuthor);
+                request.setAttribute("currentGenre", selectedGenre);
+                request.getSession(true).setAttribute("namesSet", uniqueTrackNames);
+                request.getSession(true).setAttribute("authorsSet", uniqueAuthors);
+                request.getSession(true).setAttribute("genresSet", uniqueGenres);
+                request.getSession(true).setAttribute("trackList", allTracks);
                 request.getSession(true).setAttribute("url", EDIT_MIXES_CONTENT_PAGE);
                 return new CommandResult(CommandResult.ResponseType.FORWARD, EDIT_MIXES_CONTENT_PAGE);
             }

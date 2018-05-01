@@ -31,14 +31,11 @@ public class DeleteMixCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
-            AccessValidator accessValidator = new AccessValidator();
             List<String> accessRoles = Arrays.asList("admin");
             String userRole = (String) request.getSession(true).getAttribute("role");
 
-            if (accessValidator.validate(accessRoles, userRole)) {
-                Mix mix = new Mix();
-
-                mix.setName(request.getParameter("submit_name"));
+            if (AccessValidator.validate(accessRoles, userRole)) {
+                Mix mix = createMix(request);
 
                 LOGGER.debug("Deleting mix: {}", mix.getName());
 
@@ -63,5 +60,13 @@ public class DeleteMixCommand implements Command {
         } catch (ReceiverException e) {
             throw new CommandException("Exception in DeleteMixCommand.\n" + e, e);
         }
+    }
+
+    private Mix createMix(HttpServletRequest request) {
+        Mix mix = new Mix();
+
+        mix.setName(request.getParameter("submit_name"));
+
+        return mix;
     }
 }

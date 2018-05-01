@@ -28,13 +28,11 @@ public class ShowUsersPageCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
-        AccessValidator accessValidator = new AccessValidator();
-
         try {
             List<String> accessRoles = Arrays.asList("admin");
             String userRole = (String) request.getSession(true).getAttribute("role");
 
-            if (accessValidator.validate(accessRoles, userRole)) {
+            if (AccessValidator.validate(accessRoles, userRole)) {
                 List<User> allUsers = receiver.getAllUsers();
 
                 request.getSession(true).setAttribute("allUsers", allUsers);

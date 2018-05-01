@@ -19,30 +19,29 @@ import java.util.List;
 public class ShowEditMixesPageCommand implements Command {
     private final static String EDIT_MIXES_PAGE = PageStore.EDIT_MIXES_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
-    private AccessValidator accessValidator = new AccessValidator();
-    private List<String> accessRoles = Arrays.asList("admin");
-    private EntityReceiver receiver;
+    private EntityReceiver mixReceiver;
+    private EntityReceiver genreReceiver;
 
-    public ShowEditMixesPageCommand(EntityReceiver receiver) {
-        this.receiver = receiver;
+    public ShowEditMixesPageCommand(EntityReceiver mixReceiver, EntityReceiver genreReceiver) {
+        this.mixReceiver = mixReceiver;
+        this.genreReceiver = genreReceiver;
     }
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
+            List<String> accessRoles = Arrays.asList("admin");
             String userRole = (String) request.getSession(true).getAttribute("role");
 
-            if (accessValidator.validate(accessRoles, userRole)) {
-                EntityReceiver genreReceiver = new GenreReceiverImpl();
+            if (AccessValidator.validate(accessRoles, userRole)) {
+                List<Genre> allGenres = genreReceiver.getAllEntities();
+                allGenres.sort(Comparator.comparing(Genre::getName));
 
-                List<Genre> genreList = genreReceiver.getAllEntities();
-                genreList.sort(Comparator.comparing(Genre::getName));
+                List<Mix> allMixes = mixReceiver.getAllEntities();
+                allMixes.sort(Comparator.comparing(Mix::getName));
 
-                List<Mix> mixList = receiver.getAllEntities();
-                mixList.sort(Comparator.comparing(Mix::getName));
-
-                request.getSession(true).setAttribute("genreList", genreList);
-                request.getSession(true).setAttribute("mixList", mixList);
+                request.getSession(true).setAttribute("genreList", allGenres);
+                request.getSession(true).setAttribute("mixList", allMixes);
                 request.getSession(true).setAttribute("url", EDIT_MIXES_PAGE);
                 return new CommandResult(CommandResult.ResponseType.FORWARD, EDIT_MIXES_PAGE);
             }

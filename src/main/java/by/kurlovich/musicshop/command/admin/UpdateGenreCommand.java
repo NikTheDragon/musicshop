@@ -21,8 +21,6 @@ public class UpdateGenreCommand implements Command {
     private final static String EDIT_GENRES_PAGE = PageStore.EDIT_GENRES_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private final static Logger LOGGER = LoggerFactory.getLogger(UpdateGenreCommand.class);
-    private AccessValidator accessValidator = new AccessValidator();
-    private List<String> accessRoles = Arrays.asList("admin");
     private EntityReceiver receiver;
 
     public UpdateGenreCommand(EntityReceiver receiver) {
@@ -33,21 +31,19 @@ public class UpdateGenreCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
+            List<String> accessRoles = Arrays.asList("admin");
             String userRole = (String) request.getSession(true).getAttribute("role");
 
-            if (accessValidator.validate(accessRoles, userRole)) {
-                Genre genre = new Genre();
-
-                genre.setId(request.getParameter("submit_id"));
-                genre.setName(request.getParameter("submit_name"));
+            if (AccessValidator.validate(accessRoles, userRole)) {
+                Genre genre = createGenre(request);
 
                 LOGGER.debug("Updating genre: {}", genre.getName());
 
                 if (receiver.updateEntity(genre)) {
-                    List<Genre> genreList = receiver.getAllEntities();
-                    genreList.sort(Comparator.comparing(Genre::getName));
+                    List<Genre> allGenres = receiver.getAllEntities();
+                    allGenres.sort(Comparator.comparing(Genre::getName));
 
-                    request.getSession(true).setAttribute("genreList", genreList);
+                    request.getSession(true).setAttribute("genreList", allGenres);
                     request.getSession(true).setAttribute("url", EDIT_GENRES_PAGE);
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_GENRES_PAGE);
                 }
@@ -64,5 +60,14 @@ public class UpdateGenreCommand implements Command {
         } catch (ReceiverException e) {
             throw new CommandException("Exception in UpdateGenreCommand.\n" + e, e);
         }
+    }
+
+    private Genre createGenre(HttpServletRequest request) {
+        Genre genre = new Genre();
+
+        genre.setId(request.getParameter("submit_id"));
+        genre.setName(request.getParameter("submit_name"));
+
+        return genre;
     }
 }

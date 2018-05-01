@@ -16,14 +16,20 @@
 </head>
 
 <c:set var="user_role" scope="session" value="${user.role}"/>
-<c:if test="${user_role != 'admin'}">
+<c:if test="${user_role != 'admin' && user_role != 'user'}">
     <c:redirect url="/mainServlet?command=show_main_page"/>
 </c:if>
 
 <body style="font-family: Arial, Helvetica, sans-serif">
 
 <%@include file="/WEB-INF/jspf/header.jsp" %>
-<%@include file="/WEB-INF/jspf/admin_menu.jsp" %>
+
+<c:if test="${user_role == 'admin'}">
+    <%@include file="/WEB-INF/jspf/admin_menu.jsp" %>
+</c:if>
+<c:if test="${user_role == 'user'}">
+    <%@include file="/WEB-INF/jspf/user_menu.jsp" %>
+</c:if>
 
 <br>
 
@@ -62,7 +68,7 @@
     </tr>
 </table>
 
-<form id="updateUser" action="/mainServlet" method="get">
+<form id="updateUser" action="/mainServlet" method="post">
     <input type="hidden" name="command" value="update_personal_info">
     <input type="hidden" id="submit_id" name="submit_id" value="${user.id}">
     <input type="hidden" id="submit_name" name="submit_name" value="">

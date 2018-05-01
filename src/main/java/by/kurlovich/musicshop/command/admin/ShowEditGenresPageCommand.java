@@ -17,8 +17,6 @@ import java.util.List;
 public class ShowEditGenresPageCommand implements Command {
     private final static String EDIT_GENRES_PAGE = PageStore.EDIT_GENRES_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
-    private AccessValidator accessValidator = new AccessValidator();
-    private List<String> accessRoles = Arrays.asList("admin");
     private EntityReceiver receiver;
 
     public ShowEditGenresPageCommand(EntityReceiver receiver) {
@@ -29,13 +27,14 @@ public class ShowEditGenresPageCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
+            List<String> accessRoles = Arrays.asList("admin");
             String userRole = (String) request.getSession(true).getAttribute("role");
 
-            if (accessValidator.validate(accessRoles, userRole)) {
-                List<Genre> genreList = receiver.getAllEntities();
-                genreList.sort(Comparator.comparing(Genre::getName));
+            if (AccessValidator.validate(accessRoles, userRole)) {
+                List<Genre> allGenres = receiver.getAllEntities();
+                allGenres.sort(Comparator.comparing(Genre::getName));
 
-                request.getSession(true).setAttribute("genreList", genreList);
+                request.getSession(true).setAttribute("genreList", allGenres);
                 request.getSession(true).setAttribute("url", EDIT_GENRES_PAGE);
                 return new CommandResult(CommandResult.ResponseType.FORWARD, EDIT_GENRES_PAGE);
             }

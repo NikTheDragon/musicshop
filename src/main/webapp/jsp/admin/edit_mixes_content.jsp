@@ -114,20 +114,20 @@
         <form id="formDelete" action="/mainServlet" method="get">
             <input type="hidden" name="command" value="delete_track_from_mix">
             <input type="hidden" name="submit_mix_id" value="${currentMix.id}">
-            <input type="hidden" name="submit_track_id" value="">
+            <input type="hidden" id="id_for_delete" name="submit_track_id" value="">
             <input type="hidden" name="submit_track" value="">
             <input type="hidden" name="submit_author" value="">
             <input type="hidden" name="submit_genre" value="">
-            <td><input type="button" name="button" onclick="submitButton('formDelete')"
+            <td><input type="button" name="button" onclick="submitDelete('formDelete')"
                        value="${deleteButton}" style="width: 200px"></td>
         </form>
         <form id="submitAuthor" action="/mainServlet" method="get">
-            <input type="hidden" name="command" value="submit_track">
+            <input type="hidden" name="command" value="form_mix_content_input_data">
             <input type="hidden" name="submit_author" value="">
             <input type="hidden" name="submit_genre" value="">
         </form>
         <form id="submitGenre" action="/mainServlet" method="get">
-            <input type="hidden" name="command" value="submit_track">
+            <input type="hidden" name="command" value="form_mix_content_input_data">
             <input type="hidden" name="submit_genre" value="">
         </form>
     </tr>
@@ -135,7 +135,7 @@
 
 <script>
 
-    $("tr").click(function(){
+    $("tr").click(function () {
         $(this).addClass("selected").siblings().removeClass("selected");
     });
 
@@ -177,7 +177,15 @@
             countTrack[i].setAttribute("value", trackTrack);
         }
 
-        if(trackAuthor != "" && trackTrack != "") {
+        if (trackAuthor != "" && trackTrack != "") {
+            document.getElementById(formName).submit();
+        }
+    }
+
+    function submitDelete(formName) {
+        var trackId = document.getElementById("id_for_delete").value;
+
+        if (trackId != "") {
             document.getElementById(formName).submit();
         }
     }

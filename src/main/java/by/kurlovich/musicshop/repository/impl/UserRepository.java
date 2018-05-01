@@ -19,7 +19,7 @@ public class UserRepository implements Repository<User> {
     private static final String ADD_USER = "INSERT INTO users (name,surname,login,password,email,role,status) VALUES (?,?,?,?,?,?,?)";
     private static final String UPDATE_USER = "UPDATE users SET name=?, surname=?, login=?, password=?, email=?, role=?, status=?, points=? WHERE id=?";
     private static final Logger LOGGER = LoggerFactory.getLogger(UserRepository.class);
-    private ConnectionPool connectionPool;
+    private final ConnectionPool pool;
 
     static final int ID = 1;
     static final int NAME = 2;
@@ -34,7 +34,7 @@ public class UserRepository implements Repository<User> {
     public UserRepository() throws RepositoryException {
         try {
             LOGGER.debug("Creating User Repository class.");
-            connectionPool = ConnectionPool.getInstance();
+            pool = ConnectionPool.getInstance();
         } catch (ConnectionException e) {
             throw new RepositoryException("Can't create dbconnection pool", e);
         }
@@ -42,9 +42,8 @@ public class UserRepository implements Repository<User> {
 
     @Override
     public void add(User user) throws RepositoryException {
-        try {
-            Connection dbConnection = connectionPool.getConnection();
-            try (PreparedStatement ps = dbConnection.prepareStatement(ADD_USER)) {
+        try (Connection connection = pool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(ADD_USER)) {
                 ps.setString(NAME, user.getName());
                 ps.setString(SURNAME, user.getSurname());
                 ps.setString(LOGIN, user.getLogin());
@@ -55,7 +54,7 @@ public class UserRepository implements Repository<User> {
 
                 ps.executeUpdate();
             }
-            connectionPool.releaseConnection(dbConnection);
+
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception in addNewClient", e);
         }
@@ -68,10 +67,9 @@ public class UserRepository implements Repository<User> {
 
     @Override
     public void update(User item) throws RepositoryException {
-        try {
+        try (Connection connection = pool.getConnection()) {
             LOGGER.debug("Updating user {}", item.getName());
-            Connection dbConnection = connectionPool.getConnection();
-            try (PreparedStatement ps = dbConnection.prepareStatement(UPDATE_USER)) {
+            try (PreparedStatement ps = connection.prepareStatement(UPDATE_USER)) {
                 ps.setString(1, item.getName());
                 ps.setString(2, item.getSurname());
                 ps.setString(3, item.getLogin());
@@ -84,7 +82,7 @@ public class UserRepository implements Repository<User> {
 
                 ps.executeUpdate();
             }
-            connectionPool.releaseConnection(dbConnection);
+
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception in update of UserRepository.\n" + e, e);
         }
@@ -96,31 +94,27 @@ public class UserRepository implements Repository<User> {
         SqlSpecification sqlSpecification = (SqlSpecification) specification;
         List<User> allUsers = new ArrayList<>();
 
-        try {
-            Connection dbConnection = connectionPool.getConnection();
-            try (PreparedStatement ps = dbConnection.prepareStatement(sqlSpecification.toSqlQuery());
-                 ResultSet rs = ps.executeQuery()) {
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sqlSpecification.toSqlQuery());
+             ResultSet rs = ps.executeQuery()) {
 
-                while (rs.next()) {
-                    User user = new User();
+            while (rs.next()) {
+                User user = new User();
 
-                    user.setId(rs.getString(ID));
-                    user.setName(rs.getString(NAME));
-                    user.setSurname(rs.getString(SURNAME));
-                    user.setLogin(rs.getString(LOGIN));
-                    user.setPassword(rs.getString(PASSWORD));
-                    user.setEmail(rs.getString(EMAIL));
-                    user.setRole(rs.getString(ROLE));
-                    user.setStatus(rs.getString(STATUS));
-                    user.setPoints(rs.getInt(POINTS));
+                user.setId(rs.getString(ID));
+                user.setName(rs.getString(NAME));
+                user.setSurname(rs.getString(SURNAME));
+                user.setLogin(rs.getString(LOGIN));
+                user.setPassword(rs.getString(PASSWORD));
+                user.setEmail(rs.getString(EMAIL));
+                user.setRole(rs.getString(ROLE));
+                user.setStatus(rs.getString(STATUS));
+                user.setPoints(rs.getInt(POINTS));
 
-                    allUsers.add(user);
-                }
-
-                connectionPool.releaseConnection(dbConnection);
-
-                return allUsers;
+                allUsers.add(user);
             }
+
+            return allUsers;
 
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception in user query", e);

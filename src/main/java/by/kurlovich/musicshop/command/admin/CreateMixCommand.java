@@ -35,20 +35,15 @@ public class CreateMixCommand implements Command {
             String userRole = (String) request.getSession(true).getAttribute("role");
 
             if (AccessValidator.validate(accessRoles, userRole)) {
-                Mix mix = new Mix();
-
-                mix.setName(request.getParameter("submit_name"));
-                mix.setGenre(request.getParameter("submit_genre"));
-                mix.setYear(request.getParameter("submit_year"));
-                mix.setStatus("active");
+                Mix mix = createMix(request);
 
                 LOGGER.debug("Creating mix: {}", mix.getName());
 
                 if (receiver.addNewEntity(mix)) {
-                    List<Mix> mixList = receiver.getAllEntities();
-                    mixList.sort(Comparator.comparing(Mix::getName));
+                    List<Mix> allMixes = receiver.getAllEntities();
+                    allMixes.sort(Comparator.comparing(Mix::getName));
 
-                    request.getSession(true).setAttribute("mixList", mixList);
+                    request.getSession(true).setAttribute("mixList", allMixes);
                     request.getSession(true).setAttribute("url", EDIT_MIXES_PAGE);
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_MIXES_PAGE);
                 }
@@ -65,5 +60,16 @@ public class CreateMixCommand implements Command {
         } catch (ReceiverException e) {
             throw new CommandException("Exception in CreateMixCommand.\n" + e, e);
         }
+    }
+
+    private Mix createMix(HttpServletRequest request) {
+        Mix mix = new Mix();
+
+        mix.setName(request.getParameter("submit_name"));
+        mix.setGenre(request.getParameter("submit_genre"));
+        mix.setYear(request.getParameter("submit_year"));
+        mix.setStatus("active");
+
+        return mix;
     }
 }

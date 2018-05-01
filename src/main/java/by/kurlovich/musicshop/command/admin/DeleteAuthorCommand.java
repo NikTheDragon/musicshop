@@ -21,8 +21,6 @@ public class DeleteAuthorCommand implements Command {
     private final static String EDIT_AUTHORS_PAGE = PageStore.EDIT_AUTHORS_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private final static Logger LOGGER = LoggerFactory.getLogger(DeleteAuthorCommand.class);
-    private AccessValidator accessValidator = new AccessValidator();
-    private List<String> accessRoles = Arrays.asList("admin");
     private EntityReceiver receiver;
 
     public DeleteAuthorCommand(EntityReceiver receiver) {
@@ -33,22 +31,19 @@ public class DeleteAuthorCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
+            List<String> accessRoles = Arrays.asList("admin");
             String userRole = (String) request.getSession(true).getAttribute("role");
 
-            if (accessValidator.validate(accessRoles, userRole)) {
-                Author author = new Author();
-
-                author.setName(request.getParameter("submit_name"));
-                author.setGenre(request.getParameter("submit_genre"));
-                author.setType(request.getParameter("submit_type"));
+            if (AccessValidator.validate(accessRoles, userRole)) {
+                Author author = createAuthor(request);
 
                 LOGGER.debug("Deleting author: {}", author.getName());
 
                 if (receiver.deleteEntity(author)) {
-                    List<Author> authorList = receiver.getAllEntities();
-                    authorList.sort(Comparator.comparing(Author::getName));
+                    List<Author> allAuthors = receiver.getAllEntities();
+                    allAuthors.sort(Comparator.comparing(Author::getName));
 
-                    request.getSession(true).setAttribute("authorList", authorList);
+                    request.getSession(true).setAttribute("authorList", allAuthors);
                     request.getSession(true).setAttribute("url", EDIT_AUTHORS_PAGE);
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_AUTHORS_PAGE);
                 }
@@ -65,5 +60,15 @@ public class DeleteAuthorCommand implements Command {
         } catch (ReceiverException e) {
             throw new CommandException("Exception in DeleteAuthorCommand." + e, e);
         }
+    }
+
+    private Author createAuthor(HttpServletRequest request) {
+        Author author = new Author();
+
+        author.setName(request.getParameter("submit_name"));
+        author.setGenre(request.getParameter("submit_genre"));
+        author.setType(request.getParameter("submit_type"));
+
+        return author;
     }
 }

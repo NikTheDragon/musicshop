@@ -1,13 +1,13 @@
 package by.kurlovich.musicshop.repository.impl;
 
 import by.kurlovich.musicshop.dbconnection.ConnectionException;
-import by.kurlovich.musicshop.dbconnection.DBConnection;
+import by.kurlovich.musicshop.dbconnection.ConnectionPool;
 import by.kurlovich.musicshop.entity.Mix;
 import by.kurlovich.musicshop.repository.Repository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
-
 import by.kurlovich.musicshop.repository.SqlSpecification;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,25 +25,31 @@ public class MixRepository implements Repository<Mix> {
     private static final String ADD_MIX = "INSERT INTO mixes (name, genre, year, status) VALUES (?,(SELECT id FROM genres WHERE name=?),?,?)";
     private static final String DELETE_MIX = "UPDATE mixes SET status='deleted' WHERE name=?";
     private static final String UPDATE_MIX = "UPDATE mixes SET name=?, genre=(SELECT id FROM genres WHERE name=?), year=? WHERE id=?";
+    private final ConnectionPool pool;
 
-    public MixRepository() {
-        LOGGER.debug("Creating mix Repository class.");
+    public MixRepository() throws RepositoryException {
+        try {
+            LOGGER.debug("Creating mix Repository class.");
+            pool = ConnectionPool.getInstance();
+        } catch (ConnectionException e) {
+            throw new RepositoryException("Can't create dbconnection pool.\n" + e, e);
+        }
     }
+
 
     @Override
     public void add(Mix item) throws RepositoryException {
-        try (DBConnection dbConnection = new DBConnection()) {
-            LOGGER.debug("Adding new mix {}", item.getName());
-            Connection connection = dbConnection.getConnection();
+        LOGGER.debug("adding new mix {}", item.getName());
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(ADD_MIX)) {
 
-            try (PreparedStatement ps = connection.prepareStatement(ADD_MIX)) {
-                ps.setString(1, item.getName());
-                ps.setString(2, item.getGenre());
-                ps.setString(3, item.getYear());
-                ps.setString(4, item.getStatus());
+            ps.setString(1, item.getName());
+            ps.setString(2, item.getGenre());
+            ps.setString(3, item.getYear());
+            ps.setString(4, item.getStatus());
 
-                ps.executeUpdate();
-            }
+            ps.executeUpdate();
+
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception in add of MixRepository.\n" + e, e);
         }
@@ -51,15 +57,14 @@ public class MixRepository implements Repository<Mix> {
 
     @Override
     public void delete(Mix item) throws RepositoryException {
-        try (DBConnection dbConnection = new DBConnection()) {
-            LOGGER.debug("Deleting mix {}", item.getName());
-            Connection connection = dbConnection.getConnection();
+        LOGGER.debug("deleting mix {}", item.getName());
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(DELETE_MIX)) {
 
-            try (PreparedStatement ps = connection.prepareStatement(DELETE_MIX)) {
-                ps.setString(1, item.getName());
+            ps.setString(1, item.getName());
 
-                ps.executeUpdate();
-            }
+            ps.executeUpdate();
+
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception in delete of MixRepository.\n" + e, e);
         }
@@ -67,18 +72,17 @@ public class MixRepository implements Repository<Mix> {
 
     @Override
     public void update(Mix item) throws RepositoryException {
-        try (DBConnection dbConnection = new DBConnection()) {
-            LOGGER.debug("Updating mix {}", item.getName());
-            Connection connection = dbConnection.getConnection();
+        LOGGER.debug("updating mix {}", item.getName());
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(UPDATE_MIX)) {
 
-            try (PreparedStatement ps = connection.prepareStatement(UPDATE_MIX)) {
-                ps.setString(1, item.getName());
-                ps.setString(2, item.getGenre());
-                ps.setString(3, item.getYear());
-                ps.setString(4, item.getId());
+            ps.setString(1, item.getName());
+            ps.setString(2, item.getGenre());
+            ps.setString(3, item.getYear());
+            ps.setString(4, item.getId());
 
-                ps.executeUpdate();
-            }
+            ps.executeUpdate();
+
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception in update of MixRepository.\n" + e, e);
         }
@@ -86,28 +90,27 @@ public class MixRepository implements Repository<Mix> {
 
     @Override
     public List<Mix> query(Specification specification) throws RepositoryException {
+        LOGGER.debug("quering mixes.");
         SqlSpecification sqlSpecification = (SqlSpecification) specification;
         List<Mix> mixList = new ArrayList<>();
 
-        try (DBConnection dbConnection = new DBConnection()) {
-            Connection connection = dbConnection.getConnection();
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sqlSpecification.toSqlQuery());
+             ResultSet rs = ps.executeQuery()) {
 
-            try (PreparedStatement ps = connection.prepareStatement(sqlSpecification.toSqlQuery());
-                 ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Mix mix = new Mix();
 
-                while (rs.next()) {
-                    Mix mix = new Mix();
+                mix.setId(rs.getString(1));
+                mix.setName(rs.getString(2));
+                mix.setGenre(rs.getString(3));
+                mix.setYear(rs.getString(4));
+                mix.setStatus(rs.getString(5));
 
-                    mix.setId(rs.getString(1));
-                    mix.setName(rs.getString(2));
-                    mix.setGenre(rs.getString(3));
-                    mix.setYear(rs.getString(4));
-                    mix.setStatus(rs.getString(5));
-
-                    mixList.add(mix);
-                }
-                return mixList;
+                mixList.add(mix);
             }
+            return mixList;
+
 
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception in query of MixRepository.\n" + e, e);
@@ -116,20 +119,17 @@ public class MixRepository implements Repository<Mix> {
 
     @Override
     public Status getStatus(Mix item) throws RepositoryException {
-        final int STATUS = 1;
+        LOGGER.debug("checking mix {} status.", item.getName());
+        String status = "";
 
-        try (DBConnection dbConnection = new DBConnection()) {
-            String status = "";
-            LOGGER.debug("Checking mix {} status.", item.getName());
-            Connection connection = dbConnection.getConnection();
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(GET_STATUS)) {
 
-            try (PreparedStatement ps = connection.prepareStatement(GET_STATUS)) {
+            ps.setString(1, item.getName());
 
-                ps.setString(1, item.getName());
-                try (ResultSet rs = ps.executeQuery()) {
-                    while (rs.next()) {
-                        status = (rs.getString(STATUS));
-                    }
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    status = (rs.getString(1));
                 }
             }
 
@@ -142,17 +142,17 @@ public class MixRepository implements Repository<Mix> {
 
     @Override
     public void undelete(Mix item) throws RepositoryException {
-        try (DBConnection dbConnection = new DBConnection()) {
-            LOGGER.debug("Set mix {} status to active.", item.getName());
-            Connection connection = dbConnection.getConnection();
+        LOGGER.debug("set mix {} status to active.", item.getName());
 
-            try (PreparedStatement ps = connection.prepareStatement(SET_STATUS)) {
-                ps.setString(1, item.getName());
-                ps.setString(2, item.getGenre());
-                ps.setString(3, item.getYear());
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(SET_STATUS)) {
 
-                ps.executeUpdate();
-            }
+            ps.setString(1, item.getName());
+            ps.setString(2, item.getGenre());
+            ps.setString(3, item.getYear());
+
+            ps.executeUpdate();
+
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception in undelete of MixRepository.\n" + e, e);
         }

@@ -21,8 +21,6 @@ public class UpdateMixCommand implements Command {
     private final static String EDIT_MIXES_PAGE = PageStore.EDIT_MIXES_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private final static Logger LOGGER = LoggerFactory.getLogger(UpdateMixCommand.class);
-    private AccessValidator accessValidator = new AccessValidator();
-    private List<String> accessRoles = Arrays.asList("admin");
     private EntityReceiver receiver;
 
     public UpdateMixCommand(EntityReceiver receiver) {
@@ -33,23 +31,19 @@ public class UpdateMixCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
+            List<String> accessRoles = Arrays.asList("admin");
             String userRole = (String) request.getSession(true).getAttribute("role");
 
-            if (accessValidator.validate(accessRoles, userRole)) {
-                Mix mix = new Mix();
-
-                mix.setId(request.getParameter("submit_id"));
-                mix.setName(request.getParameter("submit_name"));
-                mix.setGenre(request.getParameter("submit_genre"));
-                mix.setYear(request.getParameter("submit_year"));
+            if (AccessValidator.validate(accessRoles, userRole)) {
+                Mix mix = createMix(request);
 
                 LOGGER.debug("Updating mix: {}", mix.getName());
 
                 if (receiver.updateEntity(mix)) {
-                    List<Mix> mixList = receiver.getAllEntities();
-                    mixList.sort(Comparator.comparing(Mix::getName));
+                    List<Mix> allMixes = receiver.getAllEntities();
+                    allMixes.sort(Comparator.comparing(Mix::getName));
 
-                    request.getSession(true).setAttribute("mixList", mixList);
+                    request.getSession(true).setAttribute("mixList", allMixes);
                     request.getSession(true).setAttribute("url", EDIT_MIXES_PAGE);
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_MIXES_PAGE);
                 }
@@ -66,5 +60,16 @@ public class UpdateMixCommand implements Command {
         } catch (ReceiverException e) {
             throw new CommandException("Exception in UpdateMixCommand.\n" + e, e);
         }
+    }
+
+    private Mix createMix(HttpServletRequest request) {
+        Mix mix = new Mix();
+
+        mix.setId(request.getParameter("submit_id"));
+        mix.setName(request.getParameter("submit_name"));
+        mix.setGenre(request.getParameter("submit_genre"));
+        mix.setYear(request.getParameter("submit_year"));
+
+        return mix;
     }
 }

@@ -3,6 +3,7 @@ package by.kurlovich.musicshop.dbconnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -19,14 +20,13 @@ public class ConnectionPool {
     private static final String DB_PROPERTIES_FILE = "db.properties";
     private static ReentrantLock lock = new ReentrantLock();
     private static ConnectionPool instance;
-    private BlockingQueue<Connection> connectionsQueue;
+    private BlockingQueue<ProxyConnection> connectionsQueue;
     private String dbDriver;
     private String connectionUrl;
     private String userName;
     private String password;
     private int maxConnections;
     private AtomicInteger currentConnections;
-    private Connection connection = null;
 
     private ConnectionPool() throws ConnectionException {
         paramInit();
@@ -44,7 +44,8 @@ public class ConnectionPool {
         return instance;
     }
 
-    public Connection getConnection() throws ConnectionException {
+    public ProxyConnection getConnection() throws ConnectionException {
+        ProxyConnection connection = null;
         lock.lock();
         try {
             if (!connectionsQueue.isEmpty()) {
@@ -68,7 +69,7 @@ public class ConnectionPool {
         }
     }
 
-    public void releaseConnection(Connection connection) throws ConnectionException {
+    public void releaseConnection(ProxyConnection connection) throws ConnectionException {
         lock.lock();
         try {
             if (connection != null && currentConnections.intValue() < maxConnections) {
@@ -139,13 +140,15 @@ public class ConnectionPool {
         }
     }
 
-    private Connection newConnection() throws ConnectionException {
+    private ProxyConnection newConnection() throws ConnectionException {
+        ProxyConnection proxy;
         try {
-            connection = DriverManager.getConnection(connectionUrl, userName, password);
+            Connection connection = DriverManager.getConnection(connectionUrl, userName, password);
+            proxy = new ProxyConnection(connection);
         } catch (SQLException e) {
             throw new ConnectionException("Exception in newConnection of ConnectionPool.\n" + e, e);
         }
 
-        return connection;
+        return proxy;
     }
 }

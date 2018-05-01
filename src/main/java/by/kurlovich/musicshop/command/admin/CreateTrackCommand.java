@@ -35,21 +35,15 @@ public class CreateTrackCommand implements Command {
             String userRole = (String) request.getSession(true).getAttribute("role");
 
             if (AccessValidator.validate(accessRoles, userRole)) {
-                Track track = new Track();
-                track.setName(request.getParameter("submit_name"));
-                track.setAuthor(request.getParameter("submit_author"));
-                track.setGenre(request.getParameter("submit_genre"));
-                track.setYear(request.getParameter("submit_year"));
-                track.setLength(request.getParameter("submit_length"));
-                track.setStatus("active");
+                Track track = createTrack(request);
 
                 LOGGER.debug("Creating track: {}", track.getName());
 
                 if (receiver.addNewEntity(track)) {
-                    List<Track> trackList = receiver.getAllEntities();
-                    trackList.sort(Comparator.comparing(Track::getAuthor));
+                    List<Track> allTracks = receiver.getAllEntities();
+                    allTracks.sort(Comparator.comparing(Track::getAuthor));
 
-                    request.getSession(true).setAttribute("trackList", trackList);
+                    request.getSession(true).setAttribute("trackList", allTracks);
                     request.getSession(true).setAttribute("url", EDIT_TRACKS_PAGE);
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_TRACKS_PAGE);
                 }
@@ -66,5 +60,18 @@ public class CreateTrackCommand implements Command {
         } catch (ReceiverException e) {
             throw new CommandException("Exception in CreateTrackCommand.\n" + e, e);
         }
+    }
+
+    private Track createTrack(HttpServletRequest request) {
+        Track track = new Track();
+
+        track.setName(request.getParameter("submit_name"));
+        track.setAuthor(request.getParameter("submit_author"));
+        track.setGenre(request.getParameter("submit_genre"));
+        track.setYear(request.getParameter("submit_year"));
+        track.setLength(request.getParameter("submit_length"));
+        track.setStatus("active");
+
+        return track;
     }
 }

@@ -1,7 +1,7 @@
 package by.kurlovich.musicshop.repository.impl;
 
 import by.kurlovich.musicshop.dbconnection.ConnectionException;
-import by.kurlovich.musicshop.dbconnection.DBConnection;
+import by.kurlovich.musicshop.dbconnection.ConnectionPool;
 import by.kurlovich.musicshop.entity.Content;
 import by.kurlovich.musicshop.repository.Repository;
 import by.kurlovich.musicshop.repository.RepositoryException;
@@ -23,26 +23,30 @@ public class MixContentRepository implements Repository<Content> {
     private static final String DELETE_CONTENT = "UPDATE mixes_content SET status='deleted' WHERE mix_id=? AND track_id=?";
     private static final String GET_STATUS = "SELECT status FROM mixes_content WHERE mix_id=? AND track_id=(SELECT id FROM tracks WHERE name=? AND author=(SELECT id FROM authors WHERE name=?))";
     private static final String SET_STATUS = "UPDATE mixes_content SET status='active' WHERE mix_id=? AND track_id=(SELECT id FROM tracks WHERE name=? AND author=(SELECT id FROM authors WHERE name=?))";
-    private DBConnection dbConnection;
+    private final ConnectionPool pool;
 
-    public MixContentRepository() {
-        LOGGER.debug("Creating content Repository class.");
+    public MixContentRepository() throws RepositoryException {
+        try {
+            LOGGER.debug("Creating content Repository class.");
+            pool = ConnectionPool.getInstance();
+        } catch (ConnectionException e) {
+            throw new RepositoryException("Can't create dbconnection pool.\n" + e, e);
+        }
     }
 
 
     @Override
     public void add(Content item) throws RepositoryException {
-        try (DBConnection dbConnection = new DBConnection()) {
-            LOGGER.debug("Adding new content for {}", item.getTrackName());
-            Connection connection = dbConnection.getConnection();
+        LOGGER.debug("adding new content for {}", item.getTrackName());
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(ADD_CONTENT)) {
 
-            try (PreparedStatement ps = connection.prepareStatement(ADD_CONTENT)) {
-                ps.setString(1, item.getEntityId());
-                ps.setString(2, item.getTrackName());
-                ps.setString(3, item.getAuthorName());
+            ps.setString(1, item.getEntityId());
+            ps.setString(2, item.getTrackName());
+            ps.setString(3, item.getAuthorName());
 
-                ps.executeUpdate();
-            }
+            ps.executeUpdate();
+
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception in add of MixContentRepository.\n" + e, e);
         }
@@ -50,16 +54,16 @@ public class MixContentRepository implements Repository<Content> {
 
     @Override
     public void delete(Content item) throws RepositoryException {
-        try (DBConnection dbConnection = new DBConnection()) {
-            LOGGER.debug("Deleting content");
-            Connection connection = dbConnection.getConnection();
+        LOGGER.debug("Deleting content");
 
-            try (PreparedStatement ps = connection.prepareStatement(DELETE_CONTENT)) {
-                ps.setString(1, item.getEntityId());
-                ps.setString(2, item.getTrackId());
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(DELETE_CONTENT)) {
 
-                ps.executeUpdate();
-            }
+            ps.setString(1, item.getEntityId());
+            ps.setString(2, item.getTrackId());
+
+            ps.executeUpdate();
+
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception in delete of MixContentRepository.\n" + e, e);
         }
@@ -75,24 +79,23 @@ public class MixContentRepository implements Repository<Content> {
         SqlSpecification sqlSpecification = (SqlSpecification) specification;
         List<Content> contentList = new ArrayList<>();
 
-        try (DBConnection dbConnection = new DBConnection()) {
-            Connection connection = dbConnection.getConnection();
-            try (PreparedStatement ps = connection.prepareStatement(sqlSpecification.toSqlQuery())) {
-                try (ResultSet rs = ps.executeQuery()) {
-                    while (rs.next()) {
-                        Content content = new Content();
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sqlSpecification.toSqlQuery())) {
 
-                        content.setEntityId(rs.getString(1));
-                        content.setTrackId(rs.getString(2));
-                        content.setTrackName(rs.getString(3));
-                        content.setAuthorName(rs.getString(4));
-                        content.setStatus(rs.getString(5));
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Content content = new Content();
 
-                        contentList.add(content);
-                    }
+                    content.setEntityId(rs.getString(1));
+                    content.setTrackId(rs.getString(2));
+                    content.setTrackName(rs.getString(3));
+                    content.setAuthorName(rs.getString(4));
+                    content.setStatus(rs.getString(5));
+
+                    contentList.add(content);
                 }
-                return contentList;
             }
+            return contentList;
 
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception query of MixContentRepository.\n" + e, e);
@@ -101,22 +104,19 @@ public class MixContentRepository implements Repository<Content> {
 
     @Override
     public Status getStatus(Content item) throws RepositoryException {
-        final int STATUS = 1;
+        LOGGER.debug("checking content {} status.", item.getTrackName());
+        String status = "";
 
-        try (DBConnection dbConnection = new DBConnection()) {
-            String status = "";
-            LOGGER.debug("Checking content {} status.", item.getTrackName());
-            Connection connection = dbConnection.getConnection();
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(GET_STATUS)) {
 
-            try (PreparedStatement ps = connection.prepareStatement(GET_STATUS)) {
-                ps.setString(1, item.getEntityId());
-                ps.setString(2, item.getTrackName());
-                ps.setString(3, item.getAuthorName());
+            ps.setString(1, item.getEntityId());
+            ps.setString(2, item.getTrackName());
+            ps.setString(3, item.getAuthorName());
 
-                try (ResultSet rs = ps.executeQuery()) {
-                    while (rs.next()) {
-                        status = (rs.getString(STATUS));
-                    }
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    status = (rs.getString(1));
                 }
             }
 
@@ -129,17 +129,16 @@ public class MixContentRepository implements Repository<Content> {
 
     @Override
     public void undelete(Content item) throws RepositoryException {
-        try (DBConnection dbConnection = new DBConnection()) {
-            LOGGER.debug("Set content {} status to active.", item.getTrackName());
+        LOGGER.debug("Set content {} status to active.", item.getTrackName());
 
-            Connection connection = dbConnection.getConnection();
-            try (PreparedStatement ps = connection.prepareStatement(SET_STATUS)) {
-                ps.setString(1, item.getEntityId());
-                ps.setString(2, item.getTrackName());
-                ps.setString(3, item.getAuthorName());
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(SET_STATUS)) {
 
-                ps.executeUpdate();
-            }
+            ps.setString(1, item.getEntityId());
+            ps.setString(2, item.getTrackName());
+            ps.setString(3, item.getAuthorName());
+
+            ps.executeUpdate();
 
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception undelete of MixContentRepository.\n" + e, e);

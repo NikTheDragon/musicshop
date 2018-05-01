@@ -34,19 +34,14 @@ public class AddTrackToMixCommand implements Command {
             List<String> accessRoles = Arrays.asList("admin");
 
             if (AccessValidator.validate(accessRoles, userRole)) {
-                Content content = new Content();
-
-                content.setEntityId(request.getParameter("submit_mix_id"));
-                content.setTrackName(request.getParameter("submit_track"));
-                content.setAuthorName(request.getParameter("submit_author"));
-                content.setStatus("active");
+                Content content = createContent(request);
 
                 LOGGER.debug("Adding track: {} for mix:", content.getTrackName());
 
                 if (receiver.addNewEntity(content)) {
-                    List<Content> contentList = receiver.getAllEntities();
+                    List<Content> currentMixContent = receiver.getSpecifiedEntities(content.getEntityId());
 
-                    request.getSession(true).setAttribute("contentList", contentList);
+                    request.getSession(true).setAttribute("contentList", currentMixContent);
                     request.getSession(true).setAttribute("url", EDIT_MIXES_CONTENT_PAGE);
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_MIXES_CONTENT_PAGE);
                 }
@@ -63,5 +58,16 @@ public class AddTrackToMixCommand implements Command {
         } catch (ReceiverException e) {
             throw new CommandException("Exception in AddTrackToMixCommand.\n" + e, e);
         }
+    }
+
+    private Content createContent(HttpServletRequest request) {
+        Content content = new Content();
+
+        content.setEntityId(request.getParameter("submit_mix_id"));
+        content.setTrackName(request.getParameter("submit_track"));
+        content.setAuthorName(request.getParameter("submit_author"));
+        content.setStatus("active");
+
+        return content;
     }
 }

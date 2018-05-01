@@ -30,25 +30,20 @@ public class DeleteTrackFromMixCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
-        AccessValidator accessValidator = new AccessValidator();
-        List<String> accessRoles = Arrays.asList("admin");
-
         try {
+            List<String> accessRoles = Arrays.asList("admin");
             String userRole = (String) request.getSession(true).getAttribute("role");
 
-            if (accessValidator.validate(accessRoles, userRole)) {
-                Content content = new Content();
-
-                content.setEntityId(request.getParameter("submit_mix_id"));
-                content.setTrackId(request.getParameter("submit_track_id"));
+            if (AccessValidator.validate(accessRoles, userRole)) {
+                Content content = createContent(request);
 
                 LOGGER.debug("Deleting track {} from mix {}.", content.getTrackId(), content.getEntityId());
 
                 if (receiver.deleteEntity(content)) {
-                    List<Content> contentList = receiver.getAllEntities();
-                    contentList.sort(Comparator.comparing(Content::getTrackName));
+                    List<Content> currentMixContent = receiver.getSpecifiedEntities(content.getEntityId());
+                    currentMixContent.sort(Comparator.comparing(Content::getTrackName));
 
-                    request.getSession(true).setAttribute("contentList", contentList);
+                    request.getSession(true).setAttribute("contentList", currentMixContent);
                     request.getSession(true).setAttribute("url", EDIT_MIXES_CONTENT_PAGE);
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_MIXES_CONTENT_PAGE);
                 }
@@ -65,5 +60,14 @@ public class DeleteTrackFromMixCommand implements Command {
         } catch (ReceiverException e) {
             throw new CommandException("Exception in DeleteTrackFromMixCommand.\n" + e, e);
         }
+    }
+
+    private Content createContent(HttpServletRequest request) {
+        Content content = new Content();
+
+        content.setEntityId(request.getParameter("submit_mix_id"));
+        content.setTrackId(request.getParameter("submit_track_id"));
+
+        return content;
     }
 }
