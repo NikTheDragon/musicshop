@@ -104,4 +104,9 @@ public class GenreReceiverImpl implements EntityReceiver<Genre> {
     public List<Genre> getSpecifiedEntities(String param) throws ReceiverException {
         return null;
     }
+
+    @Override
+    public List<Genre> getEntitiesWithOwner(String ownerId) throws ReceiverException {
+        return null;
+    }
 }

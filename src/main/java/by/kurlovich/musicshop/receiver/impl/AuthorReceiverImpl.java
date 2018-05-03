@@ -100,4 +100,9 @@ public class AuthorReceiverImpl implements EntityReceiver<Author> {
     public List<Author> getSpecifiedEntities(String param) throws ReceiverException {
         return null;
     }
+
+    @Override
+    public List<Author> getEntitiesWithOwner(String ownerId) throws ReceiverException {
+        return null;
+    }
 }

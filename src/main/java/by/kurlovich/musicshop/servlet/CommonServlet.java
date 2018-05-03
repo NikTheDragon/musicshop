@@ -38,6 +38,10 @@ public class CommonServlet extends HttpServlet {
             RequestDispatcher dispatcher;
             String responseType = commandResult.getResponseType().toString();
 
+            if (responseType == null) {
+                throw new CommandException("null in responseType.");
+            }
+
             switch (responseType) {
                 case "FORWARD":
                     dispatcher = request.getRequestDispatcher(commandResult.getPage());

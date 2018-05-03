@@ -8,4 +8,5 @@ public interface EntityReceiver<T> {
     boolean updateEntity(T item) throws ReceiverException;
     List<T> getAllEntities() throws ReceiverException;
     List<T> getSpecifiedEntities(String param) throws ReceiverException;
+    List<T> getEntitiesWithOwner(String ownerId) throws ReceiverException;
 }

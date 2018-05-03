@@ -11,6 +11,7 @@ public class Track {
     private String year;
     private String length;
     private String status;
+    private String ownerId;
 
     public String getId() {
         return id;
@@ -68,6 +69,14 @@ public class Track {
         this.status = status;
     }
 
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -79,13 +88,14 @@ public class Track {
                 Objects.equals(genre, track.genre) &&
                 Objects.equals(year, track.year) &&
                 Objects.equals(length, track.length) &&
-                Objects.equals(status, track.status);
+                Objects.equals(status, track.status) &&
+                Objects.equals(ownerId, track.ownerId);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, author, genre, year, length, status);
+        return Objects.hash(id, name, author, genre, year, length, status, ownerId);
     }
 
     @Override

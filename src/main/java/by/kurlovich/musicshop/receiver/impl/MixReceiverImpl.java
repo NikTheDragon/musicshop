@@ -111,4 +111,9 @@ public class MixReceiverImpl implements EntityReceiver<Mix> {
             throw new ReceiverException("Exception in getSpecifiedEntities of MixReceiverImpl.\n" + e, e);
         }
     }
+
+    @Override
+    public List<Mix> getEntitiesWithOwner(String ownerId) throws ReceiverException {
+        return null;
+    }
 }

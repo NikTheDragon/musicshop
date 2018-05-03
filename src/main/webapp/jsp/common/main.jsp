@@ -9,11 +9,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>main page</title>
 
-    <%@include file="/WEB-INF/jspf/locale.jsp"%>
+    <%@include file="/WEB-INF/jspf/locale.jsp" %>
 
 </head>
 
-<c:set var = "user_role" scope = "session" value = "${user.role}"/>
+<c:set var="user_role" scope="session" value="${user.role}"/>
 
 <c:choose>
     <c:when test="${user_role == 'user'}">
@@ -26,15 +26,12 @@
 
 <body style="font-family: Arial, Helvetica, sans-serif">
 
-<%@include file="/WEB-INF/jspf/header.jsp"%>
-<%@include file="/WEB-INF/jspf/menu.jsp"%>
+<%@include file="/WEB-INF/jspf/header.jsp" %>
+<%@include file="/WEB-INF/jspf/menu.jsp" %>
 
-<table width="100%">
-    <tr><td width="20%">
-
-    </td>
-        <td width="45%">
-
+<table style="width: 80%; margin-left: auto; margin-right: auto;">
+    <tr>
+        <td width="65%">
         </td>
         <td width="15%">
             <form name="common_text" action="/mainServlet" onsubmit="return validateForm()" method="post">
@@ -61,11 +58,7 @@
                 <input type="submit" value=${registerButton}>
             </form>
         </td>
-        <td width="20%">
-
-        </td>
     </tr>
-
 </table>
 
 <script src="/js/validator.js"></script>

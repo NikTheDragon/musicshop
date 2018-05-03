@@ -16,16 +16,12 @@
 <%@include file="/WEB-INF/jspf/header.jsp" %>
 <%@include file="/WEB-INF/jspf/menu.jsp" %>
 
-<table width="100%">
+<table style="width: 80%; margin-left: auto; margin-right: auto;">
     <tr>
-        <td width="20%">
-        </td>
         <td bgcolor="#dcf7ff">
             <br><br>
             <p align="center">${message}</p>
             <br><br>
-        </td>
-        <td width="20%">
         </td>
     </tr>
 </table>

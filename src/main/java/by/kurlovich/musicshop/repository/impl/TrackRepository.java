@@ -112,6 +112,7 @@ public class TrackRepository implements Repository<Track> {
                 track.setYear(rs.getString(5));
                 track.setLength(rs.getString(6));
                 track.setStatus(rs.getString(7));
+                track.setOwnerId(rs.getString(8));
 
                 trackList.add(track);
             }

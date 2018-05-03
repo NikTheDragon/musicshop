@@ -1,7 +1,5 @@
-<table width="100%">
+<table style="width: 80%; margin-left: auto; margin-right: auto;">
     <tr align="center">
-        <td width="20%">
-        </td>
         <td>
             <ul>
                 <li><a href="/mainServlet?command=show_main_page">${mainPage}</a></li>
@@ -95,8 +93,6 @@
                     </div>
                 </li>
             </ul>
-        </td>
-        <td width="20%">
         </td>
     </tr>
 </table>

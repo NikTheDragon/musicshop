@@ -1,16 +1,29 @@
-<table width="100%">
+<table style="width: 80%; margin-left: auto; margin-right: auto;">
     <tr align="center">
-        <td width="20%">
-        </td>
         <td>
             <ul>
                 <li><a href="/mainServlet?command=show_main_page">${mainPage}</a></li>
                 <li class="dropdown">
                     <a href="javascript:void(0)" class="dropbtn">${catalogue}</a>
                     <div class="dropdown-content">
-                        <a href="#">${tracks}</a>
-                        <a href="#">${albums}</a>
-                        <a href="#">${mixes}</a>
+                        <form target="/mainServlet" method="get">
+                            <a href="<c:url value="/mainServlet">
+                                <c:param name="command" value="show_all_tracks"/>
+                                 </c:url>
+                            ">${tracks}</a>
+                        </form>
+                        <form target="/mainServlet" method="get">
+                            <a href="<c:url value="/mainServlet">
+                                <c:param name="command" value="show_all_albums"/>
+                                 </c:url>
+                            ">${albums}</a>
+                        </form>
+                        <form target="/mainServlet" method="get">
+                            <a href="<c:url value="/mainServlet">
+                                <c:param name="command" value="show_all_mixes"/>
+                                 </c:url>
+                            ">${mixes}</a>
+                        </form>
                     </div>
                 </li>
                 <li><a href="#news">${contacts}</a></li>
@@ -41,8 +54,6 @@
                     </div>
                 </li>
             </ul>
-        </td>
-        <td width="20%">
         </td>
     </tr>
 </table>

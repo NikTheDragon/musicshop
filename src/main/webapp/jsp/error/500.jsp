@@ -9,13 +9,13 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>500 page</title>
 
-    <%@include file="/WEB-INF/jspf/locale.jsp"%>
+    <%@include file="/WEB-INF/jspf/locale.jsp" %>
 
 </head>
 <body style="font-family: Arial, Helvetica, sans-serif">
 
-<%@include file="/WEB-INF/jspf/header.jsp"%>
-<%@include file="/WEB-INF/jspf/menu.jsp"%>
+<%@include file="/WEB-INF/jspf/header.jsp" %>
+<%@include file="/WEB-INF/jspf/menu.jsp" %>
 
 <%@ page isErrorPage="true" %>
 <% exception.printStackTrace(response.getWriter()); %>
