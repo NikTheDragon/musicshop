@@ -1,16 +1,15 @@
 package by.kurlovich.musicshop.receiver.impl;
 
+import by.kurlovich.musicshop.entity.Track;
 import by.kurlovich.musicshop.entity.User;
 import by.kurlovich.musicshop.receiver.UserReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.repository.Repository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
+import by.kurlovich.musicshop.repository.impl.TrackRepository;
 import by.kurlovich.musicshop.repository.impl.UserRepository;
-import by.kurlovich.musicshop.specification.GetAllUsersSpecification;
-import by.kurlovich.musicshop.specification.GetUserByIdSpecification;
-import by.kurlovich.musicshop.specification.GetUserByLoginPasswordSpecification;
-import by.kurlovich.musicshop.specification.GetUserByLoginSpecification;
+import by.kurlovich.musicshop.specification.*;
 import by.kurlovich.musicshop.validator.ObjectValidator;
 
 import org.slf4j.Logger;
@@ -106,6 +105,20 @@ public class UserReceiverImpl implements UserReceiver {
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in loginUser.\n" + e, e);
+        }
+    }
+
+    @Override
+    public void buyTrack(String userId, String trackId) throws ReceiverException {
+        try {
+            Repository<Track> repository = new TrackRepository();
+            Specification specification = new BuyTrackSpecification(userId, trackId);
+            LOGGER.debug("trying to get specified users.");
+
+            repository.buy(specification);
+
+        } catch (RepositoryException e) {
+            throw new ReceiverException("Exception in getSpecifiedUsers of UserReceiverImpl.\n" + e, e);
         }
     }
 

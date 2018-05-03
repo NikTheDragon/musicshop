@@ -130,4 +130,9 @@ public class UserRepository implements Repository<User> {
     public void undelete(User item) throws RepositoryException {
 
     }
+
+    @Override
+    public void buy(Specification specification) throws RepositoryException {
+
+    }
 }

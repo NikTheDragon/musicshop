@@ -156,4 +156,9 @@ public class AuthorRepository implements Repository<Author> {
             throw new RepositoryException("Exception in undelete of AuthorRepository.\n" + e, e);
         }
     }
+
+    @Override
+    public void buy(Specification specification) throws RepositoryException {
+
+    }
 }

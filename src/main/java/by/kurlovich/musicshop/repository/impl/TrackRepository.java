@@ -165,4 +165,18 @@ public class TrackRepository implements Repository<Track> {
             throw new RepositoryException("Exception in undelete of TrackRepository.\n" + e, e);
         }
     }
+
+    @Override
+    public void buy(Specification specification) throws RepositoryException {
+        LOGGER.debug("buying track.");
+        SqlSpecification sqlSpecification = (SqlSpecification) specification;
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sqlSpecification.toSqlQuery())) {
+            ps.executeUpdate();
+
+        } catch (SQLException | ConnectionException e) {
+            throw new RepositoryException("Exception in query of TrackRepository..\n" + e, e);
+        }
+    }
 }

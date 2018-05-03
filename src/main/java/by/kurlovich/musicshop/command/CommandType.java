@@ -2,10 +2,7 @@ package by.kurlovich.musicshop.command;
 
 import by.kurlovich.musicshop.command.admin.*;
 import by.kurlovich.musicshop.command.common.*;
-import by.kurlovich.musicshop.command.user.AddPointsCommand;
-import by.kurlovich.musicshop.command.user.ShowPersonalPageCommand;
-import by.kurlovich.musicshop.command.user.ShowPointManagementPageCommand;
-import by.kurlovich.musicshop.command.user.UpdatePersonalInfoCommand;
+import by.kurlovich.musicshop.command.user.*;
 import by.kurlovich.musicshop.receiver.impl.*;
 
 public enum CommandType {
@@ -54,7 +51,8 @@ public enum CommandType {
     FORM_MIX_CONTENT_INPUT_DATA(new FormMixContentInputDataCommand(new TrackReceiverImpl())),
     ADD_TRACK_TO_MIX(new AddTrackToMixCommand(new MixContentReceiverImpl())),
     ADD_TRACK_TO_ALBUM(new AddTrackToAlbumCommand(new AlbumContentReceiverImpl())),
-    ADD_POINTS(new AddPointsCommand(new UserReceiverImpl()));
+    ADD_POINTS(new AddPointsCommand(new UserReceiverImpl())),
+    BUY_TRACK(new BuyTrackCommand(new UserReceiverImpl(), new TrackReceiverImpl()));
 
     private Command command;
 

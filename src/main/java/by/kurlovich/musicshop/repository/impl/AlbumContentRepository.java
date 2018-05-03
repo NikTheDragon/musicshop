@@ -132,4 +132,9 @@ public class AlbumContentRepository implements Repository<Content> {
     public void undelete(Content item) throws RepositoryException {
 
     }
+
+    @Override
+    public void buy(Specification specification) throws RepositoryException {
+
+    }
 }

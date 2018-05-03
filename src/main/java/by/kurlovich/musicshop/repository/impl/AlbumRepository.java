@@ -164,4 +164,9 @@ public class AlbumRepository implements Repository<Album> {
             throw new RepositoryException("Exception in undelete of AlbumRepository.\n" + e, e);
         }
     }
+
+    @Override
+    public void buy(Specification specification) throws RepositoryException {
+
+    }
 }

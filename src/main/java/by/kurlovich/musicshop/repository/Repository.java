@@ -35,4 +35,6 @@ public interface Repository<T> {
     Status getStatus(T item) throws RepositoryException;
 
     void undelete(T item) throws RepositoryException;
+
+    void buy(Specification specification) throws RepositoryException;
 }

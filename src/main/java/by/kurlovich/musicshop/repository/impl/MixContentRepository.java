@@ -144,4 +144,9 @@ public class MixContentRepository implements Repository<Content> {
             throw new RepositoryException("Exception undelete of MixContentRepository.\n" + e, e);
         }
     }
+
+    @Override
+    public void buy(Specification specification) throws RepositoryException {
+
+    }
 }

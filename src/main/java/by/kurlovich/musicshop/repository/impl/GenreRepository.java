@@ -154,4 +154,9 @@ public class GenreRepository implements Repository<Genre> {
             throw new RepositoryException("Exception in undelete of GenreRepository.\n" + e, e);
         }
     }
+
+    @Override
+    public void buy(Specification specification) throws RepositoryException {
+
+    }
 }
