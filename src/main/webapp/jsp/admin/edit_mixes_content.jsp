@@ -109,7 +109,7 @@
             <input type="hidden" name="submit_author" value="">
             <input type="hidden" name="submit_genre" value="">
             <td><input type="button" name="button" onclick="submitButton('formAdd')"
-                       value="${createButton}" style="width: 200px"></td>
+                       value="${addButton}" style="width: 200px"></td>
         </form>
         <form id="formDelete" action="/mainServlet" method="get">
             <input type="hidden" name="command" value="delete_track_from_mix">

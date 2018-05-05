@@ -58,7 +58,7 @@
                     <td id="${mix.id}genre">${mix.genre}</td>
                     <td id="${mix.id}year">${mix.year}</td>
                     <td id="${mix.id}price">${mix.tracksCount}</td>
-                    <td id="${mix.id}content" style="background-color: #cffffc" onclick="showContent('contentForm', this.id)">Content</td>
+                    <td id="${mix.id}" style="background-color: #cffffc" onclick="showContent('contentForm', this.id)">Content</td>
 
                     <c:if test="${mix.ownerId == user.id && mix.ownerId != null}">
                         <td id="${mix.id}" style="background-color: #7df9ef"

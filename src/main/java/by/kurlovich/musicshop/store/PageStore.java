@@ -20,7 +20,9 @@ public enum PageStore {
     POINTS_PAGE("/jsp/user/point_management.jsp"),
     SHOW_TRACKS_PAGE("/jsp/common/show_tracks.jsp"),
     SHOW_ALBUMS_PAGE("/jsp/common/show_albums.jsp"),
-    SHOW_MIXES_PAGE("/jsp/common/show_mixes.jsp");
+    SHOW_MIXES_PAGE("/jsp/common/show_mixes.jsp"),
+    SHOW_MIX_CONTENT_PAGE("/jsp/common/show_mix_content.jsp"),
+    SHOW_ALBUM_CONTENT_PAGE("/jsp/common/show_album_content.jsp");
 
     private String pageName;
 

@@ -61,6 +61,25 @@ public class UserReceiverImpl implements UserReceiver {
     }
 
     @Override
+    public List<Track> getMixTracksWithOwner(String mixId, String userId) throws ReceiverException {
+        try {
+            Repository<Track> repository = new TrackRepository();
+            Specification specification = new GetMixContentWithOwnersIdByMixIdSpecification(userId, mixId);
+            LOGGER.debug("Trying to get all tracks for mix:{}, and owner:{}.", mixId, userId);
+
+            return repository.queryWithOwners(specification);
+
+        } catch (RepositoryException e) {
+            throw new ReceiverException("Exception in getAllMixesWithOwner of UserReceiverImpl.\n" + e, e);
+        }
+    }
+
+    @Override
+    public List<Track> getAlbumTracksWithOwner(String albumId, String userId) throws ReceiverException {
+        return null;
+    }
+
+    @Override
     public List<Mix> getAllMixesWithOwner(String userId) throws ReceiverException {
         try {
             Repository<Mix> repository = new MixRepository();

@@ -57,12 +57,10 @@ public class BuyTrackCommand implements Command {
 
                     request.getSession(true).setAttribute("user", currentUser);
                     request.getSession(true).setAttribute("trackList", allTracks);
-                    request.getSession(true).setAttribute("url", SHOW_TRACKS_PAGE);
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, SHOW_TRACKS_PAGE);
                 }
 
                 request.setAttribute("message", "insufficient points");
-                request.getSession(true).setAttribute("url", SHOW_TRACKS_PAGE);
 
             } else {
                 request.setAttribute("message", "denied");
