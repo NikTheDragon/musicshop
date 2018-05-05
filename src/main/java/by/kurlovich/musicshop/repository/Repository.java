@@ -25,16 +25,11 @@ public interface Repository<T> {
     }
 
     void add(T item) throws RepositoryException;
-
     void delete(T item) throws RepositoryException;
-
     void update(T item) throws RepositoryException;
-
     List<T> query(Specification specification) throws RepositoryException;
-
+    List<T> queryWithOwners(Specification specification) throws RepositoryException;
     Status getStatus(T item) throws RepositoryException;
-
     void undelete(T item) throws RepositoryException;
-
     void buy(Specification specification) throws RepositoryException;
 }

@@ -2,10 +2,10 @@ package by.kurlovich.musicshop.specification;
 
 import by.kurlovich.musicshop.repository.SqlSpecification;
 
-public class GetTracksWithOwnerIdSpecification implements SqlSpecification {
-    String userId;
+public class GetAllTracksWithOwnerIdSpecification implements SqlSpecification {
+    private String userId;
 
-    public GetTracksWithOwnerIdSpecification(String userId) {
+    public GetAllTracksWithOwnerIdSpecification(String userId) {
         this.userId = userId;
     }
 

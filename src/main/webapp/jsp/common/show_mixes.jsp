@@ -44,6 +44,8 @@
             <th width="35%">${titleHeader}</th>
             <th width="10%">${genreHeader}</th>
             <th width="5%">${yearHeader}</th>
+            <th width="5%">Price</th>
+            <th width="5%"></th>
             <c:if test="${user_role == 'user'}">
                 <th width="10%"></th>
             </c:if>
@@ -51,15 +53,25 @@
 
         <c:forEach var="mix" items="${mixList}">
             <c:if test="${mix.status == 'active'}">
-                <tr id="${mix.id}">
+                <tr id="${mix.id}" style="text-align: center">
                     <td id="${mix.id}name">${mix.name}</td>
                     <td id="${mix.id}genre">${mix.genre}</td>
                     <td id="${mix.id}year">${mix.year}</td>
-                    <c:if test="${user_role == 'user'}">
-                        <td id="${mix.id}" style="background-color: #4CAF50; text-align: center"
-                            onclick="downloadEntity('downloadForm', this.id)">Скачать
+                    <td id="${mix.id}price">${mix.tracksCount}</td>
+                    <td id="${mix.id}content" style="background-color: #cffffc" onclick="showContent('contentForm', this.id)">Content</td>
+
+                    <c:if test="${mix.ownerId == user.id && mix.ownerId != null}">
+                        <td id="${mix.id}" style="background-color: #7df9ef"
+                            onclick="downloadEntity('contentForm', this.id)">Скачать
                         </td>
                     </c:if>
+
+                    <c:if test="${user_role == 'user' && mix.ownerId != user.id}">
+                        <td id="${mix.id}" style="background-color: #4CAF50"
+                            onclick="buyEntity('buyForm', this.id)">Купить
+                        </td>
+                    </c:if>
+
                 </tr>
             </c:if>
         </c:forEach>
@@ -67,14 +79,36 @@
     </table>
 </div>
 
-<form name="downloadForm">
+<form id="contentForm" action="/mainServlet" method="get">
+    <input type="hidden" name="command" value="show_mix_content">
+    <input type="hidden" id="content_mix_id" name="mix_id" value="">
+</form>
 
+<form id="buyForm" action="/mainServlet" method="get">
+    <input type="hidden" name="command" value="buy_mix">
+    <input type="hidden" id="mix_id" name="mix_id" value="">
+    <input type="hidden" id="mix_price" name="mix_price" value="">
 </form>
 
 <script>
 
+    function showContent(formId, id) {
+        document.getElementById("content_mix_id").value = id;
+
+        document.getElementById(formId).submit();
+    }
+
+    function buyEntity(formId, id) {
+        document.getElementById("mix_id").value = id;
+        document.getElementById("mix_price").value = document.getElementById(id + "price").textContent;
+
+        document.getElementById(formId).submit();
+    }
+
     function downloadEntity(formId, id) {
-        alert(formId + ", " + id);
+        document.getElementById("content_mix_id").value = id;
+
+        document.getElementById(formId).submit();
     }
 
 </script>

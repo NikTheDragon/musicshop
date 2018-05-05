@@ -123,6 +123,11 @@ public class AlbumRepository implements Repository<Album> {
     }
 
     @Override
+    public List<Album> queryWithOwners(Specification specification) throws RepositoryException {
+        return null;
+    }
+
+    @Override
     public Status getStatus(Album item) throws RepositoryException {
         LOGGER.debug("checking album {} status.", item.getName());
         String status = "";

@@ -112,7 +112,6 @@ public class TrackRepository implements Repository<Track> {
                 track.setYear(rs.getString(5));
                 track.setLength(rs.getString(6));
                 track.setStatus(rs.getString(7));
-                track.setOwnerId(rs.getString(8));
 
                 trackList.add(track);
             }
@@ -121,6 +120,38 @@ public class TrackRepository implements Repository<Track> {
 
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception in query of TrackRepository..\n" + e, e);
+        }
+    }
+
+    @Override
+    public List<Track> queryWithOwners(Specification specification) throws RepositoryException {
+        LOGGER.debug("quering tracks with owners.");
+        SqlSpecification sqlSpecification = (SqlSpecification) specification;
+        List<Track> trackList = new ArrayList<>();
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sqlSpecification.toSqlQuery());
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Track track = new Track();
+
+                track.setId(rs.getString(1));
+                track.setName(rs.getString(2));
+                track.setAuthor(rs.getString(3));
+                track.setGenre(rs.getString(4));
+                track.setYear(rs.getString(5));
+                track.setLength(rs.getString(6));
+                track.setStatus(rs.getString(7));
+                track.setOwnerId(rs.getString(8));
+
+                trackList.add(track);
+            }
+            LOGGER.debug("found {} items.", trackList.size());
+            return trackList;
+
+        } catch (SQLException | ConnectionException e) {
+            throw new RepositoryException("Exception in queryWithOwners of TrackRepository..\n" + e, e);
         }
     }
 

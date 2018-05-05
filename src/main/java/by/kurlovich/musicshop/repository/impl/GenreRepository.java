@@ -16,6 +16,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class GenreRepository implements Repository<Genre> {
@@ -114,6 +115,11 @@ public class GenreRepository implements Repository<Genre> {
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception in query of GenreRepository\n" + e, e);
         }
+    }
+
+    @Override
+    public List<Genre> queryWithOwners(Specification specification) throws RepositoryException {
+        return Collections.emptyList();
     }
 
     @Override

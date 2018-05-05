@@ -110,9 +110,4 @@ public class AlbumReceiverImpl implements EntityReceiver<Album> {
             throw new ReceiverException("Exception in getSpecifiedEntities of AlbumReceiverImpl.\n" + e, e);
         }
     }
-
-    @Override
-    public List<Album> getEntitiesWithOwner(String ownerId) throws ReceiverException {
-        return null;
-    }
 }

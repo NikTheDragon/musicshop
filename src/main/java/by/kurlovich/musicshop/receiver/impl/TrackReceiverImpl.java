@@ -9,7 +9,6 @@ import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.impl.TrackRepository;
 import by.kurlovich.musicshop.specification.GetAllTracksSpecification;
 import by.kurlovich.musicshop.specification.GetTracksByAuthorNameSpecification;
-import by.kurlovich.musicshop.specification.GetTracksWithOwnerIdSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -109,20 +108,6 @@ public class TrackReceiverImpl implements EntityReceiver<Track> {
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in getSpecifiedEntities of TrackReceiverImpl.\n" + e, e);
-        }
-    }
-
-    @Override
-    public List<Track> getEntitiesWithOwner(String ownerId) throws ReceiverException {
-        try {
-            Repository<Track> repository = new TrackRepository();
-            Specification specification = new GetTracksWithOwnerIdSpecification(ownerId);
-            LOGGER.debug("trying to get tracks with owners id:{}.", ownerId);
-
-            return repository.query(specification);
-
-        } catch (RepositoryException e) {
-            throw new ReceiverException("Exception in getEntitiesWithOwner of TrackReceiverImpl.\n" + e, e);
         }
     }
 }

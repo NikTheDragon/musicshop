@@ -5,8 +5,10 @@ import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
 import by.kurlovich.musicshop.entity.Album;
 import by.kurlovich.musicshop.entity.Mix;
+import by.kurlovich.musicshop.entity.User;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
+import by.kurlovich.musicshop.receiver.UserReceiver;
 import by.kurlovich.musicshop.store.PageStore;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,16 +17,23 @@ import java.util.List;
 
 public class ShowAllMixesCommand implements Command {
     private final static String SHOW_MIXES_PAGE = PageStore.SHOW_MIXES_PAGE.getPageName();
-    private EntityReceiver receiver;
+    private UserReceiver receiver;
 
-    public ShowAllMixesCommand(EntityReceiver receiver) {
+    public ShowAllMixesCommand(UserReceiver receiver) {
         this.receiver = receiver;
     }
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
-            List<Mix> allMixes = receiver.getAllEntities();
+            String currentUserId = "0";
+            User currentUser = (User) request.getSession(true).getAttribute("user");
+
+            if (currentUser != null) {
+                currentUserId = currentUser.getId();
+            }
+
+            List<Mix> allMixes = receiver.getAllMixesWithOwner(currentUserId);
             allMixes.sort(Comparator.comparing(Mix::getName));
 
             request.getSession(true).setAttribute("mixList", allMixes);

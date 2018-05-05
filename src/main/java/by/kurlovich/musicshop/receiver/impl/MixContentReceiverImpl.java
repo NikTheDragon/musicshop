@@ -96,9 +96,4 @@ public class MixContentReceiverImpl implements EntityReceiver<Content> {
             throw new ReceiverException("Exception in getSpecifiedEntities of MixContentReceiverImpl.\n" + e, e);
         }
     }
-
-    @Override
-    public List<Content> getEntitiesWithOwner(String ownerId) throws ReceiverException {
-        return null;
-    }
 }

@@ -15,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class AuthorRepository implements Repository<Author> {
@@ -114,6 +115,11 @@ public class AuthorRepository implements Repository<Author> {
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception in query of AuthorRepository.\n" + e, e);
         }
+    }
+
+    @Override
+    public List<Author> queryWithOwners(Specification specification) throws RepositoryException {
+        return Collections.emptyList();
     }
 
     @Override

@@ -14,9 +14,9 @@ public enum CommandType {
     SHOW_MAIN_PAGE(new ShowMainPageCommand()),
     SHOW_USER_PAGE(new ShowUserPageCommand()),
     SHOW_REG_PAGE(new ShowRegPageCommand()),
-    SHOW_ALL_TRACKS(new ShowAllTracksCommand(new TrackReceiverImpl())),
-    SHOW_ALL_ALBUMS(new ShowAllAlbumsCommand(new AlbumReceiverImpl())),
-    SHOW_ALL_MIXES(new ShowAllMixesCommand(new MixReceiverImpl())),
+    SHOW_ALL_TRACKS(new ShowAllTracksCommand(new UserReceiverImpl())),
+    SHOW_ALL_ALBUMS(new ShowAllAlbumsCommand(new UserReceiverImpl())),
+    SHOW_ALL_MIXES(new ShowAllMixesCommand(new UserReceiverImpl())),
     SHOW_EDIT_TRACKS_PAGE(new ShowEditTracksPageCommand(new TrackReceiverImpl(), new GenreReceiverImpl(), new AuthorReceiverImpl())),
     SHOW_EDIT_GENRES_PAGE(new ShowEditGenresPageCommand(new GenreReceiverImpl())),
     SHOW_EDIT_AUTHORS_PAGE(new ShowEditAuthorsPageCommand(new AuthorReceiverImpl(), new GenreReceiverImpl())),
@@ -52,7 +52,7 @@ public enum CommandType {
     ADD_TRACK_TO_MIX(new AddTrackToMixCommand(new MixContentReceiverImpl())),
     ADD_TRACK_TO_ALBUM(new AddTrackToAlbumCommand(new AlbumContentReceiverImpl())),
     ADD_POINTS(new AddPointsCommand(new UserReceiverImpl())),
-    BUY_TRACK(new BuyTrackCommand(new UserReceiverImpl(), new TrackReceiverImpl()));
+    BUY_TRACK(new BuyTrackCommand(new UserReceiverImpl()));
 
     private Command command;
 

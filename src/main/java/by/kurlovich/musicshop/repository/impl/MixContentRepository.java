@@ -15,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MixContentRepository implements Repository<Content> {
@@ -33,7 +34,6 @@ public class MixContentRepository implements Repository<Content> {
             throw new RepositoryException("Can't create dbconnection pool.\n" + e, e);
         }
     }
-
 
     @Override
     public void add(Content item) throws RepositoryException {
@@ -100,6 +100,11 @@ public class MixContentRepository implements Repository<Content> {
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception query of MixContentRepository.\n" + e, e);
         }
+    }
+
+    @Override
+    public List<Content> queryWithOwners(Specification specification) throws RepositoryException {
+        return Collections.emptyList();
     }
 
     @Override

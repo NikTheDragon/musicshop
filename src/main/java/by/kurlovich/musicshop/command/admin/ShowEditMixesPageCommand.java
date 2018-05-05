@@ -8,7 +8,6 @@ import by.kurlovich.musicshop.entity.Mix;
 import by.kurlovich.musicshop.store.PageStore;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
-import by.kurlovich.musicshop.receiver.impl.GenreReceiverImpl;
 import by.kurlovich.musicshop.validator.AccessValidator;
 
 import javax.servlet.http.HttpServletRequest;

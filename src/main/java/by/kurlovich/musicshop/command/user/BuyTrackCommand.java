@@ -22,12 +22,10 @@ public class BuyTrackCommand implements Command {
     private final static Logger LOGGER = LoggerFactory.getLogger(BuyTrackCommand.class);
     private final static String SHOW_TRACKS_PAGE = PageStore.SHOW_TRACKS_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
-    private UserReceiver userReceiver;
-    private EntityReceiver trackReceiver;
+    private UserReceiver receiver;
 
-    public BuyTrackCommand(UserReceiver userReceiver, EntityReceiver trackReceiver) {
-        this.userReceiver = userReceiver;
-        this.trackReceiver = trackReceiver;
+    public BuyTrackCommand(UserReceiver receiver) {
+        this.receiver = receiver;
     }
 
     @Override
@@ -42,19 +40,19 @@ public class BuyTrackCommand implements Command {
                 String trackId = request.getParameter("track_id");
                 int price = Integer.parseInt(request.getParameter("track_price"));
                 int userPoints = currentUser.getPoints();
-                String userId = currentUser.getId();
+                String currentUserId = currentUser.getId();
 
-                LOGGER.debug("User: {}, trying to buy track: {}", userId, trackId);
+                LOGGER.debug("User: {}, trying to buy track: {}", currentUserId, trackId);
 
                 if (price <= userPoints) {
-                    userReceiver.buyTrack(userId, trackId);
+                    receiver.buyTrack(currentUserId, trackId);
 
                     userPoints -= price;
                     currentUser.setPoints(userPoints);
 
-                    userReceiver.updateUser(currentUser);
+                    receiver.updateUser(currentUser);
 
-                    List<Track> allTracks = trackReceiver.getEntitiesWithOwner(userId);
+                    List<Track> allTracks = receiver.getAllTracksWithOwner(currentUserId);
                     allTracks.sort(Comparator.comparing(Track::getAuthor));
 
                     request.getSession(true).setAttribute("user", currentUser);

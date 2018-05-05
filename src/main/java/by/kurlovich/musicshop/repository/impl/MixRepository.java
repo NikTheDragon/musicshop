@@ -109,11 +109,42 @@ public class MixRepository implements Repository<Mix> {
 
                 mixList.add(mix);
             }
+            LOGGER.debug("found {} items.", mixList.size());
             return mixList;
-
 
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception in query of MixRepository.\n" + e, e);
+        }
+    }
+
+    @Override
+    public List<Mix> queryWithOwners(Specification specification) throws RepositoryException {
+        LOGGER.debug("quering mixes with owners.");
+        SqlSpecification sqlSpecification = (SqlSpecification) specification;
+        List<Mix> mixList = new ArrayList<>();
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sqlSpecification.toSqlQuery());
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Mix mix = new Mix();
+
+                mix.setId(rs.getString(1));
+                mix.setName(rs.getString(2));
+                mix.setGenre(rs.getString(3));
+                mix.setYear(rs.getString(4));
+                mix.setTracksCount(rs.getInt(5));
+                mix.setStatus(rs.getString(6));
+                mix.setOwnerId(rs.getString(7));
+
+                mixList.add(mix);
+            }
+            LOGGER.debug("found {} items.", mixList.size());
+            return mixList;
+
+        } catch (SQLException | ConnectionException e) {
+            throw new RepositoryException("Exception in queryWithOwners of MixRepository.\n" + e, e);
         }
     }
 

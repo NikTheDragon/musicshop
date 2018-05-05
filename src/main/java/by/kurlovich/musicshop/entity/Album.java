@@ -9,6 +9,7 @@ public class Album {
     private String author;
     private String genre;
     private int year;
+    private int tracksCount;
     private String status;
 
     public String getId() {
@@ -51,6 +52,14 @@ public class Album {
         this.year = year;
     }
 
+    public int getTracksCount() {
+        return tracksCount;
+    }
+
+    public void setTracksCount(int tracksCount) {
+        this.tracksCount = tracksCount;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -65,6 +74,7 @@ public class Album {
         if (o == null || getClass() != o.getClass()) return false;
         Album album = (Album) o;
         return year == album.year &&
+                tracksCount == album.tracksCount &&
                 Objects.equals(id, album.id) &&
                 Objects.equals(name, album.name) &&
                 Objects.equals(author, album.author) &&
@@ -75,7 +85,7 @@ public class Album {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, author, genre, year, status);
+        return Objects.hash(id, name, author, genre, year, tracksCount, status);
     }
 
     @Override
@@ -86,6 +96,7 @@ public class Album {
                 ", author='" + author + '\'' +
                 ", genre='" + genre + '\'' +
                 ", year=" + year +
+                ", tracksCount=" + tracksCount +
                 ", status='" + status + '\'' +
                 '}';
     }

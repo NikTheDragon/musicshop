@@ -1,5 +1,7 @@
 package by.kurlovich.musicshop.receiver.impl;
 
+import by.kurlovich.musicshop.entity.Album;
+import by.kurlovich.musicshop.entity.Mix;
 import by.kurlovich.musicshop.entity.Track;
 import by.kurlovich.musicshop.entity.User;
 import by.kurlovich.musicshop.receiver.UserReceiver;
@@ -7,6 +9,8 @@ import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.repository.Repository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
+import by.kurlovich.musicshop.repository.impl.AlbumRepository;
+import by.kurlovich.musicshop.repository.impl.MixRepository;
 import by.kurlovich.musicshop.repository.impl.TrackRepository;
 import by.kurlovich.musicshop.repository.impl.UserRepository;
 import by.kurlovich.musicshop.specification.*;
@@ -35,6 +39,63 @@ public class UserReceiverImpl implements UserReceiver {
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in getAllUsers of UserReceiverImpl.\n" + e, e);
         }
+    }
+
+    @Override
+    public List<Track> getAllTracksWithOwner(String userId) throws ReceiverException {
+        try {
+            Repository<Track> repository = new TrackRepository();
+            Specification specification = new GetAllTracksWithOwnerIdSpecification(userId);
+            LOGGER.debug("trying to get tracks with owners id:{}.", userId);
+
+            return repository.queryWithOwners(specification);
+
+        } catch (RepositoryException e) {
+            throw new ReceiverException("Exception in getAllTracksWithOwner of UserReceiverImpl.\n" + e, e);
+        }
+    }
+
+    @Override
+    public List<Track> getUserOwnedTracks(String userId) throws ReceiverException {
+        return null;
+    }
+
+    @Override
+    public List<Mix> getAllMixesWithOwner(String userId) throws ReceiverException {
+        try {
+            Repository<Mix> repository = new MixRepository();
+            Specification specification = new GetAllMixesWithOwnerIdSpecification(userId);
+            LOGGER.debug("Trying to get all mixes with owner.");
+
+            return repository.queryWithOwners(specification);
+
+        } catch (RepositoryException e) {
+            throw new ReceiverException("Exception in getAllMixesWithOwner of UserReceiverImpl.\n" + e, e);
+        }
+    }
+
+    @Override
+    public List<Mix> getUserOwnedMixes(String userId) throws ReceiverException {
+        return null;
+    }
+
+    @Override
+    public List<Album> getAllAlbumsWithOwner(String userId) throws ReceiverException {
+        try {
+            Repository<Album> repository = new AlbumRepository();
+            Specification specification = new GetAllAlbumsWithOwnerIdSpecification(userId);
+            LOGGER.debug("Trying to get all albums with owner.");
+
+            return repository.queryWithOwners(specification);
+
+        } catch (RepositoryException e) {
+            throw new ReceiverException("Exception in getAllAlbumsWithOwner of UserReceiverImpl.\n" + e, e);
+        }
+    }
+
+    @Override
+    public List<Album> getUserOwnedAlbums(String userId) throws ReceiverException {
+        return null;
     }
 
     @Override

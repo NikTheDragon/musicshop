@@ -16,6 +16,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class AlbumContentRepository implements Repository<Content> {
@@ -101,6 +102,11 @@ public class AlbumContentRepository implements Repository<Content> {
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception query of AlbumContentRepository.\n" + e, e);
         }
+    }
+
+    @Override
+    public List<Content> queryWithOwners(Specification specification) throws RepositoryException {
+        return Collections.emptyList();
     }
 
     @Override

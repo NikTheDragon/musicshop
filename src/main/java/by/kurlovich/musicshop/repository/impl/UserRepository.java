@@ -122,6 +122,11 @@ public class UserRepository implements Repository<User> {
     }
 
     @Override
+    public List<User> queryWithOwners(Specification specification) throws RepositoryException {
+        return new ArrayList<>();
+    }
+
+    @Override
     public Status getStatus(User item) throws RepositoryException {
         return null;
     }

@@ -62,7 +62,7 @@
                     <td id="${track.id}length">${track.length}</td>
                     <td id="${track.id}price">1</td>
 
-                    <c:if test="${track.ownerId == user.id}">
+                    <c:if test="${track.ownerId == user.id && track.ownerId != null}">
                         <td id="${track.id}" style="background-color: #7df9ef; text-align: center"
                             onclick="downloadEntity('downloadForm', this.id)">Скачать
                         </td>
