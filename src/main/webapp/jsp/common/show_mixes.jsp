@@ -44,7 +44,7 @@
             <th width="60%">${titleHeader}</th>
             <th width="10%">${genreHeader}</th>
             <th width="5%">${yearHeader}</th>
-            <th width="5%">Price</th>
+            <th width="5%">${priceHeader}</th>
             <th width="10%"></th>
             <c:if test="${user_role == 'user'}">
                 <th width="10%"></th>
@@ -58,17 +58,17 @@
                     <td id="${mix.id}genre">${mix.genre}</td>
                     <td id="${mix.id}year">${mix.year}</td>
                     <td id="${mix.id}price">${mix.tracksCount}</td>
-                    <td id="${mix.id}" style="background-color: #cffffc" onclick="showContent('contentForm', this.id)">Content</td>
+                    <td id="${mix.id}" style="background-color: #cffffc" onclick="showContent('contentForm', this.id)">${contentButton}</td>
 
                     <c:if test="${mix.ownerId == user.id && mix.ownerId != null}">
                         <td id="${mix.id}" style="background-color: #7df9ef"
-                            onclick="downloadEntity('contentForm', this.id)">Скачать
+                            onclick="downloadEntity('contentForm', this.id)">${downloadButton}
                         </td>
                     </c:if>
 
                     <c:if test="${user_role == 'user' && mix.ownerId != user.id}">
                         <td id="${mix.id}" style="background-color: #4CAF50"
-                            onclick="buyEntity('buyForm', this.id)">Купить
+                            onclick="buyEntity('buyForm', this.id)">${buyButton}
                         </td>
                     </c:if>
 

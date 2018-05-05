@@ -45,7 +45,7 @@
             <th width="30%">${authorHeader}</th>
             <th width="10%">${genreHeader}</th>
             <th width="5%">${yearHeader}</th>
-            <th width="5%">Price</th>
+            <th width="5%">${priceHeader}</th>
             <th width="10%"></th>
             <c:if test="${user_role == 'user'}">
                 <th width="10%"></th>
@@ -60,17 +60,17 @@
                     <td id="${album.id}genre">${album.genre}</td>
                     <td id="${album.id}year">${album.year}</td>
                     <td id="${album.id}price">${album.tracksCount}</td>
-                    <td id="${album.id}" style="background-color: #cffffc" onclick="showContent('contentForm', this.id)">Content</td>
+                    <td id="${album.id}" style="background-color: #cffffc" onclick="showContent('contentForm', this.id)">${contentButton}</td>
 
                     <c:if test="${album.ownerId == user.id && album.ownerId != null}">
                         <td id="${album.id}" style="background-color: #4CAF50; text-align: center"
-                            onclick="downloadEntity('downloadForm', this.id)">Скачать
+                            onclick="downloadEntity('downloadForm', this.id)">${downloadButton}
                         </td>
                     </c:if>
 
                     <c:if test="${user_role == 'user' && album.ownerId != user.id}">
                         <td id="${album.id}" style="background-color: #4CAF50"
-                            onclick="buyEntity('buyForm', this.id)">Купить
+                            onclick="buyEntity('buyForm', this.id)">${buyButton}
                         </td>
                     </c:if>
 

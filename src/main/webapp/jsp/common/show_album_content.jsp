@@ -68,7 +68,7 @@
         <th width="10%">${genreHeader}</th>
         <th width="5%">${yearHeader}</th>
         <th width="5%">${lengthHeader}</th>
-        <th width="5%">Price</th>
+        <th width="5%">${priceHeader}</th>
         <c:if test="${user_role == 'user'}">
             <th width="10%"></th>
         </c:if>
@@ -86,13 +86,13 @@
 
                 <c:if test="${track.ownerId == user.id && track.ownerId != null}">
                     <td id="${track.id}" style="background-color: #7df9ef; text-align: center"
-                        onclick="downloadEntity('downloadForm', this.id)">Скачать
+                        onclick="downloadEntity('downloadForm', this.id)">${downloadButton}
                     </td>
                 </c:if>
 
                 <c:if test="${user_role == 'user' && track.ownerId != user.id}">
                     <td id="${track.id}" style="background-color: #4CAF50; text-align: center"
-                        onclick="buyEntity('buyForm', this.id)">Купить
+                        onclick="buyEntity('buyForm', this.id)">${buyButton}
                     </td>
                 </c:if>
             </tr>

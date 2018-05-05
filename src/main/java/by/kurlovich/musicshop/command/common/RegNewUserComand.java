@@ -13,21 +13,21 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
-public class RegNewUserCoomand implements Command {
-    private final static Logger LOGGER = LoggerFactory.getLogger(RegNewUserCoomand.class);
+public class RegNewUserComand implements Command {
+    private final static Logger LOGGER = LoggerFactory.getLogger(RegNewUserComand.class);
     private static final String REG_PAGE = PageStore.REG_PAGE.getPageName();
     private static final String REGISTRATION_COMPLETE = PageStore.REGISTRATION_COMPLETE.getPageName();
     private UserReceiver receiver;
 
-    public RegNewUserCoomand(UserReceiver receiver) {
+    public RegNewUserComand(UserReceiver receiver) {
         this.receiver = receiver;
     }
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         Map<String, String> messageMap;
-
         User user = createUser(request);
+        LOGGER.debug("get user: {}", user);
 
         request.setAttribute("user", user);
 
@@ -50,7 +50,7 @@ public class RegNewUserCoomand implements Command {
                 return new CommandResult(CommandResult.ResponseType.FORWARD, REG_PAGE);
             }
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in RegNewUserCoomand.\n" + e, e);
+            throw new CommandException("Exception in RegNewUserCommand.\n" + e, e);
         }
     }
 

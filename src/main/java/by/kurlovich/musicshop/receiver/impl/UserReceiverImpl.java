@@ -25,7 +25,6 @@ import java.util.Map;
 
 public class UserReceiverImpl implements UserReceiver {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserReceiverImpl.class);
-    private ObjectValidator objectValidator = new ObjectValidator();
 
     @Override
     public List<User> getAllUsers() throws ReceiverException {
@@ -130,7 +129,7 @@ public class UserReceiverImpl implements UserReceiver {
     public Map<String, String> validateUser(User user) {
         Map<String, String> messageMap = new HashMap<>();
 
-        if (!objectValidator.validateUser(messageMap, user)) {
+        if (!ObjectValidator.validateUser(messageMap, user)) {
             messageMap.put("validate", "false");
         } else {
             messageMap.put("validate", "true");

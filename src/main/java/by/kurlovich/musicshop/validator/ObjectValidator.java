@@ -5,7 +5,7 @@ import by.kurlovich.musicshop.entity.User;
 import java.util.Map;
 
 public class ObjectValidator {
-    public boolean validateUser(Map<String, String> messageMap, User user) {
+    public static boolean validateUser(Map<String, String> messageMap, User user) {
         FieldValidator validator = new FieldValidator();
         int errors = 0;
         String message;

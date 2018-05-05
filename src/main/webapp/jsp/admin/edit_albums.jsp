@@ -96,7 +96,7 @@
         <form id="formContent" action="/mainServlet" method="get">
             <input type="hidden" name="command" value="show_edit_albums_content_page">
             <input type="hidden" name="submit_id" value="">
-            <td><input id="contentButton" type="submit" name="button" value="${contentButton}"
+            <td><input id="contentButton" type="submit" name="button" value="${editContentButton}"
                        style="display: none; width: 200px"></td>
         </form>
         <form id="formCreate" action="/mainServlet" method="get">

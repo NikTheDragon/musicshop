@@ -111,4 +111,19 @@ public class User {
 
         return Objects.hash(id, name, surname, login, password, email, role, status, points);
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", role='" + role + '\'' +
+                ", status='" + status + '\'' +
+                ", points=" + points +
+                '}';
+    }
 }
