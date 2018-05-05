@@ -29,7 +29,7 @@ public enum CommandType {
     SHOW_PERSONAL_PAGE(new ShowPersonalPageCommand()),
     SHOW_POINT_MANAGEMENT_PAGE(new ShowPointManagementPageCommand()),
     SHOW_MIX_CONTENT(new ShowMixContentCommand(new UserReceiverImpl(), new MixReceiverImpl())),
-    SHOW_ALBUM_CONTENT(new ShowAlbumContentCommand(new UserReceiverImpl())),
+    SHOW_ALBUM_CONTENT(new ShowAlbumContentCommand(new UserReceiverImpl(), new AlbumReceiverImpl())),
     CREATE_GENRE(new CreateGenreCommand(new GenreReceiverImpl())),
     CREATE_TRACK(new CreateTrackCommand(new TrackReceiverImpl())),
     CREATE_AUTHOR(new CreateAuthorCommand(new AuthorReceiverImpl())),

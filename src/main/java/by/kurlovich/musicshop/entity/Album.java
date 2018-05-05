@@ -11,6 +11,7 @@ public class Album {
     private int year;
     private int tracksCount;
     private String status;
+    private String ownerId;
 
     public String getId() {
         return id;
@@ -68,6 +69,14 @@ public class Album {
         this.status = status;
     }
 
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -79,13 +88,14 @@ public class Album {
                 Objects.equals(name, album.name) &&
                 Objects.equals(author, album.author) &&
                 Objects.equals(genre, album.genre) &&
-                Objects.equals(status, album.status);
+                Objects.equals(status, album.status) &&
+                Objects.equals(ownerId, album.ownerId);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, author, genre, year, tracksCount, status);
+        return Objects.hash(id, name, author, genre, year, tracksCount, status, ownerId);
     }
 
     @Override
@@ -98,6 +108,7 @@ public class Album {
                 ", year=" + year +
                 ", tracksCount=" + tracksCount +
                 ", status='" + status + '\'' +
+                ", ownerId='" + ownerId + '\'' +
                 '}';
     }
 }

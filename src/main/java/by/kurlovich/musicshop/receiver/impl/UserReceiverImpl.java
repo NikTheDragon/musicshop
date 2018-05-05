@@ -76,7 +76,16 @@ public class UserReceiverImpl implements UserReceiver {
 
     @Override
     public List<Track> getAlbumTracksWithOwner(String albumId, String userId) throws ReceiverException {
-        return null;
+        try {
+            Repository<Track> repository = new TrackRepository();
+            Specification specification = new GetAlbumContentWithOwnersIdByMixIdSpecification(userId, albumId);
+            LOGGER.debug("Trying to get all tracks for album:{}, and owner:{}.", albumId, userId);
+
+            return repository.queryWithOwners(specification);
+
+        } catch (RepositoryException e) {
+            throw new ReceiverException("Exception in getAlbumTracksWithOwner of UserReceiverImpl.\n" + e, e);
+        }
     }
 
     @Override

@@ -124,7 +124,34 @@ public class AlbumRepository implements Repository<Album> {
 
     @Override
     public List<Album> queryWithOwners(Specification specification) throws RepositoryException {
-        return null;
+        LOGGER.debug("quering mixes with owners.");
+        SqlSpecification sqlSpecification = (SqlSpecification) specification;
+        List<Album> albumList = new ArrayList<>();
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sqlSpecification.toSqlQuery());
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Album album = new Album();
+
+                album.setId(rs.getString(1));
+                album.setName(rs.getString(2));
+                album.setAuthor(rs.getString(3));
+                album.setGenre(rs.getString(4));
+                album.setYear(rs.getInt(5));
+                album.setTracksCount(rs.getInt(6));
+                album.setStatus(rs.getString(7));
+                album.setOwnerId(rs.getString(8));
+
+                albumList.add(album);
+            }
+            LOGGER.debug("found {} items.", albumList.size());
+            return albumList;
+
+        } catch (SQLException | ConnectionException e) {
+            throw new RepositoryException("Exception in queryWithOwners of AlbumRepository.\n" + e, e);
+        }
     }
 
     @Override

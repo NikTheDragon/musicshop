@@ -41,11 +41,11 @@
 <div style="width:100%; height:400px; overflow:auto;">
     <table id="fancyTable" style="width: 90%; margin-left: auto; margin-right: auto;">
         <tr>
-            <th width="35%">${titleHeader}</th>
+            <th width="60%">${titleHeader}</th>
             <th width="10%">${genreHeader}</th>
             <th width="5%">${yearHeader}</th>
             <th width="5%">Price</th>
-            <th width="5%"></th>
+            <th width="10%"></th>
             <c:if test="${user_role == 'user'}">
                 <th width="10%"></th>
             </c:if>

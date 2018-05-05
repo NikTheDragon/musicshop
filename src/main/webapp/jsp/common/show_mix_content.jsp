@@ -59,47 +59,45 @@
     </tr>
 </table>
 
-<div style="width:100%; height:400px; overflow:auto;">
-    <table id="fancyTable" style="width: 90%; margin-left: auto; margin-right: auto;">
-        <tr>
-            <th width="35%">${titleHeader}</th>
-            <th width="30%">${authorHeader}</th>
-            <th width="10%">${genreHeader}</th>
-            <th width="5%">${yearHeader}</th>
-            <th width="5%">${lengthHeader}</th>
-            <th width="5%">Price</th>
-            <c:if test="${user_role == 'user'}">
-                <th width="10%"></th>
-            </c:if>
-        </tr>
+<table id="fancyTable" style="width: 90%; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th width="35%">${titleHeader}</th>
+        <th width="30%">${authorHeader}</th>
+        <th width="10%">${genreHeader}</th>
+        <th width="5%">${yearHeader}</th>
+        <th width="5%">${lengthHeader}</th>
+        <th width="5%">Price</th>
+        <c:if test="${user_role == 'user'}">
+            <th width="10%"></th>
+        </c:if>
+    </tr>
 
-        <c:forEach var="track" items="${contentList}">
-            <c:if test="${track.status == 'active'}">
-                <tr id="${track.id}">
-                    <td id="${track.id}name">${track.name}</td>
-                    <td id="${track.id}author">${track.author}</td>
-                    <td id="${track.id}genre">${track.genre}</td>
-                    <td id="${track.id}year">${track.year}</td>
-                    <td id="${track.id}length">${track.length}</td>
-                    <td id="${track.id}price">1</td>
+    <c:forEach var="track" items="${contentList}">
+        <c:if test="${track.status == 'active'}">
+            <tr id="${track.id}">
+                <td id="${track.id}name">${track.name}</td>
+                <td id="${track.id}author">${track.author}</td>
+                <td id="${track.id}genre">${track.genre}</td>
+                <td id="${track.id}year">${track.year}</td>
+                <td id="${track.id}length">${track.length}</td>
+                <td id="${track.id}price">1</td>
 
-                    <c:if test="${track.ownerId == user.id && track.ownerId != null}">
-                        <td id="${track.id}" style="background-color: #7df9ef; text-align: center"
-                            onclick="downloadEntity('downloadForm', this.id)">Скачать
-                        </td>
-                    </c:if>
+                <c:if test="${track.ownerId == user.id && track.ownerId != null}">
+                    <td id="${track.id}" style="background-color: #7df9ef; text-align: center"
+                        onclick="downloadEntity('downloadForm', this.id)">Скачать
+                    </td>
+                </c:if>
 
-                    <c:if test="${user_role == 'user' && track.ownerId != user.id}">
-                        <td id="${track.id}" style="background-color: #4CAF50; text-align: center"
-                            onclick="buyEntity('buyForm', this.id)">Купить
-                        </td>
-                    </c:if>
-                </tr>
-            </c:if>
-        </c:forEach>
+                <c:if test="${user_role == 'user' && track.ownerId != user.id}">
+                    <td id="${track.id}" style="background-color: #4CAF50; text-align: center"
+                        onclick="buyEntity('buyForm', this.id)">Купить
+                    </td>
+                </c:if>
+            </tr>
+        </c:if>
+    </c:forEach>
 
-    </table>
-</div>
+</table>
 
 <form id="buyForm" action="/mainServlet" method="get">
     <input type="hidden" name="command" value="buy_track">
