@@ -91,8 +91,8 @@
                 </c:if>
 
                 <c:if test="${user_role == 'user' && track.ownerId != user.id}">
-                    <td id="${track.id}" style="background-color: #4CAF50; text-align: center"
-                        onclick="buyEntity('buyForm', this.id)">${buyButton}
+                    <td id="${track.id}" style="background-color: #dbffff; text-align: center"
+
                     </td>
                 </c:if>
             </tr>
@@ -119,6 +119,10 @@
         document.getElementById("track_price").value = document.getElementById(id + "price").textContent;
 
         document.getElementById(formId).submit();
+    }
+
+    function downloadEntity(formId, id) {
+        alert(formId + ", " + id);
     }
 
 </script>

@@ -74,7 +74,7 @@ public class UserReceiverImpl implements UserReceiver {
     }
 
     @Override
-    public List<Track> getAlbumTracksWithOwner(String albumId, String userId) throws ReceiverException {
+    public List<Track> getAlbumTracksWithOwner(String userId, String albumId) throws ReceiverException {
         try {
             Repository<Track> repository = new TrackRepository();
             Specification specification = new GetAlbumContentWithOwnersIdByMixIdSpecification(userId, albumId);
@@ -201,13 +201,32 @@ public class UserReceiverImpl implements UserReceiver {
         try {
             Repository<Track> repository = new TrackRepository();
             Specification specification = new BuyTrackSpecification(userId, trackId);
-            LOGGER.debug("trying to get specified users.");
+            LOGGER.debug("user:{}, trying to buy track:{}.", userId, trackId);
 
             repository.buy(specification);
 
         } catch (RepositoryException e) {
-            throw new ReceiverException("Exception in getSpecifiedUsers of UserReceiverImpl.\n" + e, e);
+            throw new ReceiverException("Exception in buyTrack of UserReceiverImpl.\n" + e, e);
         }
+    }
+
+    @Override
+    public void buyAlbum(String userId, String albumId) throws ReceiverException {
+        try {
+            Repository<Album> repository = new AlbumRepository();
+            Specification specification = new BuyAlbumSpecification(userId, albumId);
+            LOGGER.debug("user:{}, trying to buy album:{}.", userId, albumId);
+
+            repository.buy(specification);
+
+        } catch (RepositoryException e) {
+            throw new ReceiverException("Exception in buyAlbum of UserReceiverImpl.\n" + e, e);
+        }
+    }
+
+    @Override
+    public void buyMix(String trackId, String userId) throws ReceiverException {
+
     }
 
     @Override

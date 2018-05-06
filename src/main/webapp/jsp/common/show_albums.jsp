@@ -63,8 +63,8 @@
                     <td id="${album.id}" style="background-color: #cffffc" onclick="showContent('contentForm', this.id)">${contentButton}</td>
 
                     <c:if test="${album.ownerId == user.id && album.ownerId != null}">
-                        <td id="${album.id}" style="background-color: #4CAF50; text-align: center"
-                            onclick="downloadEntity('downloadForm', this.id)">${downloadButton}
+                        <td id="${album.id}" style="background-color: #7df9ef; text-align: center"
+                            onclick="showContent('contentForm', this.id)">${downloadButton}
                         </td>
                     </c:if>
 
@@ -89,6 +89,7 @@
 <form id="buyForm" action="/mainServlet" method="get">
     <input type="hidden" name="command" value="buy_album">
     <input type="hidden" id="album_id" name="album_id" value="">
+    <input type="hidden" name="album_owner_id" value="${currentAlbum.ownerId}">
     <input type="hidden" id="album_price" name="album_price" value="">
 </form>
 

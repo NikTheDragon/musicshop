@@ -5,7 +5,6 @@ import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
 import by.kurlovich.musicshop.entity.Track;
 import by.kurlovich.musicshop.entity.User;
-import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.receiver.UserReceiver;
 import by.kurlovich.musicshop.store.PageStore;
@@ -38,16 +37,16 @@ public class BuyTrackCommand implements Command {
                 User currentUser = (User) request.getSession(true).getAttribute("user");
 
                 String trackId = request.getParameter("track_id");
-                int price = Integer.parseInt(request.getParameter("track_price"));
+                int trackPrice = Integer.parseInt(request.getParameter("track_price"));
                 int userPoints = currentUser.getPoints();
                 String currentUserId = currentUser.getId();
 
                 LOGGER.debug("User: {}, trying to buy track: {}", currentUserId, trackId);
 
-                if (price <= userPoints) {
+                if (trackPrice <= userPoints) {
                     receiver.buyTrack(currentUserId, trackId);
 
-                    userPoints -= price;
+                    userPoints -= trackPrice;
                     currentUser.setPoints(userPoints);
 
                     receiver.updateUser(currentUser);

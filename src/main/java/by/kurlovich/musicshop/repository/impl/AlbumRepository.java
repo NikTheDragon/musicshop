@@ -199,6 +199,16 @@ public class AlbumRepository implements Repository<Album> {
 
     @Override
     public void buy(Specification specification) throws RepositoryException {
+        LOGGER.debug("buying album.");
+        SqlSpecification sqlSpecification = (SqlSpecification) specification;
 
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sqlSpecification.toSqlQuery())) {
+
+            ps.executeUpdate();
+
+        } catch (SQLException | ConnectionException e) {
+            throw new RepositoryException("Exception in buy of TrackRepository..\n" + e, e);
+        }
     }
 }

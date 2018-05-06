@@ -38,7 +38,7 @@ public class ShowAlbumContentCommand implements Command {
             List<Album> specifiedAlbums = albumReceiver.getSpecifiedEntities(currentAlbumId);
 
             if (!specifiedAlbums.isEmpty()) {
-                List<Track> currentAlbumTracks = userReceiver.getAlbumTracksWithOwner(currentAlbumId, currentUserId);
+                List<Track> currentAlbumTracks = userReceiver.getAlbumTracksWithOwner(currentUserId, currentAlbumId);
 
                 request.getSession(true).setAttribute("contentList", currentAlbumTracks);
                 request.getSession(true).setAttribute("currentAlbum", specifiedAlbums.get(0));

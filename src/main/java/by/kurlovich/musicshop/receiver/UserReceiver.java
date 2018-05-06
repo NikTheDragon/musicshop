@@ -14,7 +14,7 @@ public interface UserReceiver {
     List<Track> getAllTracksWithOwner(String userId) throws ReceiverException;
     List<Track> getUserOwnedTracks(String userId) throws ReceiverException;
     List<Track> getMixTracksWithOwner (String mixId, String userId) throws ReceiverException;
-    List<Track> getAlbumTracksWithOwner (String albumId, String userId) throws ReceiverException;
+    List<Track> getAlbumTracksWithOwner (String userId, String albumId) throws ReceiverException;
     List<Mix> getAllMixesWithOwner(String userId) throws ReceiverException;
     List<Mix> getUserOwnedMixes(String userId) throws ReceiverException;
     List<Album> getAllAlbumsWithOwner(String userId) throws ReceiverException;
@@ -23,6 +23,8 @@ public interface UserReceiver {
     boolean addNewUser(User user) throws ReceiverException;
     boolean updateUser(User user) throws ReceiverException;
     User loginUser(String login, String password) throws ReceiverException;
-    void buyTrack(String trackId, String userId) throws ReceiverException;
+    void buyTrack(String userId, String trackId) throws ReceiverException;
+    void buyAlbum(String userId, String albumId) throws ReceiverException;
+    void buyMix(String userId, String mixId) throws ReceiverException;
 
 }
