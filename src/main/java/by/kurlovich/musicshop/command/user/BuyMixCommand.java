@@ -3,7 +3,7 @@ package by.kurlovich.musicshop.command.user;
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
-import by.kurlovich.musicshop.entity.Album;
+import by.kurlovich.musicshop.entity.Mix;
 import by.kurlovich.musicshop.entity.Track;
 import by.kurlovich.musicshop.entity.User;
 import by.kurlovich.musicshop.receiver.ReceiverException;
@@ -19,13 +19,13 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class BuyAlbumCommand implements Command {
-    private final static Logger LOGGER = LoggerFactory.getLogger(BuyAlbumCommand.class);
-    private final static String SHOW_ALBUMS_PAGE = PageStore.SHOW_ALBUMS_PAGE.getPageName();
+public class BuyMixCommand implements Command {
+    private final static Logger LOGGER = LoggerFactory.getLogger(BuyMixCommand.class);
+    private final static String SHOW_MIXES_PAGE = PageStore.SHOW_MIXES_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private UserReceiver receiver;
 
-    public BuyAlbumCommand(UserReceiver receiver) {
+    public BuyMixCommand(UserReceiver receiver) {
         this.receiver = receiver;
     }
 
@@ -38,35 +38,35 @@ public class BuyAlbumCommand implements Command {
             if (AccessValidator.validate(accessRoles, userRole)) {
                 User currentUser = (User) request.getSession(true).getAttribute("user");
 
-                String albumId = request.getParameter("album_id");
-                int albumPrice = Integer.parseInt(request.getParameter("album_price"));
+                String mixId = request.getParameter("mix_id");
+                int mixPrice = Integer.parseInt(request.getParameter("mix_price"));
                 int userPoints = currentUser.getPoints();
                 String currentUserId = currentUser.getId();
 
-                LOGGER.debug("User: {}, trying to buy album: {}", currentUserId, albumId);
+                LOGGER.debug("User: {}, trying to buy mix: {}", currentUserId, mixId);
 
-                if (albumPrice <= userPoints) {
-                    receiver.buyAlbum(currentUserId, albumId);
+                if (mixPrice <= userPoints) {
+                    receiver.buyMix(currentUserId, mixId);
 
-                    userPoints -= albumPrice;
+                    userPoints -= mixPrice;
                     currentUser.setPoints(userPoints);
 
                     receiver.updateUser(currentUser);
 
-                    List<Track> currentAlbumTracks = receiver.getAlbumTracksWithOwner(currentUserId, albumId);
+                    List<Track> currentMixTracks = receiver.getMixTracksWithOwner(currentUserId, mixId);
 
-                    for (Track currentTrack : currentAlbumTracks) {
+                    for (Track currentTrack : currentMixTracks) {
                         if (currentTrack.getOwnerId() == null) {
                             receiver.buyTrack(currentUserId, currentTrack.getId());
                         }
                     }
 
-                    List<Album> allAlbums = receiver.getAllAlbumsWithOwner(currentUserId);
-                    allAlbums.sort(Comparator.comparing(Album::getName));
+                    List<Mix> allMixes = receiver.getAllMixesWithOwner(currentUserId);
+                    allMixes.sort(Comparator.comparing(Mix::getName));
 
                     request.getSession(true).setAttribute("user", currentUser);
-                    request.getSession(true).setAttribute("albumList", allAlbums);
-                    return new CommandResult(CommandResult.ResponseType.REDIRECT, SHOW_ALBUMS_PAGE);
+                    request.getSession(true).setAttribute("mixList", allMixes);
+                    return new CommandResult(CommandResult.ResponseType.REDIRECT, SHOW_MIXES_PAGE);
                 }
 
                 request.setAttribute("message", "insufficient points");
@@ -79,7 +79,7 @@ public class BuyAlbumCommand implements Command {
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in BuyAlbumCommand.\n" + e, e);
+            throw new CommandException("Exception in BuyMixCommand.\n" + e, e);
         }
     }
 }

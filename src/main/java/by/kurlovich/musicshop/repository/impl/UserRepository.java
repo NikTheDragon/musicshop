@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserRepository implements Repository<User> {
-    private static final String ADD_USER = "INSERT INTO users (name,surname,login,password,email,role,status) VALUES (?,?,?,?,?,?,?)";
+    private static final String ADD_USER = "INSERT INTO users (name,surname,login,password,email,role,status,points) VALUES (?,?,?,?,?,?,?,?)";
     private static final String UPDATE_USER = "UPDATE users SET name=?, surname=?, login=?, password=?, email=?, role=?, status=?, points=? WHERE id=?";
     private static final Logger LOGGER = LoggerFactory.getLogger(UserRepository.class);
     private final ConnectionPool pool;
@@ -44,19 +44,20 @@ public class UserRepository implements Repository<User> {
     public void add(User user) throws RepositoryException {
         try (Connection connection = pool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(ADD_USER)) {
-                ps.setString(NAME, user.getName());
-                ps.setString(SURNAME, user.getSurname());
-                ps.setString(LOGIN, user.getLogin());
-                ps.setString(PASSWORD, user.getPassword());
-                ps.setString(EMAIL, user.getEmail());
-                ps.setString(ROLE, user.getRole());
-                ps.setString(STATUS, user.getStatus());
+                ps.setString(1, user.getName());
+                ps.setString(2, user.getSurname());
+                ps.setString(3, user.getLogin());
+                ps.setString(4, user.getPassword());
+                ps.setString(5, user.getEmail());
+                ps.setString(6, user.getRole());
+                ps.setString(7, user.getStatus());
+                ps.setString(8, String.valueOf(user.getPoints()));
 
                 ps.executeUpdate();
             }
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in addNewClient", e);
+            throw new RepositoryException("Exception in add of UserRepository.\n" + e, e);
         }
     }
 

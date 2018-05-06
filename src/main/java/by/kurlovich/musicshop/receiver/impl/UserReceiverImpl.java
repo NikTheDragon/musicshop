@@ -60,7 +60,7 @@ public class UserReceiverImpl implements UserReceiver {
     }
 
     @Override
-    public List<Track> getMixTracksWithOwner(String mixId, String userId) throws ReceiverException {
+    public List<Track> getMixTracksWithOwner(String userId, String mixId) throws ReceiverException {
         try {
             Repository<Track> repository = new TrackRepository();
             Specification specification = new GetMixContentWithOwnersIdByMixIdSpecification(userId, mixId);
@@ -225,8 +225,17 @@ public class UserReceiverImpl implements UserReceiver {
     }
 
     @Override
-    public void buyMix(String trackId, String userId) throws ReceiverException {
+    public void buyMix(String userId, String mixId) throws ReceiverException {
+        try {
+            Repository<Mix> repository = new MixRepository();
+            Specification specification = new BuyMixSpecification(userId, mixId);
+            LOGGER.debug("user:{}, trying to buy mix:{}.", userId, mixId);
 
+            repository.buy(specification);
+
+        } catch (RepositoryException e) {
+            throw new ReceiverException("Exception in buyMix of UserReceiverImpl.\n" + e, e);
+        }
     }
 
     @Override

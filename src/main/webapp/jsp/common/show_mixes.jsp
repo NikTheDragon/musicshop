@@ -62,7 +62,7 @@
 
                     <c:if test="${mix.ownerId == user.id && mix.ownerId != null}">
                         <td id="${mix.id}" style="background-color: #7df9ef"
-                            onclick="downloadEntity('contentForm', this.id)">${downloadButton}
+                            onclick="showContent('contentForm', this.id)">${downloadButton}
                         </td>
                     </c:if>
 

@@ -40,9 +40,12 @@ public class RegNewUserComand implements Command {
             }
 
             if (receiver.addNewUser(user)) {
+
+                User currentUser = receiver.loginUser(user.getLogin(), user.getPassword());
+
                 request.getSession(true).setAttribute("url", REGISTRATION_COMPLETE);
-                request.getSession(true).setAttribute("user", user);
-                request.getSession(true).setAttribute("role", user.getRole());
+                request.getSession(true).setAttribute("user", currentUser);
+                request.getSession(true).setAttribute("role", currentUser.getRole());
                 return new CommandResult(CommandResult.ResponseType.REDIRECT, REGISTRATION_COMPLETE);
             } else {
                 messageMap.put("loginMessage", "login");

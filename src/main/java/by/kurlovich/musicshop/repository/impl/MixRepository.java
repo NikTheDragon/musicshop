@@ -191,6 +191,16 @@ public class MixRepository implements Repository<Mix> {
 
     @Override
     public void buy(Specification specification) throws RepositoryException {
+        LOGGER.debug("buying mix.");
+        SqlSpecification sqlSpecification = (SqlSpecification) specification;
 
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sqlSpecification.toSqlQuery())) {
+
+            ps.executeUpdate();
+
+        } catch (SQLException | ConnectionException e) {
+            throw new RepositoryException("Exception in buy of MixRepository.\n" + e, e);
+        }
     }
 }

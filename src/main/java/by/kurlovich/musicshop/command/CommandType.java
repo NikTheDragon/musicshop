@@ -55,7 +55,8 @@ public enum CommandType {
     ADD_TRACK_TO_ALBUM(new AddTrackToAlbumCommand(new AlbumContentReceiverImpl())),
     ADD_POINTS(new AddPointsCommand(new UserReceiverImpl())),
     BUY_TRACK(new BuyTrackCommand(new UserReceiverImpl())),
-    BUY_ALBUM(new BuyAlbumCommand(new UserReceiverImpl()));
+    BUY_ALBUM(new BuyAlbumCommand(new UserReceiverImpl())),
+    BUY_MIX(new BuyMixCommand(new UserReceiverImpl()));
 
     private Command command;
 

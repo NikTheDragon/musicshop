@@ -13,7 +13,7 @@ public interface UserReceiver {
     List<User> getSpecifiedUsers(String userId) throws ReceiverException;
     List<Track> getAllTracksWithOwner(String userId) throws ReceiverException;
     List<Track> getUserOwnedTracks(String userId) throws ReceiverException;
-    List<Track> getMixTracksWithOwner (String mixId, String userId) throws ReceiverException;
+    List<Track> getMixTracksWithOwner (String userId, String mixId) throws ReceiverException;
     List<Track> getAlbumTracksWithOwner (String userId, String albumId) throws ReceiverException;
     List<Mix> getAllMixesWithOwner(String userId) throws ReceiverException;
     List<Mix> getUserOwnedMixes(String userId) throws ReceiverException;

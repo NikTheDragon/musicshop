@@ -39,7 +39,7 @@ public class ShowMixContentCommand implements Command {
             List<Mix> specifiedMixes = mixReceiver.getSpecifiedEntities(currentMixId);
 
             if (!specifiedMixes.isEmpty()) {
-                List<Track> currentMixTracks = userReceiver.getMixTracksWithOwner(currentMixId, currentUserId);
+                List<Track> currentMixTracks = userReceiver.getMixTracksWithOwner(currentUserId, currentMixId);
 
                 request.getSession(true).setAttribute("contentList", currentMixTracks);
                 request.getSession(true).setAttribute("currentMix", specifiedMixes.get(0));
