@@ -9,16 +9,14 @@ public class FieldValidator {
         Pattern pattern = Pattern.compile(textOnlyRegex);
         Matcher matcher = pattern.matcher(fieldText);
 
-        if (fieldText == null || fieldText.isEmpty()) {
-            return "null";
+        String commonValidatorResult = common(fieldText);
+
+        if (!Boolean.parseBoolean(commonValidatorResult)) {
+            return commonValidatorResult;
         }
 
         if (!matcher.matches()) {
             return "notText";
-        }
-
-        if (fieldText.length() < 3 || fieldText.length() > 15) {
-            return "length";
         }
 
         return "true";
@@ -29,12 +27,56 @@ public class FieldValidator {
         Pattern pattern = Pattern.compile(textOnlyRegex);
         Matcher matcher = pattern.matcher(fieldText);
 
+        String commonValidatorResult = common(fieldText);
+
+        if (!Boolean.parseBoolean(commonValidatorResult)) {
+            return commonValidatorResult;
+        }
+
+        if (!matcher.matches()) {
+            return "notLogPas";
+        }
+
+        return "true";
+    }
+
+    public static String validateEmail(String fieldText) {
+        String textOnlyRegex = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$";
+        Pattern pattern = Pattern.compile(textOnlyRegex);
+        Matcher matcher = pattern.matcher(fieldText);
+
+        String commonValidatorResult = common(fieldText);
+
+        if (!Boolean.parseBoolean(commonValidatorResult)) {
+            return commonValidatorResult;
+        }
+
+        if (!matcher.matches()) {
+            return "notMail";
+        }
+
+        return "true";
+    }
+
+    public static String validateDigit(String fieldText) {
+        String textOnlyRegex = "^[\\d]*$";
+        Pattern pattern = Pattern.compile(textOnlyRegex);
+        Matcher matcher = pattern.matcher(fieldText);
+
         if (fieldText == null || fieldText.isEmpty()) {
             return "null";
         }
 
         if (!matcher.matches()) {
-            return "notLogPas";
+            return "notDigit";
+        }
+
+        return "true";
+    }
+
+    private static String common (String fieldText) {
+        if (fieldText == null || fieldText.isEmpty()) {
+            return "null";
         }
 
         if (fieldText.length() < 3 || fieldText.length() > 15) {
@@ -44,3 +86,4 @@ public class FieldValidator {
         return "true";
     }
 }
+

@@ -7,10 +7,20 @@ import by.kurlovich.musicshop.entity.User;
 import by.kurlovich.musicshop.store.PageStore;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.receiver.UserReceiver;
+import by.kurlovich.musicshop.validator.FieldValidator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+
+/**
+ * Class for checking user's login and password and if they are ok user will be logged to system.
+ *
+ * @param login    user's login from input field on jsp page.
+ * @param password user's password from input field on jsp page.
+ * @return CommandResult object with response type (forward|redirect) and page to show.
+ */
 
 public class LoginUserCommand implements Command {
     private final static Logger LOGGER = LoggerFactory.getLogger(LoginUserCommand.class);
@@ -29,33 +39,63 @@ public class LoginUserCommand implements Command {
             String login = request.getParameter("login");
             String password = request.getParameter("password");
 
-            LOGGER.debug("Login= {} and password= {}", login, password);
+            String loginValidateResult = FieldValidator.validateLogPasField(login);
+            String passwordValidateResult = FieldValidator.validateLogPasField(password);
 
-            User user = receiver.loginUser(login, password);
+            if (Boolean.parseBoolean(loginValidateResult) && Boolean.parseBoolean(passwordValidateResult)) {
+                LOGGER.debug("Attempt to login user with login={}, and password={}", login, password);
 
-            if (user != null) {
-                String page;
+                User user = receiver.loginUser(login, password);
 
-                switch (user.getRole()) {
-                    case "user":
-                        page = MAIN_PAGE;
-                        break;
-                    case "admin":
-                        page = ADMIN_PAGE;
-                        break;
-                    default:
-                        page = MAIN_PAGE;
+                if (user != null) {
+                    String startPage = getStartPage(user);
+
+                    return showStartPage(user, startPage, request);
+
+                } else {
+                    request.setAttribute("loginError", "noLP");
+                    request.setAttribute("passwordError", "noLP");
                 }
 
-                request.getSession(true).setAttribute("user", user);
-                request.getSession(true).setAttribute("role", user.getRole());
-                request.getSession(true).setAttribute("url", page);
-                return new CommandResult(CommandResult.ResponseType.REDIRECT, page);
+            } else {
+                request.setAttribute("loginError", loginValidateResult);
+                request.setAttribute("passwordError", passwordValidateResult);
             }
 
             return new CommandResult(CommandResult.ResponseType.FORWARD, MAIN_PAGE);
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in LoginUserCommand", e);
+            throw new CommandException("Exception in LoginUserCommand.\n" + e, e);
         }
+    }
+
+    /**
+     * Method to select start page for the logged user
+     *
+     * @param user user object with user parameters.
+     * @return string representation of page url;
+     */
+    private String getStartPage(User user) {
+        switch (user.getRole()) {
+            case "user":
+                return USER_PAGE;
+            case "admin":
+                return ADMIN_PAGE;
+            default:
+                return MAIN_PAGE;
+        }
+    }
+
+    /**
+     * @param user      user object with params
+     * @param startPage page to display after user login.
+     * @param request   current http request.
+     * @return CommandResult with start page.
+     */
+    private CommandResult showStartPage(User user, String startPage, HttpServletRequest request) {
+
+        request.getSession(true).setAttribute("user", user);
+        request.getSession(true).setAttribute("role", user.getRole());
+        request.getSession(true).setAttribute("url", startPage);
+        return new CommandResult(CommandResult.ResponseType.REDIRECT, startPage);
     }
 }

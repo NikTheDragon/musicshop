@@ -46,10 +46,10 @@
     </tr>
     <tr style="text-align: center">
         <td>
-            <input type="text" id="userName" name="submit_name" value="${userInfo.name}">
+            <input type="text" id="userName" name="submit_name" value="${userInfo.name}"><br>
         </td>
         <td>
-            <input type="text" id="userSurname" name="submit_surname" value="${userInfo.surname}">
+            <input type="text" id="userSurname" name="submit_surname" value="${userInfo.surname}"><br>
         </td>
         <td>
             <input type="text" id="userLogin" name="submit_login" value="${userInfo.login}">
@@ -76,6 +76,40 @@
         </td>
         <td>
             <input type="text" id="userPoints" name="submit_points" value="${userInfo.points}" style="width: 50px">
+        </td>
+    </tr>
+    <tr style="text-align: center">
+        <td>
+            <c:set var="message" value="${nameResult}"/>
+            <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
+        </td>
+        <td>
+            <c:set var="message" value="${surnameResult}"/>
+            <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
+        </td>
+        <td>
+            <c:set var="message" value="${loginResult}"/>
+            <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
+        </td>
+        <td>
+            <c:set var="message" value="${passwordResult}"/>
+            <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
+        </td>
+        <td>
+            <c:set var="message" value="${emailResult}"/>
+            <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
+        </td>
+        <td>
+            <c:set var="message" value="${roleResult}"/>
+            <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
+        </td>
+        <td>
+            <c:set var="message" value="${statusResult}"/>
+            <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
+        </td>
+        <td>
+            <c:set var="message" value="${pointsResult}"/>
+            <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
         </td>
     </tr>
 </table>

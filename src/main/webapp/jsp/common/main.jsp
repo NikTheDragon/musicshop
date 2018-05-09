@@ -40,16 +40,22 @@
                        name="login"
                        placeholder="${login}"
                        required="required"
-                       pattern="[a-z]{3,15}"
+                       pattern="{3,15}"
                        title="Must be 3-15 chars">
-                <br><br>
+                <br>
+                <c:set var="message" value="${loginError}"/>
+                <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
+                <br>
                 <input type="password"
                        name="password"
                        placeholder="${password}"
                        required="required"
-                       pattern="[a-z]{3,15}"
+                       pattern="{3,15}"
                        title="Must be 3-15 chars">
-                <br><br>
+                <br>
+                <c:set var="message" value="${passwordError}"/>
+                <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
+                <br>
                 <input type="hidden" name="command" value="login_user">
                 <input type="submit" value=${loginButton}>
             </form>

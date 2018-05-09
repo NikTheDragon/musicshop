@@ -24,11 +24,22 @@
     <c:when test = "${message == 'notLogPas'}">
         ${inputNotLogPas}
     </c:when>
+    <c:when test = "${message == 'notMail'}">
+        ${inputNotMail}
+    </c:when>
     <c:when test = "${message == 'login'}">
         Login already in use.
     </c:when>
     <c:when test = "${message == 'nocmd'}">
         Can't find command: ${cmd}
+    </c:when>
+    <c:when test = "${message == 'notDigit'}">
+        ${inputNotDigit}
+    </c:when>
+    <c:when test = "${message == 'noLP'}">
+        Login and password mismatch
+    </c:when>
+    <c:when test = "${message == 'true'}">
     </c:when>
     <c:otherwise>
         ${message}

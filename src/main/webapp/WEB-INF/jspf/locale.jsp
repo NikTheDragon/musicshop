@@ -53,4 +53,6 @@
 <fmt:message key="inputNotText" var="inputNotText" />
 <fmt:message key="inputLength" var="inputLength" />
 <fmt:message key="inputNotLogPas" var="inputNotLogPas" />
+<fmt:message key="inputNotMail" var="inputNotMail" />
+<fmt:message key="inputNotDigit" var="inputNotDigit" />
 <fmt:message key="errorExists" var="errorExists" />

@@ -8,6 +8,8 @@ import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.receiver.UserReceiver;
 import by.kurlovich.musicshop.store.PageStore;
 import by.kurlovich.musicshop.validator.AccessValidator;
+import by.kurlovich.musicshop.validator.ObjectValidator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,12 +34,17 @@ public class UpdateUserCommand implements Command {
             String userRole = (String) request.getSession(true).getAttribute("role");
 
             if (AccessValidator.validate(accessRoles, userRole)) {
-                User currentUser = createUser(request);
+                if (ObjectValidator.validateUser(request)) {
+                    User currentUser = createUser(request);
 
-                if (receiver.updateUser(currentUser)) {
+                    if (receiver.updateUser(currentUser)) {
 
-                    request.getSession(true).setAttribute("userInfo", currentUser);
-                    request.getSession(true).setAttribute("url", SHOW_EDIT_USER_PAGE);
+                        request.getSession(true).setAttribute("userInfo", currentUser);
+                        request.getSession(true).setAttribute("url", SHOW_EDIT_USER_PAGE);
+                        return new CommandResult(CommandResult.ResponseType.FORWARD, SHOW_EDIT_USER_PAGE);
+                    }
+
+                } else {
                     return new CommandResult(CommandResult.ResponseType.FORWARD, SHOW_EDIT_USER_PAGE);
                 }
             }

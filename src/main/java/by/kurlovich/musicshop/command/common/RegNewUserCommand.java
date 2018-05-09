@@ -7,51 +7,49 @@ import by.kurlovich.musicshop.entity.User;
 import by.kurlovich.musicshop.store.PageStore;
 import by.kurlovich.musicshop.receiver.UserReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
+import by.kurlovich.musicshop.validator.ObjectValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
-public class RegNewUserComand implements Command {
-    private final static Logger LOGGER = LoggerFactory.getLogger(RegNewUserComand.class);
+public class RegNewUserCommand implements Command {
+    private final static Logger LOGGER = LoggerFactory.getLogger(RegNewUserCommand.class);
     private static final String REG_PAGE = PageStore.REG_PAGE.getPageName();
     private static final String REGISTRATION_COMPLETE = PageStore.REGISTRATION_COMPLETE.getPageName();
     private UserReceiver receiver;
 
-    public RegNewUserComand(UserReceiver receiver) {
+    public RegNewUserCommand(UserReceiver receiver) {
         this.receiver = receiver;
     }
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
-        Map<String, String> messageMap;
-        User user = createUser(request);
-        LOGGER.debug("get user: {}", user);
-
-        request.setAttribute("user", user);
-
         try {
-            messageMap = receiver.validateUser(user);
+            if (ObjectValidator.validateUser(request)) {
 
-            if (!Boolean.parseBoolean(messageMap.get("validate"))) {
-                request.setAttribute("messages", messageMap);
-                return new CommandResult(CommandResult.ResponseType.FORWARD, REG_PAGE);
-            }
+                User user = createUser(request);
+                LOGGER.debug("get user: {}", user);
 
-            if (receiver.addNewUser(user)) {
+                request.setAttribute("user", user);
 
-                User currentUser = receiver.loginUser(user.getLogin(), user.getPassword());
+                if (receiver.addNewUser(user)) {
+                    User currentUser = receiver.loginUser(user.getLogin(), user.getPassword());
 
-                request.getSession(true).setAttribute("url", REGISTRATION_COMPLETE);
-                request.getSession(true).setAttribute("user", currentUser);
-                request.getSession(true).setAttribute("role", currentUser.getRole());
-                return new CommandResult(CommandResult.ResponseType.REDIRECT, REGISTRATION_COMPLETE);
+                    request.getSession(true).setAttribute("url", REGISTRATION_COMPLETE);
+                    request.getSession(true).setAttribute("user", currentUser);
+                    request.getSession(true).setAttribute("role", currentUser.getRole());
+                    return new CommandResult(CommandResult.ResponseType.REDIRECT, REGISTRATION_COMPLETE);
+
+                } else {
+                    request.setAttribute("loginResult", "login");
+                    return new CommandResult(CommandResult.ResponseType.FORWARD, REG_PAGE);
+                }
+
             } else {
-                messageMap.put("loginMessage", "login");
-                request.setAttribute("messages", messageMap);
                 return new CommandResult(CommandResult.ResponseType.FORWARD, REG_PAGE);
             }
+
         } catch (ReceiverException e) {
             throw new CommandException("Exception in RegNewUserCommand.\n" + e, e);
         }

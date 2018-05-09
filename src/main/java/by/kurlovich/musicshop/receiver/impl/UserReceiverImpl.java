@@ -128,13 +128,6 @@ public class UserReceiverImpl implements UserReceiver {
     @Override
     public Map<String, String> validateUser(User user) {
         Map<String, String> messageMap = new HashMap<>();
-
-        if (!ObjectValidator.validateUser(messageMap, user)) {
-            messageMap.put("validate", "false");
-        } else {
-            messageMap.put("validate", "true");
-        }
-
         return messageMap;
     }
 
