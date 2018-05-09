@@ -81,12 +81,12 @@
     </table>
 </div>
 
-<form id="contentForm" action="/mainServlet" method="get">
+<form id="contentForm" action="${absolutePath}/mainServlet" method="get">
     <input type="hidden" name="command" value="show_album_content">
     <input type="hidden" id="content_album_id" name="album_id" value="">
 </form>
 
-<form id="buyForm" action="/mainServlet" method="get">
+<form id="buyForm" action="${absolutePath}/mainServlet" method="get">
     <input type="hidden" name="command" value="buy_album">
     <input type="hidden" id="album_id" name="album_id" value="">
     <input type="hidden" name="album_owner_id" value="${currentAlbum.ownerId}">

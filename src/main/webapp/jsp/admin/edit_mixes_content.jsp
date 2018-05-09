@@ -102,7 +102,7 @@
 <table style="width: 80%; margin-left: auto; margin-right: auto;">
     <tr>
         <td style="width: 100%"></td>
-        <form id="formAdd" action="/mainServlet" method="get">
+        <form id="formAdd" action="${absolutePath}/mainServlet" method="get">
             <input type="hidden" name="command" value="add_track_to_mix">
             <input type="hidden" name="submit_mix_id" value="${currentMix.id}">
             <input type="hidden" name="submit_track" value="">
@@ -111,7 +111,7 @@
             <td><input type="button" name="button" onclick="submitButton('formAdd')"
                        value="${addButton}" style="width: 200px"></td>
         </form>
-        <form id="formDelete" action="/mainServlet" method="get">
+        <form id="formDelete" action="${absolutePath}/mainServlet" method="get">
             <input type="hidden" name="command" value="delete_track_from_mix">
             <input type="hidden" name="submit_mix_id" value="${currentMix.id}">
             <input type="hidden" id="id_for_delete" name="submit_track_id" value="">
@@ -121,12 +121,12 @@
             <td><input type="button" name="button" onclick="submitDelete('formDelete')"
                        value="${deleteButton}" style="width: 200px"></td>
         </form>
-        <form id="submitAuthor" action="/mainServlet" method="get">
+        <form id="submitAuthor" action="${absolutePath}/mainServlet" method="get">
             <input type="hidden" name="command" value="form_mix_content_input_data">
             <input type="hidden" name="submit_author" value="">
             <input type="hidden" name="submit_genre" value="">
         </form>
-        <form id="submitGenre" action="/mainServlet" method="get">
+        <form id="submitGenre" action="${absolutePath}/mainServlet" method="get">
             <input type="hidden" name="command" value="form_mix_content_input_data">
             <input type="hidden" name="submit_genre" value="">
         </form>

@@ -61,7 +61,7 @@
     <tr>
         <td style="width: 100%"></td>
         <td>
-            <form id="formEdit" action="/mainServlet" method="get">
+            <form id="formEdit" action="${absolutePath}/mainServlet" method="get">
                 <input type="hidden" name="command" value="show_edit_user_page">
                 <input type="hidden" name="submit_user_id" id="submit_user_id" value="">
                 <input type="button" name="button" onclick="editUser('formEdit')"

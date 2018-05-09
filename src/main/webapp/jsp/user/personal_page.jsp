@@ -68,7 +68,7 @@
     </tr>
 </table>
 
-<form id="updateUser" action="/mainServlet" method="post">
+<form id="updateUser" action="${absolutePath}/mainServlet" method="post">
     <input type="hidden" name="command" value="update_personal_info">
     <input type="hidden" id="submit_id" name="submit_id" value="${user.id}">
     <input type="hidden" id="submit_name" name="submit_name" value="">

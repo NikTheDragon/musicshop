@@ -34,7 +34,7 @@
         <td width="65%">
         </td>
         <td width="15%">
-            <form name="common_text" action="/mainServlet" onsubmit="return validateForm()" method="post">
+            <form name="common_text" action="${absolutePath}/mainServlet" method="post">
                 <br>
                 <input type="text"
                        name="login"
@@ -53,7 +53,7 @@
                 <input type="hidden" name="command" value="login_user">
                 <input type="submit" value=${loginButton}>
             </form>
-            <form action="/mainServlet" method="get">
+            <form action="${absolutePath}/mainServlet" method="get">
                 <input type="hidden" name="command" value="show_reg_page">
                 <input type="submit" value=${registerButton}>
             </form>

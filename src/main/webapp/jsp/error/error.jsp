@@ -45,7 +45,7 @@
 <table width="100%">
     <tr>
         <td width="100%" align="center">
-            <form action="/mainServlet" method="get">
+            <form action="${absolutePath}/mainServlet" method="get">
                 <input type="hidden" name="command" value="back_to_page">
                 <input type="submit" name="button" value="${returnButton}" style="width: 200px">
             </form>

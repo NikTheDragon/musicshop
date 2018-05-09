@@ -77,7 +77,7 @@
 
 <table style="width: 50%; margin-left: auto; margin-right: auto;">
     <tr style="text-align: right">
-        <form id="formAdd" action="/mainServlet" method="post">
+        <form id="formAdd" action="${absolutePath}/mainServlet" method="post">
             <input type="hidden" name="command" value="add_points">
             <input type="hidden" id="tariffId" name="submit_tariff" value="">
             <td><input type="button" name="button" onclick="submitButton('formAdd')" value="${addButton}"></td>

@@ -50,4 +50,7 @@
 <fmt:message key="priceHeader" var="priceHeader" />
 <fmt:message key="fillAllFields" var="fillAllFields" />
 <fmt:message key="inputNull" var="inputNull" />
+<fmt:message key="inputNotText" var="inputNotText" />
+<fmt:message key="inputLength" var="inputLength" />
+<fmt:message key="inputNotLogPas" var="inputNotLogPas" />
 <fmt:message key="errorExists" var="errorExists" />

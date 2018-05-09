@@ -79,12 +79,12 @@
     </table>
 </div>
 
-<form id="contentForm" action="/mainServlet" method="get">
+<form id="contentForm" action="${absolutePath}/mainServlet" method="get">
     <input type="hidden" name="command" value="show_mix_content">
     <input type="hidden" id="content_mix_id" name="mix_id" value="">
 </form>
 
-<form id="buyForm" action="/mainServlet" method="get">
+<form id="buyForm" action="${absolutePath}/mainServlet" method="get">
     <input type="hidden" name="command" value="buy_mix">
     <input type="hidden" id="mix_id" name="mix_id" value="">
     <input type="hidden" id="mix_price" name="mix_price" value="">

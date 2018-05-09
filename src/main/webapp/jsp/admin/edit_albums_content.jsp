@@ -78,7 +78,7 @@
                 </c:forEach>
             </select>
         </td>
-        <form id="formAdd" action="/mainServlet" method="get">
+        <form id="formAdd" action="${absolutePath}/mainServlet" method="get">
             <input type="hidden" name="command" value="add_track_to_album">
             <input type="hidden" name="submit_album_id" value="${currentAlbum.id}">
             <input type="hidden" name="submit_track" value="">
@@ -87,7 +87,7 @@
             <td><input type="button" name="button" onclick="submitButton('formAdd')"
                        value="${addButton}" style="width: 200px"></td>
         </form>
-        <form id="formDelete" action="/mainServlet" method="get">
+        <form id="formDelete" action="${absolutePath}/mainServlet" method="get">
             <input type="hidden" name="command" value="delete_track_from_album">
             <input type="hidden" name="submit_album_id" value="${currentAlbum.id}">
             <input type="hidden" name="submit_track_id" value="">

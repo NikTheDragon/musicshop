@@ -9,7 +9,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>edit genres page</title>
 
-    <script src="/js/jquery.min.js"></script>
+    <script src="<c:url value="/js/jquery.min.js" />"></script>
 
     <%@include file="/WEB-INF/jspf/locale.jsp" %>
 
@@ -55,19 +55,19 @@
         <td width="200">
             <input id="name" name="name" type="text" value="">
         </td>
-        <form id="formCreate" action="/mainServlet" method="get">
+        <form id="formCreate" action="${absolutePath}/mainServlet" method="get">
             <input type="hidden" name="command" value="create_genre">
             <input type="hidden" name="submit_id" value="">
             <input type="hidden" name="submit_name" value="">
             <td><input type="button" name="button" onclick="submitButton('formCreate')" value="${createButton}"></td>
         </form>
-        <form id="formUpdate" action="/mainServlet" method="get">
+        <form id="formUpdate" action="${absolutePath}/mainServlet" method="get">
             <input type="hidden" name="command" value="update_genre">
             <input type="hidden" name="submit_id" value="">
             <input type="hidden" name="submit_name" value="">
             <td><input type="button" name="button" onclick="submitButton('formUpdate')" value="${updateButton}"></td>
         </form>
-        <form id="formDelete" action="/mainServlet" method="get">
+        <form id="formDelete" action="${absolutePath}/mainServlet" method="get">
             <input type="hidden" name="command" value="delete_genre">
             <input type="hidden" name="submit_id" value="">
             <input type="hidden" name="submit_name" value="">

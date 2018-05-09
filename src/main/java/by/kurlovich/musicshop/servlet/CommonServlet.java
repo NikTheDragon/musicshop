@@ -48,7 +48,7 @@ public class CommonServlet extends HttpServlet {
                     dispatcher.forward(request, response);
                     break;
                 case "REDIRECT":
-                    response.sendRedirect(commandResult.getPage());
+                    response.sendRedirect(request.getContextPath()+commandResult.getPage());
                     break;
                 default:
                     request.setAttribute("message", "Unknown response type.");

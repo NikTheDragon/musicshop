@@ -1,3 +1,4 @@
+<c:set var="absolutePath">${pageContext.request.contextPath}</c:set>
 <c:set var="logoURL" value="/img/logo.gif"></c:set>
 
 <table style="width: 90%; margin-left: auto; margin-right: auto;">

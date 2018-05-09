@@ -37,7 +37,7 @@ public class CreateAuthorCommand implements Command {
             if (AccessValidator.validate(accessRoles, userRole)) {
                 Author author = createAuthor(request);
 
-                LOGGER.debug("Creating author: {}", author.getName());
+                LOGGER.debug("Creating author: {}", author);
 
                 if (receiver.addNewEntity(author)) {
                     List<Author> authorList = receiver.getAllEntities();

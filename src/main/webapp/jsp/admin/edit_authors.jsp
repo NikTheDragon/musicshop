@@ -90,7 +90,7 @@
 <table style="width: 90%; margin-left: auto; margin-right: auto;">
     <tr>
         <td width="100%"></td>
-        <form id="formCreate" action="/mainServlet" method="get">
+        <form id="formCreate" action="${absolutePath}/mainServlet" method="get">
             <input type="hidden" name="command" value="create_author">
             <input type="hidden" name="submit_id" value="">
             <input type="hidden" name="submit_name" value="">
@@ -100,7 +100,7 @@
                        value="${createButton}"
                        style="width: 200px"></td>
         </form>
-        <form id="formUpdate" action="/mainServlet" method="get">
+        <form id="formUpdate" action="${absolutePath}/mainServlet" method="get">
             <input type="hidden" name="command" value="update_author">
             <input type="hidden" name="submit_id" value="">
             <input type="hidden" name="submit_name" value="">
@@ -110,7 +110,7 @@
                        value="${updateButton}"
                        style="width: 200px"></td>
         </form>
-        <form id="formDelete" action="/mainServlet" method="get">
+        <form id="formDelete" action="${absolutePath}/mainServlet" method="get">
             <input type="hidden" name="command" value="delete_author">
             <input type="hidden" name="submit_id" value="">
             <input type="hidden" name="submit_name" value="">
@@ -148,17 +148,17 @@
 
         var countName = document.getElementsByName("submit_name");
         for (var i = 0; i < countName.length; i++) {
-            countName[i].setAttribute("value", authorName.value);
+            countName[i].setAttribute("value", authorName);
         }
 
         var countGenre = document.getElementsByName("submit_genre");
         for (var i = 0; i < countGenre.length; i++) {
-            countGenre[i].setAttribute("value", authorGenre.value);
+            countGenre[i].setAttribute("value", authorGenre);
         }
 
         var countType = document.getElementsByName("submit_type");
         for (var i = 0; i < countType.length; i++) {
-            countType[i].setAttribute("value", authorType.value);
+            countType[i].setAttribute("value", authorType);
         }
 
         if (authorName != "" && authorGenre != "" && authorType != "") {

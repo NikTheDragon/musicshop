@@ -16,7 +16,7 @@
 <%@include file="/WEB-INF/jspf/header.jsp" %>
 <%@include file="/WEB-INF/jspf/menu.jsp" %>
 
-<form action="/mainServlet" method="post">
+<form action="${absolutePath}/mainServlet" method="post">
     <table style="width: 80%; margin-left: auto; margin-right: auto;">
         <tr>
             <td colspan="2"><p>${fillAllFields}</p></td>

@@ -6,35 +6,34 @@ import java.util.Map;
 
 public class ObjectValidator {
     public static boolean validateUser(Map<String, String> messageMap, User user) {
-        FieldValidator validator = new FieldValidator();
         int errors = 0;
         String message;
 
-        message = validator.validate(user.getName());
+        message = FieldValidator.validateTextField(user.getName());
         if (!Boolean.parseBoolean(message)) {
             messageMap.put("nameMessage", message);
             errors++;
         }
 
-        message = validator.validate(user.getSurname());
+        message = FieldValidator.validateTextField(user.getSurname());
         if (!Boolean.parseBoolean(message)) {
             messageMap.put("surnameMessage", message);
             errors++;
         }
 
-        message = validator.validate(user.getLogin());
+        message = FieldValidator.validateLogPasField(user.getLogin());
         if (!Boolean.parseBoolean(message)) {
             messageMap.put("loginMessage", message);
             errors++;
         }
 
-        message = validator.validate(user.getPassword());
+        message = FieldValidator.validateLogPasField(user.getPassword());
         if (!Boolean.parseBoolean(message)) {
             messageMap.put("passwordMessage", message);
             errors++;
         }
 
-        message = validator.validate(user.getEmail());
+        message = FieldValidator.validateTextField(user.getEmail());
         if (!Boolean.parseBoolean(message)) {
             messageMap.put("emailMessage", message);
             errors++;

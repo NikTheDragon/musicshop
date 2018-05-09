@@ -98,7 +98,7 @@
     <tr>
         <td></td>
         <td></td>
-        <form id="formCreate" action="/mainServlet" method="get">
+        <form id="formCreate" action="${absolutePath}/mainServlet" method="get">
             <input type="hidden" name="command" value="create_track">
             <input type="hidden" name="submit_id" value="">
             <input type="hidden" name="submit_name" value="">
@@ -109,7 +109,7 @@
             <td><input type="button" name="button" onclick="submitButton('formCreate')"
                        value="${createButton}"></td>
         </form>
-        <form id="formUpdate" action="/mainServlet" method="get">
+        <form id="formUpdate" action="${absolutePath}/mainServlet" method="get">
             <input type="hidden" name="command" value="update_track">
             <input type="hidden" name="submit_id" value="">
             <input type="hidden" name="submit_name" value="">
@@ -120,7 +120,7 @@
             <td><input type="button" name="button" onclick="submitButton('formUpdate')"
                        value="${updateButton}"></td>
         </form>
-        <form id="formDelete" action="/mainServlet" method="get">
+        <form id="formDelete" action="${absolutePath}/mainServlet" method="get">
             <input type="hidden" name="command" value="delete_track">
             <input type="hidden" name="submit_id" value="">
             <input type="hidden" name="submit_name" value="">

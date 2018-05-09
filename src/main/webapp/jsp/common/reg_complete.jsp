@@ -23,7 +23,7 @@
         <td>
             <p>Registration complete.</p>
 
-            <form action="/mainServlet" method="get">
+            <form action="${absolutePath}/mainServlet" method="get">
                 <input type="hidden" name="command" value="show_user_page">
                 <input type="submit" value="${showUserPageButton}" style="width: 300px">
             </form>

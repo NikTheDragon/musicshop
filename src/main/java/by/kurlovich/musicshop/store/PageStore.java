@@ -1,5 +1,7 @@
 package by.kurlovich.musicshop.store;
 
+import java.io.File;
+
 public enum PageStore {
     MAIN_PAGE("/jsp/common/main.jsp"),
     ERROR_PAGE("/jsp/error/error.jsp"),

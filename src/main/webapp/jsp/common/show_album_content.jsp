@@ -102,7 +102,7 @@
 </table>
 
 
-<form id="buyForm" action="/mainServlet" method="get">
+<form id="buyForm" action="${absolutePath}/mainServlet" method="get">
     <input type="hidden" name="command" value="buy_track">
     <input type="hidden" id="track_id" name="track_id" value="">
     <input type="hidden" id="track_price" name="track_price" value="">

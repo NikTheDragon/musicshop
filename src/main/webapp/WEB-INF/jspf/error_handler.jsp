@@ -15,6 +15,15 @@
     <c:when test = "${message == 'null'}">
         ${inputNull}
     </c:when>
+    <c:when test = "${message == 'notText'}">
+        ${inputNotText}
+    </c:when>
+    <c:when test = "${message == 'length'}">
+        ${inputLength}
+    </c:when>
+    <c:when test = "${message == 'notLogPas'}">
+        ${inputNotLogPas}
+    </c:when>
     <c:when test = "${message == 'login'}">
         Login already in use.
     </c:when>

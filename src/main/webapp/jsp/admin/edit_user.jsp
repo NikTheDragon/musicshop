@@ -80,7 +80,7 @@
     </tr>
 </table>
 
-<form id="updateUser" action="/mainServlet" method="get">
+<form id="updateUser" action="${absolutePath}/mainServlet" method="get">
     <input type="hidden" name="command" value="update_user">
     <input type="hidden" id="submit_id" name="submit_id" value="${userInfo.id}">
     <input type="hidden" id="submit_name" name="submit_name" value="">
