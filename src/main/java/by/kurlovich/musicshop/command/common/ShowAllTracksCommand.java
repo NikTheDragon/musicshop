@@ -11,6 +11,7 @@ import by.kurlovich.musicshop.receiver.UserReceiver;
 import by.kurlovich.musicshop.store.PageStore;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -26,6 +27,12 @@ public class ShowAllTracksCommand implements Command {
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
             String currentUserId = "0";
+            String pageToShow = (String) request.getParameter("pageToShow");
+
+            if (pageToShow == null) {
+                pageToShow = "1";
+            }
+
             User currentUser = (User) request.getSession(true).getAttribute("user");
 
             if (currentUser != null) {
@@ -35,7 +42,31 @@ public class ShowAllTracksCommand implements Command {
             List<Track> allTracks = receiver.getAllTracksWithOwner(currentUserId);
             allTracks.sort(Comparator.comparing(Track::getAuthor));
 
-            request.getSession(true).setAttribute("trackList", allTracks);
+            int selectedPage = Integer.parseInt(pageToShow);
+            int firstNote = (selectedPage - 1) * 15;
+            int lastNote = (selectedPage * 15);
+            int totalPages = allTracks.size() / 15 + 1;
+            int firstActivePage = selectedPage - 10;
+            int lastActivePage = selectedPage + 10;
+
+            if (firstActivePage < 1) {
+                firstActivePage = 1;
+            }
+
+            if (lastActivePage > totalPages) {
+                lastActivePage = totalPages;
+            }
+
+            if (lastNote > allTracks.size()) {
+                lastNote = allTracks.size();
+            }
+
+            List<Track> pageTracks = new ArrayList<>(allTracks.subList(firstNote, lastNote));
+
+            request.setAttribute("firstActivePage", firstActivePage);
+            request.setAttribute("lastActivePage", lastActivePage);
+            request.setAttribute("totalPages", totalPages);
+            request.getSession(true).setAttribute("trackList", pageTracks);
             request.getSession(true).setAttribute("url", SHOW_TRACKS_PAGE);
             return new CommandResult(CommandResult.ResponseType.FORWARD, SHOW_TRACKS_PAGE);
 

@@ -36,49 +36,68 @@
     </tr>
 </table>
 
-<br>
+<table id="fancyTable" style="width: 90%; margin-left: auto; margin-right: auto; font-size: 12px">
+    <tr>
+        <th width="35%">${titleHeader}</th>
+        <th width="30%">${authorHeader}</th>
+        <th width="10%">${genreHeader}</th>
+        <th width="5%">${yearHeader}</th>
+        <th width="5%">${lengthHeader}</th>
+        <th width="5%">${priceHeader}</th>
+        <c:if test="${user_role == 'user'}">
+            <th width="10%"></th>
+        </c:if>
+    </tr>
+    <c:forEach var="track" items="${trackList}">
+        <c:if test="${track.status == 'active'}">
+            <tr id="${track.id}">
+                <td id="${track.id}name">${track.name}</td>
+                <td id="${track.id}author">${track.author}</td>
+                <td id="${track.id}genre">${track.genre}</td>
+                <td id="${track.id}year">${track.year}</td>
+                <td id="${track.id}length">${track.length}</td>
+                <td id="${track.id}price">1</td>
 
-<div style="width:100%; height:400px; overflow:auto;">
-    <table id="fancyTable" style="width: 90%; margin-left: auto; margin-right: auto;">
-        <tr>
-            <th width="35%">${titleHeader}</th>
-            <th width="30%">${authorHeader}</th>
-            <th width="10%">${genreHeader}</th>
-            <th width="5%">${yearHeader}</th>
-            <th width="5%">${lengthHeader}</th>
-            <th width="5%">${priceHeader}</th>
-            <c:if test="${user_role == 'user'}">
-                <th width="10%"></th>
-            </c:if>
-        </tr>
+                <c:if test="${track.ownerId == user.id && track.ownerId != null}">
+                    <td id="${track.id}" style="background-color: #7df9ef; text-align: center"
+                        onclick="downloadEntity('downloadForm', this.id)">${downloadButton}
+                    </td>
+                </c:if>
 
-        <c:forEach var="track" items="${trackList}">
-            <c:if test="${track.status == 'active'}">
-                <tr id="${track.id}">
-                    <td id="${track.id}name">${track.name}</td>
-                    <td id="${track.id}author">${track.author}</td>
-                    <td id="${track.id}genre">${track.genre}</td>
-                    <td id="${track.id}year">${track.year}</td>
-                    <td id="${track.id}length">${track.length}</td>
-                    <td id="${track.id}price">1</td>
+                <c:if test="${user_role == 'user' && track.ownerId != user.id}">
+                    <td id="${track.id}" style="background-color: #4CAF50; text-align: center"
+                        onclick="buyEntity('buyForm', this.id)">${buyButton}
+                    </td>
+                </c:if>
+            </tr>
+        </c:if>
+    </c:forEach>
+</table>
 
-                    <c:if test="${track.ownerId == user.id && track.ownerId != null}">
-                        <td id="${track.id}" style="background-color: #7df9ef; text-align: center"
-                            onclick="downloadEntity('downloadForm', this.id)">${downloadButton}
-                        </td>
-                    </c:if>
-
-                    <c:if test="${user_role == 'user' && track.ownerId != user.id}">
-                        <td id="${track.id}" style="background-color: #4CAF50; text-align: center"
-                            onclick="buyEntity('buyForm', this.id)">${buyButton}
-                        </td>
-                    </c:if>
-                </tr>
-            </c:if>
-        </c:forEach>
-
-    </table>
-</div>
+<table style="text-align: center; width: 90%; margin-left: auto; margin-right: auto; font-size: 14px">
+    <tr>
+        <td>
+            <a href="<c:url value="/mainServlet">
+                <c:param name="command" value="show_all_tracks"/>
+                <c:param name="pageToShow" value="1"/>
+                </c:url>">1</a>
+        </td>
+        <td>
+            <c:forEach var="i" begin="${firstActivePage}" end="${lastActivePage}">
+                <a href="<c:url value="/mainServlet">
+                <c:param name="command" value="show_all_tracks"/>
+                <c:param name="pageToShow" value="${i}"/>
+                </c:url>">${i}</a>
+            </c:forEach>
+        </td>
+        <td>
+            <a href="<c:url value="/mainServlet">
+                <c:param name="command" value="show_all_tracks"/>
+                <c:param name="pageToShow" value="${totalPages}"/>
+                </c:url>">${totalPages}</a>
+        </td>
+    </tr>
+</table>
 
 <form id="downloadForm" action="${absolutePath}/mainServlet" method="get">
 

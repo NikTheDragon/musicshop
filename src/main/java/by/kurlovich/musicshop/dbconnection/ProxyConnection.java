@@ -12,12 +12,20 @@ public class ProxyConnection implements Connection {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProxyConnection.class);
     private Connection connection;
 
-    public ProxyConnection(Connection connection) {
+    ProxyConnection(Connection connection) {
         this.connection = connection;
     }
 
     public Connection getConnection() {
         return connection;
+    }
+
+    public void realyClose() throws SQLException {
+        try {
+            ConnectionPool.getInstance().closeConnection(this);
+        } catch (ConnectionException e) {
+            throw new SQLException(e);
+        }
     }
 
     @Override

@@ -68,7 +68,7 @@ public class ConnectionPool {
         }
     }
 
-    public void releaseConnection(ProxyConnection connection) throws ConnectionException {
+    void releaseConnection(ProxyConnection connection) throws ConnectionException {
         lock.lock();
         try {
             if (connection != null && currentConnections.intValue() < maxConnections) {
@@ -83,6 +83,14 @@ public class ConnectionPool {
             throw new ConnectionException("Problems in dbconnection queue.\n" + e, e);
         } finally {
             lock.unlock();
+        }
+    }
+
+    void closeConnection(ProxyConnection connection) throws ConnectionException {
+        try {
+            connection.getConnection().close();
+        } catch (SQLException e) {
+            throw new ConnectionException("Problems in dbconnection closeConnection.\n" + e, e);
         }
     }
 

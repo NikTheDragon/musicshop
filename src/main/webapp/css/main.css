@@ -111,7 +111,7 @@ p.sansserif {
 
 #fancyTable td, #fancyTable th {
     border: 1px solid #ddd;
-    padding: 6px;
+    padding: 3px;
 }
 
 #fancyTable tr:nth-child(even){background-color: #f2f2f2;}

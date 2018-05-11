@@ -11,8 +11,7 @@ public class LogoutCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request) {
-        request.getSession(true).setAttribute("user", null);
-        request.getSession(true).setAttribute("role", null);
+        request.getSession().invalidate();
         request.getSession(true).setAttribute("url", MAIN_PAGE);
         return new CommandResult(CommandResult.ResponseType.REDIRECT, MAIN_PAGE);
     }
