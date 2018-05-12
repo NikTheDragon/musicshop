@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="/WEB-INF/paging.tld" prefix="pg" %>
 <!DOCTYPE html>
 
 <html>
@@ -36,6 +37,15 @@
     </tr>
 </table>
 
+<c:if test="${currentPage == null || currentPage == ''}">
+    <c:redirect url="/mainServlet?command=show_all_tracks"/>
+</c:if>
+
+<pg:getFirstPageNumber data="${trackList}" variable="firstPage"/>
+<pg:getLastPageNumber data="${trackList}" variable="lastPage"/>
+<pg:getSelectPageNumbers data="${trackList}" page="${currentPage}" first="first" last="last"/>
+<pg:getSelectedRows data="${trackList}" rows="selectedRows" page="${currentPage}"/>
+
 <table id="fancyTable" style="width: 90%; margin-left: auto; margin-right: auto; font-size: 12px">
     <tr>
         <th width="35%">${titleHeader}</th>
@@ -48,7 +58,7 @@
             <th width="10%"></th>
         </c:if>
     </tr>
-    <c:forEach var="track" items="${trackList}">
+    <c:forEach var="track" items="${selectedRows}">
         <c:if test="${track.status == 'active'}">
             <tr id="${track.id}">
                 <td id="${track.id}name">${track.name}</td>
@@ -78,23 +88,25 @@
     <tr>
         <td>
             <a href="<c:url value="/mainServlet">
-                <c:param name="command" value="show_all_tracks"/>
-                <c:param name="pageToShow" value="1"/>
-                </c:url>">1</a>
+                <c:param name="command" value="show_selected_rows"/>
+                <c:param name="currentPage" value="${firstPage}"/>
+                </c:url>">${firstPage}</a>
         </td>
         <td>
-            <c:forEach var="i" begin="${firstActivePage}" end="${lastActivePage}">
-                <a href="<c:url value="/mainServlet">
-                <c:param name="command" value="show_all_tracks"/>
-                <c:param name="pageToShow" value="${i}"/>
-                </c:url>">${i}</a>
+            <c:forEach var="i" begin="${first}" end="${last}">
+                <c:url value="/mainServlet" var="myURL">
+                    <c:param name="command" value="show_selected_rows"/>
+                    <c:param name="currentURI" value="${pageContext.request.requestURI}"/>
+                    <c:param name="currentPage" value="${i}"/>
+                </c:url>
+                <a href="${myURL}"><c:out value="${i}"/></a>
             </c:forEach>
         </td>
         <td>
             <a href="<c:url value="/mainServlet">
-                <c:param name="command" value="show_all_tracks"/>
-                <c:param name="pageToShow" value="${totalPages}"/>
-                </c:url>">${totalPages}</a>
+                <c:param name="command" value="show_selected_rows"/>
+                <c:param name="currentPage" value="${lastPage}"/>
+                </c:url>">${lastPage}</a>
         </td>
     </tr>
 </table>
@@ -120,6 +132,10 @@
 
     function downloadEntity(formId, id) {
         alert(formId + ", " + id);
+    }
+
+    function reload() {
+        location.reload(true)
     }
 
 </script>

@@ -7,6 +7,7 @@ import by.kurlovich.musicshop.receiver.impl.*;
 
 public enum CommandType {
     SHOW_ERROR_PAGE(new ShowErrorPageCommand()),
+    SHOW_SELECTED_ROWS(new ShowSelectedRowsCommand()),
     CHANGE_LANGUAGE(new ChangeLanguageCommand()),
     REG_NEW_USER(new RegNewUserCommand(new UserReceiverImpl())),
     LOGIN_USER(new LoginUserCommand(new UserReceiverImpl())),
