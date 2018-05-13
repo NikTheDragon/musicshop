@@ -8,11 +8,16 @@
 <head>
     <link href="<c:url value="/css/main.css" />" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>tracks</title>
+    <title>my tracks</title>
 
     <%@include file="/WEB-INF/jspf/locale.jsp" %>
 </head>
 <body style="font-family: Arial, Helvetica, sans-serif">
+
+<c:set var="user_role" scope="session" value="${user.role}"/>
+<c:if test="${user_role != 'admin' && user_role != 'user'}">
+    <c:redirect url="/mainServlet?command=show_main_page"/>
+</c:if>
 
 <%@include file="/WEB-INF/jspf/header.jsp" %>
 
@@ -53,34 +58,20 @@
         <th width="10%">${genreHeader}</th>
         <th width="5%">${yearHeader}</th>
         <th width="5%">${lengthHeader}</th>
-        <th width="5%">${priceHeader}</th>
-        <c:if test="${user_role == 'user'}">
-            <th width="10%"></th>
-        </c:if>
+        <th width="10%"></th>
     </tr>
     <c:forEach var="track" items="${selectedRows}">
-        <c:if test="${track.status == 'active'}">
-            <tr id="${track.id}">
-                <td id="${track.id}name">${track.name}</td>
-                <td id="${track.id}author">${track.author}</td>
-                <td id="${track.id}genre">${track.genre}</td>
-                <td id="${track.id}year">${track.year}</td>
-                <td id="${track.id}length">${track.length}</td>
-                <td id="${track.id}price">1</td>
+        <tr id="${track.id}">
+            <td id="${track.id}name">${track.name}</td>
+            <td id="${track.id}author">${track.author}</td>
+            <td id="${track.id}genre">${track.genre}</td>
+            <td id="${track.id}year">${track.year}</td>
+            <td id="${track.id}length">${track.length}</td>
+            <td id="${track.id}" style="background-color: #7df9ef; text-align: center"
+                onclick="downloadEntity('downloadForm', this.id)">${downloadButton}
+            </td>
 
-                <c:if test="${track.ownerId == user.id && track.ownerId != null}">
-                    <td id="${track.id}" style="background-color: #7df9ef; text-align: center"
-                        onclick="downloadEntity('downloadForm', this.id)">${downloadButton}
-                    </td>
-                </c:if>
-
-                <c:if test="${user_role == 'user' && track.ownerId != user.id}">
-                    <td id="${track.id}" style="background-color: #4CAF50; text-align: center"
-                        onclick="buyEntity('buyForm', this.id)">${buyButton}
-                    </td>
-                </c:if>
-            </tr>
-        </c:if>
+        </tr>
     </c:forEach>
 </table>
 
@@ -90,20 +81,7 @@
 
 </form>
 
-<form id="buyForm" action="${absolutePath}/mainServlet" method="get">
-    <input type="hidden" name="command" value="buy_track">
-    <input type="hidden" id="track_id" name="track_id" value="">
-    <input type="hidden" id="track_price" name="track_price" value="">
-</form>
-
 <script>
-
-    function buyEntity(formId, id) {
-        document.getElementById("track_id").value = id;
-        document.getElementById("track_price").value = document.getElementById(id + "price").textContent;
-
-        document.getElementById(formId).submit();
-    }
 
     function downloadEntity(formId, id) {
         alert(formId + ", " + id);

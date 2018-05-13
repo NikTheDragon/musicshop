@@ -36,7 +36,6 @@ public class ShowAllTracksCommand implements Command {
             List<Track> allTracks = receiver.getAllTracksWithOwner(currentUserId);
             allTracks.sort(Comparator.comparing(Track::getAuthor));
 
-            request.setAttribute("currentPage", "1");
             request.getSession(true).setAttribute("trackList", allTracks);
             request.getSession(true).setAttribute("url", SHOW_TRACKS_PAGE);
             return new CommandResult(CommandResult.ResponseType.FORWARD, SHOW_TRACKS_PAGE);

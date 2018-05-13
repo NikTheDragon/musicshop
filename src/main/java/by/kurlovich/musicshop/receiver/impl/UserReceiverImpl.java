@@ -56,7 +56,16 @@ public class UserReceiverImpl implements UserReceiver {
 
     @Override
     public List<Track> getUserOwnedTracks(String userId) throws ReceiverException {
-        return null;
+        try {
+            Repository<Track> repository = new TrackRepository();
+            Specification specification = new GetUserOwnedTracksSpecification(userId);
+            LOGGER.debug("trying to get user id:{} owned tracks", userId);
+
+            return repository.query(specification);
+
+        } catch (RepositoryException e) {
+            throw new ReceiverException("Exception in getUserOwnedTracks of UserReceiverImpl.\n" + e, e);
+        }
     }
 
     @Override
@@ -103,7 +112,16 @@ public class UserReceiverImpl implements UserReceiver {
 
     @Override
     public List<Mix> getUserOwnedMixes(String userId) throws ReceiverException {
-        return null;
+        try {
+            Repository<Mix> repository = new MixRepository();
+            Specification specification = new GetUserOwnedMixesSpecification(userId);
+            LOGGER.debug("trying to get user id:{} owned mixes.", userId);
+
+            return repository.query(specification);
+
+        } catch (RepositoryException e) {
+            throw new ReceiverException("Exception in getUserOwnedMixes of UserReceiverImpl.\n" + e, e);
+        }
     }
 
     @Override
@@ -122,7 +140,16 @@ public class UserReceiverImpl implements UserReceiver {
 
     @Override
     public List<Album> getUserOwnedAlbums(String userId) throws ReceiverException {
-        return null;
+        try {
+            Repository<Album> repository = new AlbumRepository();
+            Specification specification = new GetUserOwnedAlbumsSpecification(userId);
+            LOGGER.debug("trying to get user id:{} owned albums.", userId);
+
+            return repository.query(specification);
+
+        } catch (RepositoryException e) {
+            throw new ReceiverException("Exception in getUserOwnedAlbums of UserReceiverImpl.\n" + e, e);
+        }
     }
 
     @Override

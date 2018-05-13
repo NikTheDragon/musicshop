@@ -33,8 +33,24 @@
                 <li class="dropdown">
                     <a href="javascript:void(0)" class="dropbtn">${folders}</a>
                     <div class="dropdown-content">
-                        <a href="#">${cart}</a>
-                        <a href="#">${bought}</a>
+                        <form action="${absolutePath}/mainServlet" method="get">
+                            <a href="<c:url value="/mainServlet">
+                                <c:param name="command" value="show_my_tracks"/>
+                                 </c:url>
+                            ">${myTracks}</a>
+                        </form>
+                        <form action="${absolutePath}/mainServlet" method="get">
+                            <a href="<c:url value="/mainServlet">
+                                <c:param name="command" value="show_my_albums"/>
+                                 </c:url>
+                            ">${myAlbums}</a>
+                        </form>
+                        <form action="${absolutePath}/mainServlet" method="get">
+                            <a href="<c:url value="/mainServlet">
+                                <c:param name="command" value="show_my_mixes"/>
+                                 </c:url>
+                            ">${myMixes}</a>
+                        </form>
                     </div>
                 </li>
                 <li class="dropdown">

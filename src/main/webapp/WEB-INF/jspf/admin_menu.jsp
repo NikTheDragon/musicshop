@@ -9,9 +9,24 @@
                 <li class="dropdown">
                     <a href="javascript:void(0)" class="dropbtn">${catalogue}</a>
                     <div class="dropdown-content">
-                        <a href="#">${tracks}</a>
-                        <a href="#">${albums}</a>
-                        <a href="#">${mixes}</a>
+                        <form action="${absolutePath}/mainServlet" method="get">
+                            <a href="<c:url value="/mainServlet">
+                                <c:param name="command" value="show_all_tracks"/>
+                                 </c:url>
+                            ">${tracks}</a>
+                        </form>
+                        <form action="${absolutePath}/mainServlet" method="get">
+                            <a href="<c:url value="/mainServlet">
+                                <c:param name="command" value="show_all_albums"/>
+                                 </c:url>
+                            ">${albums}</a>
+                        </form>
+                        <form action="${absolutePath}/mainServlet" method="get">
+                            <a href="<c:url value="/mainServlet">
+                                <c:param name="command" value="show_all_mixes"/>
+                                 </c:url>
+                            ">${mixes}</a>
+                        </form>
                     </div>
                 </li>
                 <li><a href="#news">${contacts}</a></li>

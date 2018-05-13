@@ -47,6 +47,14 @@ public class GetSelectPageNumbersTag extends SimpleTagSupport {
             lastActivePage = totalPages;
         }
 
+        if (firstActivePage < 1) {
+            firstActivePage = 1;
+        }
+
+        if (lastActivePage > totalPages) {
+            lastActivePage = totalPages;
+        }
+
         getJspContext().setAttribute(first, String.valueOf(firstActivePage));
         getJspContext().setAttribute(last, String.valueOf(lastActivePage));
     }

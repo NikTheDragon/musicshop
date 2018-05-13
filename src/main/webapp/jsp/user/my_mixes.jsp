@@ -8,11 +8,16 @@
 <head>
     <link href="<c:url value="/css/main.css" />" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>mixes</title>
+    <title>my mixes</title>
 
     <%@include file="/WEB-INF/jspf/locale.jsp" %>
 </head>
 <body style="font-family: Arial, Helvetica, sans-serif">
+
+<c:set var="user_role" scope="session" value="${user.role}"/>
+<c:if test="${user_role != 'admin' && user_role != 'user'}">
+    <c:redirect url="/mainServlet?command=show_main_page"/>
+</c:if>
 
 <%@include file="/WEB-INF/jspf/header.jsp" %>
 
@@ -53,37 +58,17 @@
         <th width="60%">${titleHeader}</th>
         <th width="10%">${genreHeader}</th>
         <th width="5%">${yearHeader}</th>
-        <th width="5%">${priceHeader}</th>
         <th width="10%"></th>
-        <c:if test="${user_role == 'user'}">
-            <th width="10%"></th>
-        </c:if>
     </tr>
 
     <c:forEach var="mix" items="${selectedRows}">
-        <c:if test="${mix.status == 'active'}">
-            <tr id="${mix.id}" style="text-align: center">
-                <td id="${mix.id}name">${mix.name}</td>
-                <td id="${mix.id}genre">${mix.genre}</td>
-                <td id="${mix.id}year">${mix.year}</td>
-                <td id="${mix.id}price">${mix.tracksCount}</td>
-                <td id="${mix.id}" style="background-color: #cffffc"
-                    onclick="showContent('contentForm', this.id)">${contentButton}</td>
-
-                <c:if test="${mix.ownerId == user.id && mix.ownerId != null}">
-                    <td id="${mix.id}" style="background-color: #7df9ef"
-                        onclick="showContent('contentForm', this.id)">${downloadButton}
-                    </td>
-                </c:if>
-
-                <c:if test="${user_role == 'user' && mix.ownerId != user.id}">
-                    <td id="${mix.id}" style="background-color: #4CAF50"
-                        onclick="buyEntity('buyForm', this.id)">${buyButton}
-                    </td>
-                </c:if>
-
-            </tr>
-        </c:if>
+        <tr id="${mix.id}" style="text-align: center">
+            <td id="${mix.id}name">${mix.name}</td>
+            <td id="${mix.id}genre">${mix.genre}</td>
+            <td id="${mix.id}year">${mix.year}</td>
+            <td id="${mix.id}" style="background-color: #cffffc"
+                onclick="showContent('contentForm', this.id)">${contentButton}</td>
+        </tr>
     </c:forEach>
 
 </table>
@@ -95,28 +80,9 @@
     <input type="hidden" id="content_mix_id" name="mix_id" value="">
 </form>
 
-<form id="buyForm" action="${absolutePath}/mainServlet" method="get">
-    <input type="hidden" name="command" value="buy_mix">
-    <input type="hidden" id="mix_id" name="mix_id" value="">
-    <input type="hidden" id="mix_price" name="mix_price" value="">
-</form>
-
 <script>
 
     function showContent(formId, id) {
-        document.getElementById("content_mix_id").value = id;
-
-        document.getElementById(formId).submit();
-    }
-
-    function buyEntity(formId, id) {
-        document.getElementById("mix_id").value = id;
-        document.getElementById("mix_price").value = document.getElementById(id + "price").textContent;
-
-        document.getElementById(formId).submit();
-    }
-
-    function downloadEntity(formId, id) {
         document.getElementById("content_mix_id").value = id;
 
         document.getElementById(formId).submit();
