@@ -192,7 +192,7 @@ CREATE TABLE `purchased_albums` (
 
 LOCK TABLES `purchased_albums` WRITE;
 /*!40000 ALTER TABLE `purchased_albums` DISABLE KEYS */;
-INSERT INTO `purchased_albums` VALUES ('2','1'),('2','2'),('2','3'),('5','6');
+INSERT INTO `purchased_albums` VALUES ('2','2'),('2','3'),('5','6');
 /*!40000 ALTER TABLE `purchased_albums` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -240,7 +240,7 @@ CREATE TABLE `purchased_tracks` (
 
 LOCK TABLES `purchased_tracks` WRITE;
 /*!40000 ALTER TABLE `purchased_tracks` DISABLE KEYS */;
-INSERT INTO `purchased_tracks` VALUES ('1','1'),('113','2'),('120','2'),('123','2'),('124','2'),('125','2'),('14','2'),('15','2'),('16','2'),('18','2'),('19','2'),('2','1'),('2','102'),('2','104'),('2','108'),('2','113'),('2','120'),('2','123'),('2','124'),('2','125'),('2','14'),('2','145'),('2','146'),('2','147'),('2','148'),('2','15'),('2','16'),('2','18'),('2','181'),('2','19'),('2','2'),('2','21'),('2','24'),('2','26'),('2','271'),('2','272'),('2','273'),('2','277'),('2','280'),('2','282'),('2','287'),('2','307'),('2','31'),('2','318'),('2','427'),('2','428'),('2','429'),('2','430'),('2','431'),('2','71'),('2','78'),('2','80'),('2','88'),('21','2'),('24','2'),('26','2'),('31','2'),('5','271'),('5','272'),('5','273'),('5','277'),('5','280'),('5','282'),('5','287');
+INSERT INTO `purchased_tracks` VALUES ('1','1'),('113','2'),('120','2'),('123','2'),('124','2'),('125','2'),('14','2'),('15','2'),('16','2'),('18','2'),('19','2'),('2','1'),('2','102'),('2','104'),('2','108'),('2','113'),('2','120'),('2','123'),('2','124'),('2','125'),('2','14'),('2','145'),('2','146'),('2','147'),('2','148'),('2','15'),('2','16'),('2','176'),('2','18'),('2','181'),('2','19'),('2','2'),('2','21'),('2','24'),('2','26'),('2','271'),('2','272'),('2','273'),('2','277'),('2','280'),('2','282'),('2','287'),('2','307'),('2','31'),('2','318'),('2','427'),('2','428'),('2','429'),('2','430'),('2','431'),('2','71'),('2','78'),('2','80'),('2','88'),('21','2'),('24','2'),('26','2'),('31','2'),('5','271'),('5','272'),('5','273'),('5','277'),('5','280'),('5','282'),('5','287');
 /*!40000 ALTER TABLE `purchased_tracks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -300,7 +300,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Nikolay','Adminovich','root','root','nik@adminovich.by','admin','active',0),(2,'Freddy','Bush','qwe','asd','alfie@mail.ru','user','active',11),(3,'Kate','Kurlovich','konsuela','123','kate@tut.by','user','active',0),(5,'Дмитрий','Петрович','petya','qwe','petya@mail.ru','user','active',3);
+INSERT INTO `users` VALUES (1,'Nikolay','Adminovich','root','root','nik@adminovich.by','admin','active',0),(2,'Freddy','Bush','qwe','asd','alfie@mail.ru','user','active',10),(3,'Kate','Kurlovich','konsuela','123','kate@tut.by','user','active',0),(5,'Дмитрий','Петрович','petya','qwe','petya@mail.ru','user','active',3);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -313,4 +313,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-10  1:02:57
+-- Dump completed on 2018-05-16 17:42:06
