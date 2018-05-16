@@ -3,6 +3,7 @@ package by.kurlovich.musicshop.command.admin;
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
+import by.kurlovich.musicshop.creator.ObjectCreator;
 import by.kurlovich.musicshop.entity.Author;
 import by.kurlovich.musicshop.store.PageStore;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 public class UpdateAuthorCommand implements Command {
     private final static String EDIT_AUTHORS_PAGE = PageStore.EDIT_AUTHORS_PAGE.getPageName();
@@ -33,9 +35,10 @@ public class UpdateAuthorCommand implements Command {
         try {
             List<String> accessRoles = Arrays.asList("admin");
             String userRole = (String) request.getSession(true).getAttribute("role");
+            Map<String, String[]> requestMap = request.getParameterMap();
 
             if (AccessValidator.validate(accessRoles, userRole)) {
-                Author author = createAuthor(request);
+                Author author = ObjectCreator.createAuthor(requestMap);
 
                 LOGGER.debug("Updating author: {}", author.getName());
 
@@ -60,16 +63,5 @@ public class UpdateAuthorCommand implements Command {
         } catch (ReceiverException e) {
             throw new CommandException("Exception in UpdateAuthorCommand.\n" + e, e);
         }
-    }
-
-    private Author createAuthor (HttpServletRequest request) {
-        Author author = new Author();
-
-        author.setId(request.getParameter("submit_id"));
-        author.setName(request.getParameter("submit_name"));
-        author.setGenre(request.getParameter("submit_genre"));
-        author.setType(request.getParameter("submit_type"));
-
-        return author;
     }
 }

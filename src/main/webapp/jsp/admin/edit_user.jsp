@@ -80,35 +80,35 @@
     </tr>
     <tr style="text-align: center">
         <td>
-            <c:set var="message" value="${nameResult}"/>
+            <c:set var="message" value="${messages['nameResult']}"/>
             <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
         </td>
         <td>
-            <c:set var="message" value="${surnameResult}"/>
+            <c:set var="message" value="${messages['surnameResult']}"/>
             <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
         </td>
         <td>
-            <c:set var="message" value="${loginResult}"/>
+            <c:set var="message" value="${messages['loginResult']}"/>
             <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
         </td>
         <td>
-            <c:set var="message" value="${passwordResult}"/>
+            <c:set var="message" value="${messages['passwordResult']}"/>
             <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
         </td>
         <td>
-            <c:set var="message" value="${emailResult}"/>
+            <c:set var="message" value="${messages['emailResult']}"/>
             <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
         </td>
         <td>
-            <c:set var="message" value="${roleResult}"/>
+            <c:set var="message" value="${messages['roleResult']}"/>
             <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
         </td>
         <td>
-            <c:set var="message" value="${statusResult}"/>
+            <c:set var="message" value="${messages['statusResult']}"/>
             <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
         </td>
         <td>
-            <c:set var="message" value="${pointsResult}"/>
+            <c:set var="message" value="${messages['pointsResult']}"/>
             <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
         </td>
     </tr>

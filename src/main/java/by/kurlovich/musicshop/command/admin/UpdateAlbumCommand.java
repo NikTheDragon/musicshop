@@ -3,6 +3,7 @@ package by.kurlovich.musicshop.command.admin;
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
+import by.kurlovich.musicshop.creator.ObjectCreator;
 import by.kurlovich.musicshop.entity.Album;
 import by.kurlovich.musicshop.store.PageStore;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 public class UpdateAlbumCommand implements Command {
     private final static String EDIT_ALBUMS_PAGE = PageStore.EDIT_ALBUMS_PAGE.getPageName();
@@ -33,9 +35,10 @@ public class UpdateAlbumCommand implements Command {
         try {
             List<String> accessRoles = Arrays.asList("admin");
             String userRole = (String) request.getSession(true).getAttribute("role");
+            Map<String, String[]> requestMap = request.getParameterMap();
 
             if (AccessValidator.validate(accessRoles, userRole)) {
-                Album album = createAlbum(request);
+                Album album = ObjectCreator.createAlbum(requestMap);
 
                 LOGGER.debug("Updating album: {}", album.getName());
 
@@ -60,17 +63,5 @@ public class UpdateAlbumCommand implements Command {
         } catch (ReceiverException e) {
             throw new CommandException("Exception in UpdateAlbumCommand.\n" + e, e);
         }
-    }
-
-    private Album createAlbum(HttpServletRequest request) {
-        Album album = new Album();
-
-        album.setId(request.getParameter("submit_id"));
-        album.setName(request.getParameter("submit_name"));
-        album.setGenre(request.getParameter("submit_genre"));
-        album.setAuthor(request.getParameter("submit_author"));
-        album.setYear(Integer.parseInt(request.getParameter("submit_year")));
-
-        return album;
     }
 }

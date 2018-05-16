@@ -3,6 +3,7 @@ package by.kurlovich.musicshop.command.admin;
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
+import by.kurlovich.musicshop.creator.ObjectCreator;
 import by.kurlovich.musicshop.entity.Author;
 import by.kurlovich.musicshop.store.PageStore;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 public class CreateAuthorCommand implements Command {
     private final static String EDIT_AUTHORS_PAGE = PageStore.EDIT_AUTHORS_PAGE.getPageName();
@@ -33,17 +35,18 @@ public class CreateAuthorCommand implements Command {
         try {
             List<String> accessRoles = Arrays.asList("admin");
             String userRole = (String) request.getSession(true).getAttribute("role");
+            Map<String, String[]> requestMap = request.getParameterMap();
 
             if (AccessValidator.validate(accessRoles, userRole)) {
-                Author author = createAuthor(request);
+                Author author = ObjectCreator.createAuthor(requestMap);
 
                 LOGGER.debug("Creating author: {}", author);
 
                 if (receiver.addNewEntity(author)) {
-                    List<Author> authorList = receiver.getAllEntities();
-                    authorList.sort(Comparator.comparing(Author::getName));
+                    List<Author> allAuthors = receiver.getAllEntities();
+                    allAuthors.sort(Comparator.comparing(Author::getName));
 
-                    request.getSession(true).setAttribute("authorList", authorList);
+                    request.getSession(true).setAttribute("authorList", allAuthors);
                     request.getSession(true).setAttribute("url", EDIT_AUTHORS_PAGE);
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_AUTHORS_PAGE);
                 }
@@ -60,16 +63,5 @@ public class CreateAuthorCommand implements Command {
         } catch (ReceiverException e) {
             throw new CommandException("Exception in CreateAuthorCommand.\n" + e, e);
         }
-    }
-
-    private Author createAuthor (HttpServletRequest request) {
-        Author author = new Author();
-
-        author.setName(request.getParameter("submit_name"));
-        author.setGenre(request.getParameter("submit_genre"));
-        author.setType(request.getParameter("submit_type"));
-        author.setStatus("active");
-
-        return author;
     }
 }

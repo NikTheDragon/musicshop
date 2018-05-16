@@ -49,9 +49,9 @@ public class UserRepository implements Repository<User> {
                 ps.setString(3, user.getLogin());
                 ps.setString(4, user.getPassword());
                 ps.setString(5, user.getEmail());
-                ps.setString(6, user.getRole());
-                ps.setString(7, user.getStatus());
-                ps.setString(8, String.valueOf(user.getPoints()));
+                ps.setString(6, "user");
+                ps.setString(7, "active");
+                ps.setString(8, "0");
 
                 ps.executeUpdate();
             }

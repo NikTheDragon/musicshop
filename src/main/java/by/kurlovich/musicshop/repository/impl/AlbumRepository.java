@@ -47,7 +47,7 @@ public class AlbumRepository implements Repository<Album> {
             ps.setString(2, item.getAuthor());
             ps.setString(3, item.getGenre());
             ps.setInt(4, item.getYear());
-            ps.setString(5, item.getStatus());
+            ps.setString(5, "active");
 
             ps.executeUpdate();
 

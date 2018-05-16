@@ -182,14 +182,23 @@ public class UserReceiverImpl implements UserReceiver {
     public boolean updateUser(User user) throws ReceiverException {
         try {
             Repository<User> repository = new UserRepository();
+            Specification specification = new GetUserByLoginSpecification(user.getLogin());
             LOGGER.debug("trying to update user: {}", user.getName());
 
-            if (user.getName().isEmpty()) {
-                return false;
+            List<User> usersList = repository.query(specification);
+            if (usersList.isEmpty()) {
+                repository.update(user);
+                return true;
             }
 
-            repository.update(user);
-            return true;
+            if (!usersList.isEmpty()) {
+                User newUser = usersList.get(0);
+                if (user.getId().equals(newUser.getId())) {
+                    repository.update(user);
+                    return true;
+                }
+            }
+            return false;
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in updateUser of UserReceiverImpl.\n" + e, e);

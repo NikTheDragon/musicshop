@@ -51,7 +51,7 @@ public class GenreRepository implements Repository<Genre> {
              PreparedStatement ps = connection.prepareStatement(ADD_GENRE)) {
 
             ps.setString(SET_NAME, genre.getName());
-            ps.setString(S_STATUS, genre.getStatus());
+            ps.setString(S_STATUS, "active");
             ps.executeUpdate();
 
         } catch (SQLException | ConnectionException e) {

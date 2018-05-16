@@ -47,7 +47,7 @@ public class TrackRepository implements Repository<Track> {
             ps.setString(3, track.getGenre());
             ps.setString(4, track.getYear());
             ps.setString(5, track.getLength());
-            ps.setString(6, track.getStatus());
+            ps.setString(6, "active");
 
             ps.executeUpdate();
 

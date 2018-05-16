@@ -46,7 +46,7 @@ public class MixRepository implements Repository<Mix> {
             ps.setString(1, item.getName());
             ps.setString(2, item.getGenre());
             ps.setString(3, item.getYear());
-            ps.setString(4, item.getStatus());
+            ps.setString(4, "active");
 
             ps.executeUpdate();
 

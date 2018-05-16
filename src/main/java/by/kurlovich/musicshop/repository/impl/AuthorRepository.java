@@ -46,7 +46,7 @@ public class AuthorRepository implements Repository<Author> {
             ps.setString(1, item.getName());
             ps.setString(2, item.getGenre());
             ps.setString(3, item.getType());
-            ps.setString(4, item.getStatus());
+            ps.setString(4, "active");
 
             ps.executeUpdate();
 
