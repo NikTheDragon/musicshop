@@ -3,6 +3,7 @@ package by.kurlovich.musicshop.command.admin;
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
+import by.kurlovich.musicshop.creator.ObjectCreator;
 import by.kurlovich.musicshop.entity.Track;
 import by.kurlovich.musicshop.store.PageStore;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 public class CreateTrackCommand implements Command {
     private final static String EDIT_TRACKS_PAGE = PageStore.EDIT_TRACKS_PAGE.getPageName();
@@ -33,9 +35,10 @@ public class CreateTrackCommand implements Command {
         try {
             List<String> accessRoles = Arrays.asList("admin");
             String userRole = (String) request.getSession(true).getAttribute("role");
+            Map<String, String[]> requestMap = request.getParameterMap();
 
             if (AccessValidator.validate(accessRoles, userRole)) {
-                Track track = createTrack(request);
+                Track track = ObjectCreator.createTrack(requestMap);
 
                 LOGGER.debug("Creating track: {}", track.getName());
 
@@ -60,18 +63,5 @@ public class CreateTrackCommand implements Command {
         } catch (ReceiverException e) {
             throw new CommandException("Exception in CreateTrackCommand.\n" + e, e);
         }
-    }
-
-    private Track createTrack(HttpServletRequest request) {
-        Track track = new Track();
-
-        track.setName(request.getParameter("submit_name"));
-        track.setAuthor(request.getParameter("submit_author"));
-        track.setGenre(request.getParameter("submit_genre"));
-        track.setYear(request.getParameter("submit_year"));
-        track.setLength(request.getParameter("submit_length"));
-        track.setStatus("active");
-
-        return track;
     }
 }

@@ -55,9 +55,9 @@ public class FormMixContentInputDataCommand implements Command {
 
                 request.setAttribute("currentAuthor", selectedAuthor);
                 request.setAttribute("currentGenre", selectedGenre);
-                request.getSession(true).setAttribute("namesSet", uniqueTrackNames);
-                request.getSession(true).setAttribute("authorsSet", uniqueAuthors);
-                request.getSession(true).setAttribute("genresSet", uniqueGenres);
+                request.setAttribute("namesSet", uniqueTrackNames);
+                request.setAttribute("authorsSet", uniqueAuthors);
+                request.setAttribute("genresSet", uniqueGenres);
                 request.getSession(true).setAttribute("trackList", allTracks);
                 request.getSession(true).setAttribute("url", EDIT_MIXES_CONTENT_PAGE);
                 return new CommandResult(CommandResult.ResponseType.FORWARD, EDIT_MIXES_CONTENT_PAGE);

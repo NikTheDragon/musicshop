@@ -3,6 +3,7 @@ package by.kurlovich.musicshop.command.admin;
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
+import by.kurlovich.musicshop.creator.ObjectCreator;
 import by.kurlovich.musicshop.entity.Genre;
 import by.kurlovich.musicshop.store.PageStore;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 public class CreateGenreCommand implements Command {
     private final static String EDIT_GENRES_PAGE = PageStore.EDIT_GENRES_PAGE.getPageName();
@@ -32,9 +34,10 @@ public class CreateGenreCommand implements Command {
         try {
             List<String> accessRoles = Arrays.asList("admin");
             String userRole = (String) request.getSession(true).getAttribute("role");
+            Map<String, String[]> requestMap = request.getParameterMap();
 
             if (AccessValidator.validate(accessRoles, userRole)) {
-                Genre genre = createGenre(request);
+                Genre genre = ObjectCreator.createGenre(requestMap);
 
                 LOGGER.debug("Creating genre: {}", genre.getName());
 
@@ -59,14 +62,5 @@ public class CreateGenreCommand implements Command {
         } catch (ReceiverException e) {
             throw new CommandException("Exception in CreateGenreCommand.\n" + e, e);
         }
-    }
-
-    private Genre createGenre (HttpServletRequest request) {
-        Genre genre = new Genre();
-
-        genre.setName(request.getParameter("submit_name"));
-        genre.setStatus("active");
-
-        return genre;
     }
 }

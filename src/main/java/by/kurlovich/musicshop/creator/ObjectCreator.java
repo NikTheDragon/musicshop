@@ -1,9 +1,6 @@
 package by.kurlovich.musicshop.creator;
 
-import by.kurlovich.musicshop.entity.Album;
-import by.kurlovich.musicshop.entity.Author;
-import by.kurlovich.musicshop.entity.User;
-import com.sun.istack.internal.NotNull;
+import by.kurlovich.musicshop.entity.*;
 
 import java.util.Map;
 
@@ -47,5 +44,41 @@ public class ObjectCreator {
         author.setStatus(requestMap.get("submit_status")[0]);
 
         return author;
+    }
+
+    public static Genre createGenre(Map<String, String[]> requestMap) {
+        Genre genre = new Genre();
+
+        genre.setId(requestMap.get("submit_id")[0]);
+        genre.setName(requestMap.get("submit_name")[0]);
+        genre.setStatus(requestMap.get("submit_status")[0]);
+
+        return genre;
+    }
+
+    public static Mix createMix(Map<String, String[]> requestMap) {
+        Mix mix = new Mix();
+
+        mix.setId(requestMap.get("submit_id")[0]);
+        mix.setName(requestMap.get("submit_name")[0]);
+        mix.setGenre(requestMap.get("submit_genre")[0]);
+        mix.setYear(requestMap.get("submit_year")[0]);
+        mix.setStatus(requestMap.get("submit_status")[0]);
+
+        return mix;
+    }
+
+    public static Track createTrack(Map<String, String[]> requestMap) {
+        Track track = new Track();
+
+        track.setId(requestMap.get("submit_id")[0]);
+        track.setName(requestMap.get("submit_name")[0]);
+        track.setAuthor(requestMap.get("submit_author")[0]);
+        track.setGenre(requestMap.get("submit_genre")[0]);
+        track.setYear(requestMap.get("submit_year")[0]);
+        track.setLength(requestMap.get("submit_length")[0]);
+        track.setStatus(requestMap.get("submit_status")[0]);
+
+        return track;
     }
 }
