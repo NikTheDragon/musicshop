@@ -13,6 +13,7 @@ import by.kurlovich.musicshop.specification.GetAlbumContentByAlbumIdSpecificatio
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.List;
 
 public class AlbumContentReceiverImpl implements EntityReceiver<Content> {
@@ -72,7 +73,7 @@ public class AlbumContentReceiverImpl implements EntityReceiver<Content> {
 
     @Override
     public List<Content> getAllEntities() throws ReceiverException {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override

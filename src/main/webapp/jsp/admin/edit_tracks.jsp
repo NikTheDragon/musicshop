@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="/WEB-INF/paging.tld" prefix="pg" %>
 <!DOCTYPE html>
 
 <html>
@@ -25,6 +26,15 @@
 <%@include file="/WEB-INF/jspf/header.jsp" %>
 <%@include file="/WEB-INF/jspf/admin_menu.jsp" %>
 
+<c:if test="${currentPage == null || currentPage == ''}">
+    <c:set var="currentPage" value="1"/>
+</c:if>
+
+<pg:getFirstPageNumber data="${trackList}" variable="firstPage"/>
+<pg:getLastPageNumber data="${trackList}" variable="lastPage"/>
+<pg:getSelectPageNumbers data="${trackList}" page="${currentPage}" first="first" last="last"/>
+<pg:getSelectedRows data="${trackList}" rows="selectedRows" page="${currentPage}"/>
+
 <br>
 
 <table width="100%">
@@ -35,30 +45,30 @@
     </tr>
 </table>
 
-<div style="width:100%; height:400px; overflow:auto;">
-    <table id="fancyTable" style="width: 90%; margin-left: auto; margin-right: auto;">
-        <tr>
-            <th width="35%">${titleHeader}</th>
-            <th width="35%">${authorHeader}</th>
-            <th width="10%">${genreHeader}</th>
-            <th width="10%">${yearHeader}</th>
-            <th width="10%">${lengthHeader}</th>
-        </tr>
+<table id="fancyTable" style="width: 90%; margin-left: auto; margin-right: auto; font-size: 12px">
+    <tr>
+        <th width="35%">${titleHeader}</th>
+        <th width="35%">${authorHeader}</th>
+        <th width="10%">${genreHeader}</th>
+        <th width="10%">${yearHeader}</th>
+        <th width="10%">${lengthHeader}</th>
+    </tr>
 
-        <c:forEach var="track" items="${trackList}">
-            <c:if test="${track.status == 'active'}">
-                <tr id="${track.id}" onclick="formSubmitInfo(this.id)">
-                    <td id="${track.id}name">${track.name}</td>
-                    <td id="${track.id}author">${track.author}</td>
-                    <td id="${track.id}genre">${track.genre}</td>
-                    <td id="${track.id}year">${track.year}</td>
-                    <td id="${track.id}length">${track.length}</td>
-                </tr>
-            </c:if>
-        </c:forEach>
+    <c:forEach var="track" items="${selectedRows}">
+        <c:if test="${track.status == 'active'}">
+            <tr id="${track.id}" onclick="formSubmitInfo(this.id)">
+                <td id="${track.id}name">${track.name}</td>
+                <td id="${track.id}author">${track.author}</td>
+                <td id="${track.id}genre">${track.genre}</td>
+                <td id="${track.id}year">${track.year}</td>
+                <td id="${track.id}length">${track.length}</td>
+            </tr>
+        </c:if>
+    </c:forEach>
 
-    </table>
-</div>
+</table>
+
+<%@include file="/WEB-INF/jspf/paging_menu.jsp" %>
 
 <br>
 
@@ -95,44 +105,54 @@
         <td><input id="year" name="year" type="text" value=""></td>
         <td><input id="length" name="length" type="text" value=""></td>
     </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <form id="formCreate" action="${absolutePath}/mainServlet" method="get">
-            <input type="hidden" name="command" value="create_track">
-            <input type="hidden" name="submit_id" value="">
-            <input type="hidden" name="submit_name" value="">
-            <input type="hidden" name="submit_author" value="">
-            <input type="hidden" name="submit_genre" value="">
-            <input type="hidden" name="submit_year" value="">
-            <input type="hidden" name="submit_length" value="">
-            <td><input type="button" name="button" onclick="submitButton('formCreate')"
-                       value="${createButton}"></td>
-        </form>
-        <form id="formUpdate" action="${absolutePath}/mainServlet" method="get">
-            <input type="hidden" name="command" value="update_track">
-            <input type="hidden" name="submit_id" value="">
-            <input type="hidden" name="submit_name" value="">
-            <input type="hidden" name="submit_author" value="">
-            <input type="hidden" name="submit_genre" value="">
-            <input type="hidden" name="submit_year" value="">
-            <input type="hidden" name="submit_length" value="">
-            <td><input type="button" name="button" onclick="submitButton('formUpdate')"
-                       value="${updateButton}"></td>
-        </form>
-        <form id="formDelete" action="${absolutePath}/mainServlet" method="get">
-            <input type="hidden" name="command" value="delete_track">
-            <input type="hidden" name="submit_id" value="">
-            <input type="hidden" name="submit_name" value="">
-            <input type="hidden" name="submit_author" value="">
-            <input type="hidden" name="submit_genre" value="">
-            <input type="hidden" name="submit_year" value="">
-            <input type="hidden" name="submit_length" value="">
-            <td><input type="button" name="button" onclick="submitButton('formDelete')"
-                       value="${deleteButton}"></td>
-        </form>
+    <tr style="text-align: center">
+        <td>
+            <c:set var="message" value="${messages['nameResult']}"/>
+            <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
+        </td>
+        <td>
+            <c:set var="message" value="${messages['authorResult']}"/>
+            <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
+        </td>
+        <td>
+            <c:set var="message" value="${messages['genreResult']}"/>
+            <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
+        </td>
+        <td>
+            <c:set var="message" value="${messages['yearResult']}"/>
+            <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
+        </td>
+        <td>
+            <c:set var="message" value="${messages['lengthResult']}"/>
+            <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
+        </td>
+
     </tr>
 </table>
+
+<table style="width: 90%; margin-left: auto; margin-right: auto; text-align: right">
+    <tr>
+        <td>
+            <input type="button" name="button" onclick="submitButton('formCreate')"
+                   value="${createButton}" style="width: 200px">
+            <input type="button" name="button" onclick="submitButton('formUpdate')"
+                   value="${updateButton}" style="width: 200px">
+            <input type="button" name="button" onclick="submitButton('formDelete')"
+                   value="${deleteButton}" style="width: 200px">
+        </td>
+    </tr>
+</table>
+
+<form id="CUDform" action="${absolutePath}/mainServlet" method="get">
+    <input type="hidden" id="command" name="command" value="">
+    <input type="hidden" id="submit_id" name="submit_id" value="">
+    <input type="hidden" id="submit_name" name="submit_name" value="">
+    <input type="hidden" id="submit_author" name="submit_author" value="">
+    <input type="hidden" id="submit_genre" name="submit_genre" value="">
+    <input type="hidden" id="submit_year" name="submit_year" value="">
+    <input type="hidden" id="submit_length" name="submit_length" value="">
+    <input type="hidden" id="submit_status" name="submit_status" value="active">
+</form>
 
 <script>
 
@@ -146,11 +166,7 @@
         document.getElementById("genre").value = document.getElementById(trackId + "genre").textContent;
         document.getElementById("year").value = document.getElementById(trackId + "year").textContent;
         document.getElementById("length").value = document.getElementById(trackId + "length").textContent;
-
-        var countId = document.getElementsByName("submit_id");
-        for (var i = 0; i < countId.length; i++) {
-            countId[i].setAttribute("value", trackId);
-        }
+        document.getElementById("submit_id").value = trackId;
     }
 
     function submitButton(formName) {
@@ -160,33 +176,26 @@
         var trackYear = document.getElementById("year").value;
         var trackLength = document.getElementById("length").value;
 
-        var countName = document.getElementsByName("submit_name");
-        for (var i = 0; i < countName.length; i++) {
-            countName[i].setAttribute("value", trackName);
+        document.getElementById("submit_name").value = trackName;
+        document.getElementById("submit_author").value = trackAuthor;
+        document.getElementById("submit_genre").value = trackGenre;
+        document.getElementById("submit_year").value = trackYear;
+        document.getElementById("submit_length").value = trackLength;
+
+        if (formName == "formCreate") {
+            document.getElementById("command").value = "create_track"
         }
 
-        var countAuthor = document.getElementsByName("submit_author");
-        for (var i = 0; i < countAuthor.length; i++) {
-            countAuthor[i].setAttribute("value", trackAuthor);
+        if (formName == "formUpdate") {
+            document.getElementById("command").value = "update_track"
         }
 
-        var countGenre = document.getElementsByName("submit_genre");
-        for (var i = 0; i < countGenre.length; i++) {
-            countGenre[i].setAttribute("value", trackGenre);
+        if (formName == "formDelete") {
+            document.getElementById("command").value = "delete_track"
         }
 
-        var countYear = document.getElementsByName("submit_year");
-        for (var i = 0; i < countYear.length; i++) {
-            countYear[i].setAttribute("value", trackYear);
-        }
-
-        var countLength = document.getElementsByName("submit_length");
-        for (var i = 0; i < countLength.length; i++) {
-            countLength[i].setAttribute("value", trackLength);
-        }
-
-        if(trackName != "" && trackAuthor != "" && trackGenre != "" && trackYear != "") {
-            document.getElementById(formName).submit();
+        if (trackName != "" && trackAuthor != "" && trackGenre != "" && trackYear != "") {
+            document.getElementById("CUDform").submit();
         }
     }
 

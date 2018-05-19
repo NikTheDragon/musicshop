@@ -9,20 +9,20 @@ public class FormEncodingSetterFilter implements Filter {
     private static final String ENCODING_INIT_PARAM_NAME = "encoding";
     private String encoding;
 
-    public void destroy() {
-    }
-
-    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
-        String contentType = req.getContentType();
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
+        String contentType = request.getContentType();
         if (contentType != null && contentType.startsWith(FILTERABLE_CONTENT_TYPE)) {
-            req.setCharacterEncoding(encoding);
+            request.setCharacterEncoding(encoding);
         }
-        chain.doFilter(req, resp);
+        chain.doFilter(request, response);
     }
 
     public void init(FilterConfig config) {
         encoding = config.getInitParameter(ENCODING_INIT_PARAM_NAME);
         if (encoding == null)
             encoding = ENCODING_DEFAULT;
+    }
+
+    public void destroy() {
     }
 }

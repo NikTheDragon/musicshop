@@ -4,12 +4,11 @@ import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
 import by.kurlovich.musicshop.creator.ObjectCreator;
-import by.kurlovich.musicshop.entity.Track;
-import by.kurlovich.musicshop.store.PageStore;
+import by.kurlovich.musicshop.entity.Author;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
+import by.kurlovich.musicshop.store.PageStore;
 import by.kurlovich.musicshop.validator.AccessValidator;
-
 import by.kurlovich.musicshop.validator.ObjectValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,14 +19,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-public class CreateTrackCommand implements Command {
-    private final static String EDIT_TRACKS_PAGE = PageStore.EDIT_TRACKS_PAGE.getPageName();
+public abstract class AuthorCommand implements Command {
+    private final static String EDIT_AUTHORS_PAGE = PageStore.EDIT_AUTHORS_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
-    private final static Logger LOGGER = LoggerFactory.getLogger(CreateTrackCommand.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(CreateAuthorCommand.class);
     private EntityReceiver receiver;
 
-    public CreateTrackCommand(EntityReceiver receiver) {
-
+    public AuthorCommand(EntityReceiver receiver) {
         this.receiver = receiver;
     }
 
@@ -37,27 +35,30 @@ public class CreateTrackCommand implements Command {
             List<String> accessRoles = Arrays.asList("admin");
             String userRole = (String) request.getSession(true).getAttribute("role");
             Map<String, String[]> requestMap = request.getParameterMap();
-            Map<String, String> trackValidationMessages = ObjectValidator.validateTrack(requestMap);
+            Map<String, String> authorValidationMessages = ObjectValidator.validateAuthor(requestMap);
+
+            System.out.println("name" + requestMap.get("submit_name")[0]);
 
             if (AccessValidator.validate(accessRoles, userRole)) {
-                if (Boolean.parseBoolean(trackValidationMessages.get("isPassedValidation"))) {
-                    Track track = ObjectCreator.createTrack(requestMap);
+                if (Boolean.parseBoolean(authorValidationMessages.get("isPassedValidation"))) {
+                    Author author = ObjectCreator.createAuthor(requestMap);
 
-                    LOGGER.debug("Creating track: {}", track.getName());
+                    LOGGER.debug("Creating author: {}", author);
 
-                    if (receiver.addNewEntity(track)) {
-                        List<Track> allTracks = receiver.getAllEntities();
-                        allTracks.sort(Comparator.comparing(Track::getAuthor));
+                    if (doCommand(author)) {
+                        List<Author> allAuthors = receiver.getAllEntities();
+                        allAuthors.sort(Comparator.comparing(Author::getName));
 
-                        request.getSession(true).setAttribute("trackList", allTracks);
-                        request.getSession(true).setAttribute("url", EDIT_TRACKS_PAGE);
-                        return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_TRACKS_PAGE);
+                        request.getSession(true).setAttribute("authorList", allAuthors);
+                        request.getSession(true).setAttribute("url", EDIT_AUTHORS_PAGE);
+                        return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_AUTHORS_PAGE);
                     }
+
                     request.setAttribute("message", "exists");
 
                 } else {
-                    request.setAttribute("messages", trackValidationMessages);
-                    return new CommandResult(CommandResult.ResponseType.FORWARD, EDIT_TRACKS_PAGE);
+                    request.setAttribute("messages", authorValidationMessages);
+                    return new CommandResult(CommandResult.ResponseType.FORWARD, EDIT_AUTHORS_PAGE);
                 }
 
             } else {
@@ -68,7 +69,10 @@ public class CreateTrackCommand implements Command {
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in CreateTrackCommand.\n" + e, e);
+            throw new CommandException("Exception in CreateAuthorCommand.\n" + e, e);
         }
     }
+
+    public abstract boolean doCommand(Author author) throws CommandException;
+
 }

@@ -3,7 +3,6 @@ package by.kurlovich.musicshop.repository.impl;
 import by.kurlovich.musicshop.dbconnection.ConnectionException;
 import by.kurlovich.musicshop.dbconnection.ConnectionPool;
 import by.kurlovich.musicshop.entity.Genre;
-import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.repository.Repository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;

@@ -12,6 +12,7 @@ import by.kurlovich.musicshop.specification.GetAllGenresSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.List;
 
 public class GenreReceiverImpl implements EntityReceiver<Genre> {
@@ -102,6 +103,6 @@ public class GenreReceiverImpl implements EntityReceiver<Genre> {
 
     @Override
     public List<Genre> getSpecifiedEntities(String param) throws ReceiverException {
-        return null;
+        return Collections.emptyList();
     }
 }

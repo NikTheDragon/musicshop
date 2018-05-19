@@ -9,6 +9,7 @@ import by.kurlovich.musicshop.store.PageStore;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.validator.AccessValidator;
+import by.kurlovich.musicshop.validator.ObjectValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,22 +36,29 @@ public class CreateGenreCommand implements Command {
             List<String> accessRoles = Arrays.asList("admin");
             String userRole = (String) request.getSession(true).getAttribute("role");
             Map<String, String[]> requestMap = request.getParameterMap();
+            Map<String, String> genreValidationMessages = ObjectValidator.validateGenre(requestMap);
 
             if (AccessValidator.validate(accessRoles, userRole)) {
-                Genre genre = ObjectCreator.createGenre(requestMap);
+                if (Boolean.parseBoolean(genreValidationMessages.get("isPassedValidation"))) {
+                    Genre genre = ObjectCreator.createGenre(requestMap);
 
-                LOGGER.debug("Creating genre: {}", genre.getName());
+                    LOGGER.debug("Creating genre: {}", genre.getName());
 
-                if (receiver.addNewEntity(genre)) {
-                    List<Genre> allGenres = receiver.getAllEntities();
-                    allGenres.sort(Comparator.comparing(Genre::getName));
+                    if (receiver.addNewEntity(genre)) {
+                        List<Genre> allGenres = receiver.getAllEntities();
+                        allGenres.sort(Comparator.comparing(Genre::getName));
 
-                    request.getSession(true).setAttribute("genreList", allGenres);
-                    request.getSession(true).setAttribute("url", EDIT_GENRES_PAGE);
-                    return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_GENRES_PAGE);
+                        request.getSession(true).setAttribute("genreList", allGenres);
+                        request.getSession(true).setAttribute("url", EDIT_GENRES_PAGE);
+                        return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_GENRES_PAGE);
+                    }
+
+                    request.setAttribute("message", "exists");
+
+                } else {
+                    request.setAttribute("messages", genreValidationMessages);
+                    return new CommandResult(CommandResult.ResponseType.FORWARD, EDIT_GENRES_PAGE);
                 }
-
-                request.setAttribute("message", "exists");
 
             } else {
                 request.setAttribute("message", "denied");

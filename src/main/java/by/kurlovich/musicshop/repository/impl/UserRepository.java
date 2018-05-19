@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class UserRepository implements Repository<User> {
@@ -124,12 +125,12 @@ public class UserRepository implements Repository<User> {
 
     @Override
     public List<User> queryWithOwners(Specification specification) throws RepositoryException {
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
 
     @Override
     public Status getStatus(User item) throws RepositoryException {
-        return null;
+        return Status.getStatus("");
     }
 
     @Override

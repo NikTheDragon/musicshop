@@ -10,6 +10,7 @@ import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.validator.AccessValidator;
 
+import by.kurlovich.musicshop.validator.ObjectValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,22 +37,29 @@ public class CreateAuthorCommand implements Command {
             List<String> accessRoles = Arrays.asList("admin");
             String userRole = (String) request.getSession(true).getAttribute("role");
             Map<String, String[]> requestMap = request.getParameterMap();
+            Map<String, String> authorValidationMessages = ObjectValidator.validateAuthor(requestMap);
 
             if (AccessValidator.validate(accessRoles, userRole)) {
-                Author author = ObjectCreator.createAuthor(requestMap);
+                if (Boolean.parseBoolean(authorValidationMessages.get("isPassedValidation"))) {
+                    Author author = ObjectCreator.createAuthor(requestMap);
 
-                LOGGER.debug("Creating author: {}", author);
+                    LOGGER.debug("Creating author: {}", author);
 
-                if (receiver.addNewEntity(author)) {
-                    List<Author> allAuthors = receiver.getAllEntities();
-                    allAuthors.sort(Comparator.comparing(Author::getName));
+                    if (receiver.addNewEntity(author)) {
+                        List<Author> allAuthors = receiver.getAllEntities();
+                        allAuthors.sort(Comparator.comparing(Author::getName));
 
-                    request.getSession(true).setAttribute("authorList", allAuthors);
-                    request.getSession(true).setAttribute("url", EDIT_AUTHORS_PAGE);
-                    return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_AUTHORS_PAGE);
+                        request.getSession(true).setAttribute("authorList", allAuthors);
+                        request.getSession(true).setAttribute("url", EDIT_AUTHORS_PAGE);
+                        return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_AUTHORS_PAGE);
+                    }
+
+                    request.setAttribute("message", "exists");
+
+                } else {
+                    request.setAttribute("messages", authorValidationMessages);
+                    return new CommandResult(CommandResult.ResponseType.FORWARD, EDIT_AUTHORS_PAGE);
                 }
-
-                request.setAttribute("message", "exists");
 
             } else {
                 request.setAttribute("message", "denied");

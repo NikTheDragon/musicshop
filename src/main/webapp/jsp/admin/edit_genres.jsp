@@ -55,27 +55,27 @@
         <td width="200">
             <input id="name" name="name" type="text" value="">
         </td>
-        <form id="formCreate" action="${absolutePath}/mainServlet" method="get">
-            <input type="hidden" name="command" value="create_genre">
-            <input type="hidden" name="submit_id" value="">
-            <input type="hidden" name="submit_name" value="">
-            <td><input type="button" name="button" onclick="submitButton('formCreate')" value="${createButton}"></td>
-        </form>
-        <form id="formUpdate" action="${absolutePath}/mainServlet" method="get">
-            <input type="hidden" name="command" value="update_genre">
-            <input type="hidden" name="submit_id" value="">
-            <input type="hidden" name="submit_name" value="">
-            <td><input type="button" name="button" onclick="submitButton('formUpdate')" value="${updateButton}"></td>
-        </form>
-        <form id="formDelete" action="${absolutePath}/mainServlet" method="get">
-            <input type="hidden" name="command" value="delete_genre">
-            <input type="hidden" name="submit_id" value="">
-            <input type="hidden" name="submit_name" value="">
-            <td><input type="button" name="button" onclick="submitButton('formDelete')" value="${deleteButton}"></td>
-        </form>
+        <td><input type="button" name="button" onclick="submitButton('formCreate')" value="${createButton}"></td>
+        <td><input type="button" name="button" onclick="submitButton('formUpdate')" value="${updateButton}"></td>
+        <td><input type="button" name="button" onclick="submitButton('formDelete')" value="${deleteButton}"></td>
     </tr>
-
+    <tr>
+        <td style="text-align: center">
+            <c:set var="message" value="${messages['nameResult']}"/>
+            <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
 </table>
+
+<form id="CUDform" action="${absolutePath}/mainServlet" method="get">
+    <input type="hidden" id="command" name="command" value="">
+    <input type="hidden" id="submit_id" name="submit_id" value="">
+    <input type="hidden" id="submit_name" name="submit_name" value="">
+    <input type="hidden" id="submit_status" name="submit_status" value="active">
+</form>
 
 <script>
 
@@ -85,23 +85,28 @@
 
     function formSubmitInfo(genreId) {
         document.getElementById("name").value = document.getElementById(genreId + "name").textContent;
-
-        var idCount = document.getElementsByName("submit_id");
-        for (var i = 0; i < idCount.length; i++) {
-            idCount[i].setAttribute("value", genreId);
-        }
+        document.getElementById("submit_id").value = genreId;
     }
 
     function submitButton(formName) {
         var genreName = document.getElementById("name").value;
 
-        var nameCount = document.getElementsByName("submit_name");
-        for (var i = 0; i < nameCount.length; i++) {
-            nameCount[i].setAttribute("value", genreName);
+        document.getElementById("submit_name").value = genreName;
+
+        if (formName == "formCreate") {
+            document.getElementById("command").value = "create_genre"
         }
 
-        if(genreName != "") {
-            document.getElementById(formName).submit();
+        if (formName == "formUpdate") {
+            document.getElementById("command").value = "update_genre"
+        }
+
+        if (formName == "formDelete") {
+            document.getElementById("command").value = "delete_genre"
+        }
+
+        if (genreName != "") {
+            document.getElementById("CUDform").submit();
         }
     }
 

@@ -11,6 +11,7 @@ import by.kurlovich.musicshop.specification.GetAllAuthorsSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.List;
 
 public class AuthorReceiverImpl implements EntityReceiver<Author> {
@@ -20,7 +21,7 @@ public class AuthorReceiverImpl implements EntityReceiver<Author> {
     public boolean addNewEntity(Author author) throws ReceiverException {
         try {
             Repository<Author> repository = new AuthorRepository();
-            LOGGER.debug("trying to add track: {}", author.getName());
+            LOGGER.debug("trying to add author: {}", author.getName());
 
             if (author.getName().isEmpty()) {
                 return false;
@@ -98,6 +99,6 @@ public class AuthorReceiverImpl implements EntityReceiver<Author> {
 
     @Override
     public List<Author> getSpecifiedEntities(String param) throws ReceiverException {
-        return null;
+        return Collections.emptyList();
     }
 }

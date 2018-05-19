@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="/WEB-INF/paging.tld" prefix="pg" %>
 <!DOCTYPE html>
 
 <html>
@@ -25,6 +26,15 @@
 <%@include file="/WEB-INF/jspf/header.jsp" %>
 <%@include file="/WEB-INF/jspf/admin_menu.jsp" %>
 
+<c:if test="${currentPage == null || currentPage == ''}">
+    <c:set var="currentPage" value="1"/>
+</c:if>
+
+<pg:getFirstPageNumber data="${authorList}" variable="firstPage"/>
+<pg:getLastPageNumber data="${authorList}" variable="lastPage"/>
+<pg:getSelectPageNumbers data="${authorList}" page="${currentPage}" first="first" last="last"/>
+<pg:getSelectedRows data="${authorList}" rows="selectedRows" page="${currentPage}"/>
+
 <br>
 
 <table width="100%">
@@ -35,26 +45,26 @@
     </tr>
 </table>
 
-<div style="width:100%; height:400px; overflow:auto;">
-    <table id="fancyTable" style="width: 90%; margin-left: auto; margin-right: auto;">
-        <tr>
-            <th width="80%" onclick="sortTable('fancyTable', 0)">${nameHeader}</th>
-            <th width="10%" onclick="sortTable('fancyTable', 1)">${genreHeader}</th>
-            <th width="10%" onclick="sortTable('fancyTable', 2)">${typeHeader}</th>
-        </tr>
+<table id="fancyTable" style="width: 90%; margin-left: auto; margin-right: auto; font-size: 12px">
+    <tr>
+        <th width="80%" onclick="sortTable('fancyTable', 0)">${nameHeader}</th>
+        <th width="10%" onclick="sortTable('fancyTable', 1)">${genreHeader}</th>
+        <th width="10%" onclick="sortTable('fancyTable', 2)">${typeHeader}</th>
+    </tr>
 
-        <c:forEach var="author" items="${authorList}">
-            <c:if test="${author.status == 'active'}">
-                <tr id="${author.id}" onclick="formSubmitInfo(this.id)">
-                    <td id="${author.id}name">${author.name}</td>
-                    <td id="${author.id}genre">${author.genre}</td>
-                    <td id="${author.id}type">${author.type}</td>
-                </tr>
-            </c:if>
-        </c:forEach>
+    <c:forEach var="author" items="${selectedRows}">
+        <c:if test="${author.status == 'active'}">
+            <tr id="${author.id}" onclick="formSubmitInfo(this.id)">
+                <td id="${author.id}name">${author.name}</td>
+                <td id="${author.id}genre">${author.genre}</td>
+                <td id="${author.id}type">${author.type}</td>
+            </tr>
+        </c:if>
+    </c:forEach>
 
-    </table>
-</div>
+</table>
+
+<%@include file="/WEB-INF/jspf/paging_menu.jsp" %>
 
 <br>
 
@@ -85,43 +95,43 @@
         </td>
 
     </tr>
+<tr>
+    <td>
+        <c:set var="message" value="${messages['nameResult']}"/>
+        <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
+    </td>
+    <td>
+        <c:set var="message" value="${messages['genreResult']}"/>
+        <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
+    </td>
+    <td>
+        <c:set var="message" value="${messages['typeResult']}"/>
+        <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
+    </td>
+</tr>
 </table>
 
-<table style="width: 90%; margin-left: auto; margin-right: auto;">
+<table style="width: 90%; margin-left: auto; margin-right: auto; text-align: right">
     <tr>
-        <td width="100%"></td>
-        <form id="formCreate" action="${absolutePath}/mainServlet" method="get">
-            <input type="hidden" name="command" value="create_author">
-            <input type="hidden" name="submit_id" value="">
-            <input type="hidden" name="submit_name" value="">
-            <input type="hidden" name="submit_genre" value="">
-            <input type="hidden" name="submit_type" value="">
-            <td><input type="button" name="button" onclick="submitButton('formCreate')"
-                       value="${createButton}"
-                       style="width: 200px"></td>
-        </form>
-        <form id="formUpdate" action="${absolutePath}/mainServlet" method="get">
-            <input type="hidden" name="command" value="update_author">
-            <input type="hidden" name="submit_id" value="">
-            <input type="hidden" name="submit_name" value="">
-            <input type="hidden" name="submit_genre" value="">
-            <input type="hidden" name="submit_type" value="">
-            <td><input type="button" name="button" onclick="submitButton('formUpdate')"
-                       value="${updateButton}"
-                       style="width: 200px"></td>
-        </form>
-        <form id="formDelete" action="${absolutePath}/mainServlet" method="get">
-            <input type="hidden" name="command" value="delete_author">
-            <input type="hidden" name="submit_id" value="">
-            <input type="hidden" name="submit_name" value="">
-            <input type="hidden" name="submit_genre" value="">
-            <input type="hidden" name="submit_type" value="">
-            <td><input type="button" name="button" onclick="submitButton('formDelete')"
-                       value="${deleteButton}"
-                       style="width: 200px"></td>
-        </form>
+        <td>
+            <input type="button" name="button" onclick="submitButton('formCreate')"
+                   value="${createButton}" style="width: 200px">
+            <input type="button" name="button" onclick="submitButton('formUpdate')"
+                   value="${updateButton}" style="width: 200px">
+            <input type="button" name="button" onclick="submitButton('formDelete')"
+                   value="${deleteButton}" style="width: 200px">
+        </td>
     </tr>
 </table>
+
+<form id="CUDform" action="${absolutePath}/mainServlet" method="get">
+    <input type="hidden" id="command" name="command" value="">
+    <input type="hidden" id="submit_id" name="submit_id" value="">
+    <input type="hidden" id="submit_name" name="submit_name" value="">
+    <input type="hidden" id="submit_genre" name="submit_genre" value="">
+    <input type="hidden" id="submit_type" name="submit_type" value="">
+    <input type="hidden" id="submit_status" name="submit_status" value="active">
+</form>
 
 <script>
 
@@ -133,12 +143,7 @@
         document.getElementById("name").value = document.getElementById(authorId + "name").textContent;
         document.getElementById("genre").value = document.getElementById(authorId + "genre").textContent;
         document.getElementById("type").value = document.getElementById(authorId + "type").textContent;
-
-        var countId = document.getElementsByName("submit_id");
-
-        for (var i = 0; i < countId.length; i++) {
-            countId[i].setAttribute("value", authorId);
-        }
+        document.getElementById("submit_id").value = authorId;
     }
 
     function submitButton(formName) {
@@ -146,23 +151,24 @@
         var authorGenre = document.getElementById("genre").value;
         var authorType = document.getElementById("type").value;
 
-        var countName = document.getElementsByName("submit_name");
-        for (var i = 0; i < countName.length; i++) {
-            countName[i].setAttribute("value", authorName);
+        document.getElementById("submit_name").value = authorName;
+        document.getElementById("submit_genre").value = authorGenre;
+        document.getElementById("submit_type").value = authorType;
+
+        if (formName == "formCreate") {
+            document.getElementById("command").value = "create_author"
         }
 
-        var countGenre = document.getElementsByName("submit_genre");
-        for (var i = 0; i < countGenre.length; i++) {
-            countGenre[i].setAttribute("value", authorGenre);
+        if (formName == "formUpdate") {
+            document.getElementById("command").value = "update_author"
         }
 
-        var countType = document.getElementsByName("submit_type");
-        for (var i = 0; i < countType.length; i++) {
-            countType[i].setAttribute("value", authorType);
+        if (formName == "formDelete") {
+            document.getElementById("command").value = "delete_author"
         }
 
         if (authorName != "" && authorGenre != "" && authorType != "") {
-            document.getElementById(formName).submit();
+            document.getElementById("CUDform").submit();
         }
     }
 
