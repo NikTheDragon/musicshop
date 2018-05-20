@@ -88,6 +88,24 @@
         </td>
         <td><input id="year" name="year" type="text" value=""></td>
     </tr>
+    <tr style="text-align: center">
+        <td>
+            <c:set var="message" value="${messages['nameResult']}"/>
+            <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
+        </td>
+        <td>
+            <c:set var="message" value="${messages['authorResult']}"/>
+            <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
+        </td>
+        <td>
+            <c:set var="message" value="${messages['genreResult']}"/>
+            <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
+        </td>
+        <td>
+            <c:set var="message" value="${messages['yearResult']}"/>
+            <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
+        </td>
+    </tr>
 </table>
 
 <table style="width: 80%; margin-left: auto; margin-right: auto;">
@@ -99,42 +117,29 @@
             <td><input id="contentButton" type="submit" name="button" value="${editContentButton}"
                        style="display: none; width: 200px"></td>
         </form>
-        <form id="formCreate" action="${absolutePath}/mainServlet" method="get">
-            <input type="hidden" name="command" value="create_album">
-            <input type="hidden" name="submit_id" value="">
-            <input type="hidden" name="submit_name" value="">
-            <input type="hidden" name="submit_author" value="">
-            <input type="hidden" name="submit_genre" value="">
-            <input type="hidden" name="submit_year" value="">
-            <td><input type="button" name="button" onclick="submitButton('formCreate')"
-                       value="${createButton}" style="width: 200px"></td>
-        </form>
-        <form id="formUpdate" action="${absolutePath}/mainServlet" method="get">
-            <input type="hidden" name="command" value="update_album">
-            <input type="hidden" name="submit_id" value="">
-            <input type="hidden" name="submit_name" value="">
-            <input type="hidden" name="submit_author" value="">
-            <input type="hidden" name="submit_genre" value="">
-            <input type="hidden" name="submit_year" value="">
-            <td><input type="button" name="button" onclick="submitButton('formUpdate')"
-                       value="${updateButton}" style="width: 200px"></td>
-        </form>
-        <form id="formDelete" action="${absolutePath}/mainServlet" method="get">
-            <input type="hidden" name="command" value="delete_album">
-            <input type="hidden" name="submit_id" value="">
-            <input type="hidden" name="submit_name" value="">
-            <input type="hidden" name="submit_author" value="">
-            <input type="hidden" name="submit_genre" value="">
-            <input type="hidden" name="submit_year" value="">
-            <td><input type="button" name="button" onclick="submitButton('formDelete')"
-                       value="${deleteButton}" style="width: 200px"></td>
-        </form>
+
+        <td><input type="button" name="button" onclick="submitButton('formCreate')"
+                   value="${createButton}" style="width: 200px"></td>
+        <td><input type="button" name="button" onclick="submitButton('formUpdate')"
+                   value="${updateButton}" style="width: 200px"></td>
+        <td><input type="button" name="button" onclick="submitButton('formDelete')"
+                   value="${deleteButton}" style="width: 200px"></td>
     </tr>
 </table>
 
+<form id="CUDform" action="${absolutePath}/mainServlet" method="get">
+    <input type="hidden" id="command" name="command" value="">
+    <input type="hidden" id="submit_id" name="submit_id" value="">
+    <input type="hidden" id="submit_name" name="submit_name" value="">
+    <input type="hidden" id="submit_author" name="submit_author" value="">
+    <input type="hidden" id="submit_genre" name="submit_genre" value="">
+    <input type="hidden" id="submit_year" name="submit_year" value="">
+    <input type="hidden" id="submit_status" name="submit_status" value="active">
+</form>
+
 <script>
 
-    $("tr").click(function(){
+    $("tr").click(function () {
         $(this).addClass("selected").siblings().removeClass("selected");
     });
 
@@ -143,7 +148,6 @@
         document.getElementById("authorSelector").value = document.getElementById(albumId + "author").textContent;
         document.getElementById("genreSelector").value = document.getElementById(albumId + "genre").textContent;
         document.getElementById("year").value = document.getElementById(albumId + "year").textContent;
-
         document.getElementById("contentButton").style.display = "block";
 
         var countId = document.getElementsByName("submit_id");
@@ -153,33 +157,30 @@
     }
 
     function submitButton(formName) {
-        var trackName = document.getElementById("name").value;
-        var trackAuthor = document.getElementById("authorSelector").value;
-        var trackGenre = document.getElementById("genreSelector").value;
-        var trackYear = document.getElementById("year").value;
+        var albumName = document.getElementById("name").value;
+        var albumAuthor = document.getElementById("authorSelector").value;
+        var albumGenre = document.getElementById("genreSelector").value;
+        var albumYear = document.getElementById("year").value;
 
-        var countName = document.getElementsByName("submit_name");
-        for (var i = 0; i < countName.length; i++) {
-            countName[i].setAttribute("value", trackName);
+        document.getElementById("submit_name").value = albumName;
+        document.getElementById("submit_author").value = albumAuthor;
+        document.getElementById("submit_genre").value = albumGenre;
+        document.getElementById("submit_year").value = albumYear;
+
+        if (formName == "formCreate") {
+            document.getElementById("command").value = "create_album"
         }
 
-        var countAuthor = document.getElementsByName("submit_author");
-        for (var i = 0; i < countAuthor.length; i++) {
-            countAuthor[i].setAttribute("value", trackAuthor);
+        if (formName == "formUpdate") {
+            document.getElementById("command").value = "update_album"
         }
 
-        var countGenre = document.getElementsByName("submit_genre");
-        for (var i = 0; i < countGenre.length; i++) {
-            countGenre[i].setAttribute("value", trackGenre);
+        if (formName == "formDelete") {
+            document.getElementById("command").value = "delete_album"
         }
 
-        var countYear = document.getElementsByName("submit_year");
-        for (var i = 0; i < countYear.length; i++) {
-            countYear[i].setAttribute("value", trackYear);
-        }
-
-        if (trackName != "" && trackAuthor != "" && trackGenre != "" && trackYear != "") {
-            document.getElementById(formName).submit();
+        if (albumName != "" && albumAuthor != "" && albumGenre != "" && albumYear != "") {
+            document.getElementById("CUDform").submit();
         }
     }
 

@@ -84,4 +84,43 @@ public class ObjectValidator {
 
         return validationResults;
     }
+
+    public static Map<String, String> validateAlbum(Map<String, String[]> requestMap) {
+        Map<String, String> validationResults = new HashMap<>();
+        String isPassedValidation = "true";
+
+        validationResults.put("nameResult", FieldValidator.validateSentenceField(requestMap.get("submit_name")[0]));
+        validationResults.put("authorResult", FieldValidator.validateSentenceField(requestMap.get("submit_author")[0]));
+        validationResults.put("genreResult", FieldValidator.validateTextField(requestMap.get("submit_genre")[0]));
+        validationResults.put("yearResult", FieldValidator.validateDigitField(requestMap.get("submit_year")[0]));
+
+        for (Map.Entry<String, String> results : validationResults.entrySet()) {
+            if (!Boolean.parseBoolean(results.getValue())) {
+                isPassedValidation = "false";
+            }
+        }
+
+        validationResults.put("isPassedValidation", isPassedValidation);
+
+        return validationResults;
+    }
+
+    public static Map<String, String> validateMix(Map<String, String[]> requestMap) {
+        Map<String, String> validationResults = new HashMap<>();
+        String isPassedValidation = "true";
+
+        validationResults.put("nameResult", FieldValidator.validateSentenceField(requestMap.get("submit_name")[0]));
+        validationResults.put("genreResult", FieldValidator.validateTextField(requestMap.get("submit_genre")[0]));
+        validationResults.put("yearResult", FieldValidator.validateDigitField(requestMap.get("submit_year")[0]));
+
+        for (Map.Entry<String, String> results : validationResults.entrySet()) {
+            if (!Boolean.parseBoolean(results.getValue())) {
+                isPassedValidation = "false";
+            }
+        }
+
+        validationResults.put("isPassedValidation", isPassedValidation);
+
+        return validationResults;
+    }
 }

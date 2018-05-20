@@ -36,7 +36,7 @@ public enum CommandType {
     SHOW_ALBUM_CONTENT(new ShowAlbumContentCommand(new UserReceiverImpl(), new AlbumReceiverImpl())),
     CREATE_GENRE(new CreateGenreCommand(new GenreReceiverImpl())),
     CREATE_TRACK(new CreateTrackCommand(new TrackReceiverImpl())),
-    CREATE_AUTHOR(new CreateAuthorCmd(new AuthorReceiverImpl())),
+    CREATE_AUTHOR(new CreateAuthorCommand(new AuthorReceiverImpl())),
     CREATE_ALBUM(new CreateAlbumCommand(new AlbumReceiverImpl())),
     CREATE_MIX(new CreateMixCommand(new MixReceiverImpl())),
     DELETE_GENRE(new DeleteGenreCommand(new GenreReceiverImpl())),

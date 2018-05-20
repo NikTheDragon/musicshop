@@ -113,7 +113,7 @@ public class FieldValidator {
             return "null";
         }
 
-        if (fieldText.length() < 3 || fieldText.length() > 15) {
+        if (fieldText.length() < 3 || fieldText.length() > 25) {
             return "length";
         }
 

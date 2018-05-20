@@ -110,6 +110,7 @@ public class AuthorRepository implements Repository<Author> {
 
                 authorList.add(author);
             }
+            LOGGER.debug("found {} items.", authorList.size());
             return authorList;
 
         } catch (SQLException | ConnectionException e) {

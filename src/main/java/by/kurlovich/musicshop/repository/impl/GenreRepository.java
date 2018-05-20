@@ -108,7 +108,7 @@ public class GenreRepository implements Repository<Genre> {
                     genreList.add(genre);
                 }
             }
-
+            LOGGER.debug("found {} items.", genreList.size());
             return genreList;
 
         } catch (SQLException | ConnectionException e) {

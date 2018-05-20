@@ -1,5 +1,8 @@
 <c:choose>
 
+    <c:when test = "${message == 'unable'}">
+        Unable to proceed command.
+    </c:when>
     <c:when test = "${message == 'exists'}">
         ${errorExists}
     </c:when>

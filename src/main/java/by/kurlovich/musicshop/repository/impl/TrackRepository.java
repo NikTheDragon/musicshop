@@ -115,7 +115,7 @@ public class TrackRepository implements Repository<Track> {
 
                 trackList.add(track);
             }
-
+            LOGGER.debug("found {} items.", trackList.size());
             return trackList;
 
         } catch (SQLException | ConnectionException e) {

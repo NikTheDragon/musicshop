@@ -1,4 +1,4 @@
-package by.kurlovich.musicshop.command.admin;
+package by.kurlovich.musicshop.command.base;
 
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
@@ -10,6 +10,7 @@ import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.store.PageStore;
 import by.kurlovich.musicshop.validator.AccessValidator;
 import by.kurlovich.musicshop.validator.ObjectValidator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +23,7 @@ import java.util.Map;
 public abstract class AuthorCommand implements Command {
     private final static String EDIT_AUTHORS_PAGE = PageStore.EDIT_AUTHORS_PAGE.getPageName();
     private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
-    private final static Logger LOGGER = LoggerFactory.getLogger(CreateAuthorCommand.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(AuthorCommand.class);
     private EntityReceiver receiver;
 
     public AuthorCommand(EntityReceiver receiver) {
@@ -37,13 +38,11 @@ public abstract class AuthorCommand implements Command {
             Map<String, String[]> requestMap = request.getParameterMap();
             Map<String, String> authorValidationMessages = ObjectValidator.validateAuthor(requestMap);
 
-            System.out.println("name" + requestMap.get("submit_name")[0]);
-
             if (AccessValidator.validate(accessRoles, userRole)) {
                 if (Boolean.parseBoolean(authorValidationMessages.get("isPassedValidation"))) {
                     Author author = ObjectCreator.createAuthor(requestMap);
 
-                    LOGGER.debug("Creating author: {}", author);
+                    LOGGER.debug("Command: {}, found", requestMap.get("command")[0]);
 
                     if (doCommand(author)) {
                         List<Author> allAuthors = receiver.getAllEntities();
@@ -54,7 +53,7 @@ public abstract class AuthorCommand implements Command {
                         return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_AUTHORS_PAGE);
                     }
 
-                    request.setAttribute("message", "exists");
+                    request.setAttribute("message", "unable");
 
                 } else {
                     request.setAttribute("messages", authorValidationMessages);
@@ -69,7 +68,7 @@ public abstract class AuthorCommand implements Command {
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in CreateAuthorCommand.\n" + e, e);
+            throw new CommandException("Exception in AuthorCommand.\n" + e, e);
         }
     }
 

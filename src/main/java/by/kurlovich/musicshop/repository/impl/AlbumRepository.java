@@ -114,8 +114,8 @@ public class AlbumRepository implements Repository<Album> {
 
                 albumList.add(album);
             }
+            LOGGER.debug("found {} items.", albumList.size());
             return albumList;
-
 
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception in query of AlbumRepository.\n" + e, e);

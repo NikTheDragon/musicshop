@@ -115,7 +115,7 @@ public class UserRepository implements Repository<User> {
 
                 allUsers.add(user);
             }
-
+            LOGGER.debug("found {} items.", allUsers.size());
             return allUsers;
 
         } catch (SQLException | ConnectionException e) {
