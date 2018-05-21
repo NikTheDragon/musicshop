@@ -1,6 +1,7 @@
 package by.kurlovich.musicshop.receiver.impl;
 
 import by.kurlovich.musicshop.entity.Genre;
+import by.kurlovich.musicshop.entity.SearchData;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.repository.Repository;
@@ -99,6 +100,11 @@ public class GenreReceiverImpl implements EntityReceiver<Genre> {
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in Get All Genres.", e);
         }
+    }
+
+    @Override
+    public List<Genre> getSearchedEntities(SearchData searchData, String userId) throws ReceiverException {
+        return null;
     }
 
     @Override

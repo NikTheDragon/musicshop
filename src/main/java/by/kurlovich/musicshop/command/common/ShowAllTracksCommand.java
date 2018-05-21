@@ -5,13 +5,11 @@ import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
 import by.kurlovich.musicshop.entity.Track;
 import by.kurlovich.musicshop.entity.User;
-import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.receiver.UserReceiver;
 import by.kurlovich.musicshop.store.PageStore;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -29,6 +27,7 @@ public class ShowAllTracksCommand implements Command {
             String currentUserId = "0";
             User currentUser = (User) request.getSession(true).getAttribute("user");
 
+
             if (currentUser != null) {
                 currentUserId = currentUser.getId();
             }
@@ -39,6 +38,7 @@ public class ShowAllTracksCommand implements Command {
             request.getSession(true).setAttribute("trackList", allTracks);
             request.getSession(true).setAttribute("url", SHOW_TRACKS_PAGE);
             return new CommandResult(CommandResult.ResponseType.FORWARD, SHOW_TRACKS_PAGE);
+
 
         } catch (ReceiverException e) {
             throw new CommandException("Exception in ShowAllTracksCommand.\n" + e, e);

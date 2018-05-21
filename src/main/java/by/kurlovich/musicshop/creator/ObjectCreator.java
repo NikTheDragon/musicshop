@@ -34,7 +34,7 @@ public class ObjectCreator {
         return album;
     }
 
-    public static Author createAuthor (Map<String, String[]> requestMap) {
+    public static Author createAuthor(Map<String, String[]> requestMap) {
         Author author = new Author();
 
         author.setId(requestMap.get("submit_id")[0]);
@@ -80,5 +80,41 @@ public class ObjectCreator {
         track.setStatus(requestMap.get("submit_status")[0]);
 
         return track;
+    }
+
+    public static SearchData createSearchData(Map<String, String[]> requestMap) {
+        SearchData searchData = new SearchData();
+
+        if (requestMap.get("search_name") == null) {
+            searchData.setName("");
+        } else {
+            searchData.setName(requestMap.get("search_name")[0]);
+        }
+
+        if (requestMap.get("search_author") == null) {
+            searchData.setAuthor("");
+        } else {
+            searchData.setAuthor(requestMap.get("search_author")[0]);
+        }
+
+        if (requestMap.get("search_genre") == null) {
+            searchData.setGenre("");
+        } else {
+            searchData.setGenre(requestMap.get("search_genre")[0]);
+        }
+
+        if (requestMap.get("search_year") == null) {
+            searchData.setYear("");
+        } else {
+            searchData.setYear(requestMap.get("search_year")[0]);
+        }
+
+        if (requestMap.get("search_type") == null) {
+            searchData.setType("");
+        } else {
+            searchData.setType(requestMap.get("search_type")[0]);
+        }
+
+        return searchData;
     }
 }

@@ -40,6 +40,22 @@ public class FieldValidator {
         return "true";
     }
 
+    public static String validateSearchSentenceField(String[] fieldText) {
+        if (fieldText == null) {
+            return "true";
+        }
+
+        String textOnlyRegex = "^[a-zA-Zа-яА-Я\\s\\,\\.\\d]*$";
+        Pattern pattern = Pattern.compile(textOnlyRegex);
+        Matcher matcher = pattern.matcher(fieldText[0]);
+
+        if (!matcher.matches()) {
+            return "notText";
+        }
+
+        return "true";
+    }
+
     public static String validateLogPasField(String fieldText) {
         String textOnlyRegex = "^[a-zA-Zа-яА-Я_0-9]*$";
         Pattern pattern = Pattern.compile(textOnlyRegex);
@@ -84,6 +100,22 @@ public class FieldValidator {
         if (fieldText == null || fieldText.isEmpty()) {
             return "null";
         }
+
+        if (!matcher.matches()) {
+            return "notDigit";
+        }
+
+        return "true";
+    }
+
+    public static String validateSearchDigitField(String fieldText[]) {
+        if (fieldText == null) {
+            return "true";
+        }
+
+        String textOnlyRegex = "^[\\d]*$";
+        Pattern pattern = Pattern.compile(textOnlyRegex);
+        Matcher matcher = pattern.matcher(fieldText[0]);
 
         if (!matcher.matches()) {
             return "notDigit";

@@ -1,5 +1,6 @@
 package by.kurlovich.musicshop.receiver.impl;
 
+import by.kurlovich.musicshop.entity.SearchData;
 import by.kurlovich.musicshop.entity.Track;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
@@ -9,6 +10,7 @@ import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.impl.TrackRepository;
 import by.kurlovich.musicshop.specification.GetAllTracksSpecification;
 import by.kurlovich.musicshop.specification.GetTracksByAuthorNameSpecification;
+import by.kurlovich.musicshop.specification.SearchTracksWithOwnerSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -94,6 +96,20 @@ public class TrackReceiverImpl implements EntityReceiver<Track> {
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in getAllEntities of TrackReceiverImpl.\n" + e, e);
+        }
+    }
+
+    @Override
+    public List<Track> getSearchedEntities(SearchData searchData, String userId) throws ReceiverException {
+        try {
+            Repository<Track> repository = new TrackRepository();
+            Specification specification = new SearchTracksWithOwnerSpecification(searchData, userId);
+            LOGGER.debug("trying to search tracks.");
+
+            return repository.query(specification);
+
+        } catch (RepositoryException e) {
+            throw new ReceiverException("Exception in getSearchedEntities of TrackReceiverImpl.\n" + e, e);
         }
     }
 

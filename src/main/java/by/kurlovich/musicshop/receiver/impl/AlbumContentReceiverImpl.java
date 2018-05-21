@@ -1,6 +1,7 @@
 package by.kurlovich.musicshop.receiver.impl;
 
 import by.kurlovich.musicshop.entity.Content;
+import by.kurlovich.musicshop.entity.SearchData;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 
@@ -74,6 +75,11 @@ public class AlbumContentReceiverImpl implements EntityReceiver<Content> {
     @Override
     public List<Content> getAllEntities() throws ReceiverException {
         return Collections.emptyList();
+    }
+
+    @Override
+    public List<Content> getSearchedEntities(SearchData searchData, String userId) throws ReceiverException {
+        return null;
     }
 
     @Override

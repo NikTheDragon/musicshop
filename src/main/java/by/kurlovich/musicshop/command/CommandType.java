@@ -6,6 +6,7 @@ import by.kurlovich.musicshop.command.user.*;
 import by.kurlovich.musicshop.receiver.impl.*;
 
 public enum CommandType {
+    SEARCH_TRACKS(new SearchTracksCommand(new TrackReceiverImpl())),
     SHOW_ERROR_PAGE(new ShowErrorPageCommand()),
     SHOW_SELECTED_ROWS(new ShowSelectedRowsCommand()),
     CHANGE_LANGUAGE(new ChangeLanguageCommand()),

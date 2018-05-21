@@ -46,10 +46,36 @@
 <pg:getSelectPageNumbers data="${trackList}" page="${currentPage}" first="first" last="last"/>
 <pg:getSelectedRows data="${trackList}" rows="selectedRows" page="${currentPage}"/>
 
+<table style="width: 90%; margin-left: auto; margin-right: auto; font-size: 12px">
+    <tr>
+        <form id="searchForm" action="${absolutePath}/mainServlet" method="post">
+            <input type="hidden" id="command" name="command" value="search_tracks">
+            <input type="hidden" name="currentURI" value="${pageContext.request.requestURI}">
+
+            <td width="35%">
+                <input type="text" id="search_name" name="search_name" value="">
+            </td>
+            <td width="30%">
+                <input type="text" id="search_author" name="search_author" value="">
+            </td>
+            <td width="10%">
+                <input type="text" id="search_genre" name="search_genre" value="">
+            </td>
+            <td width="5%">
+                <input type="text" id="search_year" name="search_year" value="">
+            </td>
+            <td width="10%">
+                <input type="button" id="search_button" name="search" value="Search" onclick="searchButton()">
+            </td>
+        </form>
+    </tr>
+
+</table>
+
 <table id="fancyTable" style="width: 90%; margin-left: auto; margin-right: auto; font-size: 12px">
     <tr>
-        <th width="35%">${titleHeader}</th>
-        <th width="30%">${authorHeader}</th>
+        <th width="30%">${titleHeader}</th>
+        <th width="25%">${authorHeader}</th>
         <th width="10%">${genreHeader}</th>
         <th width="5%">${yearHeader}</th>
         <th width="5%">${lengthHeader}</th>
@@ -90,7 +116,7 @@
 
 </form>
 
-<form id="buyForm" action="${absolutePath}/mainServlet" method="get">
+<form id="buyForm" action="${absolutePath}/mainServlet" method="post">
     <input type="hidden" name="command" value="buy_track">
     <input type="hidden" id="track_id" name="track_id" value="">
     <input type="hidden" id="track_price" name="track_price" value="">
@@ -107,6 +133,10 @@
 
     function downloadEntity(formId, id) {
         alert(formId + ", " + id);
+    }
+
+    function searchButton() {
+        document.getElementById("searchForm").submit();
     }
 
 </script>

@@ -1,5 +1,7 @@
 package by.kurlovich.musicshop.validator;
 
+import com.sun.istack.internal.NotNull;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -117,6 +119,31 @@ public class ObjectValidator {
             if (!Boolean.parseBoolean(results.getValue())) {
                 isPassedValidation = "false";
             }
+        }
+
+        validationResults.put("isPassedValidation", isPassedValidation);
+
+        return validationResults;
+    }
+
+    public static Map<String, String> validateSearch(Map<String, String[]> requestMap) {
+        Map<String, String> validationResults = new HashMap<>();
+        String isPassedValidation = "true";
+
+        validationResults.put("nameResult", FieldValidator.validateSearchSentenceField(requestMap.get("search_name")));
+        validationResults.put("authorResult", FieldValidator.validateSearchSentenceField(requestMap.get("search_author")));
+        validationResults.put("genreResult", FieldValidator.validateSearchSentenceField(requestMap.get("search_genre")));
+        validationResults.put("yearResult", FieldValidator.validateSearchDigitField(requestMap.get("search_year")));
+        validationResults.put("typeResult", FieldValidator.validateSearchSentenceField(requestMap.get("search_type")));
+
+        for (Map.Entry<String, String> results : validationResults.entrySet()) {
+            if (!Boolean.parseBoolean(results.getValue())) {
+                isPassedValidation = "false";
+            }
+        }
+
+        if (validationResults.isEmpty()) {
+            isPassedValidation = "false";
         }
 
         validationResults.put("isPassedValidation", isPassedValidation);

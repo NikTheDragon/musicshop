@@ -11,10 +11,7 @@ import by.kurlovich.musicshop.repository.SqlSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,6 +99,7 @@ public class TrackRepository implements Repository<Track> {
              PreparedStatement ps = connection.prepareStatement(sqlSpecification.toSqlQuery());
              ResultSet rs = ps.executeQuery()) {
 
+            ResultSetMetaData rsmd = rs.getMetaData();
             while (rs.next()) {
                 Track track = new Track();
 
@@ -112,6 +110,10 @@ public class TrackRepository implements Repository<Track> {
                 track.setYear(rs.getString(5));
                 track.setLength(rs.getString(6));
                 track.setStatus(rs.getString(7));
+
+                if (rsmd.getColumnCount() == 8) {
+                    track.setOwnerId(rs.getString(8));
+                }
 
                 trackList.add(track);
             }

@@ -39,24 +39,29 @@ public class BuyTrackCommand implements Command {
                 String trackId = request.getParameter("track_id");
                 int trackPrice = Integer.parseInt(request.getParameter("track_price"));
                 int userPoints = currentUser.getPoints();
-                String currentUserId = currentUser.getId();
 
-                LOGGER.debug("User: {}, trying to buy track: {}", currentUserId, trackId);
+                LOGGER.debug("User: {}, trying to buy track: {}", currentUser.getId(), trackId);
 
                 if (trackPrice <= userPoints) {
-                    receiver.buyTrack(currentUserId, trackId);
+                    receiver.buyTrack(currentUser.getId(), trackId);
 
                     userPoints -= trackPrice;
                     currentUser.setPoints(userPoints);
 
                     receiver.updateUser(currentUser);
 
-                    List<Track> allTracks = receiver.getAllTracksWithOwner(currentUserId);
+                    List<Track> allTracks = (List<Track>) request.getSession(true).getAttribute("trackList");
                     allTracks.sort(Comparator.comparing(Track::getAuthor));
+
+                    for (Track track : allTracks) {
+                        if (track.getId().equals(trackId)) {
+                            track.setOwnerId(currentUser.getId());
+                        }
+                    }
 
                     request.getSession(true).setAttribute("user", currentUser);
                     request.getSession(true).setAttribute("trackList", allTracks);
-                    return new CommandResult(CommandResult.ResponseType.REDIRECT, SHOW_TRACKS_PAGE);
+                    return new CommandResult(CommandResult.ResponseType.FORWARD, SHOW_TRACKS_PAGE);
                 }
 
                 request.setAttribute("message", "insufficient points");
