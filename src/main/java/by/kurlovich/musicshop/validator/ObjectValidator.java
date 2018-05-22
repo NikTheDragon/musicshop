@@ -10,14 +10,14 @@ public class ObjectValidator {
         Map<String, String> validationResults = new HashMap<>();
         String isPassedValidation = "true";
 
-        validationResults.put("nameResult", FieldValidator.validateTextField(requestMap.get("submit_name")[0]));
-        validationResults.put("surnameResult", FieldValidator.validateTextField(requestMap.get("submit_surname")[0]));
-        validationResults.put("loginResult", FieldValidator.validateLogPasField(requestMap.get("submit_login")[0]));
-        validationResults.put("passwordResult", FieldValidator.validateTextField(requestMap.get("submit_password")[0]));
-        validationResults.put("emailResult", FieldValidator.validateEmailField(requestMap.get("submit_email")[0]));
-        validationResults.put("roleResult", FieldValidator.validateTextField(requestMap.get("submit_role")[0]));
-        validationResults.put("statusResult", FieldValidator.validateTextField(requestMap.get("submit_status")[0]));
-        validationResults.put("pointsResult", FieldValidator.validateDigitField(requestMap.get("submit_points")[0]));
+        validationResults.put("nameResult", FieldValidator.validateTextField(requestMap.get("submit_name")));
+        validationResults.put("surnameResult", FieldValidator.validateTextField(requestMap.get("submit_surname")));
+        validationResults.put("loginResult", FieldValidator.validateLogPasField(requestMap.get("submit_login")));
+        validationResults.put("passwordResult", FieldValidator.validateTextField(requestMap.get("submit_password")));
+        validationResults.put("emailResult", FieldValidator.validateEmailField(requestMap.get("submit_email")));
+        validationResults.put("roleResult", FieldValidator.validateTextField(requestMap.get("submit_role")));
+        validationResults.put("statusResult", FieldValidator.validateTextField(requestMap.get("submit_status")));
+        validationResults.put("pointsResult", FieldValidator.validateDigitField(requestMap.get("submit_points")));
 
         for (Map.Entry<String, String> results : validationResults.entrySet()) {
             if (!Boolean.parseBoolean(results.getValue())) {
@@ -34,11 +34,11 @@ public class ObjectValidator {
         Map<String, String> validationResults = new HashMap<>();
         String isPassedValidation = "true";
 
-        validationResults.put("nameResult", FieldValidator.validateSentenceField(requestMap.get("submit_name")[0]));
-        validationResults.put("authorResult", FieldValidator.validateSentenceField(requestMap.get("submit_author")[0]));
-        validationResults.put("genreResult", FieldValidator.validateTextField(requestMap.get("submit_genre")[0]));
-        validationResults.put("yearResult", FieldValidator.validateDigitField(requestMap.get("submit_year")[0]));
-        validationResults.put("lengthResult", FieldValidator.validateFloatDigitField(requestMap.get("submit_length")[0]));
+        validationResults.put("nameResult", FieldValidator.validateSentenceField(requestMap.get("submit_name")));
+        validationResults.put("authorResult", FieldValidator.validateSentenceField(requestMap.get("submit_author")));
+        validationResults.put("genreResult", FieldValidator.validateTextField(requestMap.get("submit_genre")));
+        validationResults.put("yearResult", FieldValidator.validateDigitField(requestMap.get("submit_year")));
+        validationResults.put("lengthResult", FieldValidator.validateFloatDigitField(requestMap.get("submit_length")));
 
         for (Map.Entry<String, String> results : validationResults.entrySet()) {
             if (!Boolean.parseBoolean(results.getValue())) {
@@ -55,7 +55,7 @@ public class ObjectValidator {
         Map<String, String> validationResults = new HashMap<>();
         String isPassedValidation = "true";
 
-        validationResults.put("nameResult", FieldValidator.validateTextField(requestMap.get("submit_name")[0]));
+        validationResults.put("nameResult", FieldValidator.validateTextField(requestMap.get("submit_name")));
 
         for (Map.Entry<String, String> results : validationResults.entrySet()) {
             if (!Boolean.parseBoolean(results.getValue())) {
@@ -72,9 +72,9 @@ public class ObjectValidator {
         Map<String, String> validationResults = new HashMap<>();
         String isPassedValidation = "true";
 
-        validationResults.put("nameResult", FieldValidator.validateSentenceField(requestMap.get("submit_name")[0]));
-        validationResults.put("genreResult", FieldValidator.validateTextField(requestMap.get("submit_genre")[0]));
-        validationResults.put("typeResult", FieldValidator.validateTextField(requestMap.get("submit_type")[0]));
+        validationResults.put("nameResult", FieldValidator.validateSentenceField(requestMap.get("submit_name")));
+        validationResults.put("genreResult", FieldValidator.validateTextField(requestMap.get("submit_genre")));
+        validationResults.put("typeResult", FieldValidator.validateTextField(requestMap.get("submit_type")));
 
         for (Map.Entry<String, String> results : validationResults.entrySet()) {
             if (!Boolean.parseBoolean(results.getValue())) {
@@ -91,10 +91,10 @@ public class ObjectValidator {
         Map<String, String> validationResults = new HashMap<>();
         String isPassedValidation = "true";
 
-        validationResults.put("nameResult", FieldValidator.validateSentenceField(requestMap.get("submit_name")[0]));
-        validationResults.put("authorResult", FieldValidator.validateSentenceField(requestMap.get("submit_author")[0]));
-        validationResults.put("genreResult", FieldValidator.validateTextField(requestMap.get("submit_genre")[0]));
-        validationResults.put("yearResult", FieldValidator.validateDigitField(requestMap.get("submit_year")[0]));
+        validationResults.put("nameResult", FieldValidator.validateSentenceField(requestMap.get("submit_name")));
+        validationResults.put("authorResult", FieldValidator.validateSentenceField(requestMap.get("submit_author")));
+        validationResults.put("genreResult", FieldValidator.validateTextField(requestMap.get("submit_genre")));
+        validationResults.put("yearResult", FieldValidator.validateDigitField(requestMap.get("submit_year")));
 
         for (Map.Entry<String, String> results : validationResults.entrySet()) {
             if (!Boolean.parseBoolean(results.getValue())) {
@@ -111,9 +111,9 @@ public class ObjectValidator {
         Map<String, String> validationResults = new HashMap<>();
         String isPassedValidation = "true";
 
-        validationResults.put("nameResult", FieldValidator.validateSentenceField(requestMap.get("submit_name")[0]));
-        validationResults.put("genreResult", FieldValidator.validateTextField(requestMap.get("submit_genre")[0]));
-        validationResults.put("yearResult", FieldValidator.validateDigitField(requestMap.get("submit_year")[0]));
+        validationResults.put("nameResult", FieldValidator.validateSentenceField(requestMap.get("submit_name")));
+        validationResults.put("genreResult", FieldValidator.validateTextField(requestMap.get("submit_genre")));
+        validationResults.put("yearResult", FieldValidator.validateDigitField(requestMap.get("submit_year")));
 
         for (Map.Entry<String, String> results : validationResults.entrySet()) {
             if (!Boolean.parseBoolean(results.getValue())) {

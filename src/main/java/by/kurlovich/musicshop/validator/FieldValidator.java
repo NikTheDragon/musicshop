@@ -4,12 +4,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FieldValidator {
-    public static String validateTextField(String fieldText) {
+    public static String validateTextField(String[] fieldText) {
         String textOnlyRegex = "^[a-zA-Zа-яА-Я]*$";
         Pattern pattern = Pattern.compile(textOnlyRegex);
-        Matcher matcher = pattern.matcher(fieldText);
+        Matcher matcher = pattern.matcher(fieldText[0]);
 
-        String commonValidatorResult = common(fieldText);
+        String commonValidatorResult = common(fieldText[0]);
 
         if (!Boolean.parseBoolean(commonValidatorResult)) {
             return commonValidatorResult;
@@ -22,12 +22,12 @@ public class FieldValidator {
         return "true";
     }
 
-    public static String validateSentenceField(String fieldText) {
+    public static String validateSentenceField(String[] fieldText) {
         String textOnlyRegex = "^[a-zA-Zа-яА-Я\\s\\,\\.\\d]*$";
         Pattern pattern = Pattern.compile(textOnlyRegex);
-        Matcher matcher = pattern.matcher(fieldText);
+        Matcher matcher = pattern.matcher(fieldText[0]);
 
-        String commonValidatorResult = common(fieldText);
+        String commonValidatorResult = common(fieldText[0]);
 
         if (!Boolean.parseBoolean(commonValidatorResult)) {
             return commonValidatorResult;
@@ -56,12 +56,12 @@ public class FieldValidator {
         return "true";
     }
 
-    public static String validateLogPasField(String fieldText) {
+    public static String validateLogPasField(String[] fieldText) {
         String textOnlyRegex = "^[a-zA-Zа-яА-Я_0-9]*$";
         Pattern pattern = Pattern.compile(textOnlyRegex);
-        Matcher matcher = pattern.matcher(fieldText);
+        Matcher matcher = pattern.matcher(fieldText[0]);
 
-        String commonValidatorResult = common(fieldText);
+        String commonValidatorResult = common(fieldText[0]);
 
         if (!Boolean.parseBoolean(commonValidatorResult)) {
             return commonValidatorResult;
@@ -74,12 +74,12 @@ public class FieldValidator {
         return "true";
     }
 
-    public static String validateEmailField(String fieldText) {
+    public static String validateEmailField(String[] fieldText) {
         String textOnlyRegex = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$";
         Pattern pattern = Pattern.compile(textOnlyRegex);
-        Matcher matcher = pattern.matcher(fieldText);
+        Matcher matcher = pattern.matcher(fieldText[0]);
 
-        String commonValidatorResult = common(fieldText);
+        String commonValidatorResult = common(fieldText[0]);
 
         if (!Boolean.parseBoolean(commonValidatorResult)) {
             return commonValidatorResult;
@@ -92,12 +92,12 @@ public class FieldValidator {
         return "true";
     }
 
-    public static String validateDigitField(String fieldText) {
+    public static String validateDigitField(String[] fieldText) {
         String textOnlyRegex = "^[\\d]*$";
         Pattern pattern = Pattern.compile(textOnlyRegex);
-        Matcher matcher = pattern.matcher(fieldText);
+        Matcher matcher = pattern.matcher(fieldText[0]);
 
-        if (fieldText == null || fieldText.isEmpty()) {
+        if (fieldText[0] == null || fieldText[0].isEmpty()) {
             return "null";
         }
 
@@ -108,7 +108,7 @@ public class FieldValidator {
         return "true";
     }
 
-    public static String validateSearchDigitField(String fieldText[]) {
+    public static String validateSearchDigitField(String[] fieldText) {
         if (fieldText == null) {
             return "true";
         }
@@ -124,12 +124,12 @@ public class FieldValidator {
         return "true";
     }
 
-    public static String validateFloatDigitField(String fieldText) {
+    public static String validateFloatDigitField(String[] fieldText) {
         String textOnlyRegex = "^[\\d]+\\.[\\d]*$";
         Pattern pattern = Pattern.compile(textOnlyRegex);
-        Matcher matcher = pattern.matcher(fieldText);
+        Matcher matcher = pattern.matcher(fieldText[0]);
 
-        if (fieldText == null || fieldText.isEmpty()) {
+        if (fieldText[0] == null || fieldText[0].isEmpty()) {
             return "null";
         }
 
