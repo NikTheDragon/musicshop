@@ -13,13 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * Class for checking user's login and password and if they are ok user will be logged to system.
- *
- * @param login    user's login from input field on jsp page.
- * @param password user's password from input field on jsp page.
- * @return CommandResult object with response type (forward|redirect) and page to show.
  */
 
 public class LoginUserCommand implements Command {
@@ -36,16 +33,17 @@ public class LoginUserCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
-            String login = request.getParameter("login");
-            String password = request.getParameter("password");
+            Map<String, String[]> requestMap = request.getParameterMap();
+            String[] login = requestMap.get("login");
+            String[] password = requestMap.get("password");
 
             String loginValidateResult = FieldValidator.validateLogPasField(login);
             String passwordValidateResult = FieldValidator.validateLogPasField(password);
 
             if (Boolean.parseBoolean(loginValidateResult) && Boolean.parseBoolean(passwordValidateResult)) {
-                LOGGER.debug("Attempt to login user with login={}, and password={}", login, password);
+                LOGGER.debug("Attempt to login user with login={}, and password={}", login[0], password[0]);
 
-                User user = receiver.loginUser(login, password);
+                User user = receiver.loginUser(login[0], password[0]);
 
                 if (user != null) {
                     String startPage = getStartPage(user);

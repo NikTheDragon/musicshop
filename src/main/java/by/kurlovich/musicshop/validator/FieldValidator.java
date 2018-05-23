@@ -5,15 +5,15 @@ import java.util.regex.Pattern;
 
 public class FieldValidator {
     public static String validateTextField(String[] fieldText) {
-        String textOnlyRegex = "^[a-zA-Zа-яА-Я]*$";
-        Pattern pattern = Pattern.compile(textOnlyRegex);
-        Matcher matcher = pattern.matcher(fieldText[0]);
-
         String commonValidatorResult = common(fieldText[0]);
 
         if (!Boolean.parseBoolean(commonValidatorResult)) {
             return commonValidatorResult;
         }
+
+        String textOnlyRegex = "^[a-zA-Zа-яА-Я]*$";
+        Pattern pattern = Pattern.compile(textOnlyRegex);
+        Matcher matcher = pattern.matcher(fieldText[0]);
 
         if (!matcher.matches()) {
             return "notText";
@@ -23,15 +23,15 @@ public class FieldValidator {
     }
 
     public static String validateSentenceField(String[] fieldText) {
-        String textOnlyRegex = "^[a-zA-Zа-яА-Я\\s\\,\\.\\d]*$";
-        Pattern pattern = Pattern.compile(textOnlyRegex);
-        Matcher matcher = pattern.matcher(fieldText[0]);
-
         String commonValidatorResult = common(fieldText[0]);
 
         if (!Boolean.parseBoolean(commonValidatorResult)) {
             return commonValidatorResult;
         }
+
+        String textOnlyRegex = "^[a-zA-Zа-яА-Я\\s\\,\\.\\d]*$";
+        Pattern pattern = Pattern.compile(textOnlyRegex);
+        Matcher matcher = pattern.matcher(fieldText[0]);
 
         if (!matcher.matches()) {
             return "notText";
@@ -57,15 +57,15 @@ public class FieldValidator {
     }
 
     public static String validateLogPasField(String[] fieldText) {
-        String textOnlyRegex = "^[a-zA-Zа-яА-Я_0-9]*$";
-        Pattern pattern = Pattern.compile(textOnlyRegex);
-        Matcher matcher = pattern.matcher(fieldText[0]);
-
         String commonValidatorResult = common(fieldText[0]);
 
         if (!Boolean.parseBoolean(commonValidatorResult)) {
             return commonValidatorResult;
         }
+
+        String textOnlyRegex = "^[a-zA-Zа-яА-Я_0-9]*$";
+        Pattern pattern = Pattern.compile(textOnlyRegex);
+        Matcher matcher = pattern.matcher(fieldText[0]);
 
         if (!matcher.matches()) {
             return "notLogPas";
@@ -75,15 +75,15 @@ public class FieldValidator {
     }
 
     public static String validateEmailField(String[] fieldText) {
-        String textOnlyRegex = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$";
-        Pattern pattern = Pattern.compile(textOnlyRegex);
-        Matcher matcher = pattern.matcher(fieldText[0]);
-
         String commonValidatorResult = common(fieldText[0]);
 
         if (!Boolean.parseBoolean(commonValidatorResult)) {
             return commonValidatorResult;
         }
+
+        String textOnlyRegex = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$";
+        Pattern pattern = Pattern.compile(textOnlyRegex);
+        Matcher matcher = pattern.matcher(fieldText[0]);
 
         if (!matcher.matches()) {
             return "notMail";
@@ -93,13 +93,13 @@ public class FieldValidator {
     }
 
     public static String validateDigitField(String[] fieldText) {
-        String textOnlyRegex = "^[\\d]*$";
-        Pattern pattern = Pattern.compile(textOnlyRegex);
-        Matcher matcher = pattern.matcher(fieldText[0]);
-
         if (fieldText[0] == null || fieldText[0].isEmpty()) {
             return "null";
         }
+
+        String textOnlyRegex = "^[\\d]*$";
+        Pattern pattern = Pattern.compile(textOnlyRegex);
+        Matcher matcher = pattern.matcher(fieldText[0]);
 
         if (!matcher.matches()) {
             return "notDigit";
@@ -125,13 +125,13 @@ public class FieldValidator {
     }
 
     public static String validateFloatDigitField(String[] fieldText) {
-        String textOnlyRegex = "^[\\d]+\\.[\\d]*$";
-        Pattern pattern = Pattern.compile(textOnlyRegex);
-        Matcher matcher = pattern.matcher(fieldText[0]);
-
         if (fieldText[0] == null || fieldText[0].isEmpty()) {
             return "null";
         }
+
+        String textOnlyRegex = "^[\\d]+\\.[\\d]*$";
+        Pattern pattern = Pattern.compile(textOnlyRegex);
+        Matcher matcher = pattern.matcher(fieldText[0]);
 
         if (!matcher.matches()) {
             return "notFloat";
