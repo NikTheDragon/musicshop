@@ -2,7 +2,7 @@ package by.kurlovich.musicshop.command.common;
 
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
-import by.kurlovich.musicshop.content.CommandResult;
+import by.kurlovich.musicshop.web.CommandResult;
 import by.kurlovich.musicshop.util.creator.ObjectCreator;
 import by.kurlovich.musicshop.entity.SearchData;
 import by.kurlovich.musicshop.entity.Track;

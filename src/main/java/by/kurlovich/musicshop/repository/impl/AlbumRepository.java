@@ -1,7 +1,7 @@
 package by.kurlovich.musicshop.repository.impl;
 
-import by.kurlovich.musicshop.dbconnection.ConnectionException;
-import by.kurlovich.musicshop.dbconnection.ConnectionPool;
+import by.kurlovich.musicshop.repository.dbconnection.ConnectionException;
+import by.kurlovich.musicshop.repository.dbconnection.ConnectionPool;
 import by.kurlovich.musicshop.entity.Album;
 import by.kurlovich.musicshop.repository.Repository;
 import by.kurlovich.musicshop.repository.RepositoryException;

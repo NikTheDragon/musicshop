@@ -3,7 +3,7 @@ package by.kurlovich.musicshop.command.base;
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.command.admin.CreateTrackCommand;
-import by.kurlovich.musicshop.content.CommandResult;
+import by.kurlovich.musicshop.web.CommandResult;
 import by.kurlovich.musicshop.util.creator.ObjectCreator;
 import by.kurlovich.musicshop.entity.Track;
 import by.kurlovich.musicshop.receiver.EntityReceiver;

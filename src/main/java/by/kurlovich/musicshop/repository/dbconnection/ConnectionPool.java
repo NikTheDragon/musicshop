@@ -1,4 +1,4 @@
-package by.kurlovich.musicshop.dbconnection;
+package by.kurlovich.musicshop.repository.dbconnection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

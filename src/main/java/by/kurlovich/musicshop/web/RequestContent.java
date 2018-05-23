@@ -1,4 +1,4 @@
-package by.kurlovich.musicshop.content;
+package by.kurlovich.musicshop.web;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
