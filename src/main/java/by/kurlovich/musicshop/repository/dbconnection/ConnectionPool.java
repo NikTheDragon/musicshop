@@ -49,18 +49,20 @@ public class ConnectionPool {
         try {
             if (!connectionsQueue.isEmpty()) {
                 connection = connectionsQueue.take();
+
                 if (connection.isClosed()) {
                     connection = getConnection();
                 }
+
+                currentConnections.decrementAndGet();
+
+                LOGGER.debug("Get dbconnection. Connections left: {}.", currentConnections);
+                return connection;
+
             } else {
-                throw new ConnectionException("Can't get connection from queue.");
+                return newConnection();
             }
 
-            currentConnections.decrementAndGet();
-
-            LOGGER.debug("Get dbconnection. Connections left: {}.", currentConnections);
-
-            return connection;
         } catch (InterruptedException | SQLException e) {
             throw new ConnectionException("Problems with getting connections from pool.\n" + e, e);
         } finally {
@@ -71,15 +73,17 @@ public class ConnectionPool {
     void releaseConnection(ProxyConnection connection) throws ConnectionException {
         lock.lock();
         try {
-            if (connection != null && currentConnections.intValue() < maxConnections) {
+            if (connection != null) {
+                if (currentConnections.intValue() < maxConnections) {
 
-                connectionsQueue.put(connection);
-                currentConnections.incrementAndGet();
+                    connectionsQueue.put(connection);
+                    currentConnections.incrementAndGet();
 
-                LOGGER.debug("Release dbconnection. Connections left: {}.", currentConnections);
-
+                    LOGGER.debug("Release dbconnection. Connections left: {}.", currentConnections);
+                }
+                connection.close();
             }
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | SQLException e) {
             throw new ConnectionException("Problems in dbconnection queue.\n" + e, e);
         } finally {
             lock.unlock();
