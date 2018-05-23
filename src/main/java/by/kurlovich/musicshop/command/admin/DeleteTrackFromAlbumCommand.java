@@ -6,15 +6,14 @@ import by.kurlovich.musicshop.content.CommandResult;
 import by.kurlovich.musicshop.entity.Content;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
-import by.kurlovich.musicshop.store.PageStore;
-import by.kurlovich.musicshop.validator.AccessValidator;
+import by.kurlovich.musicshop.web.pages.PageStore;
+import by.kurlovich.musicshop.util.validator.AccessValidator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 

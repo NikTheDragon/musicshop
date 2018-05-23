@@ -3,8 +3,8 @@ package by.kurlovich.musicshop.command.user;
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
-import by.kurlovich.musicshop.store.PageStore;
-import by.kurlovich.musicshop.validator.AccessValidator;
+import by.kurlovich.musicshop.web.pages.PageStore;
+import by.kurlovich.musicshop.util.validator.AccessValidator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

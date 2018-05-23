@@ -4,13 +4,13 @@ import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.command.admin.CreateTrackCommand;
 import by.kurlovich.musicshop.content.CommandResult;
-import by.kurlovich.musicshop.creator.ObjectCreator;
+import by.kurlovich.musicshop.util.creator.ObjectCreator;
 import by.kurlovich.musicshop.entity.Track;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
-import by.kurlovich.musicshop.store.PageStore;
-import by.kurlovich.musicshop.validator.AccessValidator;
-import by.kurlovich.musicshop.validator.ObjectValidator;
+import by.kurlovich.musicshop.web.pages.PageStore;
+import by.kurlovich.musicshop.util.validator.AccessValidator;
+import by.kurlovich.musicshop.util.validator.ObjectValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

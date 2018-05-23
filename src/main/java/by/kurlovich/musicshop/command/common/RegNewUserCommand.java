@@ -3,17 +3,16 @@ package by.kurlovich.musicshop.command.common;
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
-import by.kurlovich.musicshop.creator.ObjectCreator;
+import by.kurlovich.musicshop.util.creator.ObjectCreator;
 import by.kurlovich.musicshop.entity.User;
-import by.kurlovich.musicshop.store.PageStore;
+import by.kurlovich.musicshop.web.pages.PageStore;
 import by.kurlovich.musicshop.receiver.UserReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
-import by.kurlovich.musicshop.validator.ObjectValidator;
+import by.kurlovich.musicshop.util.validator.ObjectValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.Map;
 
 public class RegNewUserCommand implements Command {

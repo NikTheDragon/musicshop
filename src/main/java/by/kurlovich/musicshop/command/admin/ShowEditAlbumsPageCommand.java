@@ -6,10 +6,10 @@ import by.kurlovich.musicshop.content.CommandResult;
 import by.kurlovich.musicshop.entity.Album;
 import by.kurlovich.musicshop.entity.Author;
 import by.kurlovich.musicshop.entity.Genre;
-import by.kurlovich.musicshop.store.PageStore;
+import by.kurlovich.musicshop.web.pages.PageStore;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
-import by.kurlovich.musicshop.validator.AccessValidator;
+import by.kurlovich.musicshop.util.validator.AccessValidator;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;

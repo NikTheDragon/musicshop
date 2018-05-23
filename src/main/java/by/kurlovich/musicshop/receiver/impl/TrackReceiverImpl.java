@@ -8,9 +8,9 @@ import by.kurlovich.musicshop.repository.Repository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.impl.TrackRepository;
-import by.kurlovich.musicshop.specification.GetAllTracksSpecification;
-import by.kurlovich.musicshop.specification.GetTracksByAuthorNameSpecification;
-import by.kurlovich.musicshop.specification.SearchTracksWithOwnerSpecification;
+import by.kurlovich.musicshop.repository.specification.GetAllTracksSpecification;
+import by.kurlovich.musicshop.repository.specification.GetTracksByAuthorNameSpecification;
+import by.kurlovich.musicshop.repository.specification.SearchTracksWithOwnerSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

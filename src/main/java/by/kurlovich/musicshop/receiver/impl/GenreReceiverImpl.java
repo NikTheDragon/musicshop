@@ -8,7 +8,7 @@ import by.kurlovich.musicshop.repository.Repository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.impl.GenreRepository;
-import by.kurlovich.musicshop.specification.GetAllGenresSpecification;
+import by.kurlovich.musicshop.repository.specification.GetAllGenresSpecification;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -2,13 +2,13 @@ package by.kurlovich.musicshop.command.common;
 
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.content.CommandResult;
-import by.kurlovich.musicshop.store.PageStore;
+import by.kurlovich.musicshop.web.pages.PageStore;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 
-import by.kurlovich.musicshop.validator.AccessValidator;
+import by.kurlovich.musicshop.util.validator.AccessValidator;
 
 public class ShowUserPageCommand implements Command {
     private final static String USER_PAGE = PageStore.USER_PAGE.getPageName();

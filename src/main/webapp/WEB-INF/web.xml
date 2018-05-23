@@ -17,7 +17,7 @@
 
     <filter>
         <filter-name>FormEncodingSetterFilter</filter-name>
-        <filter-class>by.kurlovich.musicshop.util.FormEncodingSetterFilter</filter-class>
+        <filter-class>by.kurlovich.musicshop.web.filter.FormEncodingSetterFilter</filter-class>
         <init-param>
             <param-name>encoding</param-name>
             <param-value>UTF-8</param-value>
@@ -31,14 +31,14 @@
 
     <jsp-config>
         <taglib>
-            <taglib-uri>https://by.kurlovich.musicshop.tag</taglib-uri>
+            <taglib-uri>https://by.kurlovich.musicshop.web.tag</taglib-uri>
             <taglib-location>/WEB-INF/paging.tld</taglib-location>
         </taglib>
     </jsp-config>
 
     <filter>
         <filter-name>AdminFilter</filter-name>
-        <filter-class>by.kurlovich.musicshop.util.AdminFilter</filter-class>
+        <filter-class>by.kurlovich.musicshop.web.filter.AdminFilter</filter-class>
         <init-param>
             <param-name>error_page</param-name>
             <param-value>/jsp/error/error.jsp</param-value>
@@ -52,7 +52,7 @@
 
     <filter>
         <filter-name>UserFilter</filter-name>
-        <filter-class>by.kurlovich.musicshop.util.UserFilter</filter-class>
+        <filter-class>by.kurlovich.musicshop.web.filter.UserFilter</filter-class>
         <init-param>
             <param-name>error_page</param-name>
             <param-value>/jsp/error/error.jsp</param-value>

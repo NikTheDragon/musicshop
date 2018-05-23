@@ -8,8 +8,8 @@ import by.kurlovich.musicshop.repository.Repository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.impl.MixRepository;
-import by.kurlovich.musicshop.specification.GetAllMixesSpecification;
-import by.kurlovich.musicshop.specification.GetMixByIdSpecification;
+import by.kurlovich.musicshop.repository.specification.GetAllMixesSpecification;
+import by.kurlovich.musicshop.repository.specification.GetMixByIdSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

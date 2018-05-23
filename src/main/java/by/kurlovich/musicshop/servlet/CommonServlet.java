@@ -4,7 +4,7 @@ import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.command.CommandFactory;
 import by.kurlovich.musicshop.content.CommandResult;
-import by.kurlovich.musicshop.store.PageStore;
+import by.kurlovich.musicshop.web.pages.PageStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

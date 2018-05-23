@@ -9,7 +9,7 @@ import by.kurlovich.musicshop.repository.Repository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.impl.AlbumContentRepository;
-import by.kurlovich.musicshop.specification.GetAlbumContentByAlbumIdSpecification;
+import by.kurlovich.musicshop.repository.specification.GetAlbumContentByAlbumIdSpecification;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

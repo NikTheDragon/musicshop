@@ -8,11 +8,11 @@
     <display-name>Paging function</display-name>
     <tlib-version>2.0</tlib-version>
     <short-name>paging</short-name>
-    <uri>https://by.kurlovich.musicshop.tag</uri>
+    <uri>https://by.kurlovich.musicshop.web.tag</uri>
 
     <tag>
         <name>getFirstPageNumber</name>
-        <tag-class>by.kurlovich.musicshop.tag.paging.GetFirstPageNumberTag</tag-class>
+        <tag-class>by.kurlovich.musicshop.web.tag.paging.GetFirstPageNumberTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <name>data</name>
@@ -28,7 +28,7 @@
 
     <tag>
         <name>getLastPageNumber</name>
-        <tag-class>by.kurlovich.musicshop.tag.paging.GetLastPageNumberTag</tag-class>
+        <tag-class>by.kurlovich.musicshop.web.tag.paging.GetLastPageNumberTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <name>data</name>
@@ -44,7 +44,7 @@
 
     <tag>
         <name>getSelectPageNumbers</name>
-        <tag-class>by.kurlovich.musicshop.tag.paging.GetSelectPageNumbersTag</tag-class>
+        <tag-class>by.kurlovich.musicshop.web.tag.paging.GetSelectPageNumbersTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <name>data</name>
@@ -70,7 +70,7 @@
 
     <tag>
         <name>getSelectedRows</name>
-        <tag-class>by.kurlovich.musicshop.tag.paging.GetSelectedRowsTag</tag-class>
+        <tag-class>by.kurlovich.musicshop.web.tag.paging.GetSelectedRowsTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <name>data</name>

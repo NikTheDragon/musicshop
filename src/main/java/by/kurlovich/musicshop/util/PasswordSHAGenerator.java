@@ -4,7 +4,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class PasswordSHAGenerator {
-    public static String generatePassword(String password) throws NoSuchAlgorithmException {
+    public static String generate(String password) throws NoSuchAlgorithmException {
         byte[] mySalt = "mySaltArray".getBytes();
 
         return getSecurePassword(password, mySalt);

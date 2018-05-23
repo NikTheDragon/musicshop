@@ -7,7 +7,7 @@ import by.kurlovich.musicshop.entity.Mix;
 import by.kurlovich.musicshop.entity.User;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.receiver.UserReceiver;
-import by.kurlovich.musicshop.store.PageStore;
+import by.kurlovich.musicshop.web.pages.PageStore;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Comparator;

@@ -6,9 +6,9 @@ import by.kurlovich.musicshop.content.CommandResult;
 import by.kurlovich.musicshop.entity.User;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.receiver.UserReceiver;
-import by.kurlovich.musicshop.store.PageStore;
+import by.kurlovich.musicshop.web.pages.PageStore;
 
-import by.kurlovich.musicshop.validator.AccessValidator;
+import by.kurlovich.musicshop.util.validator.AccessValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

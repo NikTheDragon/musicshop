@@ -13,7 +13,7 @@ import by.kurlovich.musicshop.repository.impl.AlbumRepository;
 import by.kurlovich.musicshop.repository.impl.MixRepository;
 import by.kurlovich.musicshop.repository.impl.TrackRepository;
 import by.kurlovich.musicshop.repository.impl.UserRepository;
-import by.kurlovich.musicshop.specification.*;
+import by.kurlovich.musicshop.repository.specification.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

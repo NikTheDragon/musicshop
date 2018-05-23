@@ -5,9 +5,9 @@ import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.content.CommandResult;
 import by.kurlovich.musicshop.entity.Content;
 import by.kurlovich.musicshop.receiver.ReceiverException;
-import by.kurlovich.musicshop.store.PageStore;
+import by.kurlovich.musicshop.web.pages.PageStore;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
-import by.kurlovich.musicshop.validator.AccessValidator;
+import by.kurlovich.musicshop.util.validator.AccessValidator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class AddTrackToMixCommand implements Command {
     private final static Logger LOGGER = LoggerFactory.getLogger(AddTrackToMixCommand.class);
