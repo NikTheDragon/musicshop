@@ -80,8 +80,10 @@ public class ConnectionPool {
                     currentConnections.incrementAndGet();
 
                     LOGGER.debug("Release dbconnection. Connections left: {}.", currentConnections);
+                } else {
+                    LOGGER.debug("Connection pool is full. Closing connection.");
+                    connection.getConnection().close();
                 }
-                connection.close();
             }
         } catch (InterruptedException | SQLException e) {
             throw new ConnectionException("Problems in dbconnection queue.\n" + e, e);
