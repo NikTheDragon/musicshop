@@ -44,7 +44,7 @@ public class SearchAuthorsCommand implements Command {
                 List<Author> searchedAuthors = receiver.getSearchedEntities(sd, currentUserId);
                 searchedAuthors.sort(Comparator.comparing(Author::getName));
 
-                request.getSession(true).setAttribute("trackList", searchedAuthors);
+                request.getSession(true).setAttribute("authorList", searchedAuthors);
             }
 
             return new CommandResult(CommandResult.ResponseType.FORWARD, currentURI);

@@ -9,6 +9,7 @@ import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.impl.AuthorRepository;
 import by.kurlovich.musicshop.repository.specification.GetAllAuthorsSpecification;
+import by.kurlovich.musicshop.repository.specification.SearchAuthorsSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -100,7 +101,16 @@ public class AuthorReceiverImpl implements EntityReceiver<Author> {
 
     @Override
     public List<Author> getSearchedEntities(SearchData searchData, String userId) throws ReceiverException {
-        return null;
+        try {
+            Repository<Author> repository = new AuthorRepository();
+            Specification specification = new SearchAuthorsSpecification(searchData);
+            LOGGER.debug("trying to search authors.");
+
+            return repository.query(specification);
+
+        } catch (RepositoryException e) {
+            throw new ReceiverException("Exception in getSearchedEntities of AuthorReceiverImpl.\n" + e, e);
+        }
     }
 
     @Override

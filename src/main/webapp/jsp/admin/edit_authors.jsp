@@ -51,16 +51,16 @@
             <input type="hidden" name="command" value="search_authors">
             <input type="hidden" name="currentURI" value="${pageContext.request.requestURI}">
 
-            <td width="80%">
+            <td width="70%">
                 <input type="text" id="search_name" name="search_name" value="">
             </td>
             <td width="10%">
                 <input type="text" id="search_genre" name="search_genre" value="">
             </td>
-            <td width="5%">
+            <td width="10%">
                 <input type="text" id="search_year" name="search_type" value="">
             </td>
-            <td width="5%">
+            <td width="10%">
                 <input type="button" id="search_button" name="search" value="Search" onclick="searchButton()">
             </td>
         </form>
