@@ -15,9 +15,11 @@ import by.kurlovich.musicshop.repository.impl.TrackRepository;
 import by.kurlovich.musicshop.repository.impl.UserRepository;
 import by.kurlovich.musicshop.repository.specification.*;
 
+import by.kurlovich.musicshop.util.PasswordSHAGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -166,13 +168,15 @@ public class UserReceiverImpl implements UserReceiver {
 
             List<User> usersList = repository.query(specification);
             if (usersList.isEmpty()) {
+                user.setPassword(PasswordSHAGenerator.getPassword(user.getPassword()));
+
                 repository.add(user);
                 return true;
             } else {
                 return false;
             }
 
-        } catch (RepositoryException e) {
+        } catch (RepositoryException | NoSuchAlgorithmException e) {
             throw new ReceiverException("Exception in addNewUser.\n" + e, e);
         }
     }

@@ -4,23 +4,21 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class PasswordSHAGenerator {
-    public static String generate(String password) throws NoSuchAlgorithmException {
-        byte[] mySalt = "mySaltArray".getBytes();
+    public static String getPassword(String password) throws NoSuchAlgorithmException {
 
-        return getSecurePassword(password, mySalt);
+        return getSecurePassword(password);
     }
 
-    private static String getSecurePassword(String passwordToHash, byte[] salt) throws NoSuchAlgorithmException {
-        String generatedPassword = null;
+    private static String getSecurePassword(String passwordToHash) throws NoSuchAlgorithmException {
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
-            md.update(salt);
+            String generatedPassword;
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
 
-            byte[] bytes = md.digest(passwordToHash.getBytes());
+            byte[] byteArray = md.digest(passwordToHash.getBytes());
 
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < bytes.length; i++) {
-                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            for (Byte bytes : byteArray) {
+                sb.append(Integer.toString((bytes & 0xff) + 0x100, 16).substring(1));
             }
 
             generatedPassword = sb.toString();
