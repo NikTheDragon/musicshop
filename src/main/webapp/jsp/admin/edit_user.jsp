@@ -35,14 +35,13 @@
 
 <table style="width: 90%; margin-left: auto; margin-right: auto;">
     <tr style="text-align: center">
-        <td>${name}</td>
-        <td>${surname}</td>
-        <td>${login}</td>
-        <td>${password}</td>
-        <td>email</td>
-        <td>role</td>
-        <td>status</td>
-        <td>points</td>
+        <td style="width: 20%">${name}</td>
+        <td style="width: 20%">${surname}</td>
+        <td style="width: 20%">${login}</td>
+        <td style="width: 15%">email</td>
+        <td style="width: 10%">role</td>
+        <td style="width: 10%">status</td>
+        <td style="width: 5%">points</td>
     </tr>
     <tr style="text-align: center">
         <td>
@@ -55,27 +54,24 @@
             <input type="text" id="userLogin" name="submit_login" value="${userInfo.login}">
         </td>
         <td>
-            <input type="text" id="userPassword" name="submit_password" value="${userInfo.password}">
-        </td>
-        <td>
             <input type="text" id="userEmail" name="submit_email" value="${userInfo.email}">
         </td>
         <td>
-            <select id="roleSelector" name="submit_role" size="1" style="width: 100px">
+            <select id="roleSelector" name="submit_role" size="1">
                 <option value="${userInfo.role}" selected disabled hidden>${userInfo.role}</option>
                 <option value="admin">admin</option>
                 <option value="user">user</option>
             </select>
         </td>
         <td>
-            <select id="statusSelector" name="submit_status" size="1" style="width: 100px">
+            <select id="statusSelector" name="submit_status" size="1">
                 <option value="${userInfo.status}" selected disabled hidden>${userInfo.status}</option>
                 <option value="active">active</option>
                 <option value="deleted">deleted</option>
             </select>
         </td>
         <td>
-            <input type="text" id="userPoints" name="submit_points" value="${userInfo.points}" style="width: 50px">
+            <input type="text" id="userPoints" name="submit_points" value="${userInfo.points}">
         </td>
     </tr>
     <tr style="text-align: center">
@@ -89,10 +85,6 @@
         </td>
         <td>
             <c:set var="message" value="${messages['loginResult']}"/>
-            <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
-        </td>
-        <td>
-            <c:set var="message" value="${messages['passwordResult']}"/>
             <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
         </td>
         <td>
@@ -120,7 +112,7 @@
     <input type="hidden" id="submit_name" name="submit_name" value="">
     <input type="hidden" id="submit_surname" name="submit_surname" value="">
     <input type="hidden" id="submit_login" name="submit_login" value="">
-    <input type="hidden" id="submit_password" name="submit_password" value="">
+    <input type="hidden" id="submit_password" name="submit_password" value="default">
     <input type="hidden" id="submit_email" name="submit_email" value="">
     <input type="hidden" id="submit_role" name="submit_role" value="">
     <input type="hidden" id="submit_status" name="submit_status" value="">
@@ -141,7 +133,6 @@
         var userName = document.getElementById("userName").value;
         var userSurname = document.getElementById("userSurname").value;
         var userLogin = document.getElementById("userLogin").value;
-        var userPassword = document.getElementById("userPassword").value;
         var userEmail = document.getElementById("userEmail").value;
         var userRole = document.getElementById("roleSelector").value;
         var userStatus = document.getElementById("statusSelector").value;
@@ -150,13 +141,12 @@
         document.getElementById("submit_name").value = userName;
         document.getElementById("submit_surname").value = userSurname;
         document.getElementById("submit_login").value = userLogin;
-        document.getElementById("submit_password").value = userPassword;
         document.getElementById("submit_email").value = userEmail;
         document.getElementById("submit_role").value = userRole;
         document.getElementById("submit_status").value = userStatus;
         document.getElementById("submit_points").value = userPoints;
 
-        if (userName != "" && userSurname != "" && userLogin != "" && userPassword != "" &&
+        if (userName != "" && userSurname != "" && userLogin != "" &&
             userEmail != "" && userRole != "" && userStatus != "" && userPoints != "") {
 
             document.getElementById(formName).submit();

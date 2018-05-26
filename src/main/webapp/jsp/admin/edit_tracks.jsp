@@ -45,26 +45,42 @@
 
 <table style="width: 90%; margin-left: auto; margin-right: auto; font-size: 12px">
     <tr>
-        <form id="searchForm" action="${absolutePath}/mainServlet" method="post">
-            <input type="hidden" name="command" value="search_tracks">
-            <input type="hidden" name="currentURI" value="${pageContext.request.requestURI}">
+    <tr style="text-align: center">
+        <td width="35%">
+            ${titleHeader}
+        </td>
+        <td width="30%">
+            ${authorHeader}
+        </td>
+        <td width="10%">
+            ${genreHeader}
+        </td>
+        <td width="5%">
+            ${yearHeader}
+        </td>
+        <td width="10%">
+        </td>
+    </tr>
+    <form id="searchForm" action="${absolutePath}/mainServlet" method="post">
+        <input type="hidden" name="command" value="search_tracks">
+        <input type="hidden" name="currentURI" value="${pageContext.request.requestURI}">
 
-            <td width="35%">
-                <input type="text" id="search_name" name="search_name" value="">
-            </td>
-            <td width="35%">
-                <input type="text" id="search_author" name="search_author" value="">
-            </td>
-            <td width="10%">
-                <input type="text" id="search_genre" name="search_genre" value="">
-            </td>
-            <td width="10%">
-                <input type="text" id="search_year" name="search_year" value="">
-            </td>
-            <td width="10%">
-                <input type="button" id="search_button" name="search" value="Search" onclick="searchButton()">
-            </td>
-        </form>
+        <td width="35%">
+            <input type="text" id="search_name" name="search_name" value="">
+        </td>
+        <td width="35%">
+            <input type="text" id="search_author" name="search_author" value="">
+        </td>
+        <td width="10%">
+            <input type="text" id="search_genre" name="search_genre" value="">
+        </td>
+        <td width="10%">
+            <input type="text" id="search_year" name="search_year" value="">
+        </td>
+        <td width="10%">
+            <input type="button" id="search_button" name="search" value="Search" onclick="searchButton()">
+        </td>
+    </form>
     </tr>
 
 </table>

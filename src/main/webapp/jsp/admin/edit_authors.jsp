@@ -47,23 +47,36 @@
 
 <table style="width: 90%; margin-left: auto; margin-right: auto; font-size: 12px">
     <tr>
-        <form id="searchForm" action="${absolutePath}/mainServlet" method="post">
-            <input type="hidden" name="command" value="search_authors">
-            <input type="hidden" name="currentURI" value="${pageContext.request.requestURI}">
+    <tr style="text-align: center">
+        <td width="70%">
+            ${nameHeader}
+        </td>
+        <td width="10%">
+            ${genreHeader}
+        </td>
+        <td width="10%">
+            ${typeHeader}
+        </td>
+        <td width="10%">
+        </td>
+    </tr>
+    <form id="searchForm" action="${absolutePath}/mainServlet" method="post">
+        <input type="hidden" name="command" value="search_authors">
+        <input type="hidden" name="currentURI" value="${pageContext.request.requestURI}">
 
-            <td width="70%">
-                <input type="text" id="search_name" name="search_name" value="">
-            </td>
-            <td width="10%">
-                <input type="text" id="search_genre" name="search_genre" value="">
-            </td>
-            <td width="10%">
-                <input type="text" id="search_year" name="search_type" value="">
-            </td>
-            <td width="10%">
-                <input type="button" id="search_button" name="search" value="Search" onclick="searchButton()">
-            </td>
-        </form>
+        <td width="70%">
+            <input type="text" id="search_name" name="search_name" value="">
+        </td>
+        <td width="10%">
+            <input type="text" id="search_genre" name="search_genre" value="">
+        </td>
+        <td width="10%">
+            <input type="text" id="search_year" name="search_type" value="">
+        </td>
+        <td width="10%">
+            <input type="button" id="search_button" name="search" value="Search" onclick="searchButton()">
+        </td>
+    </form>
     </tr>
 
 </table>
@@ -118,20 +131,20 @@
         </td>
 
     </tr>
-<tr>
-    <td>
-        <c:set var="message" value="${messages['nameResult']}"/>
-        <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
-    </td>
-    <td>
-        <c:set var="message" value="${messages['genreResult']}"/>
-        <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
-    </td>
-    <td>
-        <c:set var="message" value="${messages['typeResult']}"/>
-        <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
-    </td>
-</tr>
+    <tr>
+        <td>
+            <c:set var="message" value="${messages['nameResult']}"/>
+            <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
+        </td>
+        <td>
+            <c:set var="message" value="${messages['genreResult']}"/>
+            <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
+        </td>
+        <td>
+            <c:set var="message" value="${messages['typeResult']}"/>
+            <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
+        </td>
+    </tr>
 </table>
 
 <table style="width: 90%; margin-left: auto; margin-right: auto; text-align: right">
