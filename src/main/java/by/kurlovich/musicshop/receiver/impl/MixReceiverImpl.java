@@ -4,15 +4,16 @@ import by.kurlovich.musicshop.entity.Mix;
 import by.kurlovich.musicshop.entity.SearchData;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
-import by.kurlovich.musicshop.repository.Repository;
+import by.kurlovich.musicshop.repository.EntityRepository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
-import by.kurlovich.musicshop.repository.impl.MixRepository;
+import by.kurlovich.musicshop.repository.impl.MixRepositoryImpl;
 import by.kurlovich.musicshop.repository.specification.GetAllMixesSpecification;
 import by.kurlovich.musicshop.repository.specification.GetMixByIdSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.List;
 
 public class MixReceiverImpl implements EntityReceiver<Mix> {
@@ -21,23 +22,23 @@ public class MixReceiverImpl implements EntityReceiver<Mix> {
     @Override
     public boolean addNewEntity(Mix item) throws ReceiverException {
         try {
-            Repository<Mix> repository = new MixRepository();
+            EntityRepository<Mix> entityRepository = new MixRepositoryImpl();
             LOGGER.debug("trying to add mix: {}", item.getName());
 
             if (item.getName().isEmpty()) {
                 return false;
             }
 
-            switch (repository.getStatus(item)) {
+            switch (entityRepository.getStatus(item)) {
                 case ACTIVE:
                     LOGGER.debug("found active mix: {}", item.getName());
                     return false;
                 case DELETE:
                     LOGGER.debug("found deleted mix: {}", item.getName());
-                    repository.undelete(item);
+                    entityRepository.undelete(item);
                     return true;
                 case NA:
-                    repository.add(item);
+                    entityRepository.add(item);
                     return true;
                 default:
                     return false;
@@ -51,14 +52,14 @@ public class MixReceiverImpl implements EntityReceiver<Mix> {
     @Override
     public boolean deleteEntity(Mix item) throws ReceiverException {
         try {
-            Repository<Mix> repository = new MixRepository();
+            EntityRepository<Mix> entityRepository = new MixRepositoryImpl();
             LOGGER.debug("trying to delete mix: {}", item.getName());
 
             if (item.getName().isEmpty()) {
                 return false;
             }
 
-            repository.delete(item);
+            entityRepository.delete(item);
             return true;
 
         } catch (RepositoryException e) {
@@ -69,14 +70,14 @@ public class MixReceiverImpl implements EntityReceiver<Mix> {
     @Override
     public boolean updateEntity(Mix item) throws ReceiverException {
         try {
-            Repository<Mix> repository = new MixRepository();
+            EntityRepository<Mix> entityRepository = new MixRepositoryImpl();
             LOGGER.debug("trying to update mix: {}", item.getName());
 
             if (item.getName().isEmpty()) {
                 return false;
             }
 
-            repository.update(item);
+            entityRepository.update(item);
             return true;
 
         } catch (RepositoryException e) {
@@ -87,11 +88,11 @@ public class MixReceiverImpl implements EntityReceiver<Mix> {
     @Override
     public List<Mix> getAllEntities() throws ReceiverException {
         try {
-            Repository<Mix> repository = new MixRepository();
+            EntityRepository<Mix> entityRepository = new MixRepositoryImpl();
             Specification specification = new GetAllMixesSpecification();
             LOGGER.debug("Trying to get all mixes.");
 
-            return repository.query(specification);
+            return entityRepository.query(specification);
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in getAllEntities of MixReceiver.\n" + e, e);
@@ -100,17 +101,17 @@ public class MixReceiverImpl implements EntityReceiver<Mix> {
 
     @Override
     public List<Mix> getSearchedEntities(SearchData searchData, String userId) throws ReceiverException {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
     public List<Mix> getSpecifiedEntities(String mixId) throws ReceiverException {
         try {
-            Repository<Mix> repository = new MixRepository();
+            EntityRepository<Mix> entityRepository = new MixRepositoryImpl();
             Specification specification = new GetMixByIdSpecification(mixId);
             LOGGER.debug("trying to get specified mix with id {}.", mixId);
 
-            return repository.query(specification);
+            return entityRepository.query(specification);
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in getSpecifiedEntities of MixReceiverImpl.\n" + e, e);

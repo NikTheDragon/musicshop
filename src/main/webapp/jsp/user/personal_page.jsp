@@ -43,11 +43,11 @@
 
 <table style="width: 90%; margin-left: auto; margin-right: auto;">
     <tr style="text-align: center">
-        <td style="width: 25%">${name}</td>
-        <td style="width: 25%">${surname}</td>
+        <td style="width: 20%">${name}</td>
+        <td style="width: 20%">${surname}</td>
         <td style="width: 15%">${login}</td>
-        <td style="width: 15%">${password}</td>
         <td style="width: 15%">email</td>
+        <td style="width: 10%"></td>
     </tr>
     <tr style="text-align: center">
         <td>
@@ -60,11 +60,55 @@
             <input type="text" id="userLogin" name="submit_login" value="${user.login}">
         </td>
         <td>
-            <input type="text" id="userPassword" name="submit_password" value="${user.password}">
-        </td>
-        <td>
             <input type="text" id="userEmail" name="submit_email" value="${user.email}">
         </td>
+        <td>
+            <input type="button" value="${updateButton}" onclick="submitButton('updateUser')" style="width: 200px">
+        </td>
+    </tr>
+</table>
+
+<table width="100%">
+    <tr>
+        <td style="text-align: center">
+            <h2>Пароль</h2>
+        </td>
+    </tr>
+</table>
+
+<table style="width: 50%; margin-left: auto; margin-right: auto;">
+    <tr style="text-align: center">
+        <td style="width: 20%">Старый</td>
+        <td style="width: 20%">Новый</td>
+        <td style="width: 10%"></td>
+    </tr>
+    <tr style="text-align: center">
+        <td>
+            <input type="text" id="oldPassword" name="submit_old_password" value="">
+        </td>
+        <td>
+            <input type="text" id="newPassword" name="submit_new_password" value="">
+        </td>
+        <td>
+            <input type="button" value="${updateButton}" onclick="submitPassword('updatePassword')"
+                   style="width: 200px">
+        </td>
+    </tr>
+    <tr style="text-align: center">
+        <td>
+            <c:set var="message" value="${oldPasswordResult}"/>
+            <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
+        </td>
+        <td>
+            <c:set var="message" value="${newPasswordResult}"/>
+            <%@include file="/WEB-INF/jspf/error_handler.jsp" %>
+        </td>
+        <td>
+
+        </td>
+    </tr>
+    <tr style="text-align: center">
+        <td colspan="3">${commandResult}</td>
     </tr>
 </table>
 
@@ -74,17 +118,19 @@
     <input type="hidden" id="submit_name" name="submit_name" value="">
     <input type="hidden" id="submit_surname" name="submit_surname" value="">
     <input type="hidden" id="submit_login" name="submit_login" value="">
-    <input type="hidden" id="submit_password" name="submit_password" value="">
+    <input type="hidden" id="submit_password" name="submit_password" value="nothing">
     <input type="hidden" id="submit_email" name="submit_email" value="">
+    <input type="hidden" id="submit_role" name="submit_role" value="${user.role}">
+    <input type="hidden" id="submit_status" name="submit_status" value="${user.status}">
+    <input type="hidden" id="submit_points" name="submit_points" value="${user.points}">
 </form>
 
-<table style="width: 90%; margin-left: auto; margin-right: auto;">
-    <tr style="text-align: right">
-        <td>
-            <input type="button" value="${updateButton}" onclick="submitButton('updateUser')" style="width: 200px">
-        </td>
-    </tr>
-</table>
+<form id="updatePassword" action="${absolutePath}/mainServlet" method="post">
+    <input type="hidden" name="command" value="update_password">
+    <input type="hidden" name="submit_id" value="${user.id}">
+    <input type="hidden" id="submit_old_password" name="submit_old_password" value="">
+    <input type="hidden" id="submit_new_password" name="submit_new_password" value="">
+</form>
 
 <script>
 
@@ -92,17 +138,27 @@
         var userName = document.getElementById("userName").value;
         var userSurname = document.getElementById("userSurname").value;
         var userLogin = document.getElementById("userLogin").value;
-        var userPassword = document.getElementById("userPassword").value;
         var userEmail = document.getElementById("userEmail").value;
 
         document.getElementById("submit_name").value = userName;
         document.getElementById("submit_surname").value = userSurname;
         document.getElementById("submit_login").value = userLogin;
-        document.getElementById("submit_password").value = userPassword;
         document.getElementById("submit_email").value = userEmail;
 
-        if (userName != "" && userSurname != "" && userLogin != "" &&
-            userPassword != "" && userEmail != "") {
+        if (userName != "" && userSurname != "" && userLogin != "" && userEmail != "") {
+
+            document.getElementById(formName).submit();
+        }
+    }
+
+    function submitPassword(formName) {
+        var oldPassword = document.getElementById("oldPassword").value;
+        var newPassword = document.getElementById("newPassword").value;
+
+        document.getElementById("submit_old_password").value = oldPassword;
+        document.getElementById("submit_new_password").value = newPassword;
+
+        if (oldPassword != "" && newPassword != "") {
 
             document.getElementById(formName).submit();
         }

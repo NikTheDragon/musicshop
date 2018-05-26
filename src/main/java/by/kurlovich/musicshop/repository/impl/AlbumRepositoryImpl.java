@@ -1,9 +1,9 @@
 package by.kurlovich.musicshop.repository.impl;
 
+import by.kurlovich.musicshop.repository.EntityRepository;
 import by.kurlovich.musicshop.repository.dbconnection.ConnectionException;
 import by.kurlovich.musicshop.repository.dbconnection.ConnectionPool;
 import by.kurlovich.musicshop.entity.Album;
-import by.kurlovich.musicshop.repository.Repository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.SqlSpecification;
@@ -18,8 +18,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AlbumRepository implements Repository<Album> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AlbumRepository.class);
+public class AlbumRepositoryImpl implements EntityRepository<Album> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AlbumRepositoryImpl.class);
     private static final String GET_STATUS = "SELECT status FROM albums WHERE name=?";
     private static final String SET_STATUS = "UPDATE albums SET status='active' WHERE name=? AND author=(SELECT id FROM authors WHERE name=?) AND genre=(SELECT id FROM genres WHERE name=?) AND year=?";
     private static final String ADD_ALBUM = "INSERT INTO albums (name, author, genre, year, status) VALUES (?,(SELECT id FROM authors WHERE name=?),(SELECT id FROM genres WHERE name=?),?,?)";
@@ -27,9 +27,9 @@ public class AlbumRepository implements Repository<Album> {
     private static final String UPDATE_ALBUM = "UPDATE albums SET name=?, author=(SELECT id FROM authors WHERE name=?), genre=(SELECT id FROM genres WHERE name=?), year=? WHERE id=?";
     private final ConnectionPool pool;
 
-    public AlbumRepository() throws RepositoryException {
+    public AlbumRepositoryImpl() throws RepositoryException {
         try {
-            LOGGER.debug("Creating album Repository class.");
+            LOGGER.debug("Creating album EntityRepository class.");
             pool = ConnectionPool.getInstance();
         } catch (ConnectionException e) {
             throw new RepositoryException("Can't create dbconnection pool", e);
@@ -52,7 +52,7 @@ public class AlbumRepository implements Repository<Album> {
             ps.executeUpdate();
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in add of AlbumRepository.\n" + e, e);
+            throw new RepositoryException("Exception in add of AlbumRepositoryImpl.\n" + e, e);
         }
     }
 
@@ -69,7 +69,7 @@ public class AlbumRepository implements Repository<Album> {
             ps.executeUpdate();
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in delete of AlbumRepository.\n" + e, e);
+            throw new RepositoryException("Exception in delete of AlbumRepositoryImpl.\n" + e, e);
         }
     }
 
@@ -89,7 +89,7 @@ public class AlbumRepository implements Repository<Album> {
             ps.executeUpdate();
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in update of AlbumRepository.\n" + e, e);
+            throw new RepositoryException("Exception in update of AlbumRepositoryImpl.\n" + e, e);
         }
     }
 
@@ -118,7 +118,7 @@ public class AlbumRepository implements Repository<Album> {
             return albumList;
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in query of AlbumRepository.\n" + e, e);
+            throw new RepositoryException("Exception in query of AlbumRepositoryImpl.\n" + e, e);
         }
     }
 
@@ -150,7 +150,7 @@ public class AlbumRepository implements Repository<Album> {
             return albumList;
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in queryWithOwners of AlbumRepository.\n" + e, e);
+            throw new RepositoryException("Exception in queryWithOwners of AlbumRepositoryImpl.\n" + e, e);
         }
     }
 
@@ -173,7 +173,7 @@ public class AlbumRepository implements Repository<Album> {
             return Status.getStatus(status);
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in getStatus of AlbumRepository.\n" + e, e);
+            throw new RepositoryException("Exception in getStatus of AlbumRepositoryImpl.\n" + e, e);
         }
     }
 
@@ -193,7 +193,7 @@ public class AlbumRepository implements Repository<Album> {
             ps.executeUpdate();
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in undelete of AlbumRepository.\n" + e, e);
+            throw new RepositoryException("Exception in undelete of AlbumRepositoryImpl.\n" + e, e);
         }
     }
 
@@ -208,7 +208,7 @@ public class AlbumRepository implements Repository<Album> {
             ps.executeUpdate();
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in buy of TrackRepository..\n" + e, e);
+            throw new RepositoryException("Exception in buy of TrackRepositoryImpl..\n" + e, e);
         }
     }
 }

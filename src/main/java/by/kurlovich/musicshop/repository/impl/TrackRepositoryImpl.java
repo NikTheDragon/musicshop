@@ -3,7 +3,7 @@ package by.kurlovich.musicshop.repository.impl;
 import by.kurlovich.musicshop.repository.dbconnection.ConnectionException;
 import by.kurlovich.musicshop.repository.dbconnection.ConnectionPool;
 import by.kurlovich.musicshop.entity.Track;
-import by.kurlovich.musicshop.repository.Repository;
+import by.kurlovich.musicshop.repository.EntityRepository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.SqlSpecification;
@@ -15,18 +15,18 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrackRepository implements Repository<Track> {
+public class TrackRepositoryImpl implements EntityRepository<Track> {
     private static final String ADD_TRACK = "INSERT INTO tracks (name, author, genre, year, length, status) VALUES (?,(SELECT id FROM authors WHERE name=?),(SELECT id FROM genres WHERE name=?),?,?,?)";
     private static final String DELETE_TRACK = "UPDATE tracks SET status='deleted' WHERE name=? AND author=(SELECT id FROM authors WHERE name=?)";
     private static final String UPDATE_TRACK = "UPDATE tracks SET name=?, author=(SELECT id FROM authors WHERE name=?), genre=(SELECT id FROM genres WHERE name=?), year=?, length=? WHERE id=?";
     private static final String GET_STATUS = "SELECT status FROM tracks WHERE name=?";
     private static final String SET_STATUS = "UPDATE tracks SET status='active' WHERE name=? AND author=(SELECT id FROM authors WHERE name=?) AND genre=(SELECT id FROM genres WHERE name=?) AND year=? AND length=?";
-    private static final Logger LOGGER = LoggerFactory.getLogger(GenreRepository.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenreRepositoryImpl.class);
     private final ConnectionPool pool;
 
-    public TrackRepository() throws RepositoryException {
+    public TrackRepositoryImpl() throws RepositoryException {
         try {
-            LOGGER.debug("Creating track Repository class.");
+            LOGGER.debug("Creating track EntityRepository class.");
             pool = ConnectionPool.getInstance();
         } catch (ConnectionException e) {
             throw new RepositoryException("Can't create dbconnection pool.\n" + e, e);
@@ -49,7 +49,7 @@ public class TrackRepository implements Repository<Track> {
             ps.executeUpdate();
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in add of TrackRepository.\n" + e, e);
+            throw new RepositoryException("Exception in add of TrackRepositoryImpl.\n" + e, e);
         }
     }
 
@@ -65,7 +65,7 @@ public class TrackRepository implements Repository<Track> {
             ps.executeUpdate();
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in delete of TrackRepository.\n" + e, e);
+            throw new RepositoryException("Exception in delete of TrackRepositoryImpl.\n" + e, e);
         }
     }
 
@@ -85,7 +85,7 @@ public class TrackRepository implements Repository<Track> {
             ps.executeUpdate();
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in update of TrackRepository..\n" + e, e);
+            throw new RepositoryException("Exception in update of TrackRepositoryImpl..\n" + e, e);
         }
     }
 
@@ -121,7 +121,7 @@ public class TrackRepository implements Repository<Track> {
             return trackList;
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in query of TrackRepository..\n" + e, e);
+            throw new RepositoryException("Exception in query of TrackRepositoryImpl..\n" + e, e);
         }
     }
 
@@ -153,7 +153,7 @@ public class TrackRepository implements Repository<Track> {
             return trackList;
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in queryWithOwners of TrackRepository..\n" + e, e);
+            throw new RepositoryException("Exception in queryWithOwners of TrackRepositoryImpl..\n" + e, e);
         }
     }
 
@@ -176,7 +176,7 @@ public class TrackRepository implements Repository<Track> {
             return Status.getStatus(status);
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in getStatus of TrackRepository.\n" + e, e);
+            throw new RepositoryException("Exception in getStatus of TrackRepositoryImpl.\n" + e, e);
         }
     }
 
@@ -195,7 +195,7 @@ public class TrackRepository implements Repository<Track> {
             ps.executeUpdate();
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in undelete of TrackRepository.\n" + e, e);
+            throw new RepositoryException("Exception in undelete of TrackRepositoryImpl.\n" + e, e);
         }
     }
 
@@ -209,7 +209,7 @@ public class TrackRepository implements Repository<Track> {
             ps.executeUpdate();
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in query of TrackRepository..\n" + e, e);
+            throw new RepositoryException("Exception in query of TrackRepositoryImpl..\n" + e, e);
         }
     }
 }

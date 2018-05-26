@@ -2,7 +2,7 @@ package by.kurlovich.musicshop.repository;
 
 import java.util.List;
 
-public interface Repository<T> {
+public interface EntityRepository<T> {
     enum Status {
         ACTIVE,
         DELETE,

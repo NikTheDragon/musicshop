@@ -5,10 +5,10 @@ import by.kurlovich.musicshop.entity.SearchData;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 
-import by.kurlovich.musicshop.repository.Repository;
+import by.kurlovich.musicshop.repository.EntityRepository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
-import by.kurlovich.musicshop.repository.impl.AlbumContentRepository;
+import by.kurlovich.musicshop.repository.impl.AlbumContentRepositoryImpl;
 import by.kurlovich.musicshop.repository.specification.GetAlbumContentByAlbumIdSpecification;
 
 import org.slf4j.Logger;
@@ -23,22 +23,22 @@ public class AlbumContentReceiverImpl implements EntityReceiver<Content> {
     @Override
     public boolean addNewEntity(Content item) throws ReceiverException {
         try {
-            Repository<Content> repository = new AlbumContentRepository();
+            EntityRepository<Content> entityRepository = new AlbumContentRepositoryImpl();
 
             if (item.getTrackName().isEmpty()) {
                 return false;
             }
 
-            switch (repository.getStatus(item)) {
+            switch (entityRepository.getStatus(item)) {
                 case ACTIVE:
                     LOGGER.debug("found active track: {}, for album.", item.getTrackName());
                     return false;
                 case DELETE:
                     LOGGER.debug("found deleted track:{}, for album.", item.getTrackName());
-                    repository.undelete(item);
+                    entityRepository.undelete(item);
                     return true;
                 case NA:
-                    repository.add(item);
+                    entityRepository.add(item);
                     return true;
                 default:
                     return false;
@@ -52,14 +52,14 @@ public class AlbumContentReceiverImpl implements EntityReceiver<Content> {
     @Override
     public boolean deleteEntity(Content item) throws ReceiverException {
         try {
-            Repository<Content> repository = new AlbumContentRepository();
+            EntityRepository<Content> entityRepository = new AlbumContentRepositoryImpl();
             LOGGER.debug("trying to delete content from album.");
 
             if (item.getTrackId().isEmpty()) {
                 return false;
             }
 
-            repository.delete(item);
+            entityRepository.delete(item);
             return true;
 
         } catch (RepositoryException e) {
@@ -79,17 +79,17 @@ public class AlbumContentReceiverImpl implements EntityReceiver<Content> {
 
     @Override
     public List<Content> getSearchedEntities(SearchData searchData, String userId) throws ReceiverException {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
     public List<Content> getSpecifiedEntities(String param) throws ReceiverException {
         try {
-            Repository<Content> repository = new AlbumContentRepository();
+            EntityRepository<Content> entityRepository = new AlbumContentRepositoryImpl();
             Specification specification = new GetAlbumContentByAlbumIdSpecification(param);
             LOGGER.debug("trying to get specified content for album with id {}.", param);
 
-            return repository.query(specification);
+            return entityRepository.query(specification);
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in getSpecifiedEntities of AlbumContentReceiverImpl.\n" + e, e);

@@ -4,10 +4,10 @@ import by.kurlovich.musicshop.entity.SearchData;
 import by.kurlovich.musicshop.entity.Track;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
-import by.kurlovich.musicshop.repository.Repository;
+import by.kurlovich.musicshop.repository.EntityRepository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
-import by.kurlovich.musicshop.repository.impl.TrackRepository;
+import by.kurlovich.musicshop.repository.impl.TrackRepositoryImpl;
 import by.kurlovich.musicshop.repository.specification.GetAllTracksSpecification;
 import by.kurlovich.musicshop.repository.specification.GetTracksByAuthorNameSpecification;
 import by.kurlovich.musicshop.repository.specification.SearchTracksWithOwnerSpecification;
@@ -22,23 +22,23 @@ public class TrackReceiverImpl implements EntityReceiver<Track> {
     @Override
     public boolean addNewEntity(Track track) throws ReceiverException {
         try {
-            Repository<Track> repository = new TrackRepository();
+            EntityRepository<Track> entityRepository = new TrackRepositoryImpl();
             LOGGER.debug("trying to add track: {}", track.getName());
 
             if (track.getName().isEmpty()) {
                 return false;
             }
 
-            switch (repository.getStatus(track)) {
+            switch (entityRepository.getStatus(track)) {
                 case ACTIVE:
                     LOGGER.debug("found active track: {}", track.getName());
                     return false;
                 case DELETE:
                     LOGGER.debug("found deleted track: {}", track.getName());
-                    repository.undelete(track);
+                    entityRepository.undelete(track);
                     return true;
                 case NA:
-                    repository.add(track);
+                    entityRepository.add(track);
                     return true;
                 default:
                     return false;
@@ -52,14 +52,14 @@ public class TrackReceiverImpl implements EntityReceiver<Track> {
     @Override
     public boolean deleteEntity(Track track) throws ReceiverException {
         try {
-            Repository<Track> repository = new TrackRepository();
+            EntityRepository<Track> entityRepository = new TrackRepositoryImpl();
             LOGGER.debug("trying to delete track: {}", track.getName());
 
             if (track.getName().isEmpty()) {
                 return false;
             }
 
-            repository.delete(track);
+            entityRepository.delete(track);
             return true;
 
         } catch (RepositoryException e) {
@@ -70,14 +70,14 @@ public class TrackReceiverImpl implements EntityReceiver<Track> {
     @Override
     public boolean updateEntity(Track track) throws ReceiverException {
         try {
-            Repository<Track> repository = new TrackRepository();
+            EntityRepository<Track> entityRepository = new TrackRepositoryImpl();
             LOGGER.debug("trying to update track: {}", track.getName());
 
             if (track.getName().isEmpty()) {
                 return false;
             }
 
-            repository.update(track);
+            entityRepository.update(track);
             return true;
 
         } catch (RepositoryException e) {
@@ -88,11 +88,11 @@ public class TrackReceiverImpl implements EntityReceiver<Track> {
     @Override
     public List<Track> getAllEntities() throws ReceiverException {
         try {
-            Repository<Track> repository = new TrackRepository();
+            EntityRepository<Track> entityRepository = new TrackRepositoryImpl();
             Specification specification = new GetAllTracksSpecification();
             LOGGER.debug("trying to get all tracks.");
 
-            return repository.query(specification);
+            return entityRepository.query(specification);
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in getAllEntities of TrackReceiverImpl.\n" + e, e);
@@ -102,11 +102,11 @@ public class TrackReceiverImpl implements EntityReceiver<Track> {
     @Override
     public List<Track> getSearchedEntities(SearchData searchData, String userId) throws ReceiverException {
         try {
-            Repository<Track> repository = new TrackRepository();
+            EntityRepository<Track> entityRepository = new TrackRepositoryImpl();
             Specification specification = new SearchTracksWithOwnerSpecification(searchData, userId);
             LOGGER.debug("trying to search tracks.");
 
-            return repository.query(specification);
+            return entityRepository.query(specification);
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in getSearchedEntities of TrackReceiverImpl.\n" + e, e);
@@ -116,11 +116,11 @@ public class TrackReceiverImpl implements EntityReceiver<Track> {
     @Override
     public List<Track> getSpecifiedEntities(String param) throws ReceiverException {
         try {
-            Repository<Track> repository = new TrackRepository();
+            EntityRepository<Track> entityRepository = new TrackRepositoryImpl();
             Specification specification = new GetTracksByAuthorNameSpecification(param);
             LOGGER.debug("trying to get specified author: {}, tracks.", param);
 
-            return repository.query(specification);
+            return entityRepository.query(specification);
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in getSpecifiedEntities of TrackReceiverImpl.\n" + e, e);

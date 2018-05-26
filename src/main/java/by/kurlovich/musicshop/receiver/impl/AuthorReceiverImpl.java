@@ -4,10 +4,10 @@ import by.kurlovich.musicshop.entity.Author;
 import by.kurlovich.musicshop.entity.SearchData;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
-import by.kurlovich.musicshop.repository.Repository;
+import by.kurlovich.musicshop.repository.EntityRepository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
-import by.kurlovich.musicshop.repository.impl.AuthorRepository;
+import by.kurlovich.musicshop.repository.impl.AuthorRepositoryImpl;
 import by.kurlovich.musicshop.repository.specification.GetAllAuthorsSpecification;
 import by.kurlovich.musicshop.repository.specification.SearchAuthorsSpecification;
 import org.slf4j.Logger;
@@ -22,23 +22,23 @@ public class AuthorReceiverImpl implements EntityReceiver<Author> {
     @Override
     public boolean addNewEntity(Author author) throws ReceiverException {
         try {
-            Repository<Author> repository = new AuthorRepository();
+            EntityRepository<Author> entityRepository = new AuthorRepositoryImpl();
             LOGGER.debug("trying to add author: {}", author.getName());
 
             if (author.getName().isEmpty()) {
                 return false;
             }
 
-            switch (repository.getStatus(author)) {
+            switch (entityRepository.getStatus(author)) {
                 case ACTIVE:
                     LOGGER.debug("found active author: {}", author.getName());
                     return false;
                 case DELETE:
                     LOGGER.debug("found deleted author: {}", author.getName());
-                    repository.undelete(author);
+                    entityRepository.undelete(author);
                     return true;
                 case NA:
-                    repository.add(author);
+                    entityRepository.add(author);
                     return true;
                 default:
                     return false;
@@ -52,14 +52,14 @@ public class AuthorReceiverImpl implements EntityReceiver<Author> {
     @Override
     public boolean deleteEntity(Author author) throws ReceiverException {
         try {
-            Repository<Author> repository = new AuthorRepository();
+            EntityRepository<Author> entityRepository = new AuthorRepositoryImpl();
             LOGGER.debug("trying to delete track: {}", author.getName());
 
             if (author.getName().isEmpty()) {
                 return false;
             }
 
-            repository.delete(author);
+            entityRepository.delete(author);
             return true;
 
         } catch (RepositoryException e) {
@@ -70,14 +70,14 @@ public class AuthorReceiverImpl implements EntityReceiver<Author> {
     @Override
     public boolean updateEntity(Author author) throws ReceiverException {
         try {
-            Repository<Author> repository = new AuthorRepository();
+            EntityRepository<Author> entityRepository = new AuthorRepositoryImpl();
             LOGGER.debug("trying to update author: {}", author.getName());
 
             if (author.getName().isEmpty()) {
                 return false;
             }
 
-            repository.update(author);
+            entityRepository.update(author);
             return true;
 
         } catch (RepositoryException e) {
@@ -88,11 +88,11 @@ public class AuthorReceiverImpl implements EntityReceiver<Author> {
     @Override
     public List<Author> getAllEntities() throws ReceiverException {
         try {
-            Repository<Author> repository = new AuthorRepository();
+            EntityRepository<Author> entityRepository = new AuthorRepositoryImpl();
             Specification specification = new GetAllAuthorsSpecification();
             LOGGER.debug("Trying to get all authors.");
 
-            return repository.query(specification);
+            return entityRepository.query(specification);
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in Get All Authors.\n" + e, e);
@@ -102,11 +102,11 @@ public class AuthorReceiverImpl implements EntityReceiver<Author> {
     @Override
     public List<Author> getSearchedEntities(SearchData searchData, String userId) throws ReceiverException {
         try {
-            Repository<Author> repository = new AuthorRepository();
+            EntityRepository<Author> entityRepository = new AuthorRepositoryImpl();
             Specification specification = new SearchAuthorsSpecification(searchData);
             LOGGER.debug("trying to search authors.");
 
-            return repository.query(specification);
+            return entityRepository.query(specification);
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in getSearchedEntities of AuthorReceiverImpl.\n" + e, e);

@@ -1,9 +1,9 @@
 package by.kurlovich.musicshop.repository.impl;
 
+import by.kurlovich.musicshop.repository.EntityRepository;
 import by.kurlovich.musicshop.repository.dbconnection.ConnectionException;
 import by.kurlovich.musicshop.repository.dbconnection.ConnectionPool;
 import by.kurlovich.musicshop.entity.Genre;
-import by.kurlovich.musicshop.repository.Repository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.SqlSpecification;
@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class GenreRepository implements Repository<Genre> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(GenreRepository.class);
+public class GenreRepositoryImpl implements EntityRepository<Genre> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenreRepositoryImpl.class);
     private static final String ADD_GENRE = "INSERT INTO genres (name, status) VALUES (?,?)";
     private static final String DELETE_GENRE = "UPDATE genres SET status='deleted' WHERE name=?";
     private static final String UPDATE_GENRE = "UPDATE genres SET name=? WHERE id=?";
@@ -34,9 +34,9 @@ public class GenreRepository implements Repository<Genre> {
     private static final int S_STATUS = 2;
     private static final int STATUS = 3;
 
-    public GenreRepository() throws RepositoryException {
+    public GenreRepositoryImpl() throws RepositoryException {
         try {
-            LOGGER.debug("Creating Genre Repository class.");
+            LOGGER.debug("Creating Genre EntityRepository class.");
             pool = ConnectionPool.getInstance();
         } catch (ConnectionException e) {
             throw new RepositoryException("Can't create dbconnection pool", e);
@@ -54,7 +54,7 @@ public class GenreRepository implements Repository<Genre> {
             ps.executeUpdate();
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in add of GenreRepository.\n" + e, e);
+            throw new RepositoryException("Exception in add of GenreRepositoryImpl.\n" + e, e);
         }
     }
 
@@ -69,7 +69,7 @@ public class GenreRepository implements Repository<Genre> {
             ps.executeUpdate();
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in delete of GenreRepository.\n" + e, e);
+            throw new RepositoryException("Exception in delete of GenreRepositoryImpl.\n" + e, e);
         }
     }
 
@@ -85,7 +85,7 @@ public class GenreRepository implements Repository<Genre> {
             ps.executeUpdate();
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in update of GenreRepository.\n" + e, e);
+            throw new RepositoryException("Exception in update of GenreRepositoryImpl.\n" + e, e);
         }
     }
 
@@ -112,7 +112,7 @@ public class GenreRepository implements Repository<Genre> {
             return genreList;
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in query of GenreRepository\n" + e, e);
+            throw new RepositoryException("Exception in query of GenreRepositoryImpl\n" + e, e);
         }
     }
 
@@ -140,7 +140,7 @@ public class GenreRepository implements Repository<Genre> {
             return Status.getStatus(status);
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in getStatus of GenreRepository.\n" + e, e);
+            throw new RepositoryException("Exception in getStatus of GenreRepositoryImpl.\n" + e, e);
         }
     }
 
@@ -156,7 +156,7 @@ public class GenreRepository implements Repository<Genre> {
             ps.executeUpdate();
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in undelete of GenreRepository.\n" + e, e);
+            throw new RepositoryException("Exception in undelete of GenreRepositoryImpl.\n" + e, e);
         }
     }
 

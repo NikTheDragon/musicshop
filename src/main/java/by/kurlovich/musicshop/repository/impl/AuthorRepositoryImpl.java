@@ -1,9 +1,9 @@
 package by.kurlovich.musicshop.repository.impl;
 
+import by.kurlovich.musicshop.repository.EntityRepository;
 import by.kurlovich.musicshop.repository.dbconnection.ConnectionException;
 import by.kurlovich.musicshop.repository.dbconnection.ConnectionPool;
 import by.kurlovich.musicshop.entity.Author;
-import by.kurlovich.musicshop.repository.Repository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.SqlSpecification;
@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class AuthorRepository implements Repository<Author> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AuthorRepository.class);
+public class AuthorRepositoryImpl implements EntityRepository<Author> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthorRepositoryImpl.class);
     private static final String GET_STATUS = "SELECT status FROM authors WHERE name=?";
     private static final String SET_STATUS = "UPDATE authors SET status='active' WHERE name=? AND genre=(SELECT id FROM genres WHERE name=?) AND type=?";
     private static final String ADD_AUTHOR = "INSERT INTO authors (name, genre, type, status) VALUES (?,(SELECT id FROM genres WHERE name=?),?,?)";
@@ -27,9 +27,9 @@ public class AuthorRepository implements Repository<Author> {
     private static final String UPDATE_AUTHOR = "UPDATE authors SET name=?, genre=(SELECT id FROM genres WHERE name=?), type=? WHERE id=?";
     private final ConnectionPool pool;
 
-    public AuthorRepository() throws RepositoryException {
+    public AuthorRepositoryImpl() throws RepositoryException {
         try {
-            LOGGER.debug("Creating author Repository class.");
+            LOGGER.debug("Creating author EntityRepository class.");
             pool = ConnectionPool.getInstance();
         } catch (ConnectionException e) {
             throw new RepositoryException("Can't create dbconnection pool", e);
@@ -51,7 +51,7 @@ public class AuthorRepository implements Repository<Author> {
             ps.executeUpdate();
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in add of AuthorRepository.\n" + e, e);
+            throw new RepositoryException("Exception in add of AuthorRepositoryImpl.\n" + e, e);
         }
     }
 
@@ -67,7 +67,7 @@ public class AuthorRepository implements Repository<Author> {
             ps.executeUpdate();
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in delete of AuthorRepository.\n" + e, e);
+            throw new RepositoryException("Exception in delete of AuthorRepositoryImpl.\n" + e, e);
         }
     }
 
@@ -86,7 +86,7 @@ public class AuthorRepository implements Repository<Author> {
             ps.executeUpdate();
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in update of AuthorRepository.\n" + e, e);
+            throw new RepositoryException("Exception in update of AuthorRepositoryImpl.\n" + e, e);
         }
     }
 
@@ -114,7 +114,7 @@ public class AuthorRepository implements Repository<Author> {
             return authorList;
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in query of AuthorRepository.\n" + e, e);
+            throw new RepositoryException("Exception in query of AuthorRepositoryImpl.\n" + e, e);
         }
     }
 
@@ -142,7 +142,7 @@ public class AuthorRepository implements Repository<Author> {
             return Status.getStatus(status);
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in check getStatus of AuthorRepository.\n" + e, e);
+            throw new RepositoryException("Exception in check getStatus of AuthorRepositoryImpl.\n" + e, e);
         }
     }
 
@@ -160,7 +160,7 @@ public class AuthorRepository implements Repository<Author> {
             ps.executeUpdate();
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in undelete of AuthorRepository.\n" + e, e);
+            throw new RepositoryException("Exception in undelete of AuthorRepositoryImpl.\n" + e, e);
         }
     }
 

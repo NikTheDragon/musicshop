@@ -16,10 +16,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class UserRepository implements Repository<User> {
+public class UserRepositoryImpl implements UserRepository {
     private static final String ADD_USER = "INSERT INTO users (name,surname,login,password,email,role,status,points) VALUES (?,?,?,?,?,?,?,?)";
-    private static final String UPDATE_USER = "UPDATE users SET name=?, surname=?, login=?, password=?, email=?, role=?, status=?, points=? WHERE id=?";
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserRepository.class);
+    private static final String UPDATE_USER = "UPDATE users SET name=?, surname=?, login=?, email=?, role=?, status=?, points=? WHERE id=?";
+    private static final String UPDATE_PASSWORD = "UPDATE users SET password=? WHERE id=?";
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserRepositoryImpl.class);
     private final ConnectionPool pool;
 
     static final int ID = 1;
@@ -32,9 +33,9 @@ public class UserRepository implements Repository<User> {
     static final int STATUS = 8;
     static final int POINTS = 9;
 
-    public UserRepository() throws RepositoryException {
+    public UserRepositoryImpl() throws RepositoryException {
         try {
-            LOGGER.debug("Creating User Repository class.");
+            LOGGER.debug("Creating UserRepository class.");
             pool = ConnectionPool.getInstance();
         } catch (ConnectionException e) {
             throw new RepositoryException("Can't create dbconnection pool", e);
@@ -58,35 +59,45 @@ public class UserRepository implements Repository<User> {
             }
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in add of UserRepository.\n" + e, e);
+            throw new RepositoryException("Exception in add of UserRepositoryImpl.\n" + e, e);
         }
     }
 
     @Override
-    public void delete(User item) throws RepositoryException {
-
-    }
-
-    @Override
-    public void update(User item) throws RepositoryException {
+    public void update(User user) throws RepositoryException {
         try (Connection connection = pool.getConnection()) {
-            LOGGER.debug("Updating user {}", item.getName());
+            LOGGER.debug("Updating user {}", user.getName());
             try (PreparedStatement ps = connection.prepareStatement(UPDATE_USER)) {
-                ps.setString(1, item.getName());
-                ps.setString(2, item.getSurname());
-                ps.setString(3, item.getLogin());
-                ps.setString(4, item.getPassword());
-                ps.setString(5, item.getEmail());
-                ps.setString(6, item.getRole());
-                ps.setString(7, item.getStatus());
-                ps.setString(8, String.valueOf(item.getPoints()));
-                ps.setString(9, item.getId());
+                ps.setString(1, user.getName());
+                ps.setString(2, user.getSurname());
+                ps.setString(3, user.getLogin());
+                ps.setString(4, user.getEmail());
+                ps.setString(5, user.getRole());
+                ps.setString(6, user.getStatus());
+                ps.setString(7, String.valueOf(user.getPoints()));
+                ps.setString(8, user.getId());
 
                 ps.executeUpdate();
             }
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in update of UserRepository.\n" + e, e);
+            throw new RepositoryException("Exception in update of UserRepositoryImpl.\n" + e, e);
+        }
+    }
+
+    @Override
+    public void updatePassword(String password, String userId) throws RepositoryException{
+        try (Connection connection = pool.getConnection()) {
+            LOGGER.debug("Updating password.");
+            try (PreparedStatement ps = connection.prepareStatement(UPDATE_PASSWORD)) {
+                ps.setString(1, password);
+                ps.setString(2, userId);
+
+                ps.executeUpdate();
+            }
+
+        } catch (SQLException | ConnectionException e) {
+            throw new RepositoryException("Exception in updatePassword of UserRepositoryImpl.\n" + e, e);
         }
     }
 
@@ -121,25 +132,5 @@ public class UserRepository implements Repository<User> {
         } catch (SQLException | ConnectionException e) {
             throw new RepositoryException("Exception in user query", e);
         }
-    }
-
-    @Override
-    public List<User> queryWithOwners(Specification specification) throws RepositoryException {
-        return Collections.emptyList();
-    }
-
-    @Override
-    public Status getStatus(User item) throws RepositoryException {
-        return Status.getStatus("");
-    }
-
-    @Override
-    public void undelete(User item) throws RepositoryException {
-
-    }
-
-    @Override
-    public void buy(Specification specification) throws RepositoryException {
-
     }
 }

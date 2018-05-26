@@ -3,7 +3,7 @@ package by.kurlovich.musicshop.repository.impl;
 import by.kurlovich.musicshop.repository.dbconnection.ConnectionException;
 import by.kurlovich.musicshop.repository.dbconnection.ConnectionPool;
 import by.kurlovich.musicshop.entity.Mix;
-import by.kurlovich.musicshop.repository.Repository;
+import by.kurlovich.musicshop.repository.EntityRepository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.SqlSpecification;
@@ -18,8 +18,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MixRepository implements Repository<Mix> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MixRepository.class);
+public class MixRepositoryImpl implements EntityRepository<Mix> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MixRepositoryImpl.class);
     private static final String GET_STATUS = "SELECT status FROM mixes WHERE name=?";
     private static final String SET_STATUS = "UPDATE mixes SET status='active' WHERE name=? AND genre=(SELECT id FROM genres WHERE name=?) AND year=?";
     private static final String ADD_MIX = "INSERT INTO mixes (name, genre, year, status) VALUES (?,(SELECT id FROM genres WHERE name=?),?,?)";
@@ -27,9 +27,9 @@ public class MixRepository implements Repository<Mix> {
     private static final String UPDATE_MIX = "UPDATE mixes SET name=?, genre=(SELECT id FROM genres WHERE name=?), year=? WHERE id=?";
     private final ConnectionPool pool;
 
-    public MixRepository() throws RepositoryException {
+    public MixRepositoryImpl() throws RepositoryException {
         try {
-            LOGGER.debug("Creating mix Repository class.");
+            LOGGER.debug("Creating mix EntityRepository class.");
             pool = ConnectionPool.getInstance();
         } catch (ConnectionException e) {
             throw new RepositoryException("Can't create dbconnection pool.\n" + e, e);
@@ -51,7 +51,7 @@ public class MixRepository implements Repository<Mix> {
             ps.executeUpdate();
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in add of MixRepository.\n" + e, e);
+            throw new RepositoryException("Exception in add of MixRepositoryImpl.\n" + e, e);
         }
     }
 
@@ -66,7 +66,7 @@ public class MixRepository implements Repository<Mix> {
             ps.executeUpdate();
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in delete of MixRepository.\n" + e, e);
+            throw new RepositoryException("Exception in delete of MixRepositoryImpl.\n" + e, e);
         }
     }
 
@@ -84,7 +84,7 @@ public class MixRepository implements Repository<Mix> {
             ps.executeUpdate();
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in update of MixRepository.\n" + e, e);
+            throw new RepositoryException("Exception in update of MixRepositoryImpl.\n" + e, e);
         }
     }
 
@@ -113,7 +113,7 @@ public class MixRepository implements Repository<Mix> {
             return mixList;
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in query of MixRepository.\n" + e, e);
+            throw new RepositoryException("Exception in query of MixRepositoryImpl.\n" + e, e);
         }
     }
 
@@ -144,7 +144,7 @@ public class MixRepository implements Repository<Mix> {
             return mixList;
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in queryWithOwners of MixRepository.\n" + e, e);
+            throw new RepositoryException("Exception in queryWithOwners of MixRepositoryImpl.\n" + e, e);
         }
     }
 
@@ -167,7 +167,7 @@ public class MixRepository implements Repository<Mix> {
             return Status.getStatus(status);
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in get getStatus of MixRepository.\n" + e, e);
+            throw new RepositoryException("Exception in get getStatus of MixRepositoryImpl.\n" + e, e);
         }
     }
 
@@ -185,7 +185,7 @@ public class MixRepository implements Repository<Mix> {
             ps.executeUpdate();
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in undelete of MixRepository.\n" + e, e);
+            throw new RepositoryException("Exception in undelete of MixRepositoryImpl.\n" + e, e);
         }
     }
 
@@ -200,7 +200,7 @@ public class MixRepository implements Repository<Mix> {
             ps.executeUpdate();
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in buy of MixRepository.\n" + e, e);
+            throw new RepositoryException("Exception in buy of MixRepositoryImpl.\n" + e, e);
         }
     }
 }

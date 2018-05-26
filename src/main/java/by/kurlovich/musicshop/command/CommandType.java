@@ -55,6 +55,7 @@ public enum CommandType {
     UPDATE_MIX(new UpdateMixCommand(new MixReceiverImpl())),
     UPDATE_USER(new UpdateUserCommand(new UserReceiverImpl())),
     UPDATE_PERSONAL_INFO(new UpdatePersonalInfoCommand(new UserReceiverImpl())),
+    UPDATE_PASSWORD(new UpdatePasswordCommand(new UserReceiverImpl())),
     BACK_TO_PAGE(new BackToPageCommand()),
     FORM_MIX_CONTENT_INPUT_DATA(new FormMixContentInputDataCommand(new TrackReceiverImpl())),
     ADD_TRACK_TO_MIX(new AddTrackToMixCommand(new MixContentReceiverImpl())),

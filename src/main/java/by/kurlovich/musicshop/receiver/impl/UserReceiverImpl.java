@@ -6,13 +6,14 @@ import by.kurlovich.musicshop.entity.Track;
 import by.kurlovich.musicshop.entity.User;
 import by.kurlovich.musicshop.receiver.UserReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
-import by.kurlovich.musicshop.repository.Repository;
+import by.kurlovich.musicshop.repository.EntityRepository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
-import by.kurlovich.musicshop.repository.impl.AlbumRepository;
-import by.kurlovich.musicshop.repository.impl.MixRepository;
-import by.kurlovich.musicshop.repository.impl.TrackRepository;
-import by.kurlovich.musicshop.repository.impl.UserRepository;
+import by.kurlovich.musicshop.repository.UserRepository;
+import by.kurlovich.musicshop.repository.impl.AlbumRepositoryImpl;
+import by.kurlovich.musicshop.repository.impl.MixRepositoryImpl;
+import by.kurlovich.musicshop.repository.impl.TrackRepositoryImpl;
+import by.kurlovich.musicshop.repository.impl.UserRepositoryImpl;
 import by.kurlovich.musicshop.repository.specification.*;
 
 import by.kurlovich.musicshop.util.PasswordSHAGenerator;
@@ -30,11 +31,11 @@ public class UserReceiverImpl implements UserReceiver {
     @Override
     public List<User> getAllUsers() throws ReceiverException {
         try {
-            Repository<User> repository = new UserRepository();
+            UserRepository userRepository = new UserRepositoryImpl();
             Specification specification = new GetAllUsersSpecification();
             LOGGER.debug("trying to get all users.");
 
-            return repository.query(specification);
+            return userRepository.query(specification);
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in getAllUsers of UserReceiverImpl.\n" + e, e);
@@ -44,11 +45,11 @@ public class UserReceiverImpl implements UserReceiver {
     @Override
     public List<Track> getAllTracksWithOwner(String userId) throws ReceiverException {
         try {
-            Repository<Track> repository = new TrackRepository();
+            EntityRepository<Track> entityRepository = new TrackRepositoryImpl();
             Specification specification = new GetAllTracksWithOwnerIdSpecification(userId);
             LOGGER.debug("trying to get tracks with owners id:{}.", userId);
 
-            return repository.queryWithOwners(specification);
+            return entityRepository.queryWithOwners(specification);
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in getAllTracksWithOwner of UserReceiverImpl.\n" + e, e);
@@ -58,11 +59,11 @@ public class UserReceiverImpl implements UserReceiver {
     @Override
     public List<Track> getUserOwnedTracks(String userId) throws ReceiverException {
         try {
-            Repository<Track> repository = new TrackRepository();
+            EntityRepository<Track> entityRepository = new TrackRepositoryImpl();
             Specification specification = new GetUserOwnedTracksSpecification(userId);
             LOGGER.debug("trying to get user id:{} owned tracks", userId);
 
-            return repository.query(specification);
+            return entityRepository.query(specification);
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in getUserOwnedTracks of UserReceiverImpl.\n" + e, e);
@@ -72,11 +73,11 @@ public class UserReceiverImpl implements UserReceiver {
     @Override
     public List<Track> getMixTracksWithOwner(String userId, String mixId) throws ReceiverException {
         try {
-            Repository<Track> repository = new TrackRepository();
+            EntityRepository<Track> entityRepository = new TrackRepositoryImpl();
             Specification specification = new GetMixContentWithOwnersIdByMixIdSpecification(userId, mixId);
             LOGGER.debug("Trying to get all tracks for mix:{}, and owner:{}.", mixId, userId);
 
-            return repository.queryWithOwners(specification);
+            return entityRepository.queryWithOwners(specification);
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in getAllMixesWithOwner of UserReceiverImpl.\n" + e, e);
@@ -86,11 +87,11 @@ public class UserReceiverImpl implements UserReceiver {
     @Override
     public List<Track> getAlbumTracksWithOwner(String userId, String albumId) throws ReceiverException {
         try {
-            Repository<Track> repository = new TrackRepository();
+            EntityRepository<Track> entityRepository = new TrackRepositoryImpl();
             Specification specification = new GetAlbumContentWithOwnersIdByMixIdSpecification(userId, albumId);
             LOGGER.debug("Trying to get all tracks for album:{}, and owner:{}.", albumId, userId);
 
-            return repository.queryWithOwners(specification);
+            return entityRepository.queryWithOwners(specification);
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in getAlbumTracksWithOwner of UserReceiverImpl.\n" + e, e);
@@ -100,11 +101,11 @@ public class UserReceiverImpl implements UserReceiver {
     @Override
     public List<Mix> getAllMixesWithOwner(String userId) throws ReceiverException {
         try {
-            Repository<Mix> repository = new MixRepository();
+            EntityRepository<Mix> entityRepository = new MixRepositoryImpl();
             Specification specification = new GetAllMixesWithOwnerIdSpecification(userId);
             LOGGER.debug("Trying to get all mixes with owner.");
 
-            return repository.queryWithOwners(specification);
+            return entityRepository.queryWithOwners(specification);
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in getAllMixesWithOwner of UserReceiverImpl.\n" + e, e);
@@ -114,11 +115,11 @@ public class UserReceiverImpl implements UserReceiver {
     @Override
     public List<Mix> getUserOwnedMixes(String userId) throws ReceiverException {
         try {
-            Repository<Mix> repository = new MixRepository();
+            EntityRepository<Mix> entityRepository = new MixRepositoryImpl();
             Specification specification = new GetUserOwnedMixesSpecification(userId);
             LOGGER.debug("trying to get user id:{} owned mixes.", userId);
 
-            return repository.query(specification);
+            return entityRepository.query(specification);
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in getUserOwnedMixes of UserReceiverImpl.\n" + e, e);
@@ -128,11 +129,11 @@ public class UserReceiverImpl implements UserReceiver {
     @Override
     public List<Album> getAllAlbumsWithOwner(String userId) throws ReceiverException {
         try {
-            Repository<Album> repository = new AlbumRepository();
+            EntityRepository<Album> entityRepository = new AlbumRepositoryImpl();
             Specification specification = new GetAllAlbumsWithOwnerIdSpecification(userId);
             LOGGER.debug("Trying to get all albums with owner.");
 
-            return repository.queryWithOwners(specification);
+            return entityRepository.queryWithOwners(specification);
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in getAllAlbumsWithOwner of UserReceiverImpl.\n" + e, e);
@@ -142,11 +143,11 @@ public class UserReceiverImpl implements UserReceiver {
     @Override
     public List<Album> getUserOwnedAlbums(String userId) throws ReceiverException {
         try {
-            Repository<Album> repository = new AlbumRepository();
+            EntityRepository<Album> entityRepository = new AlbumRepositoryImpl();
             Specification specification = new GetUserOwnedAlbumsSpecification(userId);
             LOGGER.debug("trying to get user id:{} owned albums.", userId);
 
-            return repository.query(specification);
+            return entityRepository.query(specification);
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in getUserOwnedAlbums of UserReceiverImpl.\n" + e, e);
@@ -162,15 +163,15 @@ public class UserReceiverImpl implements UserReceiver {
     @Override
     public boolean addNewUser(User user) throws ReceiverException {
         try {
-            Repository<User> repository = new UserRepository();
+            UserRepository userRepository = new UserRepositoryImpl();
             Specification specification = new GetUserByLoginSpecification(user.getLogin());
             LOGGER.debug("trying to add user: {}", user);
 
-            List<User> usersList = repository.query(specification);
+            List<User> usersList = userRepository.query(specification);
             if (usersList.isEmpty()) {
                 user.setPassword(PasswordSHAGenerator.getPassword(user.getPassword()));
 
-                repository.add(user);
+                userRepository.add(user);
                 return true;
             } else {
                 return false;
@@ -184,20 +185,20 @@ public class UserReceiverImpl implements UserReceiver {
     @Override
     public boolean updateUser(User user) throws ReceiverException {
         try {
-            Repository<User> repository = new UserRepository();
+            UserRepository userRepository = new UserRepositoryImpl();
             Specification specification = new GetUserByLoginSpecification(user.getLogin());
             LOGGER.debug("trying to update user: {}", user.getName());
 
-            List<User> usersList = repository.query(specification);
+            List<User> usersList = userRepository.query(specification);
             if (usersList.isEmpty()) {
-                repository.update(user);
+                userRepository.update(user);
                 return true;
             }
 
             if (!usersList.isEmpty()) {
                 User newUser = usersList.get(0);
                 if (user.getId().equals(newUser.getId())) {
-                    repository.update(user);
+                    userRepository.update(user);
                     return true;
                 }
             }
@@ -209,13 +210,37 @@ public class UserReceiverImpl implements UserReceiver {
     }
 
     @Override
+    public boolean updatePassword(String oldPassword, String newPassword, User sessionUser) throws ReceiverException {
+        try {
+            LOGGER.debug("session pass: {}", sessionUser.getPassword());
+            if (!PasswordSHAGenerator.getPassword(oldPassword).equals(sessionUser.getPassword())) {
+                return false;
+            }
+
+            UserRepository userRepository = new UserRepositoryImpl();
+            newPassword = PasswordSHAGenerator.getPassword(newPassword);
+            LOGGER.debug("trying to update user password.");
+
+            userRepository.updatePassword(newPassword, sessionUser.getId());
+
+            return true;
+        } catch (RepositoryException | NoSuchAlgorithmException e) {
+            throw new ReceiverException("Exception in updatePassword of UserReceiverImpl.\n" + e, e);
+        }
+    }
+
+    @Override
     public User loginUser(String login, String password) throws ReceiverException {
         try {
-            Repository<User> repository = new UserRepository();
+            UserRepository userRepository = new UserRepositoryImpl();
+            password = PasswordSHAGenerator.getPassword(password);
+
+            System.out.println(password);
+
             Specification specification = new GetUserByLoginPasswordSpecification(login, password);
             LOGGER.debug("trying to log user.");
 
-            List<User> usersList = repository.query(specification);
+            List<User> usersList = userRepository.query(specification);
 
             if (!usersList.isEmpty()) {
                 return usersList.get(0);
@@ -223,7 +248,7 @@ public class UserReceiverImpl implements UserReceiver {
                 return null;
             }
 
-        } catch (RepositoryException e) {
+        } catch (RepositoryException | NoSuchAlgorithmException e) {
             throw new ReceiverException("Exception in loginUser.\n" + e, e);
         }
     }
@@ -231,11 +256,11 @@ public class UserReceiverImpl implements UserReceiver {
     @Override
     public void buyTrack(String userId, String trackId) throws ReceiverException {
         try {
-            Repository<Track> repository = new TrackRepository();
+            EntityRepository<Track> entityRepository = new TrackRepositoryImpl();
             Specification specification = new BuyTrackSpecification(userId, trackId);
             LOGGER.debug("user:{}, trying to buy track:{}.", userId, trackId);
 
-            repository.buy(specification);
+            entityRepository.buy(specification);
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in buyTrack of UserReceiverImpl.\n" + e, e);
@@ -245,11 +270,11 @@ public class UserReceiverImpl implements UserReceiver {
     @Override
     public void buyAlbum(String userId, String albumId) throws ReceiverException {
         try {
-            Repository<Album> repository = new AlbumRepository();
+            EntityRepository<Album> entityRepository = new AlbumRepositoryImpl();
             Specification specification = new BuyAlbumSpecification(userId, albumId);
             LOGGER.debug("user:{}, trying to buy album:{}.", userId, albumId);
 
-            repository.buy(specification);
+            entityRepository.buy(specification);
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in buyAlbum of UserReceiverImpl.\n" + e, e);
@@ -259,11 +284,11 @@ public class UserReceiverImpl implements UserReceiver {
     @Override
     public void buyMix(String userId, String mixId) throws ReceiverException {
         try {
-            Repository<Mix> repository = new MixRepository();
+            EntityRepository<Mix> entityRepository = new MixRepositoryImpl();
             Specification specification = new BuyMixSpecification(userId, mixId);
             LOGGER.debug("user:{}, trying to buy mix:{}.", userId, mixId);
 
-            repository.buy(specification);
+            entityRepository.buy(specification);
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in buyMix of UserReceiverImpl.\n" + e, e);
@@ -273,11 +298,11 @@ public class UserReceiverImpl implements UserReceiver {
     @Override
     public List<User> getSpecifiedUsers(String userId) throws ReceiverException {
         try {
-            Repository<User> repository = new UserRepository();
+            UserRepository userRepository = new UserRepositoryImpl();
             Specification specification = new GetUserByIdSpecification(userId);
             LOGGER.debug("trying to get specified users.");
 
-            return repository.query(specification);
+            return userRepository.query(specification);
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in getSpecifiedUsers of UserReceiverImpl.\n" + e, e);

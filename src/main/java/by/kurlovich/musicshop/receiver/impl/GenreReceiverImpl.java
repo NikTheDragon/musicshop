@@ -4,10 +4,10 @@ import by.kurlovich.musicshop.entity.Genre;
 import by.kurlovich.musicshop.entity.SearchData;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
-import by.kurlovich.musicshop.repository.Repository;
+import by.kurlovich.musicshop.repository.EntityRepository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
-import by.kurlovich.musicshop.repository.impl.GenreRepository;
+import by.kurlovich.musicshop.repository.impl.GenreRepositoryImpl;
 import by.kurlovich.musicshop.repository.specification.GetAllGenresSpecification;
 
 import org.slf4j.Logger;
@@ -22,23 +22,23 @@ public class GenreReceiverImpl implements EntityReceiver<Genre> {
     @Override
     public boolean addNewEntity(Genre genre) throws ReceiverException {
         try {
-            Repository<Genre> repository = new GenreRepository();
+            EntityRepository<Genre> entityRepository = new GenreRepositoryImpl();
             LOGGER.debug("trying to add genre: {}", genre.getName());
 
             if (genre.getName().isEmpty()) {
                 return false;
             }
 
-            switch (repository.getStatus(genre)) {
+            switch (entityRepository.getStatus(genre)) {
                 case ACTIVE:
                     LOGGER.debug("found active genre: {}", genre.getName());
                     return false;
                 case DELETE:
                     LOGGER.debug("found deleted genre: {}", genre.getName());
-                    repository.undelete(genre);
+                    entityRepository.undelete(genre);
                     return true;
                 case NA:
-                    repository.add(genre);
+                    entityRepository.add(genre);
                     return true;
                 default:
                     return false;
@@ -52,14 +52,14 @@ public class GenreReceiverImpl implements EntityReceiver<Genre> {
     @Override
     public boolean deleteEntity(Genre genre) throws ReceiverException {
         try {
-            Repository<Genre> repository = new GenreRepository();
+            EntityRepository<Genre> entityRepository = new GenreRepositoryImpl();
             LOGGER.debug("trying to delete genre: {}", genre.getName());
 
             if (genre.getName().isEmpty()) {
                 return false;
             }
 
-            repository.delete(genre);
+            entityRepository.delete(genre);
             return true;
 
         } catch (RepositoryException e) {
@@ -70,7 +70,7 @@ public class GenreReceiverImpl implements EntityReceiver<Genre> {
     @Override
     public boolean updateEntity(Genre genre) throws ReceiverException {
         try {
-            Repository<Genre> repository = new GenreRepository();
+            EntityRepository<Genre> entityRepository = new GenreRepositoryImpl();
 
             if (genre.getName().isEmpty()) {
                 return false;
@@ -78,7 +78,7 @@ public class GenreReceiverImpl implements EntityReceiver<Genre> {
 
             if (!genre.getId().isEmpty()) {
                 LOGGER.debug("trying to update genre: {}", genre.getName());
-                repository.update(genre);
+                entityRepository.update(genre);
                 return true;
             }
             return false;
@@ -91,11 +91,11 @@ public class GenreReceiverImpl implements EntityReceiver<Genre> {
     @Override
     public List<Genre> getAllEntities() throws ReceiverException {
         try {
-            Repository<Genre> repository = new GenreRepository();
+            EntityRepository<Genre> entityRepository = new GenreRepositoryImpl();
             Specification specification = new GetAllGenresSpecification();
             LOGGER.debug("trying to get all genres.");
 
-            return repository.query(specification);
+            return entityRepository.query(specification);
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in Get All Genres.", e);
@@ -104,7 +104,7 @@ public class GenreReceiverImpl implements EntityReceiver<Genre> {
 
     @Override
     public List<Genre> getSearchedEntities(SearchData searchData, String userId) throws ReceiverException {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override

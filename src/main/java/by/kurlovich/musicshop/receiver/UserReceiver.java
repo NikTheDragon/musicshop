@@ -22,6 +22,7 @@ public interface UserReceiver {
     Map<String, String> validateUser(User user) throws ReceiverException;
     boolean addNewUser(User user) throws ReceiverException;
     boolean updateUser(User user) throws ReceiverException;
+    boolean updatePassword(String oldPassword, String newPassword, User sessionUser) throws ReceiverException;
     User loginUser(String login, String password) throws ReceiverException;
     void buyTrack(String userId, String trackId) throws ReceiverException;
     void buyAlbum(String userId, String albumId) throws ReceiverException;
