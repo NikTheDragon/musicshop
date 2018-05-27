@@ -45,7 +45,7 @@ public class LoginUserCommand implements Command {
 
                 User user = receiver.loginUser(login[0], password[0]);
 
-                if (user != null) {
+                if (user != null || user.getId() != null) {
                     String startPage = getStartPage(user);
 
                     return showStartPage(user, startPage, request);

@@ -33,11 +33,9 @@ public class BuyAlbumCommand implements Command {
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
             List<String> accessRoles = Arrays.asList("admin", "user");
-            String userRole = (String) request.getSession(true).getAttribute("role");
+            User currentUser = (User) request.getSession(true).getAttribute("user");
 
-            if (AccessValidator.validate(accessRoles, userRole)) {
-                User currentUser = (User) request.getSession(true).getAttribute("user");
-
+            if (AccessValidator.validate(accessRoles, currentUser.getRole())) {
                 String albumId = request.getParameter("album_id");
                 int albumPrice = Integer.parseInt(request.getParameter("album_price"));
                 int userPoints = currentUser.getPoints();

@@ -235,8 +235,6 @@ public class UserReceiverImpl implements UserReceiver {
             UserRepository userRepository = new UserRepositoryImpl();
             password = PasswordSHAGenerator.getPassword(password);
 
-            System.out.println(password);
-
             Specification specification = new GetUserByLoginPasswordSpecification(login, password);
             LOGGER.debug("trying to log user.");
 
@@ -245,7 +243,7 @@ public class UserReceiverImpl implements UserReceiver {
             if (!usersList.isEmpty()) {
                 return usersList.get(0);
             } else {
-                return null;
+                return new User();
             }
 
         } catch (RepositoryException | NoSuchAlgorithmException e) {

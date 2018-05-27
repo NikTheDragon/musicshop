@@ -31,11 +31,9 @@ public class BuyTrackCommand implements Command {
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
             List<String> accessRoles = Arrays.asList("admin", "user");
-            String userRole = (String) request.getSession(true).getAttribute("role");
+            User currentUser = (User) request.getSession(true).getAttribute("user");
 
-            if (AccessValidator.validate(accessRoles, userRole)) {
-                User currentUser = (User) request.getSession(true).getAttribute("user");
-
+            if (AccessValidator.validate(accessRoles, currentUser.getRole())) {
                 String trackId = request.getParameter("track_id");
                 int trackPrice = Integer.parseInt(request.getParameter("track_price"));
                 int userPoints = currentUser.getPoints();
@@ -50,7 +48,7 @@ public class BuyTrackCommand implements Command {
 
                     receiver.updateUser(currentUser);
 
-                    List<Track> allTracks = (List<Track>) request.getSession(true).getAttribute("trackList");
+                    List<Track> allTracks = receiver.getAllTracksWithOwner(currentUser.getId());
                     allTracks.sort(Comparator.comparing(Track::getAuthor));
 
                     for (Track track : allTracks) {

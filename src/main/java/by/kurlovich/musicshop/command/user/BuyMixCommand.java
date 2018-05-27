@@ -33,11 +33,9 @@ public class BuyMixCommand implements Command {
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
             List<String> accessRoles = Arrays.asList("admin", "user");
-            String userRole = (String) request.getSession(true).getAttribute("role");
+            User currentUser = (User) request.getSession(true).getAttribute("user");
 
-            if (AccessValidator.validate(accessRoles, userRole)) {
-                User currentUser = (User) request.getSession(true).getAttribute("user");
-
+            if (AccessValidator.validate(accessRoles, currentUser.getRole())) {
                 String mixId = request.getParameter("mix_id");
                 int mixPrice = Integer.parseInt(request.getParameter("mix_price"));
                 int userPoints = currentUser.getPoints();
