@@ -3,7 +3,7 @@ package by.kurlovich.musicshop.repository.specification;
 import by.kurlovich.musicshop.repository.SqlSpecification;
 
 public class GetMixContentByMixIdSpecification implements SqlSpecification {
-    String mixId;
+    private String mixId;
 
     public GetMixContentByMixIdSpecification (String mixId) {
         this.mixId = mixId;

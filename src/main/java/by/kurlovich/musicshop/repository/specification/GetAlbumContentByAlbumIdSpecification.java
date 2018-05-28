@@ -3,7 +3,7 @@ package by.kurlovich.musicshop.repository.specification;
 import by.kurlovich.musicshop.repository.SqlSpecification;
 
 public class GetAlbumContentByAlbumIdSpecification implements SqlSpecification {
-    String albumId;
+    private String albumId;
 
     public GetAlbumContentByAlbumIdSpecification(String albumId) {
         this.albumId = albumId;

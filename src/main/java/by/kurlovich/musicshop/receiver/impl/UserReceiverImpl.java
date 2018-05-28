@@ -252,13 +252,35 @@ public class UserReceiverImpl implements UserReceiver {
     }
 
     @Override
-    public void buyTrack(String userId, String trackId) throws ReceiverException {
+    public String buyTrack(User currentUser, String trackId, int trackPrice) throws ReceiverException {
+        Specification specification;
         try {
-            EntityRepository<Track> entityRepository = new TrackRepositoryImpl();
-            Specification specification = new BuyTrackSpecification(userId, trackId);
-            LOGGER.debug("user:{}, trying to buy track:{}.", userId, trackId);
+            LOGGER.debug("User: {}, trying to buy track: {}.", currentUser.getId(), trackId);
 
-            entityRepository.buy(specification);
+            EntityRepository<Track> entityRepository = new TrackRepositoryImpl();
+            UserRepository userRepository = new UserRepositoryImpl();
+
+            specification = new GetTracksByIdSpecification(trackId);
+            List<Track> specifiedTrack = entityRepository.query(specification);
+
+            if (trackPrice > currentUser.getPoints()) {
+                return "insufficient points.";
+            }
+
+            if (specifiedTrack.get(0).getStatus().equals("active")) {
+                specification = new BuyTrackSpecification(currentUser.getId(), trackId);
+                entityRepository.buy(specification);
+
+                int userPoints = currentUser.getPoints();
+                userPoints -= trackPrice;
+                currentUser.setPoints(userPoints);
+
+                userRepository.update(currentUser);
+
+                return "true";
+            }
+
+            return "can't find track to buy.";
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in buyTrack of UserReceiverImpl.\n" + e, e);
@@ -266,13 +288,35 @@ public class UserReceiverImpl implements UserReceiver {
     }
 
     @Override
-    public void buyAlbum(String userId, String albumId) throws ReceiverException {
+    public String buyAlbum(User currentUser, String albumId, int albumPrice) throws ReceiverException {
+        Specification specification;
         try {
-            EntityRepository<Album> entityRepository = new AlbumRepositoryImpl();
-            Specification specification = new BuyAlbumSpecification(userId, albumId);
-            LOGGER.debug("user:{}, trying to buy album:{}.", userId, albumId);
+            LOGGER.debug("User: {}, trying to buy album: {}.", currentUser.getId(), albumId);
 
-            entityRepository.buy(specification);
+            EntityRepository<Album> entityRepository = new AlbumRepositoryImpl();
+            UserRepository userRepository = new UserRepositoryImpl();
+
+            specification = new GetAlbumByIdSpecification(albumId);
+            List<Album> specifiedAlbum = entityRepository.query(specification);
+
+            if (albumPrice > currentUser.getPoints()) {
+                return "insufficient points.";
+            }
+
+            if (specifiedAlbum.get(0).getStatus().equals("active")) {
+                specification = new BuyAlbumSpecification(currentUser.getId(), albumId);
+                entityRepository.buy(specification);
+
+                int userPoints = currentUser.getPoints();
+                userPoints -= albumPrice;
+                currentUser.setPoints(userPoints);
+
+                userRepository.update(currentUser);
+
+                return "true";
+            }
+
+            return "can't find album to buy.";
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in buyAlbum of UserReceiverImpl.\n" + e, e);
@@ -280,13 +324,37 @@ public class UserReceiverImpl implements UserReceiver {
     }
 
     @Override
-    public void buyMix(String userId, String mixId) throws ReceiverException {
+    public String buyMix(User currentUser, String mixId, int mixPrice) throws ReceiverException {
+        Specification specification;
         try {
-            EntityRepository<Mix> entityRepository = new MixRepositoryImpl();
-            Specification specification = new BuyMixSpecification(userId, mixId);
-            LOGGER.debug("user:{}, trying to buy mix:{}.", userId, mixId);
+            LOGGER.debug("User: {}, trying to buy mix: {}.", currentUser.getId(), mixId);
 
-            entityRepository.buy(specification);
+            EntityRepository<Mix> entityRepository = new MixRepositoryImpl();
+            UserRepository userRepository = new UserRepositoryImpl();
+
+            specification = new GetMixByIdSpecification(mixId);
+            List<Mix> specifiedMix = entityRepository.query(specification);
+
+            if (mixPrice > currentUser.getPoints()) {
+                return "insufficient points.";
+            }
+
+            System.out.println("status="+specifiedMix.get(0).getStatus()+".");
+
+            if (specifiedMix.get(0).getStatus().equals("active")) {
+                specification = new BuyMixSpecification(currentUser.getId(), mixId);
+                entityRepository.buy(specification);
+
+                int userPoints = currentUser.getPoints();
+                userPoints -= mixPrice;
+                currentUser.setPoints(userPoints);
+
+                userRepository.update(currentUser);
+
+                return "true";
+            }
+
+            return "can't find mix to buy.";
 
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in buyMix of UserReceiverImpl.\n" + e, e);

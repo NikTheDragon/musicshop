@@ -24,8 +24,8 @@ public interface UserReceiver {
     boolean updateUser(User user) throws ReceiverException;
     boolean updatePassword(String oldPassword, String newPassword, User sessionUser) throws ReceiverException;
     User loginUser(String login, String password) throws ReceiverException;
-    void buyTrack(String userId, String trackId) throws ReceiverException;
-    void buyAlbum(String userId, String albumId) throws ReceiverException;
-    void buyMix(String userId, String mixId) throws ReceiverException;
+    String buyTrack(User currentUser, String trackId, int trackPrice) throws ReceiverException;
+    String buyAlbum(User currentUser, String albumId, int albumPrice) throws ReceiverException;
+    String buyMix(User currentUser, String mixId, int mixPrice) throws ReceiverException;
 
 }

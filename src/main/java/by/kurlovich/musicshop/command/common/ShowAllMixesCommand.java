@@ -2,6 +2,7 @@ package by.kurlovich.musicshop.command.common;
 
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
+import by.kurlovich.musicshop.util.GetCurrentUserId;
 import by.kurlovich.musicshop.web.CommandResult;
 import by.kurlovich.musicshop.entity.Mix;
 import by.kurlovich.musicshop.entity.User;
@@ -24,12 +25,9 @@ public class ShowAllMixesCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
-            String currentUserId = "0";
             User currentUser = (User) request.getSession(true).getAttribute("user");
 
-            if (currentUser != null) {
-                currentUserId = currentUser.getId();
-            }
+            String currentUserId = GetCurrentUserId.get(currentUser);
 
             List<Mix> allMixes = receiver.getAllMixesWithOwner(currentUserId);
             allMixes.sort(Comparator.comparing(Mix::getName));

@@ -38,28 +38,14 @@ public class BuyAlbumCommand implements Command {
             if (AccessValidator.validate(accessRoles, currentUser.getRole())) {
                 String albumId = request.getParameter("album_id");
                 int albumPrice = Integer.parseInt(request.getParameter("album_price"));
-                int userPoints = currentUser.getPoints();
-                String currentUserId = currentUser.getId();
 
-                LOGGER.debug("User: {}, trying to buy album: {}", currentUserId, albumId);
+                String result = receiver.buyAlbum(currentUser, albumId, albumPrice);
 
-                if (albumPrice <= userPoints) {
-                    receiver.buyAlbum(currentUserId, albumId);
+                if (Boolean.parseBoolean(result)) {
+                    List<Track> currentAlbumTracks = receiver.getAlbumTracksWithOwner(currentUser.getId(), albumId);
+                    buyAlbumTracks(currentAlbumTracks, currentUser);
 
-                    userPoints -= albumPrice;
-                    currentUser.setPoints(userPoints);
-
-                    receiver.updateUser(currentUser);
-
-                    List<Track> currentAlbumTracks = receiver.getAlbumTracksWithOwner(currentUserId, albumId);
-
-                    for (Track currentTrack : currentAlbumTracks) {
-                        if (currentTrack.getOwnerId() == null) {
-                            receiver.buyTrack(currentUserId, currentTrack.getId());
-                        }
-                    }
-
-                    List<Album> allAlbums = receiver.getAllAlbumsWithOwner(currentUserId);
+                    List<Album> allAlbums = receiver.getAllAlbumsWithOwner(currentUser.getId());
                     allAlbums.sort(Comparator.comparing(Album::getName));
 
                     request.getSession(true).setAttribute("user", currentUser);
@@ -67,7 +53,7 @@ public class BuyAlbumCommand implements Command {
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, SHOW_ALBUMS_PAGE);
                 }
 
-                request.setAttribute("message", "insufficient points");
+                request.setAttribute("message", result);
 
             } else {
                 request.setAttribute("message", "denied");
@@ -76,6 +62,18 @@ public class BuyAlbumCommand implements Command {
 
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
+        } catch (ReceiverException e) {
+            throw new CommandException("Exception in BuyAlbumCommand.\n" + e, e);
+        }
+    }
+
+    private void buyAlbumTracks(List<Track> currentAlbumTracks, User currentUser) throws CommandException {
+        try {
+            for (Track currentTrack : currentAlbumTracks) {
+                if (currentTrack.getOwnerId() == null) {
+                    receiver.buyTrack(currentUser, currentTrack.getId(), 0);
+                }
+            }
         } catch (ReceiverException e) {
             throw new CommandException("Exception in BuyAlbumCommand.\n" + e, e);
         }

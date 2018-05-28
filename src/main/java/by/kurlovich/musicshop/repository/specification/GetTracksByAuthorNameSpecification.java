@@ -3,7 +3,7 @@ package by.kurlovich.musicshop.repository.specification;
 import by.kurlovich.musicshop.repository.SqlSpecification;
 
 public class GetTracksByAuthorNameSpecification implements SqlSpecification {
-    String authorName;
+    private String authorName;
 
     public GetTracksByAuthorNameSpecification(String authorName) {
         this.authorName = authorName;

@@ -2,6 +2,7 @@ package by.kurlovich.musicshop.command.common;
 
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
+import by.kurlovich.musicshop.util.GetCurrentUserId;
 import by.kurlovich.musicshop.web.CommandResult;
 import by.kurlovich.musicshop.util.creator.ObjectCreator;
 import by.kurlovich.musicshop.entity.SearchData;
@@ -26,14 +27,9 @@ public class SearchTracksCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
-            String currentUserId = "0";
             User currentUser = (User) request.getSession(true).getAttribute("user");
 
-            if (currentUser != null) {
-                currentUserId = currentUser.getId();
-            }
-
-
+            String currentUserId = GetCurrentUserId.get(currentUser);
             String currentURI = request.getParameter("currentURI");
 
             Map<String, String[]> requestMap = request.getParameterMap();

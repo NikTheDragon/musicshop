@@ -38,28 +38,14 @@ public class BuyMixCommand implements Command {
             if (AccessValidator.validate(accessRoles, currentUser.getRole())) {
                 String mixId = request.getParameter("mix_id");
                 int mixPrice = Integer.parseInt(request.getParameter("mix_price"));
-                int userPoints = currentUser.getPoints();
-                String currentUserId = currentUser.getId();
 
-                LOGGER.debug("User: {}, trying to buy mix: {}", currentUserId, mixId);
+                String result = receiver.buyMix(currentUser, mixId, mixPrice);
 
-                if (mixPrice <= userPoints) {
-                    receiver.buyMix(currentUserId, mixId);
+                if (Boolean.parseBoolean(result)) {
+                    List<Track> currentMixTracks = receiver.getMixTracksWithOwner(currentUser.getId(), mixId);
+                    buyMixTracks(currentMixTracks, currentUser);
 
-                    userPoints -= mixPrice;
-                    currentUser.setPoints(userPoints);
-
-                    receiver.updateUser(currentUser);
-
-                    List<Track> currentMixTracks = receiver.getMixTracksWithOwner(currentUserId, mixId);
-
-                    for (Track currentTrack : currentMixTracks) {
-                        if (currentTrack.getOwnerId() == null) {
-                            receiver.buyTrack(currentUserId, currentTrack.getId());
-                        }
-                    }
-
-                    List<Mix> allMixes = receiver.getAllMixesWithOwner(currentUserId);
+                    List<Mix> allMixes = receiver.getAllMixesWithOwner(currentUser.getId());
                     allMixes.sort(Comparator.comparing(Mix::getName));
 
                     request.getSession(true).setAttribute("user", currentUser);
@@ -67,7 +53,7 @@ public class BuyMixCommand implements Command {
                     return new CommandResult(CommandResult.ResponseType.REDIRECT, SHOW_MIXES_PAGE);
                 }
 
-                request.setAttribute("message", "insufficient points");
+                request.setAttribute("message", result);
 
             } else {
                 request.setAttribute("message", "denied");
@@ -76,6 +62,18 @@ public class BuyMixCommand implements Command {
 
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
+        } catch (ReceiverException e) {
+            throw new CommandException("Exception in BuyMixCommand.\n" + e, e);
+        }
+    }
+
+    private void buyMixTracks(List<Track> currentMixTracks, User currentUser) throws CommandException {
+        try {
+            for (Track currentTrack : currentMixTracks) {
+                if (currentTrack.getOwnerId() == null) {
+                    receiver.buyTrack(currentUser, currentTrack.getId(), 0);
+                }
+            }
         } catch (ReceiverException e) {
             throw new CommandException("Exception in BuyMixCommand.\n" + e, e);
         }
