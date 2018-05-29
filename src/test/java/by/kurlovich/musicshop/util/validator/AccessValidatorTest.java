@@ -38,7 +38,7 @@ public class AccessValidatorTest {
         boolean actual = AccessValidator.validate(accessRoles, role);
         boolean expected = true;
 
-        Assert.assertNotEquals(actual, expected, "validate bad role.");
+        Assert.assertNotEquals(actual, expected, "bad role was validated.");
     }
 
     @Test
@@ -48,7 +48,7 @@ public class AccessValidatorTest {
         boolean actual = AccessValidator.validate(accessRoles, null);
         boolean expected = true;
 
-        Assert.assertNotEquals(actual, expected, "validate bad role.");
+        Assert.assertNotEquals(actual, expected, "bad role was validated.");
     }
 }
 

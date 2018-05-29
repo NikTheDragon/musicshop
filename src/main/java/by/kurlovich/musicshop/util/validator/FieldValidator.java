@@ -5,6 +5,10 @@ import java.util.regex.Pattern;
 
 public class FieldValidator {
     public static String validateTextField(String[] fieldText) {
+        if (!Boolean.parseBoolean(nullChecker(fieldText))) {
+            return "null";
+        }
+
         String commonValidatorResult = common(fieldText[0]);
 
         if (!Boolean.parseBoolean(commonValidatorResult)) {
@@ -23,6 +27,10 @@ public class FieldValidator {
     }
 
     public static String validateSentenceField(String[] fieldText) {
+        if (!Boolean.parseBoolean(nullChecker(fieldText))) {
+            return "null";
+        }
+
         String commonValidatorResult = common(fieldText[0]);
 
         if (!Boolean.parseBoolean(commonValidatorResult)) {
@@ -57,6 +65,10 @@ public class FieldValidator {
     }
 
     public static String validateLogPasField(String[] fieldText) {
+        if (!Boolean.parseBoolean(nullChecker(fieldText))) {
+            return "null";
+        }
+
         String commonValidatorResult = common(fieldText[0]);
 
         if (!Boolean.parseBoolean(commonValidatorResult)) {
@@ -75,6 +87,10 @@ public class FieldValidator {
     }
 
     public static String validateEmailField(String[] fieldText) {
+        if (!Boolean.parseBoolean(nullChecker(fieldText))) {
+            return "null";
+        }
+
         String commonValidatorResult = common(fieldText[0]);
 
         if (!Boolean.parseBoolean(commonValidatorResult)) {
@@ -93,7 +109,7 @@ public class FieldValidator {
     }
 
     public static String validateDigitField(String[] fieldText) {
-        if (fieldText[0] == null || fieldText[0].isEmpty()) {
+        if (!Boolean.parseBoolean(nullChecker(fieldText))) {
             return "null";
         }
 
@@ -125,7 +141,7 @@ public class FieldValidator {
     }
 
     public static String validateFloatDigitField(String[] fieldText) {
-        if (fieldText[0] == null || fieldText[0].isEmpty()) {
+        if (!Boolean.parseBoolean(nullChecker(fieldText))) {
             return "null";
         }
 
@@ -141,15 +157,19 @@ public class FieldValidator {
     }
 
     private static String common(String fieldText) {
-        if (fieldText == null || fieldText.isEmpty()) {
-            return "null";
-        }
-
         if (fieldText.length() < 3 || fieldText.length() > 25) {
             return "length";
+        } else {
+            return "true";
         }
+    }
 
-        return "true";
+    private static String nullChecker(String[] fieldText) {
+        if (fieldText == null || fieldText[0] == null || fieldText[0].isEmpty()) {
+            return "null";
+        } else {
+            return "true";
+        }
     }
 }
 
