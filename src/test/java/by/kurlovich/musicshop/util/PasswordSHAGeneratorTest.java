@@ -21,19 +21,19 @@ public class PasswordSHAGeneratorTest {
     public void positiveGeneratorTest() throws NoSuchAlgorithmException {
         String password = "root";
 
-        String expected = "4813494d137e1631bba301d5acab6e7bb7aa74ce1185d456565ef51d737677b2";
         String actual = PasswordSHAGenerator.getPassword(password);
+        String expected = "4813494d137e1631bba301d5acab6e7bb7aa74ce1185d456565ef51d737677b2";
 
-        Assert.assertEquals(expected, actual, "SHA mismatch.");
+        Assert.assertEquals(actual, expected, "SHA mismatch.");
     }
 
     @Test
     public void negativeGeneratorTest() throws NoSuchAlgorithmException {
         String password = "root2";
 
-        String expected = "4813494d137e1631bba301d5acab6e7bb7aa74ce1185d456565ef51d737677b2";
         String actual = PasswordSHAGenerator.getPassword(password);
+        String expected = "4813494d137e1631bba301d5acab6e7bb7aa74ce1185d456565ef51d737677b2";
 
-        Assert.assertNotEquals(expected, actual, "SHA generates similar hashes for different passwords.");
+        Assert.assertNotEquals(actual, expected, "SHA generates similar hashes for different passwords.");
     }
 }
