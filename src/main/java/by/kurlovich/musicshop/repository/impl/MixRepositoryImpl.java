@@ -167,7 +167,7 @@ public class MixRepositoryImpl implements EntityRepository<Mix> {
             return Status.getStatus(status);
 
         } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in get getStatus of MixRepositoryImpl.\n" + e, e);
+            throw new RepositoryException("Exception in getId getStatus of MixRepositoryImpl.\n" + e, e);
         }
     }
 

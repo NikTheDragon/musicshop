@@ -33,7 +33,7 @@ public class RegNewUserCommand implements Command {
 
             User user = ObjectCreator.createUser(requestMap);
             request.setAttribute("user", user);
-            LOGGER.debug("get user: {}", user);
+            LOGGER.debug("getId user: {}", user);
 
             if (Boolean.parseBoolean(userValidationMessages.get("isPassedValidation"))) {
 

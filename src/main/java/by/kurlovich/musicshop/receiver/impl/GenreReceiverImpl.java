@@ -93,7 +93,7 @@ public class GenreReceiverImpl implements EntityReceiver<Genre> {
         try {
             EntityRepository<Genre> entityRepository = new GenreRepositoryImpl();
             Specification specification = new GetAllGenresSpecification();
-            LOGGER.debug("trying to get all genres.");
+            LOGGER.debug("trying to getId all genres.");
 
             return entityRepository.query(specification);
 

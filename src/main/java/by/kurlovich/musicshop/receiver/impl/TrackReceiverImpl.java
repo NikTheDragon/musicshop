@@ -90,7 +90,7 @@ public class TrackReceiverImpl implements EntityReceiver<Track> {
         try {
             EntityRepository<Track> entityRepository = new TrackRepositoryImpl();
             Specification specification = new GetAllTracksSpecification();
-            LOGGER.debug("trying to get all tracks.");
+            LOGGER.debug("trying to getId all tracks.");
 
             return entityRepository.query(specification);
 
@@ -118,7 +118,7 @@ public class TrackReceiverImpl implements EntityReceiver<Track> {
         try {
             EntityRepository<Track> entityRepository = new TrackRepositoryImpl();
             Specification specification = new GetTracksByAuthorNameSpecification(param);
-            LOGGER.debug("trying to get specified author: {}, tracks.", param);
+            LOGGER.debug("trying to getId specified author: {}, tracks.", param);
 
             return entityRepository.query(specification);
 

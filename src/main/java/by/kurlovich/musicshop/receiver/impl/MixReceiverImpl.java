@@ -90,7 +90,7 @@ public class MixReceiverImpl implements EntityReceiver<Mix> {
         try {
             EntityRepository<Mix> entityRepository = new MixRepositoryImpl();
             Specification specification = new GetAllMixesSpecification();
-            LOGGER.debug("Trying to get all mixes.");
+            LOGGER.debug("Trying to getId all mixes.");
 
             return entityRepository.query(specification);
 
@@ -109,7 +109,7 @@ public class MixReceiverImpl implements EntityReceiver<Mix> {
         try {
             EntityRepository<Mix> entityRepository = new MixRepositoryImpl();
             Specification specification = new GetMixByIdSpecification(mixId);
-            LOGGER.debug("trying to get specified mix with id {}.", mixId);
+            LOGGER.debug("trying to getId specified mix with id {}.", mixId);
 
             return entityRepository.query(specification);
 

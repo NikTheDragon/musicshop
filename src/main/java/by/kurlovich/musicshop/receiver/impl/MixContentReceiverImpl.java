@@ -76,7 +76,7 @@ public class MixContentReceiverImpl implements EntityReceiver<Content> {
         try {
             EntityRepository<Content> entityRepository = new MixContentRepositoryImpl();
             Specification specification = new GetAllMixesContentSpecification();
-            LOGGER.debug("Trying to get content for the mix.");
+            LOGGER.debug("Trying to getId content for the mix.");
 
             return entityRepository.query(specification);
 
@@ -95,7 +95,7 @@ public class MixContentReceiverImpl implements EntityReceiver<Content> {
         try {
             EntityRepository<Content> entityRepository = new MixContentRepositoryImpl();
             Specification specification = new GetMixContentByMixIdSpecification(param);
-            LOGGER.debug("trying to get specified content for mix with id {}.", param);
+            LOGGER.debug("trying to getId specified content for mix with id {}.", param);
 
             return entityRepository.query(specification);
 

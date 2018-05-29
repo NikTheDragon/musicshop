@@ -33,7 +33,7 @@ public class UserReceiverImpl implements UserReceiver {
         try {
             UserRepository userRepository = new UserRepositoryImpl();
             Specification specification = new GetAllUsersSpecification();
-            LOGGER.debug("trying to get all users.");
+            LOGGER.debug("trying to getId all users.");
 
             return userRepository.query(specification);
 
@@ -47,7 +47,7 @@ public class UserReceiverImpl implements UserReceiver {
         try {
             EntityRepository<Track> entityRepository = new TrackRepositoryImpl();
             Specification specification = new GetAllTracksWithOwnerIdSpecification(userId);
-            LOGGER.debug("trying to get tracks with owners id:{}.", userId);
+            LOGGER.debug("trying to getId tracks with owners id:{}.", userId);
 
             return entityRepository.queryWithOwners(specification);
 
@@ -61,7 +61,7 @@ public class UserReceiverImpl implements UserReceiver {
         try {
             EntityRepository<Track> entityRepository = new TrackRepositoryImpl();
             Specification specification = new GetUserOwnedTracksSpecification(userId);
-            LOGGER.debug("trying to get user id:{} owned tracks", userId);
+            LOGGER.debug("trying to getId user id:{} owned tracks", userId);
 
             return entityRepository.query(specification);
 
@@ -75,7 +75,7 @@ public class UserReceiverImpl implements UserReceiver {
         try {
             EntityRepository<Track> entityRepository = new TrackRepositoryImpl();
             Specification specification = new GetMixContentWithOwnersIdByMixIdSpecification(userId, mixId);
-            LOGGER.debug("Trying to get all tracks for mix:{}, and owner:{}.", mixId, userId);
+            LOGGER.debug("Trying to getId all tracks for mix:{}, and owner:{}.", mixId, userId);
 
             return entityRepository.queryWithOwners(specification);
 
@@ -89,7 +89,7 @@ public class UserReceiverImpl implements UserReceiver {
         try {
             EntityRepository<Track> entityRepository = new TrackRepositoryImpl();
             Specification specification = new GetAlbumContentWithOwnersIdByMixIdSpecification(userId, albumId);
-            LOGGER.debug("Trying to get all tracks for album:{}, and owner:{}.", albumId, userId);
+            LOGGER.debug("Trying to getId all tracks for album:{}, and owner:{}.", albumId, userId);
 
             return entityRepository.queryWithOwners(specification);
 
@@ -103,7 +103,7 @@ public class UserReceiverImpl implements UserReceiver {
         try {
             EntityRepository<Mix> entityRepository = new MixRepositoryImpl();
             Specification specification = new GetAllMixesWithOwnerIdSpecification(userId);
-            LOGGER.debug("Trying to get all mixes with owner.");
+            LOGGER.debug("Trying to getId all mixes with owner.");
 
             return entityRepository.queryWithOwners(specification);
 
@@ -117,7 +117,7 @@ public class UserReceiverImpl implements UserReceiver {
         try {
             EntityRepository<Mix> entityRepository = new MixRepositoryImpl();
             Specification specification = new GetUserOwnedMixesSpecification(userId);
-            LOGGER.debug("trying to get user id:{} owned mixes.", userId);
+            LOGGER.debug("trying to getId user id:{} owned mixes.", userId);
 
             return entityRepository.query(specification);
 
@@ -131,7 +131,7 @@ public class UserReceiverImpl implements UserReceiver {
         try {
             EntityRepository<Album> entityRepository = new AlbumRepositoryImpl();
             Specification specification = new GetAllAlbumsWithOwnerIdSpecification(userId);
-            LOGGER.debug("Trying to get all albums with owner.");
+            LOGGER.debug("Trying to getId all albums with owner.");
 
             return entityRepository.queryWithOwners(specification);
 
@@ -145,7 +145,7 @@ public class UserReceiverImpl implements UserReceiver {
         try {
             EntityRepository<Album> entityRepository = new AlbumRepositoryImpl();
             Specification specification = new GetUserOwnedAlbumsSpecification(userId);
-            LOGGER.debug("trying to get user id:{} owned albums.", userId);
+            LOGGER.debug("trying to getId user id:{} owned albums.", userId);
 
             return entityRepository.query(specification);
 
@@ -366,7 +366,7 @@ public class UserReceiverImpl implements UserReceiver {
         try {
             UserRepository userRepository = new UserRepositoryImpl();
             Specification specification = new GetUserByIdSpecification(userId);
-            LOGGER.debug("trying to get specified users.");
+            LOGGER.debug("trying to getId specified users.");
 
             return userRepository.query(specification);
 

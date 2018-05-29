@@ -2,7 +2,7 @@ package by.kurlovich.musicshop.command.common;
 
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
-import by.kurlovich.musicshop.util.GetCurrentUserId;
+import by.kurlovich.musicshop.util.UserUtil;
 import by.kurlovich.musicshop.web.CommandResult;
 import by.kurlovich.musicshop.entity.Track;
 import by.kurlovich.musicshop.entity.User;
@@ -28,7 +28,7 @@ public class ShowAllTracksCommand implements Command {
 
             User currentUser = (User) request.getSession(true).getAttribute("user");
 
-            String currentUserId = GetCurrentUserId.get(currentUser);
+            String currentUserId = UserUtil.getId(currentUser);
 
             List<Track> allTracks = receiver.getAllTracksWithOwner(currentUserId);
             allTracks.sort(Comparator.comparing(Track::getAuthor));

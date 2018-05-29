@@ -2,7 +2,7 @@ package by.kurlovich.musicshop.command.common;
 
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
-import by.kurlovich.musicshop.util.GetCurrentUserId;
+import by.kurlovich.musicshop.util.UserUtil;
 import by.kurlovich.musicshop.web.CommandResult;
 import by.kurlovich.musicshop.util.creator.ObjectCreator;
 import by.kurlovich.musicshop.entity.Author;
@@ -29,7 +29,7 @@ public class SearchAuthorsCommand implements Command {
         try {
             User currentUser = (User) request.getSession(true).getAttribute("user");
 
-            String currentUserId = GetCurrentUserId.get(currentUser);
+            String currentUserId = UserUtil.getId(currentUser);
             String currentURI = request.getParameter("currentURI");
 
             Map<String, String[]> requestMap = request.getParameterMap();

@@ -2,7 +2,7 @@ package by.kurlovich.musicshop.command.common;
 
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
-import by.kurlovich.musicshop.util.GetCurrentUserId;
+import by.kurlovich.musicshop.util.UserUtil;
 import by.kurlovich.musicshop.web.CommandResult;
 import by.kurlovich.musicshop.entity.Album;
 import by.kurlovich.musicshop.entity.Track;
@@ -31,7 +31,7 @@ public class ShowAlbumContentCommand implements Command {
 
             User currentUser = (User) request.getSession(true).getAttribute("user");
 
-            String currentUserId = GetCurrentUserId.get(currentUser);
+            String currentUserId = UserUtil.getId(currentUser);
             String currentAlbumId = request.getParameter("album_id");
             List<Album> specifiedAlbums = albumReceiver.getSpecifiedEntities(currentAlbumId);
 
