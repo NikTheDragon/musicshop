@@ -29,7 +29,7 @@ public class AlbumRepositoryImpl implements EntityRepository<Album> {
 
     public AlbumRepositoryImpl() throws RepositoryException {
         try {
-            LOGGER.debug("Creating album EntityRepository class.");
+            LOGGER.debug("Creating album OtherEntityRepository class.");
             pool = ConnectionPool.getInstance();
         } catch (ConnectionException e) {
             throw new RepositoryException("Can't create dbconnection pool", e);
