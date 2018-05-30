@@ -15,8 +15,8 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ShowEditGenresPageCommand implements Command {
-    private final static String EDIT_GENRES_PAGE = PageStore.EDIT_GENRES_PAGE.getPageName();
-    private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
+    private static final String EDIT_GENRES_PAGE = PageStore.EDIT_GENRES_PAGE.getPageName();
+    private static final String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private EntityReceiver receiver;
 
     public ShowEditGenresPageCommand(EntityReceiver receiver) {

@@ -16,10 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserRepositoryImpl implements UserRepository {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserRepositoryImpl.class);
+
     private static final String ADD_USER = "INSERT INTO users (name,surname,login,password,email,role,status,points) VALUES (?,?,?,?,?,?,?,?)";
     private static final String UPDATE_USER = "UPDATE users SET name=?, surname=?, login=?, email=?, role=?, status=?, points=? WHERE id=?";
     private static final String UPDATE_PASSWORD = "UPDATE users SET password=? WHERE id=?";
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserRepositoryImpl.class);
     private final ConnectionPool pool;
 
     static final int ID = 1;

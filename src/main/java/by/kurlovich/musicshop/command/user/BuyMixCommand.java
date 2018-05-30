@@ -20,9 +20,9 @@ import java.util.Comparator;
 import java.util.List;
 
 public class BuyMixCommand implements Command {
-    private final static Logger LOGGER = LoggerFactory.getLogger(BuyMixCommand.class);
-    private final static String SHOW_MIXES_PAGE = PageStore.SHOW_MIXES_PAGE.getPageName();
-    private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
+    private static final Logger LOGGER = LoggerFactory.getLogger(BuyMixCommand.class);
+    private static final String SHOW_MIXES_PAGE = PageStore.SHOW_MIXES_PAGE.getPageName();
+    private static final String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private UserReceiver receiver;
 
     public BuyMixCommand(UserReceiver receiver) {

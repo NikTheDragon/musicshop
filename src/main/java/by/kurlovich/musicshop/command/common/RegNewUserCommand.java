@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 public class RegNewUserCommand implements Command {
-    private final static Logger LOGGER = LoggerFactory.getLogger(RegNewUserCommand.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RegNewUserCommand.class);
     private static final String REG_PAGE = PageStore.REG_PAGE.getPageName();
     private static final String REGISTRATION_COMPLETE = PageStore.REGISTRATION_COMPLETE.getPageName();
     private UserReceiver receiver;

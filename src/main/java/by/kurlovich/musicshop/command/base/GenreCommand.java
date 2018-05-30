@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class GenreCommand implements Command {
-    private final static String EDIT_GENRES_PAGE = PageStore.EDIT_GENRES_PAGE.getPageName();
-    private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
-    private final static Logger LOGGER = LoggerFactory.getLogger(GenreCommand.class);
+    private static final String EDIT_GENRES_PAGE = PageStore.EDIT_GENRES_PAGE.getPageName();
+    private static final String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenreCommand.class);
     private EntityReceiver receiver;
 
     public GenreCommand(EntityReceiver receiver) {

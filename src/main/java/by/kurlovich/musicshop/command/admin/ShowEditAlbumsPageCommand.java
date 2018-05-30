@@ -17,8 +17,8 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ShowEditAlbumsPageCommand implements Command {
-    private final static String EDIT_ALBUMS_PAGE = PageStore.EDIT_ALBUMS_PAGE.getPageName();
-    private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
+    private static final String EDIT_ALBUMS_PAGE = PageStore.EDIT_ALBUMS_PAGE.getPageName();
+    private static final String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private EntityReceiver albumReceiver;
     private EntityReceiver genreReceiver;
     private EntityReceiver authorReceiver;

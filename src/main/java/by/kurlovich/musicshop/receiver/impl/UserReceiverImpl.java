@@ -339,8 +339,6 @@ public class UserReceiverImpl implements UserReceiver {
                 return "insufficient points.";
             }
 
-            System.out.println("status="+specifiedMix.get(0).getStatus()+".");
-
             if (specifiedMix.get(0).getStatus().equals("active")) {
                 specification = new BuyMixSpecification(currentUser.getId(), mixId);
                 entityRepository.buy(specification);

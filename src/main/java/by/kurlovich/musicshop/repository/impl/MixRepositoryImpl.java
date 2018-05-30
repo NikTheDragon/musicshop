@@ -1,13 +1,10 @@
 package by.kurlovich.musicshop.repository.impl;
 
-import by.kurlovich.musicshop.repository.dbconnection.ConnectionException;
-import by.kurlovich.musicshop.repository.dbconnection.ConnectionPool;
 import by.kurlovich.musicshop.entity.Mix;
-import by.kurlovich.musicshop.repository.EntityRepository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.SqlSpecification;
-
+import by.kurlovich.musicshop.repository.dbconnection.ConnectionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,29 +15,24 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MixRepositoryImpl implements EntityRepository<Mix> {
+public class MixRepositoryImpl extends BaseEntityRepository<Mix> {
     private static final Logger LOGGER = LoggerFactory.getLogger(MixRepositoryImpl.class);
+
     private static final String GET_STATUS = "SELECT status FROM mixes WHERE name=?";
     private static final String SET_STATUS = "UPDATE mixes SET status='active' WHERE name=? AND genre=(SELECT id FROM genres WHERE name=?) AND year=?";
     private static final String ADD_MIX = "INSERT INTO mixes (name, genre, year, status) VALUES (?,(SELECT id FROM genres WHERE name=?),?,?)";
     private static final String DELETE_MIX = "UPDATE mixes SET status='deleted' WHERE name=?";
     private static final String UPDATE_MIX = "UPDATE mixes SET name=?, genre=(SELECT id FROM genres WHERE name=?), year=? WHERE id=?";
-    private final ConnectionPool pool;
 
     public MixRepositoryImpl() throws RepositoryException {
-        try {
-            LOGGER.debug("Creating mix EntityRepository class.");
-            pool = ConnectionPool.getInstance();
-        } catch (ConnectionException e) {
-            throw new RepositoryException("Can't create dbconnection pool.\n" + e, e);
-        }
+        super();
     }
 
 
     @Override
     public void add(Mix item) throws RepositoryException {
         LOGGER.debug("adding new mix {}", item.getName());
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(ADD_MIX)) {
 
             ps.setString(1, item.getName());
@@ -58,7 +50,7 @@ public class MixRepositoryImpl implements EntityRepository<Mix> {
     @Override
     public void delete(Mix item) throws RepositoryException {
         LOGGER.debug("deleting mix {}", item.getName());
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(DELETE_MIX)) {
 
             ps.setString(1, item.getName());
@@ -73,7 +65,7 @@ public class MixRepositoryImpl implements EntityRepository<Mix> {
     @Override
     public void update(Mix item) throws RepositoryException {
         LOGGER.debug("updating mix {}", item.getName());
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(UPDATE_MIX)) {
 
             ps.setString(1, item.getName());
@@ -94,7 +86,7 @@ public class MixRepositoryImpl implements EntityRepository<Mix> {
         SqlSpecification sqlSpecification = (SqlSpecification) specification;
         List<Mix> mixList = new ArrayList<>();
 
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(sqlSpecification.toSqlQuery());
              ResultSet rs = ps.executeQuery()) {
 
@@ -123,7 +115,7 @@ public class MixRepositoryImpl implements EntityRepository<Mix> {
         SqlSpecification sqlSpecification = (SqlSpecification) specification;
         List<Mix> mixList = new ArrayList<>();
 
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(sqlSpecification.toSqlQuery());
              ResultSet rs = ps.executeQuery()) {
 
@@ -153,7 +145,7 @@ public class MixRepositoryImpl implements EntityRepository<Mix> {
         LOGGER.debug("checking mix {} status.", item.getName());
         String status = "";
 
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(GET_STATUS)) {
 
             ps.setString(1, item.getName());
@@ -175,7 +167,7 @@ public class MixRepositoryImpl implements EntityRepository<Mix> {
     public void undelete(Mix item) throws RepositoryException {
         LOGGER.debug("set mix {} status to active.", item.getName());
 
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(SET_STATUS)) {
 
             ps.setString(1, item.getName());
@@ -194,7 +186,7 @@ public class MixRepositoryImpl implements EntityRepository<Mix> {
         LOGGER.debug("buying mix.");
         SqlSpecification sqlSpecification = (SqlSpecification) specification;
 
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(sqlSpecification.toSqlQuery())) {
 
             ps.executeUpdate();

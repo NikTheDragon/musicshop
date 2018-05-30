@@ -21,8 +21,8 @@ import java.util.Map;
 
 public class UpdateUserCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(UpdateUserCommand.class);
-    private final static String SHOW_EDIT_USER_PAGE = PageStore.SHOW_EDIT_USER_PAGE.getPageName();
-    private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
+    private static final String SHOW_EDIT_USER_PAGE = PageStore.SHOW_EDIT_USER_PAGE.getPageName();
+    private static final String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private final UserReceiver receiver;
 
     public UpdateUserCommand(UserReceiver receiver) {

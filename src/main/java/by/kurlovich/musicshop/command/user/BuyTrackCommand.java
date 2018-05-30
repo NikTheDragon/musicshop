@@ -18,9 +18,9 @@ import java.util.Comparator;
 import java.util.List;
 
 public class BuyTrackCommand implements Command {
-    private final static Logger LOGGER = LoggerFactory.getLogger(BuyTrackCommand.class);
-    private final static String SHOW_TRACKS_PAGE = PageStore.SHOW_TRACKS_PAGE.getPageName();
-    private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
+    private static final Logger LOGGER = LoggerFactory.getLogger(BuyTrackCommand.class);
+    private static final String SHOW_TRACKS_PAGE = PageStore.SHOW_TRACKS_PAGE.getPageName();
+    private static final String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private UserReceiver receiver;
 
     public BuyTrackCommand(UserReceiver receiver) {

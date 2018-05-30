@@ -17,9 +17,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class AddTrackToMixCommand implements Command {
-    private final static Logger LOGGER = LoggerFactory.getLogger(AddTrackToMixCommand.class);
-    private final static String EDIT_MIXES_CONTENT_PAGE = PageStore.EDIT_MIXES_CONTENT_PAGE.getPageName();
-    private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
+    private static final Logger LOGGER = LoggerFactory.getLogger(AddTrackToMixCommand.class);
+    private static final String EDIT_MIXES_CONTENT_PAGE = PageStore.EDIT_MIXES_CONTENT_PAGE.getPageName();
+    private static final String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private EntityReceiver receiver;
 
     public AddTrackToMixCommand(EntityReceiver receiver) {

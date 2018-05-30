@@ -16,8 +16,8 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ShowMyAlbumsCommand implements Command {
-    private final static String SHOW_MY_ALBUMS = PageStore.SHOW_MY_ALBUMS.getPageName();
-    private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
+    private static final String SHOW_MY_ALBUMS = PageStore.SHOW_MY_ALBUMS.getPageName();
+    private static final String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private UserReceiver receiver;
 
     public ShowMyAlbumsCommand(UserReceiver receiver) {

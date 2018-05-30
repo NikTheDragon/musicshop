@@ -1,12 +1,11 @@
 package by.kurlovich.musicshop.repository.impl;
 
-import by.kurlovich.musicshop.repository.EntityRepository;
-import by.kurlovich.musicshop.repository.dbconnection.ConnectionException;
-import by.kurlovich.musicshop.repository.dbconnection.ConnectionPool;
 import by.kurlovich.musicshop.entity.Author;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.SqlSpecification;
+import by.kurlovich.musicshop.repository.dbconnection.ConnectionException;
+import by.kurlovich.musicshop.repository.dbconnection.ConnectionPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class AuthorRepositoryImpl implements EntityRepository<Author> {
+public class AuthorRepositoryImpl extends BaseEntityRepository<Author> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorRepositoryImpl.class);
     private static final String GET_STATUS = "SELECT status FROM authors WHERE name=?";
     private static final String SET_STATUS = "UPDATE authors SET status='active' WHERE name=? AND genre=(SELECT id FROM genres WHERE name=?) AND type=?";
@@ -40,7 +39,7 @@ public class AuthorRepositoryImpl implements EntityRepository<Author> {
     public void add(Author item) throws RepositoryException {
         LOGGER.debug("adding new author {}", item.getName());
 
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(ADD_AUTHOR)) {
 
             ps.setString(1, item.getName());
@@ -59,7 +58,7 @@ public class AuthorRepositoryImpl implements EntityRepository<Author> {
     public void delete(Author item) throws RepositoryException {
         LOGGER.debug("deleting author {}", item.getName());
 
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(DELETE_AUTHOR)) {
 
             ps.setString(1, item.getName());
@@ -75,7 +74,7 @@ public class AuthorRepositoryImpl implements EntityRepository<Author> {
     public void update(Author item) throws RepositoryException {
         LOGGER.debug("updating author {}", item.getName());
 
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(UPDATE_AUTHOR)) {
 
             ps.setString(1, item.getName());
@@ -95,7 +94,7 @@ public class AuthorRepositoryImpl implements EntityRepository<Author> {
         SqlSpecification sqlSpecification = (SqlSpecification) specification;
         List<Author> authorList = new ArrayList<>();
 
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(sqlSpecification.toSqlQuery());
              ResultSet rs = ps.executeQuery()) {
 
@@ -128,7 +127,7 @@ public class AuthorRepositoryImpl implements EntityRepository<Author> {
         LOGGER.debug("Checking author {} status.", item.getName());
         String status = "";
 
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(GET_STATUS)) {
 
             ps.setString(1, item.getName());
@@ -150,7 +149,7 @@ public class AuthorRepositoryImpl implements EntityRepository<Author> {
     public void undelete(Author item) throws RepositoryException {
         LOGGER.debug("Set author {} status to active.", item.getName());
 
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(SET_STATUS)) {
 
             ps.setString(1, item.getName());
@@ -165,7 +164,7 @@ public class AuthorRepositoryImpl implements EntityRepository<Author> {
     }
 
     @Override
-    public void buy(Specification specification) throws RepositoryException {
-
+    public void buy(Specification specification) {
+        throw new UnsupportedOperationException();
     }
 }

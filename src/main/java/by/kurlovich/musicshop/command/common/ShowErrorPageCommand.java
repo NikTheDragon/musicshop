@@ -7,10 +7,7 @@ import by.kurlovich.musicshop.web.pages.PageStore;
 import javax.servlet.http.HttpServletRequest;
 
 public class ShowErrorPageCommand implements Command {
-    private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
-
-    public ShowErrorPageCommand() {
-    }
+    private static final String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

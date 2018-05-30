@@ -16,8 +16,8 @@ import java.util.List;
 import java.util.Set;
 
 public class FormMixContentInputDataCommand implements Command {
-    private final static String EDIT_MIXES_CONTENT_PAGE = PageStore.EDIT_MIXES_CONTENT_PAGE.getPageName();
-    private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
+    private static final String EDIT_MIXES_CONTENT_PAGE = PageStore.EDIT_MIXES_CONTENT_PAGE.getPageName();
+    private static final String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     EntityReceiver trackReceiver;
 
     public FormMixContentInputDataCommand (EntityReceiver trackReceiver) {

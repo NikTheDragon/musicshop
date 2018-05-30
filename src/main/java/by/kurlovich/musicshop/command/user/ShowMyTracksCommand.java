@@ -16,8 +16,8 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ShowMyTracksCommand implements Command {
-    private final static String SHOW_MY_TRACKS = PageStore.SHOW_MY_TRACKS.getPageName();
-    private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
+    private static final String SHOW_MY_TRACKS = PageStore.SHOW_MY_TRACKS.getPageName();
+    private static final String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private UserReceiver receiver;
 
     public ShowMyTracksCommand(UserReceiver receiver) {

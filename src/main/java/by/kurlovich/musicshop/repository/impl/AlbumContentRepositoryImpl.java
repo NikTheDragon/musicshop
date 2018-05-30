@@ -1,13 +1,10 @@
 package by.kurlovich.musicshop.repository.impl;
 
-import by.kurlovich.musicshop.repository.EntityRepository;
-import by.kurlovich.musicshop.repository.dbconnection.ConnectionException;
-import by.kurlovich.musicshop.repository.dbconnection.ConnectionPool;
 import by.kurlovich.musicshop.entity.Content;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.SqlSpecification;
-
+import by.kurlovich.musicshop.repository.dbconnection.ConnectionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,26 +16,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class AlbumContentRepositoryImpl implements EntityRepository<Content> {
+public class AlbumContentRepositoryImpl extends ContentEntityRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(AlbumContentRepositoryImpl.class);
+
     private static final String ADD_CONTENT = "INSERT INTO albums_content (album_id, track_id, status) VALUES (?,(SELECT id FROM tracks WHERE name=? AND author=(SELECT id FROM authors WHERE name=?)), 'active')";
     private static final String DELETE_CONTENT = "UPDATE albums_content SET status='deleted' WHERE album_id=? AND track_id=?";
     private static final String GET_STATUS = "SELECT status FROM albums_content WHERE album_id=? AND track_id=(SELECT id FROM tracks WHERE name=? AND author=(SELECT id FROM authors WHERE name=?))";
-    private final ConnectionPool pool;
 
     public AlbumContentRepositoryImpl() throws RepositoryException {
-        try {
-            LOGGER.debug("Creating AlbumContentRepositoryImpl class.");
-            pool = ConnectionPool.getInstance();
-        } catch (ConnectionException e) {
-            throw new RepositoryException("Can't create dbconnection pool", e);
-        }
+        super();
     }
 
     @Override
     public void add(Content item) throws RepositoryException {
         LOGGER.debug("adding content:{}, to album.", item.getTrackName());
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(ADD_CONTENT)) {
 
             ps.setString(1, item.getEntityId());
@@ -56,7 +48,7 @@ public class AlbumContentRepositoryImpl implements EntityRepository<Content> {
     public void delete(Content item) throws RepositoryException {
         LOGGER.debug("Deleting track from album.");
 
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(DELETE_CONTENT)) {
 
             ps.setString(1, item.getEntityId());
@@ -70,8 +62,8 @@ public class AlbumContentRepositoryImpl implements EntityRepository<Content> {
     }
 
     @Override
-    public void update(Content item) throws RepositoryException {
-
+    public void update(Content item) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -79,7 +71,7 @@ public class AlbumContentRepositoryImpl implements EntityRepository<Content> {
         SqlSpecification sqlSpecification = (SqlSpecification) specification;
         List<Content> contentList = new ArrayList<>();
 
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(sqlSpecification.toSqlQuery())) {
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -105,42 +97,22 @@ public class AlbumContentRepositoryImpl implements EntityRepository<Content> {
     }
 
     @Override
-    public List<Content> queryWithOwners(Specification specification) throws RepositoryException {
+    public List<Content> queryWithOwners(Specification specification) {
         return Collections.emptyList();
     }
 
     @Override
-    public Status getStatus(Content item) throws RepositoryException {
-        LOGGER.debug("checking content {} status.", item.getTrackName());
-        String status = "";
-
-        try (Connection connection = pool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(GET_STATUS)) {
-
-            ps.setString(1, item.getEntityId());
-            ps.setString(2, item.getTrackName());
-            ps.setString(3, item.getAuthorName());
-
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    status = (rs.getString(1));
-                }
-            }
-
-            return Status.getStatus(status);
-
-        } catch (SQLException | ConnectionException e) {
-            throw new RepositoryException("Exception in getStatus of AlbumContentRepositoryImpl.\n" + e, e);
-        }
+    public void undelete(Content item) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public void undelete(Content item) throws RepositoryException {
-
+    public void buy(Specification specification) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public void buy(Specification specification) throws RepositoryException {
-
+    protected String getStatusSQL() {
+        return GET_STATUS;
     }
 }

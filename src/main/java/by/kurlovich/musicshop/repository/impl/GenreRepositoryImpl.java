@@ -1,12 +1,10 @@
 package by.kurlovich.musicshop.repository.impl;
 
-import by.kurlovich.musicshop.repository.EntityRepository;
-import by.kurlovich.musicshop.repository.dbconnection.ConnectionException;
-import by.kurlovich.musicshop.repository.dbconnection.ConnectionPool;
 import by.kurlovich.musicshop.entity.Genre;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.SqlSpecification;
+import by.kurlovich.musicshop.repository.dbconnection.ConnectionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,14 +16,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class GenreRepositoryImpl implements EntityRepository<Genre> {
+public class GenreRepositoryImpl extends BaseEntityRepository<Genre> {
     private static final Logger LOGGER = LoggerFactory.getLogger(GenreRepositoryImpl.class);
+
     private static final String ADD_GENRE = "INSERT INTO genres (name, status) VALUES (?,?)";
     private static final String DELETE_GENRE = "UPDATE genres SET status='deleted' WHERE name=?";
     private static final String UPDATE_GENRE = "UPDATE genres SET name=? WHERE id=?";
     private static final String GET_STATUS = "SELECT status FROM genres WHERE name=?";
     private static final String SET_STATUS = "UPDATE genres SET status='active' WHERE name=?";
-    private final ConnectionPool pool;
 
     private static final int ID = 1;
     private static final int UPDATE_ID = 2;
@@ -35,18 +33,13 @@ public class GenreRepositoryImpl implements EntityRepository<Genre> {
     private static final int STATUS = 3;
 
     public GenreRepositoryImpl() throws RepositoryException {
-        try {
-            LOGGER.debug("Creating Genre EntityRepository class.");
-            pool = ConnectionPool.getInstance();
-        } catch (ConnectionException e) {
-            throw new RepositoryException("Can't create dbconnection pool", e);
-        }
+        super();
     }
 
     @Override
     public void add(Genre genre) throws RepositoryException {
         LOGGER.debug("adding new genre {}", genre.getName());
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(ADD_GENRE)) {
 
             ps.setString(SET_NAME, genre.getName());
@@ -61,7 +54,7 @@ public class GenreRepositoryImpl implements EntityRepository<Genre> {
     @Override
     public void delete(Genre genre) throws RepositoryException {
         LOGGER.debug("deleting genre {}", genre.getName());
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(DELETE_GENRE)) {
 
             ps.setString(SET_NAME, genre.getName());
@@ -76,7 +69,7 @@ public class GenreRepositoryImpl implements EntityRepository<Genre> {
     @Override
     public void update(Genre genre) throws RepositoryException {
         LOGGER.debug("updating genre {}", genre.getName());
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(UPDATE_GENRE)) {
 
             ps.setString(SET_NAME, genre.getName());
@@ -94,7 +87,7 @@ public class GenreRepositoryImpl implements EntityRepository<Genre> {
         SqlSpecification sqlSpecification = (SqlSpecification) specification;
         List<Genre> genreList = new ArrayList<>();
 
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(sqlSpecification.toSqlQuery())) {
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -126,7 +119,7 @@ public class GenreRepositoryImpl implements EntityRepository<Genre> {
         LOGGER.debug("checking genre {} status.", genre.getName());
         String status = "";
 
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(GET_STATUS)) {
 
             ps.setString(SET_NAME, genre.getName());
@@ -148,7 +141,7 @@ public class GenreRepositoryImpl implements EntityRepository<Genre> {
     public void undelete(Genre genre) throws RepositoryException {
         LOGGER.debug("set genre {} status to active.", genre.getName());
 
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(SET_STATUS)) {
 
             ps.setString(SET_NAME, genre.getName());
@@ -161,7 +154,7 @@ public class GenreRepositoryImpl implements EntityRepository<Genre> {
     }
 
     @Override
-    public void buy(Specification specification) throws RepositoryException {
-
+    public void buy(Specification specification) {
+        throw new UnsupportedOperationException();
     }
 }

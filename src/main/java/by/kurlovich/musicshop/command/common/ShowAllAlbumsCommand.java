@@ -15,7 +15,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ShowAllAlbumsCommand implements Command {
-    private final static String SHOW_ALBUMS_PAGE = PageStore.SHOW_ALBUMS_PAGE.getPageName();
+    private static final String SHOW_ALBUMS_PAGE = PageStore.SHOW_ALBUMS_PAGE.getPageName();
     private UserReceiver receiver;
 
     public ShowAllAlbumsCommand(UserReceiver receiver) {

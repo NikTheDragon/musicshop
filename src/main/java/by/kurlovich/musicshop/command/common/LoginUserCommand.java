@@ -20,10 +20,10 @@ import java.util.Map;
  */
 
 public class LoginUserCommand implements Command {
-    private final static Logger LOGGER = LoggerFactory.getLogger(LoginUserCommand.class);
-    private final static String MAIN_PAGE = PageStore.MAIN_PAGE.getPageName();
-    private final static String USER_PAGE = PageStore.USER_PAGE.getPageName();
-    private final static String ADMIN_PAGE = PageStore.ADMIN_PAGE.getPageName();
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoginUserCommand.class);
+    private static final String MAIN_PAGE = PageStore.MAIN_PAGE.getPageName();
+    private static final String USER_PAGE = PageStore.USER_PAGE.getPageName();
+    private static final String ADMIN_PAGE = PageStore.ADMIN_PAGE.getPageName();
     private UserReceiver receiver;
 
     public LoginUserCommand(UserReceiver receiver) {

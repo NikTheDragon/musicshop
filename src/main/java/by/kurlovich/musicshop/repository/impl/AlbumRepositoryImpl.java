@@ -1,13 +1,11 @@
 package by.kurlovich.musicshop.repository.impl;
 
-import by.kurlovich.musicshop.repository.EntityRepository;
-import by.kurlovich.musicshop.repository.dbconnection.ConnectionException;
-import by.kurlovich.musicshop.repository.dbconnection.ConnectionPool;
 import by.kurlovich.musicshop.entity.Album;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.SqlSpecification;
-
+import by.kurlovich.musicshop.repository.dbconnection.ConnectionException;
+import by.kurlovich.musicshop.repository.dbconnection.ConnectionPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +16,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AlbumRepositoryImpl implements EntityRepository<Album> {
+public class AlbumRepositoryImpl extends BaseEntityRepository<Album> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AlbumRepositoryImpl.class);
     private static final String GET_STATUS = "SELECT status FROM albums WHERE name=?";
     private static final String SET_STATUS = "UPDATE albums SET status='active' WHERE name=? AND author=(SELECT id FROM authors WHERE name=?) AND genre=(SELECT id FROM genres WHERE name=?) AND year=?";
@@ -40,7 +38,7 @@ public class AlbumRepositoryImpl implements EntityRepository<Album> {
     public void add(Album item) throws RepositoryException {
         LOGGER.debug("adding new album {}", item.getName());
 
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(ADD_ALBUM)) {
 
             ps.setString(1, item.getName());
@@ -60,7 +58,7 @@ public class AlbumRepositoryImpl implements EntityRepository<Album> {
     public void delete(Album item) throws RepositoryException {
         LOGGER.debug("deleting album {}", item.getName());
 
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(DELETE_ALBUM)) {
 
             ps.setString(1, item.getName());
@@ -77,7 +75,7 @@ public class AlbumRepositoryImpl implements EntityRepository<Album> {
     public void update(Album item) throws RepositoryException {
         LOGGER.debug("updating album {}", item.getName());
 
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(UPDATE_ALBUM)) {
 
             ps.setString(1, item.getName());
@@ -98,7 +96,7 @@ public class AlbumRepositoryImpl implements EntityRepository<Album> {
         SqlSpecification sqlSpecification = (SqlSpecification) specification;
         List<Album> albumList = new ArrayList<>();
 
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(sqlSpecification.toSqlQuery());
              ResultSet rs = ps.executeQuery()) {
 
@@ -128,7 +126,7 @@ public class AlbumRepositoryImpl implements EntityRepository<Album> {
         SqlSpecification sqlSpecification = (SqlSpecification) specification;
         List<Album> albumList = new ArrayList<>();
 
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(sqlSpecification.toSqlQuery());
              ResultSet rs = ps.executeQuery()) {
 
@@ -159,7 +157,7 @@ public class AlbumRepositoryImpl implements EntityRepository<Album> {
         LOGGER.debug("checking album {} status.", item.getName());
         String status = "";
 
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(GET_STATUS)) {
 
             ps.setString(1, item.getName());
@@ -182,7 +180,7 @@ public class AlbumRepositoryImpl implements EntityRepository<Album> {
     public void undelete(Album item) throws RepositoryException {
         LOGGER.debug("Set album {} status to active.", item.getName());
 
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(SET_STATUS)) {
 
             ps.setString(1, item.getName());
@@ -202,7 +200,7 @@ public class AlbumRepositoryImpl implements EntityRepository<Album> {
         LOGGER.debug("buying album.");
         SqlSpecification sqlSpecification = (SqlSpecification) specification;
 
-        try (Connection connection = pool.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(sqlSpecification.toSqlQuery())) {
 
             ps.executeUpdate();

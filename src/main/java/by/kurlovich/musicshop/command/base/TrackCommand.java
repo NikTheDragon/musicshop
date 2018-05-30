@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class TrackCommand implements Command {
-    private final static String EDIT_TRACKS_PAGE = PageStore.EDIT_TRACKS_PAGE.getPageName();
-    private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
-    private final static Logger LOGGER = LoggerFactory.getLogger(CreateTrackCommand.class);
+    private static final String EDIT_TRACKS_PAGE = PageStore.EDIT_TRACKS_PAGE.getPageName();
+    private static final String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
+    private static final Logger LOGGER = LoggerFactory.getLogger(CreateTrackCommand.class);
     private EntityReceiver receiver;
 
     public TrackCommand(EntityReceiver receiver) {

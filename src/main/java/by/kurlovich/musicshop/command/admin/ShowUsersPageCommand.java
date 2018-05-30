@@ -18,8 +18,8 @@ import java.util.List;
 
 public class ShowUsersPageCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(ShowUsersPageCommand.class);
-    private final static String SHOW_USERS_PAGE = PageStore.SHOW_USERS_PAGE.getPageName();
-    private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
+    private static final String SHOW_USERS_PAGE = PageStore.SHOW_USERS_PAGE.getPageName();
+    private static final String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private final UserReceiver receiver;
 
     public ShowUsersPageCommand(UserReceiver receiver) {

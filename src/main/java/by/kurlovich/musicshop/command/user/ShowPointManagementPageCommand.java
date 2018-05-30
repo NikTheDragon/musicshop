@@ -15,8 +15,8 @@ import java.util.List;
 
 public class ShowPointManagementPageCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(ShowPointManagementPageCommand.class);
-    private final static String POINTS_PAGE = PageStore.POINTS_PAGE.getPageName();
-    private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
+    private static final String POINTS_PAGE = PageStore.POINTS_PAGE.getPageName();
+    private static final String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {

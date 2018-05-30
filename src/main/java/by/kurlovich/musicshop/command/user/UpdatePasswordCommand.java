@@ -19,8 +19,8 @@ import java.util.Map;
 
 public class UpdatePasswordCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(UpdatePasswordCommand.class);
-    private final static String PERSONAL_PAGE = PageStore.PERSONAL_PAGE.getPageName();
-    private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
+    private static final String PERSONAL_PAGE = PageStore.PERSONAL_PAGE.getPageName();
+    private static final String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private final UserReceiver receiver;
 
     public UpdatePasswordCommand(UserReceiver receiver) {

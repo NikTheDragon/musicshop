@@ -15,7 +15,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ShowAllTracksCommand implements Command {
-    private final static String SHOW_TRACKS_PAGE = PageStore.SHOW_TRACKS_PAGE.getPageName();
+    private static final String SHOW_TRACKS_PAGE = PageStore.SHOW_TRACKS_PAGE.getPageName();
     private UserReceiver receiver;
 
     public ShowAllTracksCommand(UserReceiver receiver) {

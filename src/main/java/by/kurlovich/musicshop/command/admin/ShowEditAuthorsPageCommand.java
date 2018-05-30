@@ -16,8 +16,8 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ShowEditAuthorsPageCommand implements Command {
-    private final static String EDIT_AUTHORS_PAGE = PageStore.EDIT_AUTHORS_PAGE.getPageName();
-    private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
+    private static final String EDIT_AUTHORS_PAGE = PageStore.EDIT_AUTHORS_PAGE.getPageName();
+    private static final String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private EntityReceiver authorReceiver;
     private EntityReceiver genreReceiver;
 

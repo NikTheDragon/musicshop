@@ -1,6 +1,7 @@
 package by.kurlovich.musicshop.command.common;
 
 import by.kurlovich.musicshop.command.Command;
+import by.kurlovich.musicshop.util.validator.AccessValidator;
 import by.kurlovich.musicshop.web.CommandResult;
 import by.kurlovich.musicshop.web.pages.PageStore;
 
@@ -8,14 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 
-import by.kurlovich.musicshop.util.validator.AccessValidator;
-
 public class ShowUserPageCommand implements Command {
-    private final static String USER_PAGE = PageStore.USER_PAGE.getPageName();
-    private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
-
-    public ShowUserPageCommand() {
-    }
+    private static final String USER_PAGE = PageStore.USER_PAGE.getPageName();
+    private static final String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

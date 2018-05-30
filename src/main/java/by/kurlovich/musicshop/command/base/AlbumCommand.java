@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class AlbumCommand implements Command {
-    private final static String EDIT_ALBUMS_PAGE = PageStore.EDIT_ALBUMS_PAGE.getPageName();
-    private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
-    private final static Logger LOGGER = LoggerFactory.getLogger(AlbumCommand.class);
+    private static final String EDIT_ALBUMS_PAGE = PageStore.EDIT_ALBUMS_PAGE.getPageName();
+    private static final String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
+    private static final Logger LOGGER = LoggerFactory.getLogger(AlbumCommand.class);
     private EntityReceiver receiver;
 
     public AlbumCommand(EntityReceiver receiver) {

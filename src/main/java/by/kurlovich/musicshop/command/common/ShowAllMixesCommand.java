@@ -15,7 +15,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ShowAllMixesCommand implements Command {
-    private final static String SHOW_MIXES_PAGE = PageStore.SHOW_MIXES_PAGE.getPageName();
+    private static final String SHOW_MIXES_PAGE = PageStore.SHOW_MIXES_PAGE.getPageName();
     private UserReceiver receiver;
 
     public ShowAllMixesCommand(UserReceiver receiver) {

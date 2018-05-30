@@ -16,8 +16,8 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ShowMyMixesCommand implements Command {
-    private final static String SHOW_MY_MIXES = PageStore.SHOW_MY_MIXES.getPageName();
-    private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
+    private static final String SHOW_MY_MIXES = PageStore.SHOW_MY_MIXES.getPageName();
+    private static final String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private UserReceiver receiver;
 
     public ShowMyMixesCommand(UserReceiver receiver) {

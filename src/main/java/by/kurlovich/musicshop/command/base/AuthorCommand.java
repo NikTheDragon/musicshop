@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class AuthorCommand implements Command {
-    private final static String EDIT_AUTHORS_PAGE = PageStore.EDIT_AUTHORS_PAGE.getPageName();
-    private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
-    private final static Logger LOGGER = LoggerFactory.getLogger(AuthorCommand.class);
+    private static final String EDIT_AUTHORS_PAGE = PageStore.EDIT_AUTHORS_PAGE.getPageName();
+    private static final String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthorCommand.class);
     private EntityReceiver receiver;
 
     public AuthorCommand(EntityReceiver receiver) {

@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public class ShowMixContentCommand implements Command {
-    private final static String SHOW_MIX_CONTENT_PAGE = PageStore.SHOW_MIX_CONTENT_PAGE.getPageName();
+    private static final String SHOW_MIX_CONTENT_PAGE = PageStore.SHOW_MIX_CONTENT_PAGE.getPageName();
     private UserReceiver userReceiver;
     private EntityReceiver mixReceiver;
 

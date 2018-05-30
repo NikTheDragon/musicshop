@@ -20,9 +20,9 @@ import java.util.Comparator;
 import java.util.List;
 
 public class BuyAlbumCommand implements Command {
-    private final static Logger LOGGER = LoggerFactory.getLogger(BuyAlbumCommand.class);
-    private final static String SHOW_ALBUMS_PAGE = PageStore.SHOW_ALBUMS_PAGE.getPageName();
-    private final static String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
+    private static final Logger LOGGER = LoggerFactory.getLogger(BuyAlbumCommand.class);
+    private static final String SHOW_ALBUMS_PAGE = PageStore.SHOW_ALBUMS_PAGE.getPageName();
+    private static final String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private UserReceiver receiver;
 
     public BuyAlbumCommand(UserReceiver receiver) {
