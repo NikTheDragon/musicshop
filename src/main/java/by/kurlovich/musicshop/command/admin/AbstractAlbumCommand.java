@@ -1,10 +1,10 @@
-package by.kurlovich.musicshop.command.base;
+package by.kurlovich.musicshop.command.admin;
 
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
 import by.kurlovich.musicshop.web.CommandResult;
 import by.kurlovich.musicshop.util.creator.ObjectCreator;
-import by.kurlovich.musicshop.entity.Author;
+import by.kurlovich.musicshop.entity.Album;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.web.pages.PageStore;
@@ -20,13 +20,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-public abstract class AuthorCommand implements Command {
-    private static final String EDIT_AUTHORS_PAGE = PageStore.EDIT_AUTHORS_PAGE.getPageName();
+public abstract class AbstractAlbumCommand implements Command {
+    private static final String EDIT_ALBUMS_PAGE = PageStore.EDIT_ALBUMS_PAGE.getPageName();
     private static final String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
-    private static final Logger LOGGER = LoggerFactory.getLogger(AuthorCommand.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAlbumCommand.class);
     private EntityReceiver receiver;
 
-    public AuthorCommand(EntityReceiver receiver) {
+    public AbstractAlbumCommand(EntityReceiver receiver) {
+
         this.receiver = receiver;
     }
 
@@ -36,28 +37,28 @@ public abstract class AuthorCommand implements Command {
             List<String> accessRoles = Arrays.asList("admin");
             String userRole = (String) request.getSession(true).getAttribute("role");
             Map<String, String[]> requestMap = request.getParameterMap();
-            Map<String, String> authorValidationMessages = ObjectValidator.validateAuthor(requestMap);
+            Map<String, String> albumValidationMessages = ObjectValidator.validateAlbum(requestMap);
 
             if (AccessValidator.validate(accessRoles, userRole)) {
-                if (Boolean.parseBoolean(authorValidationMessages.get("isPassedValidation"))) {
-                    Author author = ObjectCreator.createAuthor(requestMap);
+                if (Boolean.parseBoolean(albumValidationMessages.get("isPassedValidation"))) {
+                    Album album = ObjectCreator.createAlbum(requestMap);
 
                     LOGGER.debug("Command: {}, found", requestMap.get("command")[0]);
 
-                    if (doCommand(author)) {
-                        List<Author> allAuthors = receiver.getAllEntities();
-                        allAuthors.sort(Comparator.comparing(Author::getName));
+                    if (doCommand(album)) {
+                        List<Album> allAlbums = receiver.getAllEntities();
+                        allAlbums.sort(Comparator.comparing(Album::getName));
 
-                        request.getSession(true).setAttribute("authorList", allAuthors);
-                        request.getSession(true).setAttribute("url", EDIT_AUTHORS_PAGE);
-                        return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_AUTHORS_PAGE);
+                        request.getSession(true).setAttribute("albumList", allAlbums);
+                        request.getSession(true).setAttribute("url", EDIT_ALBUMS_PAGE);
+                        return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_ALBUMS_PAGE);
                     }
 
                     request.setAttribute("message", "unable");
 
                 } else {
-                    request.setAttribute("messages", authorValidationMessages);
-                    return new CommandResult(CommandResult.ResponseType.FORWARD, EDIT_AUTHORS_PAGE);
+                    request.setAttribute("messages", albumValidationMessages);
+                    return new CommandResult(CommandResult.ResponseType.FORWARD, EDIT_ALBUMS_PAGE);
                 }
 
             } else {
@@ -68,10 +69,9 @@ public abstract class AuthorCommand implements Command {
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in AuthorCommand.\n" + e, e);
+            throw new CommandException("Exception in AbstractAlbumCommand.\n" + e, e);
         }
     }
 
-    public abstract boolean doCommand(Author author) throws CommandException;
-
+    public abstract boolean doCommand(Album album) throws CommandException;
 }

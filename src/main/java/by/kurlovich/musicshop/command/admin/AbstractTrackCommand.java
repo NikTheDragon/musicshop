@@ -1,15 +1,15 @@
-package by.kurlovich.musicshop.command.base;
+package by.kurlovich.musicshop.command.admin;
 
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
+import by.kurlovich.musicshop.command.admin.CreateTrackCommand;
 import by.kurlovich.musicshop.web.CommandResult;
 import by.kurlovich.musicshop.util.creator.ObjectCreator;
-import by.kurlovich.musicshop.entity.Mix;
+import by.kurlovich.musicshop.entity.Track;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.web.pages.PageStore;
 import by.kurlovich.musicshop.util.validator.AccessValidator;
-
 import by.kurlovich.musicshop.util.validator.ObjectValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,13 +20,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-public abstract class MixCommand implements Command {
-    private static final String EDIT_MIXES_PAGE = PageStore.EDIT_MIXES_PAGE.getPageName();
+public abstract class AbstractTrackCommand implements Command {
+    private static final String EDIT_TRACKS_PAGE = PageStore.EDIT_TRACKS_PAGE.getPageName();
     private static final String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
-    private static final Logger LOGGER = LoggerFactory.getLogger(MixCommand.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CreateTrackCommand.class);
     private EntityReceiver receiver;
 
-    public MixCommand(EntityReceiver receiver) {
+    public AbstractTrackCommand(EntityReceiver receiver) {
+
         this.receiver = receiver;
     }
 
@@ -36,28 +37,28 @@ public abstract class MixCommand implements Command {
             List<String> accessRoles = Arrays.asList("admin");
             String userRole = (String) request.getSession(true).getAttribute("role");
             Map<String, String[]> requestMap = request.getParameterMap();
-            Map<String, String> mixValidationMessages = ObjectValidator.validateMix(requestMap);
+            Map<String, String> trackValidationMessages = ObjectValidator.validateTrack(requestMap);
 
             if (AccessValidator.validate(accessRoles, userRole)) {
-                if (Boolean.parseBoolean(mixValidationMessages.get("isPassedValidation"))) {
-                    Mix mix = ObjectCreator.createMix(requestMap);
+                if (Boolean.parseBoolean(trackValidationMessages.get("isPassedValidation"))) {
+                    Track track = ObjectCreator.createTrack(requestMap);
 
-                    LOGGER.debug("Command: {}, found", requestMap.get("command")[0]);
+                    LOGGER.debug("Updating track: {}", track.getName());
 
-                    if (doCommand(mix)) {
-                        List<Mix> allMixes = receiver.getAllEntities();
-                        allMixes.sort(Comparator.comparing(Mix::getName));
+                    if (doCommand(track)) {
+                        List<Track> allTracks = receiver.getAllEntities();
+                        allTracks.sort(Comparator.comparing(Track::getAuthor));
 
-                        request.getSession(true).setAttribute("mixList", allMixes);
-                        request.getSession(true).setAttribute("url", EDIT_MIXES_PAGE);
-                        return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_MIXES_PAGE);
+                        request.getSession(true).setAttribute("trackList", allTracks);
+                        request.getSession(true).setAttribute("url", EDIT_TRACKS_PAGE);
+                        return new CommandResult(CommandResult.ResponseType.REDIRECT, EDIT_TRACKS_PAGE);
                     }
 
                     request.setAttribute("message", "unable");
 
                 } else {
-                    request.setAttribute("messages", mixValidationMessages);
-                    return new CommandResult(CommandResult.ResponseType.FORWARD, EDIT_MIXES_PAGE);
+                    request.setAttribute("messages", trackValidationMessages);
+                    return new CommandResult(CommandResult.ResponseType.FORWARD, EDIT_TRACKS_PAGE);
                 }
 
             } else {
@@ -68,9 +69,9 @@ public abstract class MixCommand implements Command {
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in MixCommand.\n" + e, e);
+            throw new CommandException("Exception in UpdateTrackCommand.\n" + e, e);
         }
     }
 
-    public abstract boolean doCommand(Mix mix) throws CommandException;
+    public abstract boolean doCommand(Track track) throws CommandException;
 }

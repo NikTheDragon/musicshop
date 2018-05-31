@@ -1,4 +1,4 @@
-package by.kurlovich.musicshop.command.base;
+package by.kurlovich.musicshop.command.admin;
 
 import by.kurlovich.musicshop.command.Command;
 import by.kurlovich.musicshop.command.CommandException;
@@ -20,13 +20,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-public abstract class GenreCommand implements Command {
+public abstract class AbstractGenreCommand implements Command {
     private static final String EDIT_GENRES_PAGE = PageStore.EDIT_GENRES_PAGE.getPageName();
     private static final String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
-    private static final Logger LOGGER = LoggerFactory.getLogger(GenreCommand.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractGenreCommand.class);
     private EntityReceiver receiver;
 
-    public GenreCommand(EntityReceiver receiver) {
+    public AbstractGenreCommand(EntityReceiver receiver) {
         this.receiver = receiver;
     }
 
@@ -68,7 +68,7 @@ public abstract class GenreCommand implements Command {
             return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in GenreCommand.\n" + e, e);
+            throw new CommandException("Exception in AbstractGenreCommand.\n" + e, e);
         }
     }
 

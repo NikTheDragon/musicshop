@@ -25,8 +25,8 @@ abstract class AbstractUserCommand implements Command {
         return createErrorResult(request, "denied");
     }
 
-    CommandResult createUpdateFailedResult(HttpServletRequest request) {
-        return createErrorResult(request, "unupdate");
+    CommandResult createFailedResult(HttpServletRequest request, String message) {
+        return createErrorResult(request, message);
     }
 
     CommandResult createOKResult(HttpServletRequest request, String page) {

@@ -1,12 +1,11 @@
 package by.kurlovich.musicshop.command.admin;
 
 import by.kurlovich.musicshop.command.CommandException;
-import by.kurlovich.musicshop.command.base.MixCommand;
 import by.kurlovich.musicshop.entity.Mix;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 
-public class DeleteMixCommand extends MixCommand {
+public class DeleteMixCommand extends AbstractMixCommand {
     private EntityReceiver receiver;
 
     public DeleteMixCommand(EntityReceiver receiver) {

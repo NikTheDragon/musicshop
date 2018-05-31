@@ -31,7 +31,7 @@ public class AddPointsCommand extends AbstractUserCommand {
             if (addUserPoints(tariff, currentUser)) {
                 return createOKResult(request, POINTS_PAGE);
             } else {
-                return createUpdateFailedResult(request);
+                return createFailedResult(request, "can't add points.");
             }
 
         } catch (ReceiverException e) {

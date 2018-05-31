@@ -1,12 +1,11 @@
 package by.kurlovich.musicshop.command.admin;
 
 import by.kurlovich.musicshop.command.CommandException;
-import by.kurlovich.musicshop.command.base.AlbumCommand;
 import by.kurlovich.musicshop.entity.Album;
 import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 
-public class UpdateAlbumCommand extends AlbumCommand {
+public class UpdateAlbumCommand extends AbstractAlbumCommand {
     private EntityReceiver receiver;
 
     public UpdateAlbumCommand(EntityReceiver receiver) {
