@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractTrackCommand extends AbstractAdminCommand {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTrackCommand.class);
     private static final String EDIT_TRACKS_PAGE = PageStore.EDIT_TRACKS_PAGE.getPageName();
-    private static final Logger LOGGER = LoggerFactory.getLogger(CreateTrackCommand.class);
     private EntityReceiver receiver;
 
     AbstractTrackCommand(EntityReceiver receiver) {

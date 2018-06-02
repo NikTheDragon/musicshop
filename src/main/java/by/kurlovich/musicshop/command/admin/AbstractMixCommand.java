@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractMixCommand extends AbstractAdminCommand {
-    private static final String EDIT_MIXES_PAGE = PageStore.EDIT_MIXES_PAGE.getPageName();
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractMixCommand.class);
+    private static final String EDIT_MIXES_PAGE = PageStore.EDIT_MIXES_PAGE.getPageName();
     private EntityReceiver receiver;
 
     AbstractMixCommand(EntityReceiver receiver) {
