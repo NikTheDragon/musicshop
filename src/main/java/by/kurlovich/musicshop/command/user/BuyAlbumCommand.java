@@ -19,7 +19,6 @@ import java.util.List;
 public class BuyAlbumCommand extends AbstractUserCommand {
     private static final Logger LOGGER = LoggerFactory.getLogger(BuyAlbumCommand.class);
     private static final String SHOW_ALBUMS_PAGE = PageStore.SHOW_ALBUMS_PAGE.getPageName();
-    private static final String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private UserReceiver receiver;
 
     public BuyAlbumCommand(UserReceiver receiver) {
@@ -29,6 +28,8 @@ public class BuyAlbumCommand extends AbstractUserCommand {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
+            LOGGER.info("by album command executed.");
+
             if (!isAuthorised(request)) {
                 return createAccessDeniedResult(request);
             }
@@ -40,21 +41,20 @@ public class BuyAlbumCommand extends AbstractUserCommand {
 
             String result = receiver.buyAlbum(currentUser, albumId, albumPrice);
 
-            if (Boolean.parseBoolean(result)) {
-                List<Track> currentAlbumTracks = receiver.getAlbumTracksWithOwner(currentUser.getId(), albumId);
-                buyAlbumTracks(currentAlbumTracks, currentUser);
-
-                List<Album> allAlbums = receiver.getAllAlbumsWithOwner(currentUser.getId());
-                allAlbums.sort(Comparator.comparing(Album::getName));
-
-                request.getSession(true).setAttribute("user", currentUser);
-                request.getSession(true).setAttribute("albumList", allAlbums);
-
-                return createOKResult(request, SHOW_ALBUMS_PAGE);
-
-            } else {
+            if (!Boolean.parseBoolean(result)) {
                 return createFailedResult(request, result);
             }
+
+            List<Track> currentAlbumTracks = receiver.getAlbumTracksWithOwner(currentUser.getId(), albumId);
+            buyAlbumTracks(currentAlbumTracks, currentUser);
+
+            List<Album> allAlbums = receiver.getAllAlbumsWithOwner(currentUser.getId());
+            allAlbums.sort(Comparator.comparing(Album::getName));
+
+            request.getSession(true).setAttribute("user", currentUser);
+            request.getSession(true).setAttribute("albumList", allAlbums);
+
+            return createOKResult(request, SHOW_ALBUMS_PAGE);
 
         } catch (ReceiverException e) {
             throw new CommandException("Exception in BuyAlbumCommand.\n" + e, e);

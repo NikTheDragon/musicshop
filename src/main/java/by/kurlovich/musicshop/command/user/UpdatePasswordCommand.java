@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class UpdatePasswordCommand implements Command {
+public class UpdatePasswordCommand extends AbstractUserCommand {
     private static final Logger LOGGER = LoggerFactory.getLogger(UpdatePasswordCommand.class);
     private static final String PERSONAL_PAGE = PageStore.PERSONAL_PAGE.getPageName();
     private static final String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
@@ -30,8 +30,13 @@ public class UpdatePasswordCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
-            List<String> accessRoles = Arrays.asList("admin", "user");
-            User sessionUser = (User) request.getSession(true).getAttribute("user");
+            LOGGER.info("update password command executed.");
+            if (!isAuthorised(request)) {
+                return createAccessDeniedResult(request);
+            }
+
+            User sessionUser = getCurrentUser(request);
+
             Map<String, String[]> requestMap = request.getParameterMap();
 
             String[] oldPassword = requestMap.get("submit_old_password");
@@ -40,33 +45,27 @@ public class UpdatePasswordCommand implements Command {
             String oldPasswordResult = FieldValidator.validateLogPasField(oldPassword);
             String newPasswordResult = FieldValidator.validateLogPasField(newPassword);
 
-            if (AccessValidator.validate(accessRoles, sessionUser.getRole())) {
-                if (Boolean.parseBoolean(oldPasswordResult) && Boolean.parseBoolean(newPasswordResult)) {
+            if (Boolean.parseBoolean(oldPasswordResult) && Boolean.parseBoolean(newPasswordResult)) {
 
-                    if (receiver.updatePassword(oldPassword[0], newPassword[0], sessionUser)) {
-                        List<User> currentUser = receiver.getSpecifiedUsers(sessionUser.getId());
+                if (receiver.updatePassword(oldPassword[0], newPassword[0], sessionUser)) {
+                    List<User> currentUser = receiver.getSpecifiedUsers(sessionUser.getId());
 
-                        request.setAttribute("commandResult", "done");
-                        request.getSession(true).setAttribute("user", currentUser.get(0));
-                        request.getSession(true).setAttribute("url", PERSONAL_PAGE);
-                        return new CommandResult(CommandResult.ResponseType.FORWARD, PERSONAL_PAGE);
-
-                    } else {
-                        request.setAttribute("oldPasswordResult", "mismatch");
-                        request.setAttribute("newPasswordResult", "mismatch");
-                        return new CommandResult(CommandResult.ResponseType.FORWARD, PERSONAL_PAGE);
-                    }
+                    request.setAttribute("commandResult", "done");
+                    request.getSession(true).setAttribute("user", currentUser.get(0));
+                    request.getSession(true).setAttribute("url", PERSONAL_PAGE);
+                    return new CommandResult(CommandResult.ResponseType.FORWARD, PERSONAL_PAGE);
 
                 } else {
-                    request.setAttribute("oldPasswordResult", oldPasswordResult);
-                    request.setAttribute("newPasswordResult", newPasswordResult);
+                    request.setAttribute("oldPasswordResult", "mismatch");
+                    request.setAttribute("newPasswordResult", "mismatch");
                     return new CommandResult(CommandResult.ResponseType.FORWARD, PERSONAL_PAGE);
                 }
-            }
 
-            request.getSession(true).setAttribute("url", ERROR_PAGE);
-            request.setAttribute("message", "denied");
-            return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
+            } else {
+                request.setAttribute("oldPasswordResult", oldPasswordResult);
+                request.setAttribute("newPasswordResult", newPasswordResult);
+                return new CommandResult(CommandResult.ResponseType.FORWARD, PERSONAL_PAGE);
+            }
 
         } catch (ReceiverException e) {
             throw new CommandException("Exception in UpdatePasswordCommand.\n" + e, e);

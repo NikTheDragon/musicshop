@@ -155,12 +155,6 @@ public class UserReceiverImpl implements UserReceiver {
     }
 
     @Override
-    public Map<String, String> validateUser(User user) {
-        Map<String, String> messageMap = new HashMap<>();
-        return messageMap;
-    }
-
-    @Override
     public boolean addNewUser(User user) throws ReceiverException {
         try {
             UserRepository userRepository = new UserRepositoryImpl();

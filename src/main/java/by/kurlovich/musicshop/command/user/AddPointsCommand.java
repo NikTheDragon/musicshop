@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 
 public class AddPointsCommand extends AbstractUserCommand {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ShowPointManagementPageCommand.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AddPointsCommand.class);
     private static final String POINTS_PAGE = PageStore.POINTS_PAGE.getPageName();
     private UserReceiver receiver;
 
@@ -23,11 +23,15 @@ public class AddPointsCommand extends AbstractUserCommand {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
+            LOGGER.info("add points command executed.");
+
             if (!isAuthorised(request)){
                 return createAccessDeniedResult(request);
             }
+
             User currentUser = getCurrentUser(request);
             Tariff tariff = getTariffSubmitted(request);
+
             if (addUserPoints(tariff, currentUser)) {
                 return createOKResult(request, POINTS_PAGE);
             } else {

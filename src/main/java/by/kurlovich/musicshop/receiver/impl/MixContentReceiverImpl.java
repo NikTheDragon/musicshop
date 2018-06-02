@@ -8,7 +8,6 @@ import by.kurlovich.musicshop.repository.EntityRepository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
 import by.kurlovich.musicshop.repository.impl.MixContentRepositoryImpl;
-import by.kurlovich.musicshop.repository.specification.GetAllMixesContentSpecification;
 import by.kurlovich.musicshop.repository.specification.GetMixContentByMixIdSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,16 +72,7 @@ public class MixContentReceiverImpl implements EntityReceiver<Content> {
 
     @Override
     public List<Content> getAllEntities() throws ReceiverException {
-        try {
-            EntityRepository<Content> entityRepository = new MixContentRepositoryImpl();
-            Specification specification = new GetAllMixesContentSpecification();
-            LOGGER.debug("Trying to getId content for the mix.");
-
-            return entityRepository.query(specification);
-
-        } catch (RepositoryException e) {
-            throw new ReceiverException("Exception in getAllEntities from MixContentReceiverImpl.\n" + e, e);
-        }
+        return Collections.emptyList();
     }
 
     @Override

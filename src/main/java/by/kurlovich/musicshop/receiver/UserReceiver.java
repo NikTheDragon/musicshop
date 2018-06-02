@@ -6,7 +6,6 @@ import by.kurlovich.musicshop.entity.Track;
 import by.kurlovich.musicshop.entity.User;
 
 import java.util.List;
-import java.util.Map;
 
 public interface UserReceiver {
     List<User> getAllUsers() throws ReceiverException;
@@ -19,7 +18,6 @@ public interface UserReceiver {
     List<Mix> getUserOwnedMixes(String userId) throws ReceiverException;
     List<Album> getAllAlbumsWithOwner(String userId) throws ReceiverException;
     List<Album> getUserOwnedAlbums(String userId) throws ReceiverException;
-    Map<String, String> validateUser(User user) throws ReceiverException;
     boolean addNewUser(User user) throws ReceiverException;
     boolean updateUser(User user) throws ReceiverException;
     boolean updatePassword(String oldPassword, String newPassword, User sessionUser) throws ReceiverException;
