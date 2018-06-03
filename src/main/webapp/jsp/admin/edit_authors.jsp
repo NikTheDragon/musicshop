@@ -26,14 +26,14 @@
 <%@include file="/WEB-INF/jspf/header.jsp" %>
 <%@include file="/WEB-INF/jspf/admin_menu.jsp" %>
 
-<c:if test="${currentPage == null || currentPage == ''}">
-    <c:set var="currentPage" value="1"/>
+<c:if test="${currentPageNumber == null || currentPageNumber == ''}">
+    <c:set var="currentPageNumber" value="1"/>
 </c:if>
 
 <pg:getFirstPageNumber data="${authorList}" variable="firstPage"/>
 <pg:getLastPageNumber data="${authorList}" variable="lastPage"/>
-<pg:getSelectPageNumbers data="${authorList}" page="${currentPage}" first="first" last="last"/>
-<pg:getSelectedRows data="${authorList}" rows="selectedRows" page="${currentPage}"/>
+<pg:getSelectPageNumbers data="${authorList}" page="${currentPageNumber}" first="first" last="last"/>
+<pg:getSelectedRows data="${authorList}" rows="selectedRows" page="${currentPageNumber}"/>
 
 <br>
 

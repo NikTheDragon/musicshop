@@ -29,14 +29,14 @@
     </c:otherwise>
 </c:choose>
 
-<c:if test="${currentPage == null || currentPage == ''}">
-    <c:set var="currentPage" value="1"/>
+<c:if test="${currentPageNumber == null || currentPageNumber == ''}">
+    <c:set var="currentPageNumber" value="1"/>
 </c:if>
 
 <pg:getFirstPageNumber data="${albumList}" variable="firstPage"/>
 <pg:getLastPageNumber data="${albumList}" variable="lastPage"/>
-<pg:getSelectPageNumbers data="${albumList}" page="${currentPage}" first="first" last="last"/>
-<pg:getSelectedRows data="${albumList}" rows="selectedRows" page="${currentPage}"/>
+<pg:getSelectPageNumbers data="${albumList}" page="${currentPageNumber}" first="first" last="last"/>
+<pg:getSelectedRows data="${albumList}" rows="selectedRows" page="${currentPageNumber}"/>
 
 <table width="100%">
     <tr>

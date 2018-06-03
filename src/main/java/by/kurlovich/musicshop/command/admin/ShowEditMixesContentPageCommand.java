@@ -1,6 +1,7 @@
 package by.kurlovich.musicshop.command.admin;
 
 import by.kurlovich.musicshop.command.CommandException;
+import by.kurlovich.musicshop.receiver.ContentReceiver;
 import by.kurlovich.musicshop.web.CommandResult;
 import by.kurlovich.musicshop.entity.Content;
 import by.kurlovich.musicshop.entity.Mix;
@@ -18,11 +19,11 @@ import java.util.*;
 public class ShowEditMixesContentPageCommand extends AbstractAdminCommand {
     private static final Logger LOGGER = LoggerFactory.getLogger(ShowEditMixesContentPageCommand.class);
     private static final String EDIT_MIXES_CONTENT_PAGE = PageStore.EDIT_MIXES_CONTENT_PAGE.getPageName();
-    private EntityReceiver contentReceiver;
+    private ContentReceiver contentReceiver;
     private EntityReceiver trackReceiver;
     private EntityReceiver mixReceiver;
 
-    public ShowEditMixesContentPageCommand(EntityReceiver contentReceiver, EntityReceiver trackReceiver, EntityReceiver mixReceiver) {
+    public ShowEditMixesContentPageCommand(ContentReceiver contentReceiver, EntityReceiver trackReceiver, EntityReceiver mixReceiver) {
         this.contentReceiver = contentReceiver;
         this.trackReceiver = trackReceiver;
         this.mixReceiver = mixReceiver;

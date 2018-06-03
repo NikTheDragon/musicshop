@@ -1,9 +1,9 @@
 package by.kurlovich.musicshop.command.admin;
 
 import by.kurlovich.musicshop.command.CommandException;
+import by.kurlovich.musicshop.receiver.ContentReceiver;
 import by.kurlovich.musicshop.web.CommandResult;
 import by.kurlovich.musicshop.entity.Content;
-import by.kurlovich.musicshop.receiver.EntityReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
 import by.kurlovich.musicshop.web.pages.PageStore;
 
@@ -17,9 +17,9 @@ import java.util.List;
 public class DeleteTrackFromMixCommand extends AbstractAdminCommand {
     private static final Logger LOGGER = LoggerFactory.getLogger(DeleteTrackFromMixCommand.class);
     private static final String EDIT_MIXES_CONTENT_PAGE = PageStore.EDIT_MIXES_CONTENT_PAGE.getPageName();
-    private EntityReceiver receiver;
+    private ContentReceiver receiver;
 
-    public DeleteTrackFromMixCommand(EntityReceiver receiver) {
+    public DeleteTrackFromMixCommand(ContentReceiver receiver) {
 
         this.receiver = receiver;
     }

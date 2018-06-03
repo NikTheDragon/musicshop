@@ -10,10 +10,10 @@ public class ShowSelectedRowsCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
-        String currentPage = request.getParameter("currentPage");
+        String currentPageNumber = request.getParameter("currentPageNumber");
         String currentURI = request.getParameter("currentURI");
 
-        request.setAttribute("currentPage", currentPage);
+        request.setAttribute("currentPageNumber", currentPageNumber);
         return new CommandResult(CommandResult.ResponseType.FORWARD, currentURI);
     }
 }

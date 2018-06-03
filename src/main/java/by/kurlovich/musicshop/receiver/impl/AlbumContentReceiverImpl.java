@@ -1,10 +1,8 @@
 package by.kurlovich.musicshop.receiver.impl;
 
 import by.kurlovich.musicshop.entity.Content;
-import by.kurlovich.musicshop.entity.SearchData;
-import by.kurlovich.musicshop.receiver.EntityReceiver;
+import by.kurlovich.musicshop.receiver.ContentReceiver;
 import by.kurlovich.musicshop.receiver.ReceiverException;
-
 import by.kurlovich.musicshop.repository.EntityRepository;
 import by.kurlovich.musicshop.repository.RepositoryException;
 import by.kurlovich.musicshop.repository.Specification;
@@ -14,10 +12,9 @@ import by.kurlovich.musicshop.repository.specification.GetAlbumContentByAlbumIdS
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collections;
 import java.util.List;
 
-public class AlbumContentReceiverImpl implements EntityReceiver<Content> {
+public class AlbumContentReceiverImpl implements ContentReceiver {
     private static final Logger LOGGER = LoggerFactory.getLogger(AlbumContentReceiverImpl.class);
 
     @Override
@@ -65,21 +62,6 @@ public class AlbumContentReceiverImpl implements EntityReceiver<Content> {
         } catch (RepositoryException e) {
             throw new ReceiverException("Exception in deleteEntity of AlbumContentReceiverImpl.\n" + e, e);
         }
-    }
-
-    @Override
-    public boolean updateEntity(Content item) throws ReceiverException {
-        return false;
-    }
-
-    @Override
-    public List<Content> getAllEntities() throws ReceiverException {
-        return Collections.emptyList();
-    }
-
-    @Override
-    public List<Content> getSearchedEntities(SearchData searchData, String userId) throws ReceiverException {
-        return Collections.emptyList();
     }
 
     @Override

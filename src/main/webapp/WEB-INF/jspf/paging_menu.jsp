@@ -4,7 +4,7 @@
             <a href="<c:url value="/mainServlet">
                 <c:param name="command" value="show_selected_rows"/>
                 <c:param name="currentURI" value="${pageContext.request.requestURI}"/>
-                <c:param name="currentPage" value="${firstPage}"/>
+                <c:param name="currentPageNumber" value="${firstPage}"/>
                 </c:url>">${firstPage}</a>
         </td>
         <td>
@@ -12,7 +12,7 @@
                 <c:url value="/mainServlet" var="myURL">
                     <c:param name="command" value="show_selected_rows"/>
                     <c:param name="currentURI" value="${pageContext.request.requestURI}"/>
-                    <c:param name="currentPage" value="${i}"/>
+                    <c:param name="currentPageNumber" value="${i}"/>
                 </c:url>
                 <a href="${myURL}"><c:out value="${i}"/></a>
             </c:forEach>
@@ -21,7 +21,7 @@
             <a href="<c:url value="/mainServlet">
                 <c:param name="command" value="show_selected_rows"/>
                 <c:param name="currentURI" value="${pageContext.request.requestURI}"/>
-                <c:param name="currentPage" value="${lastPage}"/>
+                <c:param name="currentPageNumber" value="${lastPage}"/>
                 </c:url>">${lastPage}</a>
         </td>
     </tr>

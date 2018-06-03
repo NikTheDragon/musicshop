@@ -42,15 +42,16 @@
     </tr>
 </table>
 
-<c:if test="${currentPage == null || currentPage == ''}">
-    <c:set var="currentPage" value="1"/>
+<c:if test="${currentPageNumber == null || currentPageNumber == ''}">
+    <c:set var="currentPageNumber" value="1"/>
 </c:if>
 
 <pg:getFirstPageNumber data="${trackList}" variable="firstPage"/>
 <pg:getLastPageNumber data="${trackList}" variable="lastPage"/>
-<pg:getSelectPageNumbers data="${trackList}" page="${currentPage}" first="first" last="last"/>
-<pg:getSelectedRows data="${trackList}" rows="selectedRows" page="${currentPage}"/>
+<pg:getSelectPageNumbers data="${trackList}" page="${currentPageNumber}" first="first" last="last"/>
+<pg:getSelectedRows data="${trackList}" rows="selectedRows" page="${currentPageNumber}"/>
 
+<%--
 <table style="width: 90%; margin-left: auto; margin-right: auto; font-size: 12px">
     <tr>
         <form id="searchForm" action="${absolutePath}/mainServlet" method="post">
@@ -76,6 +77,7 @@
     </tr>
 
 </table>
+--%>
 
 <table id="fancyTable" style="width: 90%; margin-left: auto; margin-right: auto; font-size: 12px">
     <tr>
