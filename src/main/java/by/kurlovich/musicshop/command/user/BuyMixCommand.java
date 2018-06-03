@@ -29,6 +29,7 @@ public class BuyMixCommand extends AbstractUserCommand {
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
             LOGGER.info("by mix command executed.");
+
             if (!isAuthorised(request)) {
                 return createAccessDeniedResult(request);
             }
@@ -40,21 +41,20 @@ public class BuyMixCommand extends AbstractUserCommand {
 
             String result = receiver.buyMix(currentUser, mixId, mixPrice);
 
-            if (Boolean.parseBoolean(result)) {
-                List<Track> currentMixTracks = receiver.getMixTracksWithOwner(currentUser.getId(), mixId);
-                buyMixTracks(currentMixTracks, currentUser);
-
-                List<Mix> allMixes = receiver.getAllMixesWithOwner(currentUser.getId());
-                allMixes.sort(Comparator.comparing(Mix::getName));
-
-                request.getSession(true).setAttribute("user", currentUser);
-                request.getSession(true).setAttribute("mixList", allMixes);
-
-                return createOKResult(request, SHOW_MIXES_PAGE);
-
-            } else {
+            if (!Boolean.parseBoolean(result)) {
                 return createFailedResult(request, result);
             }
+
+            List<Track> currentMixTracks = receiver.getMixTracksWithOwner(currentUser.getId(), mixId);
+            buyMixTracks(currentMixTracks, currentUser);
+
+            List<Mix> allMixes = receiver.getAllMixesWithOwner(currentUser.getId());
+            allMixes.sort(Comparator.comparing(Mix::getName));
+
+            request.getSession(true).setAttribute("user", currentUser);
+            request.getSession(true).setAttribute("mixList", allMixes);
+
+            return createOKResult(request, SHOW_MIXES_PAGE);
 
         } catch (ReceiverException e) {
             throw new CommandException("Exception in BuyMixCommand.\n" + e, e);

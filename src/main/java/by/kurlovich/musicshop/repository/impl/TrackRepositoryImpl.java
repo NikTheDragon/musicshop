@@ -83,7 +83,7 @@ public class TrackRepositoryImpl extends BaseEntityRepository<Track> {
 
     @Override
     public List<Track> query(Specification specification) throws RepositoryException {
-        LOGGER.debug("quering tracks.");
+        LOGGER.debug("querying tracks.");
         SqlSpecification sqlSpecification = (SqlSpecification) specification;
         List<Track> trackList = new ArrayList<>();
 

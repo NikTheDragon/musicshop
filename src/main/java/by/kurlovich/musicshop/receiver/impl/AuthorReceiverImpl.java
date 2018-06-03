@@ -90,7 +90,7 @@ public class AuthorReceiverImpl implements EntityReceiver<Author> {
         try {
             EntityRepository<Author> entityRepository = new AuthorRepositoryImpl();
             Specification specification = new GetAllAuthorsSpecification();
-            LOGGER.debug("Trying to getId all authors.");
+            LOGGER.debug("Trying to get all authors.");
 
             return entityRepository.query(specification);
 

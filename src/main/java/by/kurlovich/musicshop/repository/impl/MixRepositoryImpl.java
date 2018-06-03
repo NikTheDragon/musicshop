@@ -82,7 +82,7 @@ public class MixRepositoryImpl extends BaseEntityRepository<Mix> {
 
     @Override
     public List<Mix> query(Specification specification) throws RepositoryException {
-        LOGGER.debug("quering mixes.");
+        LOGGER.debug("querying mixes.");
         SqlSpecification sqlSpecification = (SqlSpecification) specification;
         List<Mix> mixList = new ArrayList<>();
 

@@ -27,6 +27,7 @@ public class ShowMyAlbumsCommand extends AbstractUserCommand {
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
             LOGGER.info("show my albums command executed.");
+
             if (!isAuthorised(request)) {
                 return createAccessDeniedResult(request);
             }
@@ -37,7 +38,6 @@ public class ShowMyAlbumsCommand extends AbstractUserCommand {
             userAlbums.sort(Comparator.comparing(Album::getName));
 
             request.getSession(true).setAttribute("albumList", userAlbums);
-            request.getSession(true).setAttribute("url", SHOW_MY_ALBUMS);
 
             return createOKResult(request, SHOW_MY_ALBUMS);
 

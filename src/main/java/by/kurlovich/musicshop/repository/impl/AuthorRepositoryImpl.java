@@ -28,7 +28,6 @@ public class AuthorRepositoryImpl extends BaseEntityRepository<Author> {
 
     public AuthorRepositoryImpl() throws RepositoryException {
         try {
-            LOGGER.debug("Creating author OtherEntityRepository class.");
             pool = ConnectionPool.getInstance();
         } catch (ConnectionException e) {
             throw new RepositoryException("Can't create dbconnection pool", e);
@@ -91,6 +90,7 @@ public class AuthorRepositoryImpl extends BaseEntityRepository<Author> {
 
     @Override
     public List<Author> query(Specification specification) throws RepositoryException {
+        LOGGER.debug("querying authors.");
         SqlSpecification sqlSpecification = (SqlSpecification) specification;
         List<Author> authorList = new ArrayList<>();
 

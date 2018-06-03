@@ -27,6 +27,7 @@ public class ShowMyMixesCommand extends AbstractUserCommand {
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
             LOGGER.info("show my mixes command executed.");
+
             if (!isAuthorised(request)) {
                 return createAccessDeniedResult(request);
             }
@@ -37,7 +38,6 @@ public class ShowMyMixesCommand extends AbstractUserCommand {
             userMixes.sort(Comparator.comparing(Mix::getName));
 
             request.getSession(true).setAttribute("mixList", userMixes);
-            request.getSession(true).setAttribute("url", SHOW_MY_MIXES);
 
             return createOKResult(request, SHOW_MY_MIXES);
 

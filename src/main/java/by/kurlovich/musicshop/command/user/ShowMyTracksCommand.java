@@ -27,6 +27,7 @@ public class ShowMyTracksCommand extends AbstractUserCommand {
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
             LOGGER.info("show my tracks command executed.");
+
             if (!isAuthorised(request)) {
                 return createAccessDeniedResult(request);
             }
@@ -37,7 +38,6 @@ public class ShowMyTracksCommand extends AbstractUserCommand {
             userTracks.sort(Comparator.comparing(Track::getAuthor));
 
             request.getSession(true).setAttribute("trackList", userTracks);
-            request.getSession(true).setAttribute("url", SHOW_MY_TRACKS);
 
             return createOKResult(request, SHOW_MY_TRACKS);
 

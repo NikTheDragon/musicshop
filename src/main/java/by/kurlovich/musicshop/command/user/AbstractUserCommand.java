@@ -9,6 +9,7 @@ import by.kurlovich.musicshop.web.pages.PageStore;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 abstract class AbstractUserCommand implements Command {
 
@@ -32,6 +33,22 @@ abstract class AbstractUserCommand implements Command {
     CommandResult createOKResult(HttpServletRequest request, String page) {
         request.getSession(true).setAttribute("url", page);
         return new CommandResult(CommandResult.ResponseType.REDIRECT, page);
+    }
+
+    CommandResult createUnvalidatedLogPassResult(HttpServletRequest request, Map<String, String> validationMessages, String page) {
+        request.setAttribute("oldPasswordResult", validationMessages.get("oldPasswordResult"));
+        request.setAttribute("newPasswordResult", validationMessages.get("newPasswordResult"));
+        return new CommandResult(CommandResult.ResponseType.FORWARD, page);
+    }
+
+    CommandResult createUnvalidatedResult(HttpServletRequest request, Map<String, String> validationMessages, String page) {
+        request.setAttribute("messages", validationMessages);
+        return new CommandResult(CommandResult.ResponseType.FORWARD, page);
+    }
+
+    boolean isLogPassValidated (Map<String, String> validationMessages) {
+        return (Boolean.parseBoolean(validationMessages.get("oldPasswordResult")) &&
+                Boolean.parseBoolean(validationMessages.get("newPasswordResult")));
     }
 
     User getCurrentUser(HttpServletRequest request) {

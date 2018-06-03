@@ -16,13 +16,11 @@ public class ShowPointManagementPageCommand extends AbstractUserCommand {
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
-
         LOGGER.info("show points management command executed.");
+
         if (!isAuthorised(request)) {
             return createAccessDeniedResult(request);
         }
-
-        request.getSession(true).setAttribute("url", POINTS_PAGE);
 
         return createOKResult(request, POINTS_PAGE);
     }

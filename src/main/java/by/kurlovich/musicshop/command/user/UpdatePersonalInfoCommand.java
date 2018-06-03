@@ -37,8 +37,7 @@ public class UpdatePersonalInfoCommand extends AbstractUserCommand {
             Map<String, String> userValidationMessages = ObjectValidator.validateUser(requestMap);
 
             if (!Boolean.parseBoolean(userValidationMessages.get("isPassedValidation"))) {
-                request.setAttribute("messages", userValidationMessages);
-                return new CommandResult(CommandResult.ResponseType.FORWARD, PERSONAL_PAGE);
+                return createUnvalidatedResult(request, userValidationMessages, PERSONAL_PAGE);
             }
 
             User currentUser = ObjectCreator.createUser(requestMap);

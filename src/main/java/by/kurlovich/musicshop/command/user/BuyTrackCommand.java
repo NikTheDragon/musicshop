@@ -27,6 +27,7 @@ public class BuyTrackCommand extends AbstractUserCommand {
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
             LOGGER.info("by track command executed.");
+
             if (!isAuthorised(request)) {
                 return createAccessDeniedResult(request);
             }
@@ -38,18 +39,17 @@ public class BuyTrackCommand extends AbstractUserCommand {
 
             String result = receiver.buyTrack(currentUser, trackId, trackPrice);
 
-            if (Boolean.parseBoolean(result)) {
-                List<Track> allTracks = receiver.getAllTracksWithOwner(currentUser.getId());
-                allTracks.sort(Comparator.comparing(Track::getAuthor));
-
-                request.getSession(true).setAttribute("user", currentUser);
-                request.getSession(true).setAttribute("trackList", allTracks);
-
-                return createOKResult(request, SHOW_TRACKS_PAGE);
-
-            } else {
+            if (!Boolean.parseBoolean(result)) {
                 return createFailedResult(request, result);
             }
+
+            List<Track> allTracks = receiver.getAllTracksWithOwner(currentUser.getId());
+            allTracks.sort(Comparator.comparing(Track::getAuthor));
+
+            request.getSession(true).setAttribute("user", currentUser);
+            request.getSession(true).setAttribute("trackList", allTracks);
+
+            return createOKResult(request, SHOW_TRACKS_PAGE);
 
         } catch (ReceiverException e) {
             throw new CommandException("Exception in BuyTrackCommand.\n" + e, e);

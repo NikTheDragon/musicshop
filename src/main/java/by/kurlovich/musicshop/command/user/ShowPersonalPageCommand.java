@@ -15,13 +15,11 @@ public class ShowPersonalPageCommand extends AbstractUserCommand {
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
-
         LOGGER.info("show personal page command executed.");
+
         if (!isAuthorised(request)) {
             return createAccessDeniedResult(request);
         }
-
-        request.getSession(true).setAttribute("url", PERSONAL_PAGE);
 
         return createOKResult(request, PERSONAL_PAGE);
     }

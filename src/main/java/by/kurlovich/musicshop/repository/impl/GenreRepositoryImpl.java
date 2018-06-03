@@ -84,6 +84,7 @@ public class GenreRepositoryImpl extends BaseEntityRepository<Genre> {
 
     @Override
     public List<Genre> query(Specification specification) throws RepositoryException {
+        LOGGER.debug("querying genres.");
         SqlSpecification sqlSpecification = (SqlSpecification) specification;
         List<Genre> genreList = new ArrayList<>();
 

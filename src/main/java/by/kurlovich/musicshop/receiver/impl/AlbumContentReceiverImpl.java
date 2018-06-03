@@ -87,7 +87,7 @@ public class AlbumContentReceiverImpl implements EntityReceiver<Content> {
         try {
             EntityRepository<Content> entityRepository = new AlbumContentRepositoryImpl();
             Specification specification = new GetAlbumContentByAlbumIdSpecification(param);
-            LOGGER.debug("trying to getId specified content for album with id {}.", param);
+            LOGGER.debug("trying to get specified content for album with id {}.", param);
 
             return entityRepository.query(specification);
 

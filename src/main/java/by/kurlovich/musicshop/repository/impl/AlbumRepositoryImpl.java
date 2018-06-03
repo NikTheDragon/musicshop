@@ -27,7 +27,6 @@ public class AlbumRepositoryImpl extends BaseEntityRepository<Album> {
 
     public AlbumRepositoryImpl() throws RepositoryException {
         try {
-            LOGGER.debug("Creating album OtherEntityRepository class.");
             pool = ConnectionPool.getInstance();
         } catch (ConnectionException e) {
             throw new RepositoryException("Can't create dbconnection pool", e);

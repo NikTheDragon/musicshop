@@ -16,10 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 
-public class ShowEditUserPageCommand implements Command {
+public class ShowEditUserPageCommand extends AbstractAdminCommand {
     private static final Logger LOGGER = LoggerFactory.getLogger(ShowEditUserPageCommand.class);
     private static final String SHOW_EDIT_USER_PAGE = PageStore.SHOW_EDIT_USER_PAGE.getPageName();
-    private static final String ERROR_PAGE = PageStore.ERROR_PAGE.getPageName();
     private final UserReceiver receiver;
 
     public ShowEditUserPageCommand(UserReceiver receiver) {
@@ -29,24 +28,21 @@ public class ShowEditUserPageCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
-            List<String> accessRoles = Arrays.asList("admin");
-            String userRole = (String) request.getSession(true).getAttribute("role");
+            LOGGER.info("show edit users command executed.");
 
-            if (AccessValidator.validate(accessRoles, userRole)) {
-                String userId = request.getParameter("submit_user_id");
-                List<User> allUsers = receiver.getSpecifiedUsers(userId);
-
-                request.getSession(true).setAttribute("userInfo", allUsers.get(0));
-                request.getSession(true).setAttribute("url", SHOW_EDIT_USER_PAGE);
-                return new CommandResult(CommandResult.ResponseType.FORWARD, SHOW_EDIT_USER_PAGE);
+            if (!isAuthorised(request)) {
+                return createAccessDeniedResult(request);
             }
 
-            request.getSession(true).setAttribute("url", ERROR_PAGE);
-            request.setAttribute("message", "denied");
-            return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
+            String userId = request.getParameter("submit_user_id");
+            List<User> allUsers = receiver.getSpecifiedUsers(userId);
+
+            request.getSession(true).setAttribute("userInfo", allUsers.get(0));
+
+            return createOKResult(request, SHOW_EDIT_USER_PAGE);
 
         } catch (ReceiverException e) {
-            throw new CommandException("Exception in ShowEditTracksPageCommand.\n" + e, e);
+            throw new CommandException("Exception in ShowEditUserPageCommand.\n" + e, e);
         }
     }
 }

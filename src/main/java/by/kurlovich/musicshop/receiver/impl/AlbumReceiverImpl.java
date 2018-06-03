@@ -90,7 +90,7 @@ public class AlbumReceiverImpl implements EntityReceiver<Album> {
         try {
             EntityRepository<Album> entityRepository = new AlbumRepositoryImpl();
             Specification specification = new GetAllAlbumsSpecification();
-            LOGGER.debug("Trying to getId all albums.");
+            LOGGER.debug("Trying to get all albums.");
 
             return entityRepository.query(specification);
 
@@ -109,7 +109,7 @@ public class AlbumReceiverImpl implements EntityReceiver<Album> {
         try {
             EntityRepository<Album> entityRepository = new AlbumRepositoryImpl();
             Specification specification = new GetAlbumByIdSpecification(param);
-            LOGGER.debug("trying to getId specified albums with id {}.", param);
+            LOGGER.debug("trying to get specified albums with id {}.", param);
 
             return entityRepository.query(specification);
 

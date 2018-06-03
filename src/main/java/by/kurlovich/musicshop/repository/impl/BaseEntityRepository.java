@@ -16,7 +16,6 @@ public abstract class BaseEntityRepository<T> implements EntityRepository<T> {
 
     BaseEntityRepository() throws RepositoryException {
         try {
-            LOGGER.debug("Creating author OtherEntityRepository class.");
             pool = ConnectionPool.getInstance();
         } catch (ConnectionException e) {
             throw new RepositoryException("Can't create dbconnection pool", e);
