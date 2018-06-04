@@ -61,7 +61,7 @@ public class BuyAlbumCommand extends AbstractUserCommand {
         }
     }
 
-    private void buyAlbumTracks(List<Track> currentAlbumTracks, User currentUser) throws CommandException {
+    protected void buyAlbumTracks(List<Track> currentAlbumTracks, User currentUser) throws CommandException {
         try {
             for (Track currentTrack : currentAlbumTracks) {
                 if (currentTrack.getOwnerId() == null) {
