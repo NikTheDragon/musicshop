@@ -56,7 +56,6 @@ abstract class AbstractUserCommand implements Command {
     }
 
     private CommandResult createErrorResult(HttpServletRequest request, String message) {
-        request.getSession(true).setAttribute("url", PageStore.ERROR_PAGE.getPageName());
         request.setAttribute("message", message);
         return new CommandResult(CommandResult.ResponseType.FORWARD, PageStore.ERROR_PAGE.getPageName());
     }

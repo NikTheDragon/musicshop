@@ -157,7 +157,7 @@ public class FieldValidator {
     }
 
     private static String common(String fieldText) {
-        if (fieldText.length() < 3 || fieldText.length() > 25) {
+        if (fieldText.length() < 3 || fieldText.length() > 35) {
             return "length";
         } else {
             return "true";

@@ -29,7 +29,7 @@
                         </form>
                     </div>
                 </li>
-                <li><a href="#news">${contacts}</a></li>
+                <li><a href="/jsp/common/contacts.jsp">${contacts}</a></li>
                  <li class="dropdown" style="float: right">
                     <a href="javascript:void(0)" class="dropbtn">${language}</a>
                     <div class="dropdown-content">
