@@ -163,9 +163,13 @@ public class UserReceiverImpl implements UserReceiver {
 
             List<User> usersList = userRepository.query(specification);
             if (usersList.isEmpty()) {
-                user.setPassword(PasswordSHAGenerator.getPassword(user.getPassword()));
+                String tempPassword = user.getPassword();
 
+                user.setPassword(PasswordSHAGenerator.getPassword(user.getPassword()));
                 userRepository.add(user);
+
+                user.setPassword(tempPassword);
+
                 return true;
             } else {
                 return false;
@@ -226,11 +230,11 @@ public class UserReceiverImpl implements UserReceiver {
     @Override
     public User loginUser(String login, String password) throws ReceiverException {
         try {
+            LOGGER.debug("trying to log user with login: {}, and password: {}.", login, password);
             UserRepository userRepository = new UserRepositoryImpl();
             password = PasswordSHAGenerator.getPassword(password);
 
             Specification specification = new GetUserByLoginPasswordSpecification(login, password);
-            LOGGER.debug("trying to log user.");
 
             List<User> usersList = userRepository.query(specification);
 

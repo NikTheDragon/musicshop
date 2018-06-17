@@ -24,7 +24,7 @@ public class ShowUserPageCommand implements Command {
         }
 
         request.getSession(true).setAttribute("url", ERROR_PAGE);
-        request.setAttribute("nocommand", "Access denied!");
+        request.setAttribute("message", "Access denied!");
         return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_PAGE);
     }
 }
